@@ -1,24 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LoginComponent from './pages/login/LoginComponent';
+import HomeComponent from './pages/home/HomeComponent';
+import RootLayout from './pages/rootLayout/root';
+
+
+const router = createBrowserRouter([
+  {
+    path: "/eDrink24",
+    element: <RootLayout />,
+    children: [
+      { path: '/eDrink24', element: <HomeComponent /> },
+      { path: '/eDrink24/login', element: <LoginComponent /> }
+    ]
+  }
+])
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React 222
-        </a>
-      </header>
-    </div>
+    <RouterProvider router={router} />
   );
 }
 
