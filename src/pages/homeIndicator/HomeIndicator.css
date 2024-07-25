@@ -1,0 +1,14 @@
+.home-indicator {
+    height: 34px;
+    width: 390px;
+  }
+  
+  .home-indicator .div {
+    background-color: #000000;
+    border-radius: 100px;
+    height: 5px;
+    left: 128px;
+    position: relative;
+    top: 21px;
+    width: 134px;
+  }
