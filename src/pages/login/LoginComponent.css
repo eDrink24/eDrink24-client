@@ -81,7 +81,7 @@ form {
 
 .password-container {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .password-input {
@@ -100,6 +100,10 @@ form {
     background-color: white;
     border: 1px solid #333;
     outline: none;
+}
+
+.failed-input {
+    border: px solid red;
 }
 
 .show-password {
@@ -126,6 +130,7 @@ form {
     border-color:rgb(224, 218, 218);
     border-width: 1px;
     border-radius: 5px;
+    margin-top:10px;
     margin-bottom: 10px;
     cursor: pointer;
     height: 60px;
@@ -221,4 +226,9 @@ form {
     margin-right: 5px;
 }
 
-
+.error-message {
+    color: red;
+    margin: 0px;
+    font-size: 0.9em;
+    text-align: center;
+}
