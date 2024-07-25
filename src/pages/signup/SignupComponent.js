@@ -15,6 +15,7 @@ function SignupComponent() {
     const [roadAddress, setRoadAddress] = useState("");
     const [detailAddress, setDetailAddress] = useState("");
     const [isOpen, setIsOpen] = useState(false);
+    const [gender, setGender] = useState('남');
 
     const completeHandler = (data) => {
         console.log(">>", data);
@@ -59,6 +60,10 @@ function SignupComponent() {
         }
     }
 
+    const handleGenderChange = (e) => {
+        setGender(e.target.value);
+    };
+
     return (
         <div className="container">
             <div className="signup">
@@ -79,17 +84,17 @@ function SignupComponent() {
                         </div>
                         <div>
                             <label htmlFor="birthdate">birthdate:</label>
-                            <input type="text" name="birthdate" id="birthdate" />
+                            <input type="date" name="birthdate" id="birthdate" />
                         </div>
                         <div>
                             <input type="hidden" name="role" id="role" defaultValue='일반회원' />
                         </div>
                         <div>
                             <label htmlFor="gender">남</label>
-                            <input type="radio" name="gender" id="genderMale" value="남" checked />
+                            <input type="radio" name="gender" id="genderMale" value="남" onChange={handleGenderChange} checked={gender === "남"} />
 
                             <label htmlFor="gender">여</label>
-                            <input type="radio" name="gender" id="genderFemale" value="여" />
+                            <input type="radio" name="gender" id="genderFemale" onChange={handleGenderChange} checked={gender === "여"} />
                         </div>
                         <div>
                             <label htmlFor="phoneNum">phoneNumber:</label>
@@ -140,6 +145,15 @@ export async function action({ request }) {
         address1: data.get("address1"),
         address2: data.get("address2")
     };
+    const response = await fetch("http://localhost:8090/eDrink24/signup", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(authData)
+    });
+
+    console.log("회원가입 요청결과: ", response);
 
     return redirect("/eDrink24/login");
 }

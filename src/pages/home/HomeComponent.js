@@ -1,8 +1,8 @@
+import "./HomeComponent.css";
+
 function HomeComponent() {
     return (
-        <div>
-            <h2>main</h2>
-        </div>
+        <h2>main</h2>
     );
 }
 
