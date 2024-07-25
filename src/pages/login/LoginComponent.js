@@ -21,11 +21,13 @@ function LoginComponent() {
         <div className="login-container">
             <header>
                 <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
-                <button className="close-button" onClick={handleRedirectHome}>✕</button>
+                <button className="close-button" onClick={handleRedirectHome}>
+                    <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
+                </button>
             </header>
             <div className='greet'>
                 <h1>회원님,</h1>
-                <h1>환영합니다 :)</h1>
+                <h1>환영합니다 : )</h1>
             </div>
             <Form method="post">
                 <input type="text" name="loginId" className="login-input" placeholder="아이디를 입력해 주세요" required />
