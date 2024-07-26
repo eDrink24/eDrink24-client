@@ -5,6 +5,8 @@ import HomeComponent from './pages/home/HomeComponent';
 import SignupComponent, { action as signUpAction } from './pages/signup/SignupComponent';
 import RootLayout from './pages/rootLayout/root';
 import { tokenLoader } from './util/auth';
+import ProtectedRoute from './components/ProtectedRouter';
+import { LogoutComponent, action as logoutAction } from "./pages/login/LogoutComponent";
 
 
 const router = createBrowserRouter([
@@ -22,7 +24,12 @@ const router = createBrowserRouter([
         path: '/eDrink24/signup', element: <SignupComponent />,
         action: signUpAction
       },
-      { path: "*", element: <Navigate to="/eDrink24" /> }
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: "*", element: <Navigate to="/eDrink24" /> },
+        ]
+      }
     ]
   }
 ])

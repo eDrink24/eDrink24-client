@@ -1,6 +1,9 @@
 import { redirect, useActionData, Form, useNavigate } from 'react-router-dom';
 import "./LoginComponent.css";
 import { useEffect, useState } from 'react';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 function LoginComponent() {
     const data = useActionData();
@@ -10,6 +13,7 @@ function LoginComponent() {
     const [pw, setPw] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // 비밀번호 표시/숨기기 함수
     const togglePasswordVisibility = () => {
@@ -21,7 +25,7 @@ function LoginComponent() {
     };
 
     const handleDirectNormalSignup = () => {
-        navigate("/eDrink24/signup")
+        navigate("/eDrink24/signup");
     }
 
     useEffect(() => {
@@ -29,11 +33,27 @@ function LoginComponent() {
             setErrorMessage(data.error);
             setLoginId("");
             setPw("");
+        } else if (data?.success) {
+            setIsModalOpen(true);
+            setTimeout(() => {
+                setIsModalOpen(false);
+                navigate('/eDrink24');
+            }, 2000); // 2초 후에 모달 닫고 리다이렉트
         }
-    }, [data]);
+    }, [data, navigate]);
 
     return (
         <div className="login-container">
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                contentLabel="로그인 성공"
+                className="modal"
+                overlayClassName="overlay"
+            >
+                <button className="modal-close-button" onClick={() => setIsModalOpen(false)}>X</button>
+                <h2>로그인에 성공하였습니다!</h2>
+            </Modal>
             <header>
                 <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
                 <button className="close-button" onClick={handleRedirectHome}>
@@ -81,7 +101,7 @@ function LoginComponent() {
                     <span>일반회원으로 가입하기</span>
                 </button>
                 <button className="google-signup">
-                    <img src="assets/login/google.png" alt='kakao icon' />
+                    <img src="assets/login/google.png" alt='google icon' />
                     <span>구글계정으로 가입하기</span>
                 </button>
                 <button className="kakao-signup">
@@ -122,10 +142,11 @@ export async function action({ request }) {
     console.log("resData: ", resData);
 
     const token = resData.token;
+
     localStorage.setItem('jwtAuthToken', token);
     localStorage.setItem('userid', authData.loginId);
 
-    return redirect('/eDrink24');
+    return { success: true };
 }
 
 export default LoginComponent;
