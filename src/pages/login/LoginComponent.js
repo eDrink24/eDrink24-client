@@ -43,71 +43,73 @@ function LoginComponent() {
     }, [data, navigate]);
 
     return (
-        <div className="login-container">
-            <Modal
-                isOpen={isModalOpen}
-                onRequestClose={() => setIsModalOpen(false)}
-                contentLabel="로그인 성공"
-                className="modal"
-                overlayClassName="overlay"
-            >
-                <button className="modal-close-button" onClick={() => setIsModalOpen(false)}>X</button>
-                <h2>로그인에 성공하였습니다!</h2>
-            </Modal>
-            <header>
-                <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
-                <button className="close-button" onClick={handleRedirectHome}>
-                    <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
-                </button>
-            </header>
-            <div className='greet'>
-                <h1>회원님,</h1>
-                <h1>환영합니다 : )</h1>
-            </div>
-            <Form method="post">
-                <input
-                    type="text"
-                    name="loginId"
-                    className="login-input"
-                    placeholder="아이디를 입력해 주세요"
-                    value={loginId}
-                    onChange={(e) => setLoginId(e.target.value)}
-                    required
-                />
-                <div className="password-container">
-                    <input
-                        type={passwordVisible ? "text" : "password"}
-                        name="pw"
-                        className="password-input"
-                        placeholder="비밀번호를 입력해 주세요"
-                        value={pw}
-                        onChange={(e) => setPw(e.target.value)}
-                        required
-                    />
-                    <button type="button" className="show-password" onClick={togglePasswordVisibility}>
-                        <img src="assets/login/eye-open.png" alt="hide 버튼" />
+        <div className="login-body"> {/* 기존의 body 스타일을 여기로 옮김 */}
+            <div className="login-container">
+                <Modal
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    contentLabel="로그인 성공"
+                    className="modal"
+                    overlayClassName="overlay"
+                >
+                    <button className="modal-close-button" onClick={() => setIsModalOpen(false)}>X</button>
+                    <h2>로그인에 성공하였습니다!</h2>
+                </Modal>
+                <div className='login-header'>
+                    <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
+                    <button className="close-button" onClick={handleRedirectHome}>
+                        <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
                     </button>
                 </div>
-                {errorMessage && <p className="error-message">{errorMessage}</p>}
-                <button type="submit" className="login-button">로그인</button>
-            </Form>
-            <div className="options">
-                <a href="#">아이디 찾기 ></a>
-                <a href="#">비밀번호 찾기 ></a>
-            </div>
-            <div className="signup-options">
-                <p>혹시, 계정이 없으신가요?</p>
-                <button className="normal-signup" onClick={handleDirectNormalSignup}>
-                    <span>일반회원으로 가입하기</span>
-                </button>
-                <button className="google-signup">
-                    <img src="assets/login/google.png" alt='google icon' />
-                    <span>구글계정으로 가입하기</span>
-                </button>
-                <button className="kakao-signup">
-                    <img src="assets/login/kakao.png" alt='kakao icon' />
-                    <span>카카오로 가입하기</span>
-                </button>
+                <div className='greet'>
+                    <h1>회원님,</h1>
+                    <h1>환영합니다 : )</h1>
+                </div>
+                <Form method="post">
+                    <input
+                        type="text"
+                        name="loginId"
+                        className="login-input"
+                        placeholder="아이디를 입력해 주세요"
+                        value={loginId}
+                        onChange={(e) => setLoginId(e.target.value)}
+                        required
+                    />
+                    <div className="password-container">
+                        <input
+                            type={passwordVisible ? "text" : "password"}
+                            name="pw"
+                            className="password-input"
+                            placeholder="비밀번호를 입력해 주세요"
+                            value={pw}
+                            onChange={(e) => setPw(e.target.value)}
+                            required
+                        />
+                        <button type="button" className="show-password" onClick={togglePasswordVisibility}>
+                            <img src="assets/login/eye-open.png" alt="hide 버튼" />
+                        </button>
+                    </div>
+                    {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    <button type="submit" className="login-button">로그인</button>
+                </Form>
+                <div className="options">
+                    <a href="#">아이디 찾기 ></a>
+                    <a href="#">비밀번호 찾기 ></a>
+                </div>
+                <div className="signup-options">
+                    <p>혹시, 계정이 없으신가요?</p>
+                    <button className="normal-signup" onClick={handleDirectNormalSignup}>
+                        <span>일반회원으로 가입하기</span>
+                    </button>
+                    <button className="google-signup">
+                        <img src="assets/login/google.png" alt='google icon' />
+                        <span>구글계정으로 가입하기</span>
+                    </button>
+                    <button className="kakao-signup">
+                        <img src="assets/login/kakao.png" alt='kakao icon' />
+                        <span>카카오로 가입하기</span>
+                    </button>
+                </div>
             </div>
         </div>
     );

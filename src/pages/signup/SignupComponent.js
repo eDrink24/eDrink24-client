@@ -6,6 +6,7 @@ import {
 import DaumPostcode from 'react-daum-postcode';
 import { useState } from 'react';
 import Modal from "react-modal";
+import "./SignupComponent.css";
 
 function SignupComponent() {
 
@@ -65,65 +66,73 @@ function SignupComponent() {
     };
 
     return (
-        <div className="container">
-            <div className="signup">
-                <div className="signUpForm">
-                    <Form method="post" >
-                        {data && data.message && <p>{data.message}</p>}
-                        <div>
-                            <label htmlFor="loginId">userid:</label>
-                            <input type="text" name="loginId" id="loginId" />
-                        </div>
-                        <div>
-                            <label htmlFor="pw">password:</label>
-                            <input type="password" name="pw" id="pw" />
-                        </div>
-                        <div>
-                            <label htmlFor="userName">username:</label>
-                            <input type="text" name="userName" id="userName" />
-                        </div>
-                        <div>
-                            <label htmlFor="birthdate">birthdate:</label>
-                            <input type="date" name="birthdate" id="birthdate" />
-                        </div>
-                        <div>
-                            <input type="hidden" name="role" id="role" defaultValue='일반회원' />
-                        </div>
-                        <div>
-                            <label htmlFor="gender">남</label>
-                            <input type="radio" name="gender" id="genderMale" value="남" onChange={handleGenderChange} checked={gender === "남"} />
-
-                            <label htmlFor="gender">여</label>
-                            <input type="radio" name="gender" id="genderFemale" onChange={handleGenderChange} checked={gender === "여"} />
-                        </div>
-                        <div>
-                            <label htmlFor="phoneNum">phoneNumber:</label>
-                            <input type="text" name="phoneNum" id="phoneNum" />
-                        </div>
-                        <div>
-                            <label htmlFor="email">email:</label>
-                            <input type="text" name="email" id="email" />
-                        </div>
-                        <div>
-                            <input name='postalCode' value={postalCode} readOnly placeholder="우편번호" />
-                            <button onClick={toggle}>우편번호 검색</button>
-                            <br />
-                            <input name='address1' value={roadAddress} readOnly placeholder="도로명 주소" />
-                            <br />
-                            <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}
-                                onRequestClose={() => setIsOpen(false)}>
-                                <DaumPostcode onComplete={completeHandler} height="100%" />
-                            </Modal>
-                            <input type="text" name='address2' onChange={changeHandler} value={detailAddress} placeholder="상세주소" />
-                            <br />
-                        </div>
-
-                        <div>
-                            <button onClick={clickHandler} name="signup" className="btn btn-success m-5" >signup</button>
-                        </div>
-                    </Form>
-                </div>
+        <div className="signup-container">
+            <div className='signup-header'>
+                <h1>회원가입</h1>
+                <button className="close-button" onClick={() => window.location.href = "/eDrink24/login"}>
+                    <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
+                </button>
             </div>
+            <Form method="post" className="signUpForm">
+                {data && data.message && <p>{data.message}</p>}
+                <div className="form-group">
+                    <label htmlFor="loginId">아이디</label>
+                    <input type="text" name="loginId" id="loginId" className="form-control" placeholder="아이디를 입력해 주세요" />
+                    <button className="check-button">중복 확인</button>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="pw">비밀번호</label>
+                    <input type="password" name="pw" id="pw" className="form-control" placeholder="비밀번호를 입력해 주세요" />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="pwConfirm">비밀번호 확인</label>
+                    <input type="password" name="pwConfirm" id="pwConfirm" className="form-control" placeholder="비밀번호를 다시 입력해 주세요" />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="userName">이름</label>
+                    <input type="text" name="userName" id="userName" className="form-control" placeholder="이름을 입력해 주세요" />
+                </div>
+                <div className="form-group">
+                    <label>성별</label>
+                    <div className="gender-options">
+                        <label htmlFor="genderMale" className="gender-label">남</label>
+                        <input type="radio" name="gender" id="genderMale" value="남" onChange={handleGenderChange} checked={gender === "남"} />
+                        <label htmlFor="genderFemale" className="gender-label">여</label>
+                        <input type="radio" name="gender" id="genderFemale" value="여" onChange={handleGenderChange} checked={gender === "여"} />
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="phoneNum">전화번호</label>
+                    <select className="tel-select">
+                        <option value="SKT">SKT</option>
+                        <option value="KT">KT</option>
+                        <option value="LG">LG</option>
+                    </select>
+                    <input type="text" name="phoneNum" id="phoneNum" className="form-control" placeholder="010-1234-5678" />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="email">이메일</label>
+                    <input type="text" name="email" id="email" className="form-control" placeholder="이메일을 입력해 주세요" />
+                </div>
+                <div className="form-group">
+                    <label>주소</label>
+                    <input name='postalCode' value={postalCode} readOnly placeholder="우편번호" className="form-control" />
+                    <button className="search-button" onClick={toggle}>주소 검색</button>
+                    <br />
+                    <input name='address1' value={roadAddress} readOnly placeholder="도로명 주소" className="form-control" />
+                    <br />
+                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}
+                        onRequestClose={() => setIsOpen(false)}>
+                        <DaumPostcode onComplete={completeHandler} height="100%" />
+                    </Modal>
+                    <input type="text" name='address2' onChange={changeHandler} value={detailAddress} placeholder="상세주소" className="form-control" />
+                    <br />
+                </div>
+
+                <div className="form-group">
+                    <button onClick={clickHandler} name="signup" className="btn-submit" >회원 가입 완료</button>
+                </div>
+            </Form>
         </div>
     );
 }
