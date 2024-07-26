@@ -1,0 +1,153 @@
+* {
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+
+.signup-container {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px #0000001a;
+    width: 390px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    margin: 0 auto;
+}
+
+.signup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.signup-header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.signup-header .close-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.signup-header .close-button img {
+    width: 24px;
+}
+
+.signUpForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.signup-input[type="text"][type="text"],
+.signup-input[type="password"],
+.signup-input[type="date"],
+.signup-input[type="tel"],
+.signup-input[type="email"],
+.signup-input[type="number"] {
+    width: calc(100% - 30px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type="radio"] {
+    margin: 0 5px;
+}
+
+.gender-options {
+    display: flex;
+    align-items: center;
+}
+
+.gender-label {
+    margin-right: 10px;
+}
+
+.tel-select {
+    width: 100px;
+    margin-right: 10px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 10px;
+    background-color: #f0c040;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #e0a030;
+}
+
+.check-button,
+.search-button {
+    background-color: #f0c040;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.check-button:hover,
+.search-button:hover {
+    background-color: #e0a030;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+}
