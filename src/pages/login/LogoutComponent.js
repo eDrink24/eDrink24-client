@@ -9,6 +9,4 @@ export function action() {
 
     localStorage.removeItem('jwtAuthToken');
     localStorage.removeItem('userid');
-
-    return redirect('/eDrink24');
 }

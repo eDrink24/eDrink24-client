@@ -1,0 +1,175 @@
+* {
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+
+.mypage-container {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px #0000001a;
+    max-width: 390px;
+    max-height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    margin: 0 auto;
+}
+
+.mypage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.mypage-header h1 {
+    font-size:20px;
+    font-weight: 500;
+}
+
+.back-button, .settings-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.settings-button img {
+    width: 24px;
+    height: 24px;
+}
+
+/* 로그인X / 로그인O */
+.login-signup-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height:50px;
+    margin-bottom: 20px;
+
+}
+
+.prompt-text {
+    display: flex;
+    flex-direction: column;
+    padding: auto;
+}
+
+.prompt-text p {
+    margin: 0;
+    font-size: 12px;
+    color:#687787;
+}
+
+.prompt-text p strong {
+    font-size: 18px;
+    color: #333;
+}
+
+.prompt-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.prompt-arrow img {
+    width: 8px;
+    height: 16px;
+}
+
+
+
+.icons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.icon-item {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon-item img {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 10px;
+}
+
+.icon-item span {
+    font-size: 14px;
+    color: #687787;
+    font-weight: 500;
+}
+
+.sections {
+    width: 100%;
+    margin-left: 10px;
+}
+
+.section {
+    margin-bottom: 20px;
+    margin-top:10px;
+}
+
+.section h3 {
+    margin-top:20px;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.menu1 {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu2 {
+    list-style: none;
+    padding: 0;
+    margin-top:30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.icon-item2 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.icon-item2 img {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-item2 span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #687787;
+}
+
+hr {
+    width: 100%;
+    border: none;
+    border-top: 2px solid #ddd;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
