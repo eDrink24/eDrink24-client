@@ -195,7 +195,7 @@ function SignupComponent() {
                     <label htmlFor="loginId">아이디
                         <span className="requiredCheck"> *</span>
                     </label>
-                    <input type="text" name="loginId" id="loginId" className="form-control"
+                    <input type="text" name="loginId" id="loginId" className="form-control-loginId"
                         placeholder="아이디를 입력해 주세요" onChange={handleIdChange} />
                     <button className={`check-button ${isIdChecked ? "check-complete" : ""}`} onClick={!isIdChecked ? checkId : (e) => e.preventDefault()}>
                         {isIdChecked ? "체크 완료" : "중복 체크"}
@@ -225,7 +225,7 @@ function SignupComponent() {
                         <span className="requiredCheck"> *</span>
                     </label>
                     <div className="name-genderGroup">
-                        <input type="text" name="userName" id="userName" className="form-control" placeholder="이름을 입력해 주세요" />
+                        <input type="text" name="userName" id="userName" className="form-control-userName" placeholder="이름을 입력해 주세요" />
                         <div className="gender-options">
                             <label htmlFor="genderMale" className="gender-label">
                                 <input type="radio" name="gender" id="genderMale" value="남" onChange={handleGenderChange} checked={gender === "남"} />

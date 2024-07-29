@@ -37,7 +37,9 @@ function MypageComponent() {
         }
     }
 
-    console.log(customerData);
+    const navigateUpdateCustomer = () => {
+        navigate("/eDrink24/mypage/updateCustomer", { state: { customerData } })
+    }
 
     return (
         <div className="mypage-wrapper">
@@ -54,7 +56,7 @@ function MypageComponent() {
 
                 {/* 로그인 상태 따라 변동되는 정보창 */}
                 {isLoggedIn && customerData ? (
-                    <div className="user-info-prompt" onClick={() => navigate("/eDrink24/mypage/updateCustomer")} >
+                    <div className="user-info-prompt" onClick={() => { navigateUpdateCustomer() }} >
                         <div className="info-text">
                             <p><strong>{customerData.userName}님, 환영합니다!</strong></p>
                             <p className="info-role">{customerData.role}</p>
@@ -119,11 +121,25 @@ function MypageComponent() {
                 <hr />
                 <div className="sections">
                     <div className="section">
+                        <h3>내 정보 관리</h3>
                         <div className="menu2">
-                            <div className="icon-item2" onClick={isLoggedIn ? logout : undefined}>
-                                <img src="assets/mypage/로그아웃.png" alt="로그아웃" />
-                                <span>로그아웃</span>
-                            </div>
+                            {isLoggedIn && customerData ?
+                                <>
+                                    <div className="icon-item2" onClick={() => { navigateUpdateCustomer() }}>
+                                        <img src="assets/common/setting.png" alt="회원정보수정" />
+                                        <span>회원정보 수정</span>
+                                    </div>
+                                    <div className="icon-item2" onClick={isLoggedIn ? logout : undefined}>
+                                        <img src="assets/mypage/로그아웃.png" alt="로그아웃" />
+                                        <span>로그아웃</span>
+                                    </div>
+                                </>
+                                :
+                                <div className="icon-item2" onClick={() => navigate("/eDrink24/login")}>
+                                    <img src="assets/mypage/로그아웃.png" alt="로그아웃" />
+                                    <span>로그인</span>
+                                </div>
+                            }
                             <div className="icon-item2">
                                 <img src="assets/mypage/경고.png" alt="계정 삭제" />
                                 <span>계정 삭제</span>

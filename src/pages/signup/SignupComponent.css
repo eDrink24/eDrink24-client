@@ -64,7 +64,7 @@ label {
 }
 
 
-.form-control#loginId {
+.form-control-loginId {
     height: 45px;
     width: 300px;
     padding: 10px;
@@ -74,7 +74,7 @@ label {
     box-sizing: border-box;
 }
 
-.form-control#userName {
+.form-control-userName {
     height: 45px;
     padding: 10px;
     margin-bottom: 10px;
