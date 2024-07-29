@@ -2,11 +2,16 @@
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
 
+/* 나중에 footer 들어가면 조절해야함 */
+.mypage-wrapper {
+    max-height: 900px;
+}
+
 .mypage-container {
     background-color: white;
     padding: 20px;
-    box-shadow: 0 0 10px #0000001a;
     max-width: 390px;
+    min-height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -169,7 +174,7 @@
 }
 
 .section h3 {
-    margin-top:20px;
+    margin-top:10px;
     margin-bottom: 30px;
     font-size: 20px;
     font-weight: 500;
@@ -211,8 +216,6 @@
     color: #687787;
     margin-bottom: 3px;
 }
-
-
 
 hr {
     width: 100%;

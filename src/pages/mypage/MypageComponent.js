@@ -54,7 +54,7 @@ function MypageComponent() {
 
                 {/* 로그인 상태 따라 변동되는 정보창 */}
                 {isLoggedIn && customerData ? (
-                    <div className="user-info-prompt" onClick={() => navigate("/eDrink24/mypage/customerUpdate")} >
+                    <div className="user-info-prompt" onClick={() => navigate("/eDrink24/mypage/updateCustomer")} >
                         <div className="info-text">
                             <p><strong>{customerData.userName}님, 환영합니다!</strong></p>
                             <p className="info-role">{customerData.role}</p>
