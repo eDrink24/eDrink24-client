@@ -1,12 +1,6 @@
-import { redirect } from 'react-router-dom';
-
-export function LogoutComponent() {
-    return null;
-}
-
-export function action() {
-    console.log("localStorage:", localStorage);
-
+export function logout() {
     localStorage.removeItem('jwtAuthToken');
     localStorage.removeItem('userid');
+
+    window.location.reload();;
 }

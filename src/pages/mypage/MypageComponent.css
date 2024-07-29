@@ -7,7 +7,6 @@
     padding: 20px;
     box-shadow: 0 0 10px #0000001a;
     max-width: 390px;
-    max-height: 800px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -42,6 +41,20 @@
 
 /* 로그인X / 로그인O */
 .login-signup-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height:50px;
+    margin-bottom: 20px;
+    cursor: pointer;
+
+}
+
+.user-info-prompt {
     display: flex;
     align-items: center;
     justify-content: space-between;

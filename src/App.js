@@ -9,7 +9,6 @@ import RootLayout from './pages/rootLayout/root';
 
 import { tokenLoader } from './util/auth';
 import ProtectedRoute from './components/ProtectedRouter';
-import { LogoutComponent, action as logoutAction } from "./pages/login/LogoutComponent";
 
 
 const router = createBrowserRouter([

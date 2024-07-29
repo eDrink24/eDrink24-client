@@ -1,10 +1,44 @@
-import React from 'react';
 import './MypageComponent.css';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../login/LogoutComponent';
 
 function MypageComponent() {
-
     const navigate = useNavigate();
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [customerData, setCustomerData] = useState(null);
+
+    useEffect(() => {
+        // 로그인 상태 확인
+        const token = localStorage.getItem("jwtAuthToken");
+        const loginId = localStorage.getItem("loginId");
+
+        if (token && loginId) {
+            setIsLoggedIn(true);
+            fetchCustomerData(token, loginId);
+        }
+    }, []);
+
+    const fetchCustomerData = async (token, loginId) => {
+        const response = await fetch(`http://localhost:8090/eDrink24/selectCustomerMyPage/${loginId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response) {
+            const data = await response.json();
+            setCustomerData(data);
+        } else {
+            console.error('error:', response.statusText);
+        }
+    }
+
+    console.log(customerData);
+
 
     return (
         <div className="mypage-wrapper">
@@ -15,15 +49,28 @@ function MypageComponent() {
                     <button className="settings-button"><img src="assets/mypage/settings.png" alt="설정" /></button>
                 </div>
 
-                <div class="login-signup-prompt">
-                    <div class="prompt-text">
-                        <p><strong>로그인, 회원가입 하러가기!</strong></p>
-                        <p>3초면돼요, 더 편리한 서비스를 이용하세요</p>
+                {/* 로그인 상태 따라 변동되는 정보창 */}
+                {isLoggedIn ? (
+                    <div className="user-info-prompt" onClick={() => navigate("/eDrink24/mypage")} >
+                        <div className="info-text">
+                            <p><strong>환영합니다! xxx회원님</strong></p>
+                        </div>
+                        <div className="info-arrow">
+                            <img src="assets/common/right-arrow.png" alt="arrow icon" />
+                        </div>
                     </div>
-                    <div class="prompt-arrow">
-                        <img src="assets/common/right-arrow.png" alt="arrow icon" />
+                ) : (
+                    <div className="login-signup-prompt" onClick={() => navigate("/eDrink24/login")} >
+                        <div className="prompt-text">
+                            <p><strong>로그인, 회원가입 하러가기!</strong></p>
+                            <p>3초면돼요, 더 편리한 서비스를 이용하세요</p>
+                        </div>
+                        <div className="prompt-arrow">
+                            <img src="assets/common/right-arrow.png" alt="arrow icon" />
+                        </div>
                     </div>
-                </div>
+                )}
+
                 <div className="icons">
                     <div className="icon-item">
                         <img src="assets/mypage/heart.png" alt="찜" />
@@ -68,7 +115,7 @@ function MypageComponent() {
                 <div className="sections">
                     <div className="section">
                         <div className="menu2">
-                            <div className="icon-item2">
+                            <div className="icon-item2" onClick={isLoggedIn ? logout : undefined}>
                                 <img src="assets/mypage/로그아웃.png" alt="로그아웃" />
                                 <span>로그아웃</span>
                             </div>
@@ -80,7 +127,7 @@ function MypageComponent() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

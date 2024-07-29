@@ -20,10 +20,6 @@ function LoginComponent() {
         setPasswordVisible(!passwordVisible);
     };
 
-    const handleRedirectHome = () => {
-        window.location.href = "/eDrink24";
-    };
-
     const handleDirectNormalSignup = () => {
         navigate("/eDrink24/signup");
     }
@@ -38,7 +34,7 @@ function LoginComponent() {
             setTimeout(() => {
                 setIsModalOpen(false);
                 navigate('/eDrink24');
-            }, 2000); // 2초 후에 모달 닫고 리다이렉트
+            }, 3000); // 3초 후에 모달 닫고 리다이렉트
         }
     }, [data, navigate]);
 
@@ -52,18 +48,20 @@ function LoginComponent() {
                     className="modal"
                     overlayClassName="overlay"
                 >
-                    <button className="modal-close-button" onClick={() => setIsModalOpen(false)}>X</button>
+                    <button className="modal-close-button" onClick={() => setIsModalOpen(false)}>
+                        <img src="assets/common/x-button.png" className='XButton' alt='closeXButton' />
+                    </button>
                     <h2>로그인에 성공하였습니다!</h2>
                 </Modal>
                 <div className='login-header'>
                     <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
-                    <button className="close-button" onClick={handleRedirectHome}>
+                    <button className="close-button" onClick={() => { navigate(-1) }}>
                         <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
                     </button>
                 </div>
                 <div className='greet'>
                     <h1>회원님,</h1>
-                    <h1>환영합니다 : )</h1>
+                    <h1>환영합니다 : {')'}</h1>
                 </div>
                 <Form method="post">
                     <input
@@ -93,8 +91,8 @@ function LoginComponent() {
                     <button type="submit" className="login-button">로그인</button>
                 </Form>
                 <div className="options">
-                    <a href="#">아이디 찾기 ></a>
-                    <a href="#">비밀번호 찾기 ></a>
+                    <a href="#">아이디 찾기 {'>'}</a>
+                    <a href="#">비밀번호 찾기 {'>'}</a>
                 </div>
                 <div className="signup-options">
                     <p>혹시, 계정이 없으신가요?</p>
@@ -146,7 +144,7 @@ export async function action({ request }) {
     const token = resData.token;
 
     localStorage.setItem('jwtAuthToken', token);
-    localStorage.setItem('userid', authData.loginId);
+    localStorage.setItem('loginId', authData.loginId);
 
     return { success: true };
 }
