@@ -25,6 +25,10 @@
 .mypage-header h1 {
     font-size:20px;
     font-weight: 500;
+    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .back-button, .settings-button {
@@ -37,6 +41,7 @@
 .settings-button img {
     width: 24px;
     height: 24px;
+    margin-left:10px;
 }
 
 /* 로그인X / 로그인O */
@@ -84,6 +89,7 @@
     color: #333;
 }
 
+
 .prompt-arrow {
     display: flex;
     align-items: center;
@@ -96,7 +102,26 @@
     height: 16px;
 }
 
+.info-text {
+    display: flex;
+    flex-direction: column;
+    padding: auto;
+}
 
+.info-text p {
+    margin: 0;
+    font-size: 12px;
+    color:#687787;
+}
+
+.info-text p strong {
+    font-size: 18px;
+    color: #333;
+}
+.info-text .info-role {
+    font-size: 14px;
+    color:#FFB71B;
+}
 
 .icons {
     display: flex;
@@ -120,9 +145,17 @@
 }
 
 .icon-item span {
-    font-size: 14px;
+    align-items: center;
+    font-size: 10px;
     color: #687787;
     font-weight: 500;
+}
+
+.icon-item span.additionalInfo {
+    font-size: 10px;
+    font-weight: 500;
+    color: #FFB71B;
+    margin-bottom: 3px;
 }
 
 .sections {
@@ -168,15 +201,18 @@
 }
 
 .icon-item2 img {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
 }
 
 .icon-item2 span {
     font-size: 14px;
     font-weight: 500;
     color: #687787;
+    margin-bottom: 3px;
 }
+
+
 
 hr {
     width: 100%;

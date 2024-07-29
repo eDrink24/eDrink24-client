@@ -33,12 +33,11 @@ function MypageComponent() {
             const data = await response.json();
             setCustomerData(data);
         } else {
-            console.error('error:', response.statusText);
+            console.error('error:', response.errorStatus());
         }
     }
 
     console.log(customerData);
-
 
     return (
         <div className="mypage-wrapper">
@@ -46,14 +45,19 @@ function MypageComponent() {
                 <div className='mypage-header'>
                     <button className="back-button" onClick={() => { navigate(-1) }}>{'<'}</button>
                     <h1>마이페이지</h1>
-                    <button className="settings-button"><img src="assets/mypage/settings.png" alt="설정" /></button>
+                    <div>
+                        <button className="settings-button"><img src="assets/common/alert.png" alt="알람" /></button>
+                        <button className="settings-button"><img src="assets/common/setting.png" alt="설정" /></button>
+
+                    </div>
                 </div>
 
                 {/* 로그인 상태 따라 변동되는 정보창 */}
-                {isLoggedIn ? (
-                    <div className="user-info-prompt" onClick={() => navigate("/eDrink24/mypage")} >
+                {isLoggedIn && customerData ? (
+                    <div className="user-info-prompt" onClick={() => navigate("/eDrink24/mypage/customerUpdate")} >
                         <div className="info-text">
-                            <p><strong>환영합니다! xxx회원님</strong></p>
+                            <p><strong>{customerData.userName}님, 환영합니다!</strong></p>
+                            <p className="info-role">{customerData.role}</p>
                         </div>
                         <div className="info-arrow">
                             <img src="assets/common/right-arrow.png" alt="arrow icon" />
@@ -71,22 +75,23 @@ function MypageComponent() {
                     </div>
                 )}
 
+
                 <div className="icons">
                     <div className="icon-item">
-                        <img src="assets/mypage/heart.png" alt="찜" />
+                        <img src="assets/mypage/point.png" alt="포인트" />
+                        <span>포인트 <span className="additionalInfo">{isLoggedIn && customerData ? customerData.totalPoint : undefined}</span></span>
+                    </div>
+                    <div className="icon-item">
+                        <img src="assets/mypage/coupon.png" alt="쿠폰" />
+                        <span>쿠폰</span>
+                    </div>
+                    <div className="icon-item">
+                        <img src="assets/mypage/dibs.png" alt="찜" />
                         <span>찜</span>
                     </div>
                     <div className="icon-item">
                         <img src="assets/mypage/basket.png" alt="장바구니" />
                         <span>장바구니</span>
-                    </div>
-                    <div className="icon-item">
-                        <img src="assets/mypage/review.png" alt="나의 후기" />
-                        <span>나의 후기</span>
-                    </div>
-                    <div className="icon-item">
-                        <img src="assets/mypage/coupon.png" alt="쿠폰" />
-                        <span>쿠폰</span>
                     </div>
                 </div>
 

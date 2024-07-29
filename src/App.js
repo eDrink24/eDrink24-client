@@ -4,6 +4,7 @@ import LoginComponent, { action as loginAction } from './pages/login/LoginCompon
 import HomeComponent from './pages/home/HomeComponent';
 import SignupComponent, { action as signUpAction } from './pages/signup/SignupComponent';
 import MypageComponent from './pages/mypage/MypageComponent';
+import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
 
 import RootLayout from './pages/rootLayout/root';
 
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "*", element: <Navigate to="/eDrink24" /> },
+          { path: "/eDrink24/mypage/updateCustomer", element: <UpdateCustomerComponent /> }
         ]
       }
     ]
