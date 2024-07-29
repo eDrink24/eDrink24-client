@@ -1,0 +1,116 @@
+* {
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+
+.mypage-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 890px;
+    align-items: center;
+}
+
+.mypage-container {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px #0000001a;
+    width: 390px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
+    margin: 0 auto;
+    flex-grow: 1; /* Remaining space to be taken by container */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.back-button, .settings-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.greet {
+    margin-top: 20px;
+    text-align: left;
+    width: 100%;
+}
+
+.username {
+    color: orange;
+}
+
+.user-info-placeholder {
+    width: 100%;
+    height: 100px;
+    background-color: #f0f0f0;
+    margin: 20px 0;
+}
+
+.icons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.icon-item {
+    text-align: center;
+}
+
+.sections {
+    width: 100%;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.section h3 {
+    margin-bottom: 10px;
+}
+
+.section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.section li {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+/* 하단창 */
+.footer-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: 390px;
+    background-color: white;
+    border-top: 1px solid #ccc;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.footer-container nav ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.footer-container nav li {
+    text-align: center;
+}
