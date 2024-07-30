@@ -13,7 +13,10 @@ function LoginComponent() {
     const [pw, setPw] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [alertOpen, setAlertOpen] = useState(false); // 알림창 상태
+    const [alertMessage, setAlertMessage] = useState(""); // 알림창 메시지
+    const [navigateOnClose, setNavigateOnClose] = useState(false); // 모달 닫힐 때 navigate
 
     // 비밀번호 표시/숨기기 함수
     const togglePasswordVisibility = () => {
@@ -24,34 +27,63 @@ function LoginComponent() {
         navigate("/eDrink24/signup");
     }
 
+    // 알림창 열기
+    const openAlert = (message, navigateOnClose = false) => {
+        setAlertMessage(message);
+        setAlertOpen(true);
+        setNavigateOnClose(navigateOnClose);
+    }
+
+    // 알림창 닫기
+    const closeAlert = () => {
+        setAlertOpen(false);
+        if (navigateOnClose) {
+            navigate("/eDrink24");
+        }
+    }
+
     useEffect(() => {
         if (data?.error) {
-            setErrorMessage(data.error);
+            openAlert(data.error);
             setLoginId("");
             setPw("");
         } else if (data?.success) {
-            setIsModalOpen(true);
-            setTimeout(() => {
-                setIsModalOpen(false);
-                navigate('/eDrink24');
-            }, 3000); // 3초 후에 모달 닫고 리다이렉트
+            openAlert("로그인에 성공하였습니다!", true);
         }
-    }, [data, navigate]);
+    }, [data]);
+
+    // 알림창 스타일
+    const alertStyles = {
+        overlay: {
+            backgroundColor: "rgba(0,0,0,0.5)",
+        },
+        content: {
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            margin: "auto",
+            width: "300px",
+            height: "180px",
+            padding: "20px",
+            borderRadius: "10px",
+            textAlign: "center",
+            backgroundColor: "#fff",
+            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
+        },
+    };
 
     return (
-        <div className="login-body"> {/* 기존의 body 스타일을 여기로 옮김 */}
+        <div className="login-body">
             <div className="login-container">
                 <Modal
-                    isOpen={isModalOpen}
-                    onRequestClose={() => setIsModalOpen(false)}
-                    contentLabel="로그인 성공"
-                    className="modal"
-                    overlayClassName="overlay"
+                    isOpen={alertOpen}
+                    onRequestClose={closeAlert}
+                    style={alertStyles}
+                    contentLabel="알림"
                 >
-                    <button className="modal-close-button" onClick={() => setIsModalOpen(false)}>
-                        <img src="assets/common/x-button.png" className='XButton' alt='closeXButton' />
-                    </button>
-                    <h2>로그인에 성공하였습니다!</h2>
+                    <h2>알림</h2>
+                    <p>{alertMessage}</p>
+                    <button onClick={closeAlert} className="btn-alert-close">닫기</button>
                 </Modal>
                 <div className='login-header'>
                     <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
