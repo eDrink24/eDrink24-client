@@ -9,7 +9,7 @@ function HomeComponent() {
     }
 
     const handleDirectB2 = () => {
-        navigate("/eDrink24/signup")
+        navigate("/eDrink24/allproduct")
     }
 
     return (
@@ -28,7 +28,7 @@ function HomeComponent() {
                     <img src="assets/common/menu.png" className="menuButton" alt="Menu-Button" />
                     <h1>카테고리</h1>
                 </button>
-                <button type="button" className="b2">
+                <button type="button" className="b2" onClick={handleDirectB2}>
                     <img src="assets/common/search.png" className="searchButton" alt="search-Button" />
                     <h1>전체상품</h1>
                </button>
