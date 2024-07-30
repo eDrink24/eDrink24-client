@@ -9,6 +9,8 @@ function MypageComponent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [customerData, setCustomerData] = useState(null);
 
+    console.log(customerData)
+
     useEffect(() => {
         // 로그인 상태 확인
         const token = localStorage.getItem("jwtAuthToken");
