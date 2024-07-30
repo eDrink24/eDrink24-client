@@ -65,6 +65,7 @@ label {
 
 
 .form-control-loginId {
+
     height: 45px;
     width: 300px;
     padding: 10px;
@@ -80,7 +81,6 @@ label {
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box;
     flex: 1;
 }
 
@@ -120,8 +120,6 @@ label {
     margin-right: 10px;
 }
 
-.gender-label input[type="radio"] {
-    display: none;
 }
 
 .gender-label input[type="radio"] + span {

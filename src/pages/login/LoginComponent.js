@@ -1,4 +1,4 @@
-import { redirect, useActionData, Form, useNavigate } from 'react-router-dom';
+import { useActionData, Form, useNavigate } from 'react-router-dom';
 import "./LoginComponent.css";
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
