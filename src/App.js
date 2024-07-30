@@ -3,10 +3,13 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
 import LoginComponent, { action as loginAction } from './pages/login/LoginComponent';
 import HomeComponent from './pages/home/HomeComponent';
 import SignupComponent, { action as signUpAction } from './pages/signup/SignupComponent';
+import MypageComponent from './pages/mypage/MypageComponent';
+import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
+
 import RootLayout from './pages/rootLayout/root';
+
 import { tokenLoader } from './util/auth';
 import ProtectedRoute from './components/ProtectedRouter';
-import { LogoutComponent, action as logoutAction } from "./pages/login/LogoutComponent";
 
 
 const router = createBrowserRouter([
@@ -24,10 +27,11 @@ const router = createBrowserRouter([
         path: '/eDrink24/signup', element: <SignupComponent />,
         action: signUpAction
       },
+      { path: "/eDrink24/mypage", element: <MypageComponent /> },
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "*", element: <Navigate to="/eDrink24" /> },
+          { path: "/eDrink24/mypage/updateCustomer", element: <UpdateCustomerComponent /> }
         ]
       }
     ]
