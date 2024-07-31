@@ -1,4 +1,4 @@
-import { Form, redirect, useActionData } from 'react-router-dom';
+import { Form, useActionData, useNavigate } from 'react-router-dom';
 import DaumPostcode from 'react-daum-postcode';
 import { useEffect, useState } from 'react';
 import Modal from "react-modal";
@@ -6,6 +6,7 @@ import "./SignupComponent.css";
 
 function SignupComponent() {
     const data = useActionData();
+    const navigate = useNavigate();
 
     const [postalCode, setPostalCode] = useState("");
     const [roadAddress, setRoadAddress] = useState("");
@@ -16,6 +17,7 @@ function SignupComponent() {
 
     const [alertOpen, setAlertOpen] = useState(false); // 알림창 상태
     const [alertMessage, setAlertMessage] = useState(""); // 알림창 메시지
+    const [navigateOnClose, setNavigateOnClose] = useState(false); // 모달 닫힐 때 navigate
 
     const [isIdChecked, setIsIdChecked] = useState(false);
 
@@ -36,7 +38,7 @@ function SignupComponent() {
             margin: "auto",
             width: "400px",
             padding: "0",
-            height: "400px",
+            height: "300px",
             overflow: "hidden",
             textAlign: "center",
         },
@@ -80,15 +82,30 @@ function SignupComponent() {
     }
 
     // 알림창 열기
-    const openAlert = (message) => {
+    const openAlert = (message, navigateOnClose = false) => {
         setAlertMessage(message);
         setAlertOpen(true);
+        setNavigateOnClose(navigateOnClose);
     }
 
     // 알림창 닫기
     const closeAlert = () => {
         setAlertOpen(false);
     }
+
+    // 알림창 닫힐 때 navigate 호출
+    useEffect(() => {
+        if (!alertOpen && navigateOnClose) {
+            navigate("/eDrink24/login");
+        }
+    }, [alertOpen, navigateOnClose, navigate]);
+
+    // 회원가입 성공시 알람 / 2번째 파라미터값에 true를 줘서
+    useEffect(() => {
+        if (data) {
+            openAlert(data.message, data.success);
+        }
+    }, [data]);
 
     // 비밀번호 일치 여부 확인
     useEffect(() => {
@@ -142,9 +159,13 @@ function SignupComponent() {
         setIsIdChecked(false);
     }
 
+    const handleGenderChange = (e) => {
+        setGender(e.target.value);
+    };
+
     // 회원가입 완료 핸들러
     const clickHandler = (e) => {
-        const requiredFields = [
+        const dataForm = [
             { name: 'loginId', value: document.getElementById('loginId').value },
             { name: 'pw', value: document.getElementById('pw').value },
             { name: 'pwConfirm', value: document.getElementById('pwConfirm').value },
@@ -158,7 +179,7 @@ function SignupComponent() {
         ];
 
         let allValid = true;
-        requiredFields.forEach(field => {
+        dataForm.forEach(field => {
             if (field.value === '') {
                 allValid = false;
             }
@@ -176,10 +197,6 @@ function SignupComponent() {
         }
     }
 
-    const handleGenderChange = (e) => {
-        setGender(e.target.value);
-    };
-
     return (
         <div className="signup-container">
             <div className='signup-header'>
@@ -195,7 +212,7 @@ function SignupComponent() {
                     <label htmlFor="loginId">아이디
                         <span className="requiredCheck"> *</span>
                     </label>
-                    <input type="text" name="loginId" id="loginId" className="form-control"
+                    <input type="text" name="loginId" id="loginId" className="form-control-loginId"
                         placeholder="아이디를 입력해 주세요" onChange={handleIdChange} />
                     <button className={`check-button ${isIdChecked ? "check-complete" : ""}`} onClick={!isIdChecked ? checkId : (e) => e.preventDefault()}>
                         {isIdChecked ? "체크 완료" : "중복 체크"}
@@ -225,7 +242,7 @@ function SignupComponent() {
                         <span className="requiredCheck"> *</span>
                     </label>
                     <div className="name-genderGroup">
-                        <input type="text" name="userName" id="userName" className="form-control" placeholder="이름을 입력해 주세요" />
+                        <input type="text" name="userName" id="userName" className="form-control-userName" placeholder="이름을 입력해 주세요" />
                         <div className="gender-options">
                             <label htmlFor="genderMale" className="gender-label">
                                 <input type="radio" name="gender" id="genderMale" value="남" onChange={handleGenderChange} checked={gender === "남"} />
@@ -255,7 +272,7 @@ function SignupComponent() {
                             <option value="KT">KT</option>
                             <option value="LG">LG</option>
                         </select>
-                        <input type="text" name="phoneNum" id="phoneNum" className="form-control" placeholder="010-1234-5678" />
+                        <input type="text" name="phoneNum" id="phoneNum" className="form-control" placeholder="'-'을 제외하고 작성해주세요'" />
                     </div>
                 </div>
 
@@ -328,7 +345,18 @@ export async function action({ request }) {
 
     console.log("회원가입 요청결과: ", response);
 
-    return redirect("/eDrink24/login");
+    if (response.ok) {
+        return {
+            success: true,
+            message: "회원가입이 완료되었습니다!"
+        };
+    } else {
+        const errorText = await response.text();
+        return {
+            success: false,
+            message: errorText || "회원가입 중 오류가 발생했습니다."
+        };
+    }
 }
 
 export default SignupComponent;

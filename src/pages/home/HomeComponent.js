@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import "./HomeComponent.css";
 
 function HomeComponent() {
+
     const navigate = useNavigate();
 
     const handleDirectB1 = () => {
@@ -81,6 +82,7 @@ function HomeComponent() {
 
             </div>
         </div>
+
     );
 }
 
