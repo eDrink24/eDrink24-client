@@ -10,6 +10,7 @@ import RootLayout from './pages/rootLayout/root';
 
 import { tokenLoader } from './util/auth';
 import ProtectedRoute from './components/ProtectedRouter';
+import ListToBasketComponent,{loader as basketLoader}  from './pages/basket/ListToBasketComponent';
 
 
 const router = createBrowserRouter([
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
         action: signUpAction
       },
       { path: "/eDrink24/mypage", element: <MypageComponent /> },
+      {
+        path: '/eDrink24/basket', element: <ListToBasketComponent />,
+        loader: basketLoader
+      },
       {
         element: <ProtectedRoute />,
         children: [
