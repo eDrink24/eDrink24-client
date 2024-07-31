@@ -3,13 +3,149 @@
 }
 
 .category-container {
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 390px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     text-align: left;
-    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/**************************************************************************/
+
+.category-header {
+    height: 102px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.category-navigation-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 390px;
+    height: 58px;
+    background-color: #ffffff;
+    border: none;
+    padding: 0px;
+    position: fixed;
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+.back-icon-button,
+.search-icon-button {
+    background: none;
+    border: none;
+    width: 58px;
+    height: 58px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-icon-button img,
+.search-icon-button img {
+    width: 24px; /* 아이콘 버튼의 너비 */
+    height: 24px; /* 아이콘 버튼의 높이 */
+    margin: 0;
+}
+
+.elogo-box {
+    width: 120px;
+    height: 58px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.elogo-box img {
+    width: 98px;
+    height: 40px;
+    margin: 0;
+}
+
+/**************************************************************************/
+
+.category-body {
+    width: 390px;
+    height: 651px;
+}
+.container {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #f4f5f7;
+    padding: 10px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    padding: 10px;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .sidebar li.active {
+    background-color: #e0e0e0;
+  }
+  
+  .main-content {
+    margin-left: 20px;
+    padding: 10px;
+  }
+  
+  .main-content ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .main-content li {
+    padding: 5px 0;
+  }
+
+  /**************************************************************************/
+
+  .category-footer {
+    height: 90px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .category-icon-button {
+    height: 56px;
+    margin: 0;
+    display: flex;
+    justify-content: space-around
+  }
+
+.homeIcon, .searchIcon, .listIcon, .myIcon {
+    width: 88px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.category-icon-button img {
+    width: 24px;
+    height: 24px;
+}
+
+.category-icon-button h1 {
+    font-size: 12px;
+    font-weight:500;
+    text-align: center;
 }
