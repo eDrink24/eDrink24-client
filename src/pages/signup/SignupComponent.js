@@ -272,7 +272,7 @@ function SignupComponent() {
                             <option value="KT">KT</option>
                             <option value="LG">LG</option>
                         </select>
-                        <input type="text" name="phoneNum" id="phoneNum" className="form-control" placeholder="010-1234-5678" />
+                        <input type="text" name="phoneNum" id="phoneNum" className="form-control" placeholder="'-'을 제외하고 작성해주세요'" />
                     </div>
                 </div>
 
