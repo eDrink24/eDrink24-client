@@ -6,7 +6,7 @@ function HomeComponent() {
     const navigate = useNavigate();
 
     const handleDirectB1 = () => {
-        navigate("/eDrink24/login")
+        navigate("/eDrink24/category")
     }
 
     const handleDirectB2 = () => {
@@ -16,40 +16,40 @@ function HomeComponent() {
     return (
         <div className="home-body">
             <div className="home-container">
-            <div className="home-header">
-                <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
-                <button className="bell-button">
-                    <img src="assets/common/bell-button.png" className="bellButton" alt="newBellButton" />
-                </button>
-            </div>
-            <div className="my-place-container"></div>
-            <div className="banner-container"></div>
-            <div className="category-button-container">
-                <button type="button" className="b1" onClick={handleDirectB1}>
-                    <img src="assets/common/menu.png" className="menuButton" alt="Menu-Button" />
-                    <h1>카테고리</h1>
-                </button>
-                <button type="button" className="b2" onClick={handleDirectB2}>
-                    <img src="assets/common/search.png" className="searchButton" alt="search-Button" />
-                    <h1>전체상품</h1>
-               </button>
-                <button type="button" className="b3">
-                    <img src="assets/common/gift.png" className="giftButton" alt="gift-Button" />
-                    <h1>이벤트</h1>
-                </button>
-                <button type="button" className="b4">
-                    <img src="assets/common/chatbot.png" className="chatbotButton" alt="chatbot-Button" />
-                    <h1>챗봇</h1>
-                </button>
-            </div>
-            <div className='line'></div>
-            <div className="best-product">
-                <h1>인기상품</h1>
-                <a href="#" className='more-button'>더보기 ></a>
-            </div>
+                <div className="home-header">
+                    <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
+                    <button className="bell-button">
+                        <img src="assets/common/bell-button.png" className="bellButton" alt="newBellButton" />
+                    </button>
+                </div>
+                <div className="my-place-container"></div>
+                <div className="banner-container"></div>
+                <div className="category-button-container">
+                    <button type="button" className="b1" onClick={handleDirectB1}>
+                        <img src="assets/common/menu.png" className="menuButton" alt="Menu-Button" />
+                        <h1>카테고리</h1>
+                    </button>
+                    <button type="button" className="b2" onClick={handleDirectB2}>
+                        <img src="assets/common/search.png" className="searchButton" alt="search-Button" />
+                        <h1>전체상품</h1>
+                    </button>
+                    <button type="button" className="b3">
+                        <img src="assets/common/gift.png" className="giftButton" alt="gift-Button" />
+                        <h1>이벤트</h1>
+                    </button>
+                    <button type="button" className="b4">
+                        <img src="assets/common/chatbot.png" className="chatbotButton" alt="chatbot-Button" />
+                        <h1>챗봇</h1>
+                    </button>
+                </div>
+                <div className='line'></div>
+                <div className="best-product">
+                    <h1>인기상품</h1>
+                    <a href="#" className='more-button'>더보기 ></a>
+                </div>
 
-            <div className="best-container">
-                <div className="ItemCard">
+                <div className="best-container">
+                    <div className="ItemCard">
                         {/* 카드 배경 */}
                         <div className="itemcard-container" />
 
@@ -74,12 +74,9 @@ function HomeComponent() {
                         {/* 평가 및 별 아이콘 */}
                         <div className="Rating">4.8 ( 후기 35 )</div>
                         <div className="Star">★</div>
+                    </div>
+
                 </div>
-
-            </div>
-            
-
-
             </div>
         </div>
 
