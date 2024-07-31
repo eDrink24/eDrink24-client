@@ -1,4 +1,4 @@
-.product-container {
+.allproduct-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -79,6 +79,7 @@
     background-color: #ffffff;
     border: none;
     padding: 0;
+    margin-top: 58px;
 }
 
 .filter-button {
@@ -96,6 +97,37 @@
     color: #fff;
 }
 
+.click-container {
+    display:flex;
+    justify-content: space-between;
+}
+
+.container1,
+.container2 {
+    display: flex;
+    width: 195px;
+    height: 52px;
+    align-items: center;
+}
+
+.container1 {
+    padding-left: 20px;
+}
+
+.container2 {
+    justify-content: flex-end;
+    padding-right: 20px;
+}
+
+.container1 input {
+    width: 24px;
+    height: 24px;
+}
+
+.container1 label {
+    margin: 0;
+    padding-left: 8px;
+}
 
 .product-card {
     width: calc(50% - 20px);

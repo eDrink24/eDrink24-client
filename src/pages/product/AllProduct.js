@@ -39,9 +39,8 @@ const products = [
 
 const AllProduct = () => {
     return (
-        <div className="product-container">
-            <div className="home-header">
-                {/* 상단 네비게이션 바 */}
+        <div className="allproduct-container">
+            <div className="home-header"> {/* 상단 네비게이션 바 */}
                 <div className="navigation-bar">
                     <button className="back-button">
                         <img src="assets/common/backIcon.png" alt="Back" className="nav-bicon" /> {/* 뒤로 가기 아이콘 */}
@@ -53,6 +52,8 @@ const AllProduct = () => {
                         <img src="assets/common/cartIcon.png" alt="Cart" className="nav-cicon" /> {/* 장바구니로 가기 아이콘 */}
                     </button>
                 </div>
+            </div>
+            <div className="allproduct-body">
                 {/* 카테고리 바 */}
                 <div className="filter-bar">
                     <button className="filter-button selected">와인 전체</button>
@@ -61,6 +62,23 @@ const AllProduct = () => {
                     <button className="filter-button">화이트</button>
                     <button className="filter-button">로제</button>
                     <button className="filter-button">국산</button>
+                </div>
+                {/* 오늘픽업 체크박스 / 인기순,신상품,등등 */}
+                <div className="click-container">
+                    <div className="container1">
+                        <input id="today-pickup" type="checkbox"/>
+                        <label for="today-pickup">오늘픽업</label>
+                    </div>
+                    <div className="container2">
+                        <select>
+                            <option value="">신상품순</option>
+                            <option value="">판매량순</option>
+                            <option value="">평점순</option>
+                            <option value="">리뷰순</option>
+                            <option value="">낮은가격순</option>
+                            <option value="">높은가격순</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             

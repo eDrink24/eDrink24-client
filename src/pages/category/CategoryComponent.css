@@ -1,0 +1,15 @@
+* {
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+
+.category-container {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 390px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    margin: 0 auto;
+}
