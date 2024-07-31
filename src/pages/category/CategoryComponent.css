@@ -74,18 +74,20 @@
 
 /**************************************************************************/
 
-.category-body {
+  .category-body {
     width: 390px;
     height: 651px;
-}
-.container {
+  }
+  .sidebar-container {
+    width: 390px;
+    height: 651px;
     display: flex;
+    background-color: #f4f5f7;
   }
   
   .sidebar {
-    width: 200px;
+    width: 161px;
     background-color: #f4f5f7;
-    padding: 10px;
   }
   
   .sidebar ul {
@@ -94,43 +96,71 @@
   }
   
   .sidebar li {
-    padding: 10px;
+    height: 58px;
+    padding-left: 20px;
     color: #333;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
   }
   
   .sidebar li.active {
-    background-color: #e0e0e0;
+    background-color: #ffffff;
   }
   
   .main-content {
-    margin-left: 20px;
-    padding: 10px;
+    width: 256px;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
   }
   
+  .main-content button {
+    width: 48px;
+    height: 48px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .main-content h2 {
+    height: 58px;
+    padding-left: 20px;
+    padding-right: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight:700;
+  }
+
   .main-content ul {
     list-style-type: none;
-    padding: 0;
+    padding-left: 20px;
   }
   
   .main-content li {
     padding: 5px 0;
+    height: 58px;
+    display: flex;
+    align-items: center;
   }
 
-  /**************************************************************************/
+/**************************************************************************/
 
-  .category-footer {
+.category-footer {
     height: 90px;
     padding-left: 20px;
     padding-right: 20px;
-  }
+}
 
-  .category-icon-button {
+.category-icon-button {
     height: 56px;
     margin: 0;
     display: flex;
     justify-content: space-around
-  }
+}
 
 .homeIcon, .searchIcon, .listIcon, .myIcon {
     width: 88px;
