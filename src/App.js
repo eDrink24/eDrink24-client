@@ -5,6 +5,7 @@ import HomeComponent from './pages/home/HomeComponent';
 import SignupComponent, { action as signUpAction } from './pages/signup/SignupComponent';
 import MypageComponent from './pages/mypage/MypageComponent';
 import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
+import ProductDetailComponent from './pages/ProductDetail/ProductDetailComponent';
 
 import RootLayout from './pages/rootLayout/root';
 
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
         path: '/eDrink24/signup', element: <SignupComponent />,
         action: signUpAction
       },
+      { path: '/eDrink24/productdetail', element: <ProductDetailComponent /> },
       { path: "/eDrink24/mypage", element: <MypageComponent /> },
       {
         path: '/eDrink24/basket', element: <ListToBasketComponent />,
