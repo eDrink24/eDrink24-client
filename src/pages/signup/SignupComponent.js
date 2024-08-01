@@ -62,6 +62,9 @@ function SignupComponent() {
             backgroundColor: "#fff",
             boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
         },
+        p: {
+            margin: "10px"
+        }
     };
 
     const completeHandler = (data) => {
@@ -207,7 +210,6 @@ function SignupComponent() {
             </div>
 
             <Form method="post" className="signUpForm">
-                {data && data.message && <p>{data.message}</p>}
                 <div className="form-group">
                     <label htmlFor="loginId">아이디
                         <span className="requiredCheck"> *</span>
@@ -312,8 +314,8 @@ function SignupComponent() {
                 style={alertStyles}
                 contentLabel="Alert"
             >
-                <h2>알림</h2>
-                <p>{alertMessage}</p>
+                <h2 className='alert-h2'>알림</h2>
+                <p className='alert-p'>{alertMessage}</p>
                 <button onClick={closeAlert} className="btn-alert-close">닫기</button>
             </Modal>
         </div>

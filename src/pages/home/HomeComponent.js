@@ -45,7 +45,7 @@ function HomeComponent() {
                 <div className='line'></div>
                 <div className="best-product">
                     <h1>인기상품</h1>
-                    <a href="#" className='more-button'>더보기 ></a>
+                    <a href="#" className='more-button'>더보기 {">"}</a>
                 </div>
 
                 <div className="best-container">
