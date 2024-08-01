@@ -1,3 +1,4 @@
+
 * {
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
@@ -24,7 +25,7 @@
 
 .signup-header h1 {
     font-size: 20px;
-    margin-left:160px;
+    margin-left:140px;
     font-weight: 500;
 }
 
@@ -66,7 +67,7 @@ label {
 
 .form-control-loginId {
     height: 45px;
-    width: 300px;
+    width: 260px;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -230,6 +231,15 @@ label {
     font-weight: bold;
     cursor: pointer;
     margin-top: 20px;
+}
+
+.alert-h2 {
+    margin-top: 5px;
+}
+
+.alert-p { 
+    margin-top:10px;
+
 }
 
 .btn-alert-close:hover {

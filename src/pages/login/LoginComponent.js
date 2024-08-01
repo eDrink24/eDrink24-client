@@ -81,8 +81,8 @@ function LoginComponent() {
                     style={alertStyles}
                     contentLabel="알림"
                 >
-                    <h2>알림</h2>
-                    <p>{alertMessage}</p>
+                    <h2 className='alert-h2'>알림</h2>
+                    <p className='alert-p'>{alertMessage}</p>
                     <button onClick={closeAlert} className="btn-alert-close">닫기</button>
                 </Modal>
                 <div className='login-header'>
