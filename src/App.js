@@ -7,6 +7,7 @@ import AllProduct from './pages/product/AllProduct';
 import SignupComponent, { action as signUpAction } from './pages/signup/SignupComponent';
 import MypageComponent from './pages/mypage/MypageComponent';
 import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
+import OrderComponent from './pages/order/OrderComponent';
 
 import RootLayout from './pages/rootLayout/root';
 
@@ -36,6 +37,9 @@ const router = createBrowserRouter([
       {
         path: '/eDrink24/basket', element: <ListToBasketComponent />,
         loader: basketLoader
+      },
+      {path:'/eDrink24/order/:userId/:loginId' , element:<OrderComponent />
+        
       },
       {
         element: <ProtectedRoute />,
