@@ -74,9 +74,9 @@ function SignupComponent() {
     };
     // 검색 클릭
     const toggle = (e) => {
-        e.preventDefault(); // 검색 버튼 눌렀을 때 submit 안되게 
-        setIsOpen(!isOpen); // 왜냐하면 sign up버튼 눌렀을 때 submit되야 하기 때문에 
-    };                      // 이때 미리 submit되면 안됨.
+        e.preventDefault();
+        setIsOpen(!isOpen);
+    };
     // 상세 주소검색 event
     const changeHandler = (e) => {
         setDetailAddress(e.target.value);
@@ -170,8 +170,7 @@ function SignupComponent() {
     const [certificateCode, setCertificateCode] = useState('');
     const [isOpenVerification, setIsOpenVerification] = useState(false);
     const [isVerificated, setIsVerificated] = useState(false);
-    const [timer, setTimer] = useState(60); // 타이머
-    const [resultMessage, setResultMessage] = useState('');
+    const [timer, setTimer] = useState(60);
 
     // 인증창열기
     const openVerification = (async (e) => {
@@ -372,7 +371,7 @@ function SignupComponent() {
                     {isOpenVerification && !isVerificated && (
                         <div className='crf-num'>
                             <input className='crf-form' placeholder='인증번호 6자리' value={certificateCode} onChange={(e) => setCertificateCode(e.target.value)}></input>
-                            <p className='timer-text'>{formatTime(timer)}</p> {/* 타이머 표시 */}
+                            <p className='timer-text'>{formatTime(timer)}</p>
                             <button className="crf-comp-button" onClick={completeVerificated}>인증하기</button>
                         </div>
                     )}
