@@ -3,6 +3,7 @@ import DaumPostcode from 'react-daum-postcode';
 import { useEffect, useState } from 'react';
 import Modal from "react-modal";
 import "./SignupComponent.css";
+import AlertModal from '../../components/alert/AlertModal';
 
 function SignupComponent() {
     const data = useActionData();
@@ -15,12 +16,9 @@ function SignupComponent() {
     const [gender, setGender] = useState('남');
     const [maxDate, setMaxDate] = useState("");
 
-    // 알림창
-    const [alertOpen, setAlertOpen] = useState(false); // 알림창 상태
-    const [alertMessage, setAlertMessage] = useState(""); // 알림창 메시지
-    const [navigateOnClose, setNavigateOnClose] = useState(false); // 모달 닫힐 때 navigate
     // 아이디 중복체크
     const [isIdChecked, setIsIdChecked] = useState(false);
+
     // 비밀번호 확인
     const [pw, setPw] = useState("");
     const [pwConfirm, setPwConfirm] = useState("");
@@ -44,54 +42,40 @@ function SignupComponent() {
         },
     };
 
-    // 알림창 스타일
-    const alertStyles = {
-        overlay: {
-            backgroundColor: "rgba(0,0,0,0.5)",
-        },
-        content: {
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            margin: "auto",
-            width: "300px",
-            height: "180px",
-            padding: "20px",
-            borderRadius: "10px",
-            textAlign: "center",
-            backgroundColor: "#fff",
-            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
-        },
-        p: {
-            margin: "10px"
-        }
-    };
-
     const completeHandler = (data) => {
         setPostalCode(data.zonecode);
         setRoadAddress(data.roadAddress);
         setIsOpen(false);
     };
+
     // 검색 클릭
     const toggle = (e) => {
         e.preventDefault();
         setIsOpen(!isOpen);
     };
+
     // 상세 주소검색 event
     const changeHandler = (e) => {
         setDetailAddress(e.target.value);
     }
 
+    // **********************************************************************
+    const [alertOpen, setAlertOpen] = useState(false); // 알림창 상태
+    const [alertMessage, setAlertMessage] = useState(""); // 알림창 메시지
+    const [navigateOnClose, setNavigateOnClose] = useState(false); // 모달 닫힐 때 navigate
+
     // 알림창 열기
     const openAlert = (message, navigateOnClose = false) => {
         setAlertMessage(message);
         setAlertOpen(true);
-        setNavigateOnClose(navigateOnClose);
+        setNavigateOnClose(navigateOnClose); // 성공했을때
     }
+
     // 알림창 닫기
     const closeAlert = () => {
         setAlertOpen(false);
     }
+
     // 알림창 닫힐 때 navigate 호출
     useEffect(() => {
         if (!alertOpen && navigateOnClose) {
@@ -102,9 +86,10 @@ function SignupComponent() {
     // 회원가입 성공시 알람 / 2번째 파라미터값에 true를 줘서
     useEffect(() => {
         if (data) {
-            openAlert(data.message, data.success);
+            openAlert(data.message, data.success); // success : true
         }
     }, [data]);
+    // **********************************************************************
 
     // 비밀번호 일치 여부 확인
     useEffect(() => {
@@ -163,7 +148,6 @@ function SignupComponent() {
     const handleGenderChange = (e) => {
         setGender(e.target.value);
     };
-
 
     // 번호인증
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -407,17 +391,13 @@ function SignupComponent() {
                 </div>
             </Form>
 
-            {/* 알림창*/}
-            <Modal
+            <AlertModal
                 isOpen={alertOpen}
                 onRequestClose={closeAlert}
-                style={alertStyles}
-                contentLabel="Alert"
-            >
-                <h2 className='alert-h2'>알림</h2>
-                <p className='alert-p'>{alertMessage}</p>
-                <button onClick={closeAlert} className="btn-alert-close">닫기</button>
-            </Modal>
+                message={alertMessage}
+                navigateOnClose={navigateOnClose}
+                navigateOnClosePath="/eDrink24/login" // 회원가입 완료 후 이동할 경로를 지정합니다.
+            />
         </div>
     );
 }
