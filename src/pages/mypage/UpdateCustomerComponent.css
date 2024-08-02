@@ -6,7 +6,8 @@
     background-color: white;
     padding: 20px;
     box-shadow: 0 0 10px #0000001a;
-    width: 390px;
+    min-width: 390px;
+
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -134,6 +135,7 @@ label {
 
 .search-button {
     background-color: #f0c040;
+    width:80px;
     height: 45px;
     border: none;
     border-radius: 5px;
@@ -150,24 +152,6 @@ label {
 .requiredCheck {
     color: red;
     font-size: 12px;
-}
-
-/* 알림창 */
-.btn-alert-close {
-    width: 100px;
-    padding: 10px;
-    background-color: #f0c040;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.btn-alert-close:hover {
-    background-color: #e0a030;
 }
 
 .pw-match {

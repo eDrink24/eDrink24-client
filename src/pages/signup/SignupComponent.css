@@ -1,3 +1,4 @@
+
 * {
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
@@ -5,7 +6,6 @@
 .signup-container {
     background-color: white;
     padding: 20px;
-    box-shadow: 0 0 10px #0000001a;
     width: 390px;
     display: flex;
     flex-direction: column;
@@ -24,7 +24,7 @@
 
 .signup-header h1 {
     font-size: 20px;
-    margin-left:160px;
+    margin-left:140px;
     font-weight: 500;
 }
 
@@ -66,7 +66,7 @@ label {
 
 .form-control-loginId {
     height: 45px;
-    width: 300px;
+    width: 260px;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -196,6 +196,69 @@ label {
     margin-left: 10px;
 }
 
+.crf-num {
+    align-items: center;
+    gap: 10px;
+    display: flex;
+}
+
+.crf-button {
+    align-items: center;
+    background-color: #f0c040;
+    height: 45px;
+    border: none;
+    border-radius: 5px;
+    padding: 0 10px;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.crf-button.crf-complete {
+    background-color: green;
+    align-items: center;
+    height: 45px;
+    border: none;
+    border-radius: 5px;
+    padding: 0 10px;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.crf-form {
+    flex:1;
+    width: 50%;
+    height: 35px;
+    padding: 10px;
+    margin-left:auto;
+    margin-right:auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.crf-comp-button {
+    text-align: center;
+    background-color: #f0c040;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    padding: 0 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.crf-complete-text {
+    color:green;
+    font-size: 12px;
+}
+
+.timer-text {
+    color: red;
+    font-size: 14px;
+}
+
 .check-button:hover,
 .search-button:hover {
     background-color: #e0a030;
@@ -215,25 +278,6 @@ label {
 .requiredCheck {
     color:red;
     font-size: 12px;
-}
-
-
-/* 알림창 */
-.btn-alert-close {
-    width: 100px;
-    padding: 10px;
-    background-color: #f0c040;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.btn-alert-close:hover {
-    background-color: #e0a030;
 }
 
 .pw-match {

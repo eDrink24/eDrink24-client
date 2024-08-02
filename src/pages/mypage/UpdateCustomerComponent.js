@@ -3,6 +3,7 @@ import { Form, useActionData, useLocation, useNavigate } from 'react-router-dom'
 import DaumPostcode from 'react-daum-postcode';
 import { useEffect, useState } from 'react';
 import Modal from "react-modal";
+import AlertModal from '../../components/alert/AlertModal';
 
 function UpdateCustomerComponent() {
     const data = useActionData();
@@ -12,10 +13,6 @@ function UpdateCustomerComponent() {
     const [roadAddress, setRoadAddress] = useState("");
     const [detailAddress, setDetailAddress] = useState("");
     const [isOpen, setIsOpen] = useState(false);
-
-    const [alertOpen, setAlertOpen] = useState(false);
-    const [alertMessage, setAlertMessage] = useState("");
-    const [navigationClose, setNavigationClose] = useState(false); // 모달 닫힐때 navigate
 
     // 비밀번호 확인
     const [pw, setPw] = useState("");
@@ -51,58 +48,46 @@ function UpdateCustomerComponent() {
         },
     };
 
-    // 알림창 스타일
-    const alertStyles = {
-        overlay: {
-            backgroundColor: "rgba(0,0,0,0.5)",
-        },
-        content: {
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            margin: "auto",
-            width: "300px",
-            height: "180px",
-            padding: "20px",
-            borderRadius: "10px",
-            textAlign: "center",
-            backgroundColor: "#fff",
-            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
-        },
-    };
-
     const completeHandler = (data) => {
         setPostalCode(data.zonecode);
         setRoadAddress(data.roadAddress);
         setIsOpen(false);
     };
+
     // 검색 클릭
     const toggle = (e) => {
         e.preventDefault();
         setIsOpen(!isOpen);
     };
+
     // 상세 주소검색 event
     const changeHandler = (e) => {
         setDetailAddress(e.target.value);
     }
 
-    // 알림창 열기 => 파라미터값이 없으면 해당하는 파라미터를 필요로하는 메서드도 실행안됨
+    // ***********************************************************
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [navigationClose, setNavigationClose] = useState(false); // 모달 닫힐때 navigate
+
+    // 알림창 열기
     const openAlert = (message, navigationClose = false) => {
         setAlertMessage(message);
         setAlertOpen(true);
         setNavigationClose(navigationClose);
     }
 
-    useEffect(() => {
-        if (!alertOpen && navigationClose) {
-            navigate("/eDrink24/mypage");
-        }
-    })
-
     // 알림창 닫기
     const closeAlert = () => {
         setAlertOpen(false);
     }
+
+    useEffect(() => {
+        if (!alertOpen && navigationClose) {
+            navigate("/eDrink24/mypage");
+        }
+    }, [alertOpen, navigationClose, navigate]);
+    // ***********************************************************
 
     // 비밀번호 일치 여부 확인
     useEffect(() => {
@@ -164,6 +149,13 @@ function UpdateCustomerComponent() {
 
     return (
         <div className="updateCustomer-container">
+            <AlertModal
+                isOpen={alertOpen}
+                onRequestClose={closeAlert}
+                message={alertMessage}
+                navigateOnClose={navigationClose}
+                navigateOnClosePath="/eDrink24/mypage" // 경로를 지정합니다.
+            />
             <div className='updateCustomer-header'>
                 <h1>회원정보수정</h1>
                 <button className="close-button" onClick={() => navigate(-1)}>
@@ -250,21 +242,8 @@ function UpdateCustomerComponent() {
             <div className="form-group-submit">
                 <button onClick={() => navigate(-1)} className="btn-submit-cancel" >수정취소</button>
             </div>
-
-            {/* 알림창 */}
-            <Modal
-                isOpen={alertOpen}
-                onRequestClose={closeAlert}
-                style={alertStyles}
-                contentLabel="Alert"
-            >
-                <h2>알림</h2>
-                <p>{alertMessage}</p>
-                <button onClick={closeAlert} className="btn-alert-close">닫기</button>
-            </Modal>
         </div>
     );
 }
-
 
 export default UpdateCustomerComponent;
