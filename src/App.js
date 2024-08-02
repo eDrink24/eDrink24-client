@@ -14,7 +14,7 @@ import ListToBasketComponent,{loader as basketLoader}  from './pages/basket/List
 import AllProductComponent from './pages/product/AllProductComponet';
 import ProductDetailComponent from './pages/product/ProductDetailComponent';
 
-
+//
 const router = createBrowserRouter([
   {
     path: "/eDrink24",
