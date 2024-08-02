@@ -1,9 +1,7 @@
 import { useActionData, Form, useNavigate } from 'react-router-dom';
 import "./LoginComponent.css";
 import { useEffect, useState } from 'react';
-import Modal from 'react-modal';
-
-Modal.setAppElement('#root');
+import AlertModal from '../../components/alert/AlertModal.js';
 
 function LoginComponent() {
     const data = useActionData();
@@ -12,11 +10,7 @@ function LoginComponent() {
     const [loginId, setLoginId] = useState("");
     const [pw, setPw] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
 
-    const [alertOpen, setAlertOpen] = useState(false); // 알림창 상태
-    const [alertMessage, setAlertMessage] = useState(""); // 알림창 메시지
-    const [navigateOnClose, setNavigateOnClose] = useState(false); // 모달 닫힐 때 navigate
 
     // 비밀번호 표시/숨기기 함수
     const togglePasswordVisibility = () => {
@@ -26,6 +20,11 @@ function LoginComponent() {
     const handleDirectNormalSignup = () => {
         navigate("/eDrink24/signup");
     }
+
+    // ********************************************************
+    const [alertOpen, setAlertOpen] = useState(false); // 알림창 상태
+    const [alertMessage, setAlertMessage] = useState(""); // 알림창 메시지
+    const [navigateOnClose, setNavigateOnClose] = useState(false); // 모달 닫힐 때 navigate
 
     // 알림창 열기
     const openAlert = (message, navigateOnClose = false) => {
@@ -37,9 +36,6 @@ function LoginComponent() {
     // 알림창 닫기
     const closeAlert = () => {
         setAlertOpen(false);
-        if (navigateOnClose) {
-            navigate("/eDrink24");
-        }
     }
 
     useEffect(() => {
@@ -51,40 +47,18 @@ function LoginComponent() {
             openAlert("로그인에 성공하였습니다!", true);
         }
     }, [data]);
-
-    // 알림창 스타일
-    const alertStyles = {
-        overlay: {
-            backgroundColor: "rgba(0,0,0,0.5)",
-        },
-        content: {
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            margin: "auto",
-            width: "300px",
-            height: "180px",
-            padding: "20px",
-            borderRadius: "10px",
-            textAlign: "center",
-            backgroundColor: "#fff",
-            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
-        },
-    };
+    // ********************************************************
 
     return (
         <div className="login-body">
             <div className="login-container">
-                <Modal
+                <AlertModal
                     isOpen={alertOpen}
                     onRequestClose={closeAlert}
-                    style={alertStyles}
-                    contentLabel="알림"
-                >
-                    <h2 className='alert-h2'>알림</h2>
-                    <p className='alert-p'>{alertMessage}</p>
-                    <button onClick={closeAlert} className="btn-alert-close">닫기</button>
-                </Modal>
+                    message={alertMessage}
+                    navigateOnClose={navigateOnClose}
+                    navigateClosePath={"/eDrink24"}
+                />
                 <div className='login-header'>
                     <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
                     <button className="close-button" onClick={() => { navigate(-1) }}>
@@ -119,7 +93,6 @@ function LoginComponent() {
                             <img src="assets/login/eye-open.png" alt="hide 버튼" />
                         </button>
                     </div>
-                    {errorMessage && <p className="error-message">{errorMessage}</p>}
                     <button type="submit" className="login-button">로그인</button>
                 </Form>
                 <div className="options">
@@ -164,7 +137,7 @@ export async function action({ request }) {
 
     if (!response.ok) {
         if (response.status === 401) {
-            return { error: "아이디 또는 패스워드가 잘못되었습니다." };
+            return { error: "아이디 또는 패스워드가 다릅니다." };
         } else {
             return { error: "서버에 문제가 발생했습니다. 나중에 다시 시도해 주세요." };
         }
