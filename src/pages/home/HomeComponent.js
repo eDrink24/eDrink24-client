@@ -1,44 +1,81 @@
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react'; // useState를 react에서 가져옵니다
+import { useNavigate } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
 import "./HomeComponent.css";
 
 function HomeComponent() {
 
+    // 상태 변수 선언
+    const [isExpanded, setIsExpanded] = useState(false); // footer 확장을 위한 상태
+    const [activeTab, setActiveTab] = useState('description'); // 초기 탭을 'description'으로 설정
+
     const navigate = useNavigate();
 
-    const handleDirectB1 = () => {
-        navigate("/eDrink24/category")
-    }
+    // 버튼 클릭 핸들러 함수
+    const handleDirectHome = () => {
+        navigate("/eDrink24");
+    };
 
-    const handleDirectB2 = () => {
-        navigate("/eDrink24/allproduct")
-    }
+    const handleDirectMyPage = () => {
+        navigate("/eDrink24/mypage");
+    };
+
+    const handleDirectCategory = () => {
+        navigate("/eDrink24/category");
+    };
+
+    const handleDirectAllproduct = () => {
+        navigate("/eDrink24/allproduct");
+    };
+
+    // 탭 클릭 핸들러 함수
+    const handleTabClick = (tab) => {
+        setActiveTab(tab); // 클릭한 탭으로 활성 탭 변경
+    };
+
+    // 푸터 확장/축소 토글 함수
+    const toggleExpand = () => {
+        setIsExpanded(!isExpanded);
+    };
 
     return (
-        <div className="home-body">
-            <div className="home-container">
-                <div className="home-header">
-                    <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
-                    <button className="bell-button">
-                        <img src="assets/common/bell-button.png" className="bellButton" alt="newBellButton" />
-                    </button>
+        <div className="homePage-container">
+
+            {/* 상단 네비게이션 바 */}
+            <div className="homePage-nav-box">
+
+                {/* emart24 로고 */}
+                <div className="homePage-emart24Logo-box">
+                  <img className="homePage-logo"
+                  src="assets/common/emart24_logo.png" alt="emart24 logo" />
                 </div>
+
+                {/* 벨 아이콘 */}
+                <button className="homePage-bell" aria-label="Notifications">
+                  <img className="bell-icon"
+                  src="assets/common/bell.png" alt="bell icon" />
+                </button>
+
+            </div>
+
+            <div className="home-container">
+
                 <div className="my-place-container"></div>
                 <div className="banner-container"></div>
                 <div className="category-button-container">
-                    <button type="button" className="b1" onClick={handleDirectB1}>
-                        <img src="assets/common/menu.png" className="menuButton" alt="Menu-Button" />
+                    <button type="button" className="b1" onClick={handleDirectCategory}>
+                        <img src="assets/common/menu.png" className="menuButton" alt="Menu Button" />
                         <h1>카테고리</h1>
                     </button>
-                    <button type="button" className="b2" onClick={handleDirectB2}>
-                        <img src="assets/common/search.png" className="searchButton" alt="search-Button" />
+                    <button type="button" className="b2" onClick={handleDirectAllproduct}>
+                        <img src="assets/common/search.png" className="searchButton" alt="Search Button" />
                         <h1>전체상품</h1>
                     </button>
-                    <button type="button" className="b3">
-                        <img src="assets/common/gift.png" className="giftButton" alt="gift-Button" />
+                    <button type="button" className="b3" onClick={handleDirectHome}>
+                        <img src="assets/common/gift.png" className="giftButton" alt="Gift Button" />
                         <h1>이벤트</h1>
                     </button>
-                    <button type="button" className="b4">
-                        <img src="assets/common/chatbot.png" className="chatbotButton" alt="chatbot-Button" />
+                    <button type="button" className="b4" onClick={handleDirectHome}>
+                        <img src="assets/common/chatbot.png" className="chatbotButton" alt="Chatbot Button" />
                         <h1>챗봇</h1>
                     </button>
                 </div>
@@ -51,14 +88,14 @@ function HomeComponent() {
                 <div className="best-container">
                     <div className="ItemCard">
                         {/* 카드 배경 */}
-                        <div className="itemcard-container" />
+                        <div className="itemcard-container"></div>
 
                         {/* 배경색이 있는 작은 사각형 */}
-                        <div className="today-pickup" />
+                        <div className="today-pickup"></div>
 
                         {/* 하트 아이콘 */}
                         <div className="Heart">
-                            <img className="heartIcon" src="assets/common/heart.png" />
+                            <img className="heartIcon" src="assets/common/heart.png" alt="heart icon" />
                         </div>
 
                         {/* 텍스트들 */}
@@ -67,7 +104,7 @@ function HomeComponent() {
                         <div className="Price">31,000 원</div>
 
                         {/* 이미지 및 배경 */}
-                        <div className="itemImage" onClick={handleDirectB2}>
+                        <div className="itemImage">
                             <img className="Image20" src="assets/common/Image20.png" alt="상품 이미지" />
                         </div>
 
@@ -78,8 +115,34 @@ function HomeComponent() {
 
                 </div>
             </div>
-        </div>
 
+                {/* 하단고정 네비게이션 바 */}
+                <div className={`homePage-fix-nav-container ${isExpanded ? 'expanded' : ''}`}>
+
+                <div className="homePage-fix-nav-box">
+                <button type="button" className="homeIcon" onClick={handleDirectHome}>
+                    <img className="home-icon"
+                    src="assets/common/home.png" alt="home-Button" />
+                    <h1>홈</h1>
+                </button>
+                <button type="button" className="searchIcon">
+                    <img className="search-icon"
+                    src="assets/common/search.png" alt="search-Button" />
+                    <h1>검색</h1>
+                </button>
+                <button type="button" className="listIcon">
+                    <img className="list-icon"
+                    src="assets/common/receipt.png" alt="receipt-Button" />
+                    <h1>내역</h1>
+                </button>
+                <button type="button" className="myIcon">
+                    <img className="my-icon"
+                    src="assets/common/my.png" alt="my-Button" onClick={handleDirectMyPage}/>
+                    <h1>마이</h1>
+                </button>
+                </div>
+                </div>
+            </div>
     );
 }
 
