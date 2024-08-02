@@ -61,7 +61,7 @@ function LoginComponent() {
                 />
                 <div className='login-header'>
                     <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
-                    <button className="close-button" onClick={() => { navigate(-1) }}>
+                    <button className="close-button" onClick={() => { navigate("/eDrink24") }}>
                         <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
                     </button>
                 </div>

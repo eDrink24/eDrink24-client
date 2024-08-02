@@ -11,7 +11,9 @@
     background-color: white;
     padding-bottom: 90px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 390px; /* 가로 크기 */
+    min-width: 344px; /* 가로 크기 */
+    max-width: 450px;
+    width: 100%;
     height: auto; /* 세로 크기 */
     flex-direction: column;
     justify-content: space-between;
@@ -24,12 +26,12 @@
 /* 상단 네비게이션 바 */
   
   .homePage-nav-box {
-    width: 390px;
     height: 102px;
     padding: 44px 20px 0px 20px;
     display: flex;
     background-color: #ffffff;
     justify-content: space-between;
+    text-align: center;
     align-items: center;
   }
 
@@ -72,7 +74,7 @@
 
 .best-container {
     width: auto;
-    margin-left: 20px;
+    margin: 20px;
     display: flex;
     flex-direction: row;
 }
@@ -288,40 +290,45 @@ h1 {
 
 
 /* 하단 네비게이션 바 */
-    .homePage-fix-nav-container {
-    padding: 0px 20px 34px 20px; /* 34px는 모바일 화면시 필요함 */
+.homePage-fix-nav-container {
+    padding: 10px 20px 34px 20px; /* 34px는 모바일 화면시 필요함 */
+
+    width:100%;
+    max-width: 100%;
+    box-sizing: border-box; /* 패딩과 보더를 포함한 박스 크기 계산 */
+
+    margin: 0 auto;
     display: flex;
     position: fixed; /* 요소를 고정 시킴 */
     bottom: 0; /* 요소를 하단으로 고정 */
-    left: 50%; /* 요소를 중앙으로 위치하게 해줌 */
     z-index: 1000; /* 요소의 쌓음 정도 즉 제일 위에 위치하도록 함 */
-    transform: translateX(-50%);  /* (x)축으로 = 수평으로 요소의 너비 절반만큼 왼쪽으로 이동시킨다. */
     background-color: #ffffff;
     border-top: 2px solid #EFF1F3;
     /*  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); 그림자 추가 */
-    }
-  
-    .homePage-fix-nav-box {
-    height: 56px;
-    margin: 0;
-    display: flex;
-    justify-content: space-around
-    }
+}
 
-    .homePage-fix-nav-box button {
-    width: 88px;
+.homePage-fix-nav-box {
+    width: 100%; /* 너비를 100%로 설정 */
+    height: 56px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box; /* 패딩과 보더를 포함한 박스 크기 계산 */
+}
+
+.homePage-fix-nav-box button {
     border: 0;
     background: none;
     cursor: pointer;
-    }
+}
 
-    .homePage-fix-nav-box img {
+.homePage-fix-nav-box img {
     width: 24px;
     height: 24px;
-    }
+}
 
-    .homePage-fix-nav-box h1 {
+.homePage-fix-nav-box h1 {
     font-size: 12px;
     font-weight:500;
     text-align: center;
-    }
+}
