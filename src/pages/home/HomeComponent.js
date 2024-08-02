@@ -45,14 +45,14 @@ function HomeComponent() {
 
                 {/* emart24 로고 */}
                 <div className="homePage-emart24Logo-box">
-                  <img className="homePage-logo"
-                  src="assets/common/emart24_logo.png" alt="emart24 logo" />
+                    <img className="homePage-logo"
+                        src="assets/common/emart24_logo.png" alt="emart24 logo" />
                 </div>
 
                 {/* 벨 아이콘 */}
                 <button className="homePage-bell" aria-label="Notifications">
-                  <img className="bell-icon"
-                  src="assets/common/bell.png" alt="bell icon" />
+                    <img className="bell-icon"
+                        src="assets/common/bell.png" alt="bell icon" />
                 </button>
 
             </div>
@@ -151,36 +151,36 @@ function HomeComponent() {
 
                 </div>
 
-                
+
             </div>
 
-                {/* 하단고정 네비게이션 바 */}
-                <div className={`homePage-fix-nav-container ${isExpanded ? 'expanded' : ''}`}>
+            {/* 하단고정 네비게이션 바 */}
+            <div className={`homePage-fix-nav-container ${isExpanded ? 'expanded' : ''}`}>
 
                 <div className="homePage-fix-nav-box">
-                <button type="button" className="homeIcon" onClick={handleDirectHome}>
-                    <img className="home-icon"
-                    src="assets/common/home.png" alt="home-Button" />
-                    <h1>홈</h1>
-                </button>
-                <button type="button" className="searchIcon">
-                    <img className="search-icon"
-                    src="assets/common/search.png" alt="search-Button" />
-                    <h1>검색</h1>
-                </button>
-                <button type="button" className="listIcon">
-                    <img className="list-icon"
-                    src="assets/common/receipt.png" alt="receipt-Button" />
-                    <h1>내역</h1>
-                </button>
-                <button type="button" className="myIcon">
-                    <img className="my-icon"
-                    src="assets/common/my.png" alt="my-Button" onClick={handleDirectMyPage}/>
-                    <h1>마이</h1>
-                </button>
-                </div>
+                    <button type="button" className="homeIcon" onClick={handleDirectHome}>
+                        <img className="home-icon"
+                            src="assets/common/home.png" alt="home-Button" />
+                        <h1>홈</h1>
+                    </button>
+                    <button type="button" className="searchIcon">
+                        <img className="search-icon"
+                            src="assets/common/search.png" alt="search-Button" />
+                        <h1>검색</h1>
+                    </button>
+                    <button type="button" className="listIcon">
+                        <img className="list-icon"
+                            src="assets/common/receipt.png" alt="receipt-Button" />
+                        <h1>내역</h1>
+                    </button>
+                    <button type="button" className="myIcon">
+                        <img className="my-icon"
+                            src="assets/common/my.png" alt="my-Button" onClick={handleDirectMyPage} />
+                        <h1>마이</h1>
+                    </button>
                 </div>
             </div>
+        </div>
     );
 }
 
