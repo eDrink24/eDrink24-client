@@ -1,0 +1,394 @@
+* {
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .category-container {
+    width: 390px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /**************************************************************************/
+  
+  .category-header {
+    height: 102px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  
+  .category-navigation-bar {
+    width: 390px;
+    height: 58px;
+    display: flex;
+    background-color: #ffffff;
+  }
+  
+  .nav-empty-box {
+    width: 184px;
+    height: 58px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .category-navigation-bar button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin: 0;
+  }
+  
+  .category-navigation-bar img {
+    width: auto;
+    height: 24px;
+    margin: 0;
+  }
+  
+  .back-icon-button,
+  .search-icon-button {
+    width: 54px;
+    height: 58px;
+    padding: 0px 0px 0px 20px;
+  }
+  
+  .home-icon-button {
+    width: 44px;
+    height: 58px;
+    padding: 0px 10px 0px 10px;
+  }
+  
+  .bag-icon-button {
+    width: 54px;
+    height: 58px;
+    padding: 0px 20px 0px 0px;
+  }
+  
+  /**************************************************************************/
+  
+  .product-detail-container {
+    width: 390px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: scroll;
+  }
+  
+  .product-img {
+    height: 390px;
+    display: flex;
+    background-color: #EFF1F3;
+  }
+  
+  .product-other {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .product-review {
+    display: flex;
+    padding-left: 20px;
+  }
+  
+  .product-review img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .product-review h2 {
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0px 0px 0px 8px;
+  }
+  
+  .product-option {
+    display: flex;
+  }
+  
+  .heart-icon-button {
+    width: 44px;
+    height: 52px;
+    padding: 0px 10px 0px 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .share-icon-button {
+    width: 54px;
+    height: 52px;
+    padding: 0px 20px 0px 0px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .product-option img {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+  }
+  
+  .product-title {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+    padding-bottom: 4px;
+  }
+  
+  .info-mesg {
+    font-size: 12px;
+    font-weight: 400;
+    color: #687787;
+    margin: 0;
+  }
+  
+  .price-per {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 20px;
+    padding-left: 20px;
+  }
+  
+  .price-item {
+    font-size: 24px;
+    font-weight: 700;;
+  }
+  
+  .today-pickup-img {
+    width: 62px;
+    height: 20px;
+    padding-left: 20px;
+    margin-top: 8px;
+    margin-bottom: 32px;
+  }
+  
+  .product-nav {
+    display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
+    justify-content: space-around;
+  }
+  
+  .product-nav div {
+    width: 60px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .product-detailpage-container {
+    height: 1000px;
+    display: flex;
+    background-color: #EFF1F3;
+  }
+  
+  /**************************************************************************/
+  
+  .option-footer {
+    padding: 0px 20px 34px 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    justify-content: flex-end;
+    transition: height 0.3s ease;
+    background-color: #ffffff;
+  }
+  
+  .select-more-items,
+  .select-more-items button {
+    width: 350px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .select-more-items img {
+    width: 32px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .option-buy-button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .option-buy-button button {
+    width: 170px;
+    height: 56px;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .option-buy-button .go-cart {
+    margin-right: 10px;
+    background-color: #ffffff;
+    border: 1.4px solid black;
+  }
+  
+  .option-buy-button .buy-now {
+    color: #ffffff;
+    background-color: black;
+    border: 1.4px solid black;
+  }
+  
+  /**************************************************************************/
+  
+  /* 펼쳐지는 부분의 스타일 추가 */
+  .expanded-section {
+    background-color: white;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* 수량 조절 버튼 스타일 */
+  .price-control {
+    display:flex;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+  }
+  
+  .quantity-button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .quantity-display {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  /* 상품 하나 가격 */
+  .price-per-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+  }
+  
+  .total-info {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 16px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .price-per-item {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  
+  .total-quantity {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .total-price {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  
+  /**************************************************************************/
+  
+  .ProductDetail {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .nav-bar {
+    display: flex; /* 네비게이션 항목들을 가로로 배치 */
+    border-bottom: 2px solid #ccc; /* 하단에 구분선 추가 */
+  }
+  
+  .nav-item {
+    flex: 1; /* 모든 항목을 동일한 너비로 설정 */
+    padding: 10px; /* 내부 여백 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    cursor: pointer; /* 마우스를 올렸을 때 포인터 커서로 변경 */
+    position: relative; /* 하단 박스를 추가하기 위해 위치 설정 */
+  }
+  
+  .nav-item:hover {
+    background-color: #f0f0f0; /* 항목에 마우스를 올렸을 때 배경색 변경 */
+  }
+  
+  .nav-item.active::after {
+    content: ''; /* 추가할 내용 없음 */
+    display: block; /* 블록 요소로 표시 */
+    width: 100%; /* 항목의 너비에 맞게 설정 */
+    height: 4px; /* 박스의 높이 */
+    background-color: black; /* 박스 색상 */
+    position: absolute; /* 부모 요소를 기준으로 절대 위치 설정 */
+    bottom: -2px; /* 하단에서 2px */
+  }
+  
+  .content {
+    height: 500px;
+  }

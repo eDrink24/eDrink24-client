@@ -11,6 +11,8 @@ import RootLayout from './pages/rootLayout/root';
 import { tokenLoader } from './util/auth';
 import ProtectedRoute from './components/ProtectedRouter';
 import ListToBasketComponent,{loader as basketLoader}  from './pages/basket/ListToBasketComponent';
+import AllProductComponent from './pages/product/AllProductComponet';
+import ProductDetailComponent from './pages/product/ProductDetailComponent';
 
 
 const router = createBrowserRouter([
@@ -20,6 +22,8 @@ const router = createBrowserRouter([
     loader: tokenLoader,
     children: [
       { path: '/eDrink24', element: <HomeComponent /> },
+      { path: '/eDrink24/allproduct', element: <AllProductComponent /> },
+      { path: '/eDrink24/allproduct/:productId', element: <ProductDetailComponent /> },
       {
         path: '/eDrink24/login', element: <LoginComponent />,
         action: loginAction
