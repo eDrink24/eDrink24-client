@@ -1,4 +1,5 @@
 import './MypageComponent.css';
+import FooterComponent from '../../components/footer/FooterComponent.js'; // Footer 컴포넌트 import
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../login/LogoutComponent';
@@ -46,13 +47,12 @@ function MypageComponent() {
     return (
         <div className="mypage-wrapper">
             <div className="mypage-container">
+
                 <div className='mypage-header'>
                     <button className="back-button" onClick={() => { navigate(-1) }}>{'<'}</button>
                     <h1>마이페이지</h1>
                     <div>
                         <button className="settings-button"><img src="assets/common/alert.png" alt="알람" /></button>
-                        <button className="settings-button"><img src="assets/common/setting.png" alt="설정" /></button>
-
                     </div>
                 </div>
 
@@ -150,7 +150,9 @@ function MypageComponent() {
                     </div>
                 </div>
             </div>
-        </div >
+            <FooterComponent />
+        </div>
+
     );
 }
 

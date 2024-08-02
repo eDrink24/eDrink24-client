@@ -29,7 +29,7 @@ function ProductDetailComponent() {
       }
 
       const resData = await response.json();
-      console.log(response,resData);
+      console.log(response, resData);
       setProduct(resData);
     } catch (error) {
       console.error('Error fetching product:', error);
@@ -88,14 +88,14 @@ function ProductDetailComponent() {
   };
 
   return (
-    <div className="category-container">
+    <div className="productDetail-container">
 
       {/* 상단 네비게이션 바 */}
-      <div className="category-header">
-        <div className="category-navigation-bar">
+      <div className="productDetail-header">
+        <div className="productDetail-navigation-bar">
 
           {/* 뒤로가기 아이콘 */}
-          <button className="back-icon-button">
+          <button className="back-icon-button" onClick={() => { navigate(-1) }}>
             <img className="nav-back-icon"
               src="assets/common/backIcon.png" alt="Back" />
           </button>
@@ -218,7 +218,7 @@ function ProductDetailComponent() {
 
             <div className="total-info">
               <span className="total-quantity">총 수량: {quantity}개</span>
-              <span className="total-price">총 가격: {product.price*quantity}원</span>
+              <span className="total-price">총 가격: {product.price * quantity}원</span>
             </div>
 
           </div>
