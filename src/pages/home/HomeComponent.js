@@ -1,5 +1,6 @@
 import React, { useState } from 'react'; // useState를 react에서 가져옵니다
 import { useNavigate } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
+import FooterComponent from '../../components/footer/FooterComponent.js';
 import "./HomeComponent.css";
 
 function HomeComponent() {
@@ -112,7 +113,6 @@ function HomeComponent() {
                         <div className="Rating">4.8 ( 후기 35 )</div>
                         <div className="Star">★</div>
                     </div>
-
                 </div>
 
                 <div className='line'></div>
@@ -148,38 +148,11 @@ function HomeComponent() {
                         <div className="Rating">4.8 ( 후기 35 )</div>
                         <div className="Star">★</div>
                     </div>
-
                 </div>
-
-
             </div>
 
             {/* 하단고정 네비게이션 바 */}
-            <div className={`homePage-fix-nav-container ${isExpanded ? 'expanded' : ''}`}>
-
-                <div className="homePage-fix-nav-box">
-                    <button type="button" className="homeIcon" onClick={handleDirectHome}>
-                        <img className="home-icon"
-                            src="assets/common/home.png" alt="home-Button" />
-                        <h1>홈</h1>
-                    </button>
-                    <button type="button" className="searchIcon">
-                        <img className="search-icon"
-                            src="assets/common/search.png" alt="search-Button" />
-                        <h1>검색</h1>
-                    </button>
-                    <button type="button" className="listIcon">
-                        <img className="list-icon"
-                            src="assets/common/receipt.png" alt="receipt-Button" />
-                        <h1>내역</h1>
-                    </button>
-                    <button type="button" className="myIcon">
-                        <img className="my-icon"
-                            src="assets/common/my.png" alt="my-Button" onClick={handleDirectMyPage} />
-                        <h1>마이</h1>
-                    </button>
-                </div>
-            </div>
+            <FooterComponent />
         </div>
     );
 }

@@ -1,37 +1,38 @@
 * {
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
-    box-sizing: border-box;
   }
   
-  body {
-    font-family: Arial, sans-serif;
-  }
-  
-  .category-container {
-    width: 390px;
-    margin: 0 auto;
+  .productDetail-container {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: left;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+    justify-content: space-around;
+    min-width: 344px; /* 화면 크기 설정 */
+    max-width: 450px;
+    width: 100%;
+    height: 100%; /* 화면 크기 설정 */
+    overflow-y: auto; /* 스크롤 가능하게 설정 */
+    background-color: #ffffff; /* 배경 색 설정 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
   }
   
   /**************************************************************************/
   
-  .category-header {
+  .productDetail-header {
     height: 102px;
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
+    width:100%;
+    padding: 44px 20px 0px 20px;
+    box-sizing: border-box;
   }
   
-  .category-navigation-bar {
-    width: 390px;
-    height: 58px;
+  .productDetail-navigation-bar {
     display: flex;
-    background-color: #ffffff;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
   
   .nav-empty-box {
@@ -41,14 +42,14 @@
     padding: 0;
   }
   
-  .category-navigation-bar button {
+  .productDetail-navigation-bar button {
     cursor: pointer;
     background: none;
     border: none;
     margin: 0;
   }
   
-  .category-navigation-bar img {
+  .productDetail-navigation-bar img {
     width: auto;
     height: 24px;
     margin: 0;
@@ -58,36 +59,39 @@
   .search-icon-button {
     width: 54px;
     height: 58px;
-    padding: 0px 0px 0px 20px;
+
   }
   
   .home-icon-button {
     width: 44px;
     height: 58px;
-    padding: 0px 10px 0px 10px;
+
   }
   
   .bag-icon-button {
     width: 54px;
     height: 58px;
-    padding: 0px 20px 0px 0px;
   }
   
   /**************************************************************************/
   
   .product-detail-container {
-    width: 390px;
-    margin: 0 auto;
+    margin: 0 20 0 20;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     text-align: left;
     background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
     overflow-y: scroll;
   }
   
+  .product-img-container {
+    margin:0 auto;
+  }
+
   .product-img {
+    width: 390px;
     height: 390px;
     display: flex;
     background-color: #EFF1F3;

@@ -3,7 +3,6 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
 import LoginComponent, { action as loginAction } from './pages/login/LoginComponent';
 import HomeComponent from './pages/home/HomeComponent';
 import CategoryComponent from './pages/category/CategoryComponent';
-import AllProduct from './pages/product/AllProduct';
 import SignupComponent, { action as signUpAction } from './pages/signup/SignupComponent';
 import MypageComponent from './pages/mypage/MypageComponent';
 import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
