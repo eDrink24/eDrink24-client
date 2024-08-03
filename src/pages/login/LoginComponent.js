@@ -147,9 +147,11 @@ export async function action({ request }) {
     console.log("resData: ", resData);
 
     const token = resData.token;
+    const userId = resData.userId;
 
     localStorage.setItem('jwtAuthToken', token);
     localStorage.setItem('loginId', authData.loginId);
+    localStorage.setItem('userId', userId);
 
     return { success: true };
 }
