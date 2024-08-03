@@ -88,94 +88,94 @@ function ProductDetailComponent() {
   };
 
   return (
-    <div className="productDetail-container">
+    <div className="productDetailComponent-container">
 
       {/* 상단 네비게이션 바 */}
-      <div className="productDetail-header">
-        <div className="productDetail-navigation-bar">
+      <div className="productDetailComponent-header">
+        <div className="productDetailComponent-navigation-bar">
 
           {/* 뒤로가기 아이콘 */}
-          <button className="back-icon-button" onClick={() => { navigate(-1) }}>
-            <img className="nav-back-icon"
+          <button className="productDetailComponent-back-icon-button" onClick={() => { navigate(-1) }}>
+            <img className="productDetailComponent-nav-back-icon"
               src="assets/common/backIcon.png" alt="Back" />
           </button>
 
-          <div className="nav-empty-box"></div>
+          <div className="productDetailComponent-nav-empty-box"></div>
 
           {/* 검색하기 아이콘 */}
-          <button className="search-icon-button">
-            <img className="nav-search-icon"
+          <button className="productDetailComponent-search-icon-button">
+            <img className="productDetailComponent-nav-search-icon"
               src="assets/common/search.png" alt="search" />
           </button>
 
           {/* 홈으로가기 아이콘 */}
-          <button className="home-icon-button">
-            <img className="nav-home-icon"
+          <button className="productDetailComponent-home-icon-button" onClick={() => { navigate("/eDrink24") }}>
+            <img className="productDetailComponent-nav-home-icon"
               src="assets/common/home.png" alt="home" />
           </button>
 
           {/* 장바구니담기 아이콘 */}
-          <button className="bag-icon-button">
-            <img className="nav-bag-icon"
+          <button className="productDetailComponent-bag-icon-button" onClick={() => { navigate("/eDrink24/basket") }}>
+            <img className="productDetailComponent-nav-bag-icon"
               src="assets/common/bag.png" alt="bag" />
           </button>
 
         </div>
       </div>
 
-      <div className="product-detail-container">
+      <div className="productDetailComponent-product-detail-container">
 
-        <div className="product-img-container">
-          <img className="product-img"
+        <div className="productDetailComponent-product-img-container">
+          <img className="productDetailComponent-product-img"
             src={product.defaultImage} alt={product.productName} />
         </div>
 
-        <div className="product-other">
-          <div className="product-review">
-            <img className="reivew-star"
+        <div className="productDetailComponent-product-other">
+          <div className="productDetailComponent-product-review">
+            <img className="productDetailComponent-reivew-star"
               src="assets/common/star.png" alt="star" />
             <h2>4.9 리뷰 (166)</h2>
           </div>
-          <div className="product-option">
-            <button className="heart-icon-button">
-              <img className="heart-icon"
+          <div className="productDetailComponent-product-option">
+            <button className="productDetailComponent-heart-icon-button">
+              <img className="productDetailComponent-heart-icon"
                 src="assets/common/empty-heart.png" alt="emptyheart" />
             </button >
-            <button className="share-icon-button">
-              <img className="share-icon"
+            <button className="productDetailComponent-share-icon-button">
+              <img className="productDetailComponent-share-icon"
                 src="assets/common/share.png" alt="share" />
             </button>
           </div>
         </div>
 
-        <div className="product-title">
-          <label className="title">{product.productName}</label>
-          <label className="info-mesg">원산지 : 상품설명 또는 구매정보 페이지 참조</label>
+        <div className="productDetailComponent-product-title">
+          <label className="productDetailComponent-title">{product.productName}</label>
+          <label className="productDetailComponent-info-mesg">원산지 : 상품설명 또는 구매정보 페이지 참조</label>
         </div>
 
-        <div className="price-per">
-          <span className="price-item">{product.price} 원</span>
+        <div className="productDetailComponent-price-per">
+          <span className="productDetailComponent-price-item">{product.price} 원</span>
         </div>
 
-        <img className="today-pickup-img"
+        <img className="productDetailComponent-today-pickup-img"
           src="assets/common/today-pickup.png" alt="today-pickup" />
 
         {/* 네비게이션 바 */}
-        <div className="nav-bar">
+        <div className="productDetailComponent-nav-bar">
           <div
-            className={`nav-item ${activeTab === 'description' ? 'active' : ''}`}
+            className={`productDetailComponent-nav-item ${activeTab === 'description' ? 'active' : ''}`}
             onClick={() => handleTabClick('description')}
           >
             상품설명
           </div>
           <div
-            className={`nav-item ${activeTab === 'reviews' ? 'active' : ''}`}
+            className={`productDetailComponent-nav-item ${activeTab === 'reviews' ? 'active' : ''}`}
             onClick={() => handleTabClick('reviews')}
           >
             리뷰
           </div>
           <div
-            className={`nav-item ${activeTab === 'qa' ? 'active' : ''}`}
+            className={`productDetailComponent-nav-item ${activeTab === 'qa' ? 'active' : ''}`}
             onClick={() => handleTabClick('qa')}
           >
             Q&A
@@ -183,50 +183,50 @@ function ProductDetailComponent() {
         </div>
 
         {/* 콘텐츠 영역 */}
-        <div className="content">
-          {activeTab === 'description' && <div className="content-item active">{product.detailImage}</div>}
-          {activeTab === 'reviews' && <div className="content-item active">리뷰 내용</div>}
-          {activeTab === 'qa' && <div className="content-item active">Q&A 내용</div>}
+        <div className="productDetailComponent-content">
+          {activeTab === 'description' && <div className="productDetailComponent-content-item active">{product.detailImage}</div>}
+          {activeTab === 'reviews' && <div className="productDetailComponent-content-item active">리뷰 내용</div>}
+          {activeTab === 'qa' && <div className="productDetailComponent-content-item active">Q&A 내용</div>}
         </div>
 
       </div>
 
       {/* 하단고정 장바구니/바로구매 버튼 */}
-      <div className={`option-footer ${isExpanded ? 'expanded' : ''}`}>
-        <div className="select-more-items">
-          <button className="more-items" onClick={toggleExpand}>
-            <img className="up-arrow"
+      <div className={`productDetailComponent-option-footer ${isExpanded ? 'expanded' : ''}`}>
+        <div className="productDetailComponent-select-more-items">
+          <button className="productDetailComponent-more-items" onClick={toggleExpand}>
+            <img className="productDetailComponent-up-arrow"
               src="assets/common/uparrow.png" alt="uparrow" />
           </button>
         </div>
 
         {/* 펼쳐지는 부분을 하단 고정바 위로 나타나게 수정 */}
         {isExpanded && (
-          <div className="expanded-section">
+          <div className="productDetailComponent-expanded-section">
 
             {/* 수량 입력 및 총 가격 표시 영역 */}
-            <div className="price-control">
-              <div className="quantity-control">
-                <button className="quantity-button" onClick={decreaseQuantity}>-</button>
-                <span className="quantity-display">{quantity}</span>
-                <button className="quantity-button" onClick={increaseQuantity}>+</button>
+            <div className="productDetailComponent-price-control">
+              <div className="productDetailComponent-quantity-control">
+                <button className="productDetailComponent-quantity-button" onClick={decreaseQuantity}>-</button>
+                <span className="productDetailComponent-quantity-display">{quantity}</span>
+                <button className="productDetailComponent-quantity-button" onClick={increaseQuantity}>+</button>
               </div>
-              <div className="price-per-info">
-                <span className="price-per-item">{product.price}원</span>
+              <div className="productDetailComponent-price-per-info">
+                <span className="productDetailComponent-price-per-item">{product.price}원</span>
               </div>
             </div>
 
-            <div className="total-info">
-              <span className="total-quantity">총 수량: {quantity}개</span>
-              <span className="total-price">총 가격: {product.price * quantity}원</span>
+            <div className="productDetailComponent-total-info">
+              <span className="productDetailComponent-total-quantity">총 수량: {quantity}개</span>
+              <span className="productDetailComponent-total-price">총 가격: {product.price * quantity}원</span>
             </div>
 
           </div>
         )}
 
-        <div className="option-buy-button">
-          <button onClick={saveInBasket} className="go-cart">장바구니</button>
-          <button className="buy-now">바로구매</button>
+        <div className="productDetailComponent-option-buy-button">
+          <button onClick={saveInBasket} className="productDetailComponent-go-cart">장바구니</button>
+          <button className="productDetailComponent-buy-now">바로구매</button>
         </div>
       </div>
 

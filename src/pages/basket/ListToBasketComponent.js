@@ -52,6 +52,7 @@ function ListToBasketComponent() {
         refreshOrders();
     }
 
+    // 장바구니 담기
     async function refreshOrders() {
         const token = getAuthToken();
         const loginId = localStorage.getItem("loginId");
@@ -65,6 +66,7 @@ function ListToBasketComponent() {
 
         if (response.ok) {
             const resData = await response.json();
+            console.log(resData);
             setBaskets(resData);
             setSelectedBaskets([]);
         } else {
