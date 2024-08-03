@@ -79,12 +79,12 @@ const AllProductComponent = () => {
                         <img src="assets/common/emart24_logo.png" alt="eMart24" className="allproduct-nav-logo" /> {/* 로고 이미지 */}
                     </div>
                     <button className="allproduct-cart-button">
-                        <img src="assets/common/cartIcon.png" alt="Cart" className="allproduct-nav-cicon" /> {/* 장바구니로 가기 아이콘 */}
+                        <img src="assets/common/cartIcon.png" alt="Cart" className="allproduct-nav-cicon" onClick={() => { navigate('/eDrink24/basket') }} /> {/* 장바구니로 가기 아이콘 */}
                     </button>
                 </div>
             </div>
             <div className="allproduct-body">
-                {/* 카테고리 바 */}
+                {/* 카테고리 바 => 바꿔야함 */}
                 <div className="allproduct-filter-bar">
                     <button onClick={allProducts} className="allproduct-filter-button selected">와인 전체</button>
                     <button onClick={() => selectCategory2('레드와인')} className="allproduct-filter-button">레드</button>

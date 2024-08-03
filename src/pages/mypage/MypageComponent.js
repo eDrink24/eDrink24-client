@@ -28,7 +28,7 @@ function MypageComponent() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             }
         });
 
@@ -94,7 +94,7 @@ function MypageComponent() {
                         <span>찜</span>
                     </div>
                     <div className="icon-item">
-                        <img src="assets/mypage/basket.png" alt="장바구니" />
+                        <img src="assets/mypage/basket.png" alt="장바구니" onClick={() => { navigate('/eDrink24/basket') }} />
                         <span>장바구니</span>
                     </div>
                 </div>
