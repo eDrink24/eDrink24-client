@@ -250,8 +250,6 @@ function SignupComponent() {
             { name: 'address2', value: detailAddress }
         ];
 
-        console.log(dataForm);
-
         let allValid = true;
         dataForm.forEach(field => {
             if (field.value === '') {
