@@ -23,7 +23,7 @@ function OrderComponent() {
     const [stores, setStores] = useState([]);
     const [loadingStores, setLoadingStores] = useState(false);
     const [storeAddress, setStoreAddress] = useState('');
-
+//
     useEffect(() => {
         if (loginId) {
             showAllBasket();
