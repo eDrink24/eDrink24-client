@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ProductDetailComponent.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
 
 function ProductDetailComponent() {
   // 상태 변수 선언
@@ -10,7 +11,7 @@ function ProductDetailComponent() {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
-  const userId = 4;
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     DetailProduct();
@@ -71,11 +72,17 @@ function ProductDetailComponent() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          loginId: localStorage.getItem("loginId"),
+          userId: localStorage.getItem("loginId"),
           productId: productId,
           basketQuantity: quantity
         })
       });
+
+      if (response.ok) {
+        setModalIsOpen(true);
+      } else {
+        throw new Error('Failed to save product to basket');
+      }
 
       const resData = await response.json();
       setProduct(resData);
@@ -86,6 +93,20 @@ function ProductDetailComponent() {
       console.error('Error saving product to basket:', error);
     }
   };
+
+  // 장바구니 버튼 클릭 후 모달창에서 예 누르면 장바구니 페이지로 이동
+  const goToBasketPage = () => {
+    setModalIsOpen(false);
+    navigate('/eDrink24/basket');
+  };
+
+  // 장바구니 버튼 클릭 후 모달창에서 아니요 누르면 제품목록 페이지로 이동
+  const stayOnPage = () => {
+    setModalIsOpen(false);
+
+    navigate('/eDrink24/allproduct/');
+  };
+
 
   return (
     <div className="productDetailComponent-container">
@@ -229,6 +250,15 @@ function ProductDetailComponent() {
           <button className="productDetailComponent-buy-now">바로구매</button>
         </div>
       </div>
+
+      <AlertModalOfClickBasketButton
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        message="장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?"
+        navigateOnYes={goToBasketPage}
+        navigateOnNo={stayOnPage}
+      />
+
 
     </div>
   );

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import './ListToBasketComponent.css';
 import { getAuthToken } from '../../util/auth';
-import { json, useLoaderData } from 'react-router-dom';
+import { json, useLoaderData, useNavigate } from 'react-router-dom';
 
 function ListToBasketComponent() {
     const xxx = useLoaderData();
     const [baskets, setBaskets] = useState(xxx);
     const [selectedBaskets, setSelectedBaskets] = useState([]);
+    const navigate = useNavigate();
 
+    //장바구니에 저장되어 있는 목록 보여주기
     async function refreshBaskets() {
         const token = getAuthToken();
         const loginId = localStorage.getItem("loginId");
@@ -28,6 +30,7 @@ function ListToBasketComponent() {
         }
     }
 
+    //제품 삭제하기
     async function deleteSelectedBaskets() {
         const token = getAuthToken();
         const loginId = localStorage.getItem("loginId");
@@ -49,10 +52,23 @@ function ListToBasketComponent() {
     }
 
     async function showProductToOrderPage() {
-        refreshOrders();
+        var xxx = document.querySelectorAll("input:checked");
+        console.log("xxx:",xxx);
+        var basketIds="";
+        xxx.forEach(function(v, idx){
+            console.log(idx,v);
+            if(v.value != "0"){
+                
+                    basketIds += v.value+" ";
+            
+            }
+            console.log(basketIds);
+
+        })
+        navigate(`/eDrink24/order/4/kko6235/${basketIds}`);
     }
 
-    // 장바구니 담기
+    //
     async function refreshOrders() {
         const token = getAuthToken();
         const loginId = localStorage.getItem("loginId");
@@ -66,7 +82,6 @@ function ListToBasketComponent() {
 
         if (response.ok) {
             const resData = await response.json();
-            console.log(resData);
             setBaskets(resData);
             setSelectedBaskets([]);
         } else {
@@ -102,6 +117,7 @@ function ListToBasketComponent() {
                         type="checkbox"
                         onChange={toggleSelectAll}
                         checked={selectedBaskets.length === baskets.length}
+                        value="0"
                     />
                     전체 선택
                 </label>
@@ -122,7 +138,7 @@ function ListToBasketComponent() {
                             <tr key={basket.basketId} className="basket-item">
                                 <td>
                                     <input
-                                        type="checkbox"
+                                        type="checkbox" name='basketId' value={basket.basketId}
                                         checked={selectedBaskets.includes(basket.basketId)}
                                         onChange={() => toggleSelectBasket(basket.basketId)}
                                     />

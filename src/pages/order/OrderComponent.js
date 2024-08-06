@@ -1,12 +1,12 @@
 import "./OrderComponent.css";
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import { useLoaderData, useParams, useNavigate } from 'react-router-dom';
+import { useLoaderData, useParams, useNavigate, useLocation } from 'react-router-dom';
 import NaverMapContainer from "./NaverMapContainer";
 
 function OrderComponent() {
     const initialBasket = useLoaderData();
-    const { userId, loginId } = useParams(); // loginId를 받아오는 것으로 수정
+    const { userId, loginId, basketIds } = useParams(); // loginId를 받아오는 것으로 수정
     const navigate = useNavigate();
     const [basket, setBasket] = useState(Array.isArray(initialBasket) ? initialBasket : []);
     const [storeId, setStoreId] = useState(null);
@@ -60,7 +60,7 @@ function OrderComponent() {
 
     async function showAllBasket() {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${loginId}`, {
+            const response = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${loginId}/${basketIds}`, {
                 method: "GET",
             });
 
