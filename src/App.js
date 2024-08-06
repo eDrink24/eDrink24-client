@@ -37,17 +37,17 @@ const router = createBrowserRouter([
       },
       { path: "/eDrink24/mypage", element: <MypageComponent /> },
       {
-        path: '/eDrink24/order/:userId/:loginId', element: <OrderComponent />
+        path: '/eDrink24/basket', element: <ListToBasketComponent />,
+        loader: basketLoader
+      },
+      {
+        path: '/eDrink24/order/:userId/:loginId/:basketIds', element: <OrderComponent />
 
       },
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "/eDrink24/mypage/updateCustomer", element: <UpdateCustomerComponent /> },
-          {
-            path: '/eDrink24/basket', element: <ListToBasketComponent />,
-            loader: basketLoader
-          },
+          { path: "/eDrink24/mypage/updateCustomer", element: <UpdateCustomerComponent /> }
         ]
       }
     ]
