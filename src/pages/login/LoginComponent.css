@@ -173,6 +173,7 @@ form {
     justify-content: right;
     font-size: 0.8em;
     margin-bottom: 20px;
+    cursor: pointer;
 }
 
 .options a {

@@ -1,5 +1,7 @@
 import { useActionData, Form, useNavigate } from 'react-router-dom';
 import "./LoginComponent.css";
+import FindIdModal from '../login/modal/FindIdModal.js';
+import FindPwModal from '../login/modal/FindPwModal.js';
 import { useEffect, useState } from 'react';
 import AlertModal from '../../components/alert/AlertModal.js';
 
@@ -47,7 +49,27 @@ function LoginComponent() {
             openAlert("로그인에 성공하였습니다!", true);
         }
     }, [data]);
+
     // ********************************************************
+    // 아이디 찾기
+    const [openFindId, setOpenFindId] = useState(false);
+
+    const openFindIdModal = () => {
+        setOpenFindId(true);
+    }
+    const closeFindIdModal = () => {
+        setOpenFindId(false);
+    }
+    // 비밀번호 찾기
+    const [openFindPw, setOpenFindPw] = useState(false);
+    const openFindPwModal = () => {
+        setOpenFindPw(true);
+    }
+    const closeFindPwModal = () => {
+        setOpenFindPw(false);
+    }
+
+
 
     return (
         <div className="login-body">
@@ -58,6 +80,14 @@ function LoginComponent() {
                     message={alertMessage}
                     navigateOnClose={navigateOnClose}
                     navigateClosePath={"/eDrink24"}
+                />
+                <FindIdModal
+                    isOpen={openFindId}
+                    onRequestClose={closeFindIdModal}
+                />
+                <FindPwModal
+                    isOpen={openFindPw}
+                    onRequestClose={closeFindPwModal}
                 />
                 <div className='login-header'>
                     <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
@@ -96,8 +126,8 @@ function LoginComponent() {
                     <button type="submit" className="login-button">로그인</button>
                 </Form>
                 <div className="options">
-                    <a href="#">아이디 찾기 {'>'}</a>
-                    <a href="#">비밀번호 찾기 {'>'}</a>
+                    <a onClick={openFindIdModal}>아이디 찾기 {'>'}</a>
+                    <a onClick={openFindPwModal}>비밀번호 찾기 {'>'}</a>
                 </div>
                 <div className="signup-options">
                     <p>혹시, 계정이 없으신가요?</p>
