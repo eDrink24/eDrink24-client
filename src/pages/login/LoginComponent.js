@@ -49,6 +49,7 @@ function LoginComponent() {
             openAlert("로그인에 성공하였습니다!", true);
         }
     }, [data]);
+
     // ********************************************************
     // 아이디 찾기
     const [openFindId, setOpenFindId] = useState(false);
