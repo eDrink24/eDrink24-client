@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './ProductDetailComponent.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
+import { immediatePurchaseState } from '../basket/BasketAtom';
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { orderState } from '../order/OrderAtom';
 
 function ProductDetailComponent() {
   // 상태 변수 선언
@@ -12,6 +15,7 @@ function ProductDetailComponent() {
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [orderInfo, setOrderInfo] = useRecoilState(orderState);
 
   useEffect(() => {
     DetailProduct();
@@ -72,9 +76,17 @@ function ProductDetailComponent() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          userId: localStorage.getItem("loginId"),
-          productId: productId,
-          basketQuantity: quantity
+          userId: localStorage.getItem("userId"),
+          basketId: null, // auto increment이기 때문에 장바구니에 저장될 때 basketId 저장됨.
+          items: [{
+            itemId: null,
+            basketId: null,
+            productId: productId,
+            defaultImage: product.defaultImage,
+            productName: product.productName,
+            price: product.price,
+            basketQuantity: quantity
+          }]
         })
       });
 
@@ -107,6 +119,27 @@ function ProductDetailComponent() {
     navigate('/eDrink24/allproduct/');
   };
 
+  //바로구매 버튼 클릭 시 결제페이지로 이동
+  const moveToOrderPage = () => {
+    const userId = localStorage.getItem("userId");
+
+    //선택한 제품 정보를 orderState에 저장
+    setOrderInfo((prev) => ({ // prev는 현재 상태에서 일부분만 수정하고 나머지는 유지하고 싶을 때 사용
+      ...prev, // 기존 상태 객체를 펼쳐서 복사하고, 복사된 값에서 특정한 값만 수정
+      selectedItems: [
+          {
+              productId: product.productId,
+              productName: product.productName,
+              price: product.price,
+              basketQuantity: quantity,
+              defaultImage: product.defaultImage,
+          },
+      ],
+  }));
+
+  
+    navigate(`/eDrink24/order/${userId}`);
+  };
 
   return (
     <div className="productDetailComponent-container">
@@ -247,7 +280,7 @@ function ProductDetailComponent() {
 
         <div className="productDetailComponent-option-buy-button">
           <button onClick={saveInBasket} className="productDetailComponent-go-cart">장바구니</button>
-          <button className="productDetailComponent-buy-now">바로구매</button>
+          <button onClick={moveToOrderPage} className="productDetailComponent-buy-now">바로구매</button>
         </div>
       </div>
 
