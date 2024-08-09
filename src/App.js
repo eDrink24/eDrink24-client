@@ -15,6 +15,7 @@ import ProtectedRoute from './components/ProtectedRouter';
 import ListToBasketComponent, { loader as basketLoader } from './pages/basket/ListToBasketComponent';
 import AllProductComponent from './pages/product/AllProductComponet';
 import ProductDetailComponent from './pages/product/ProductDetailComponent';
+import { RecoilRoot } from 'recoil';
 
 // test yoon
 const router = createBrowserRouter([
@@ -41,8 +42,7 @@ const router = createBrowserRouter([
         loader: basketLoader
       },
       {
-        path: '/eDrink24/order/:userId/:loginId/:basketIds', element: <OrderComponent />
-
+        path: '/eDrink24/order/:userId', element: <OrderComponent />
       },
       {
         element: <ProtectedRoute />,
@@ -56,7 +56,10 @@ const router = createBrowserRouter([
 // test/test2
 function App() {
   return (
-    <RouterProvider router={router} />
+    <RecoilRoot>
+      <RouterProvider router={router} />
+    </RecoilRoot>
+    
   );
 }
 
