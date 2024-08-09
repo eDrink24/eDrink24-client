@@ -1,6 +1,7 @@
 import React, { useState } from 'react'; // useState를 react에서 가져옵니다
 import { useNavigate } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
 import FooterComponent from '../../components/footer/FooterComponent.js';
+import CarouselComponent from '../../components/Banner/CarouselComponent.js';
 import "./HomeComponent.css";
 
 function HomeComponent() {
@@ -61,7 +62,10 @@ function HomeComponent() {
             <div className="home-container">
 
                 <div className="my-place-container"></div>
-                <div className="banner-container"></div>
+
+                {/* 배너 이미지 */}
+                <CarouselComponent />
+
                 <div className="category-button-container">
                     <button type="button" className="b1" onClick={handleDirectCategory}>
                         <img src="assets/common/menu.png" className="menuButton" alt="Menu Button" />
