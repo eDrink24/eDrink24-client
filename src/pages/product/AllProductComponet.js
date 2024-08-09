@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AllProductComponent = () => {
     const [products, setProducts] = useState([]);
-    const [category2, setCategory2] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('와인 전체'); // 선택된 카테고리를 저장하는 상태 변수 추가
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,15 +25,16 @@ const AllProductComponent = () => {
 
             const resData = await response.json();
             setProducts(resData);
+            setSelectedCategory('와인 전체'); // 와인 전체 버튼을 클릭후 다시 클릭하기 위해서 필요
         } catch (error) {
             console.error('Error fetching products:', error);
         }
     };
 
-    //카테고리별로 제품 보여주기
-    async function selectCategory2(category2) {
-        setCategory2(category2);
-        const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory2/${category2}`, {
+    // 카테고리별로 제품 보여주기
+    async function selectCategory2(category) {
+        setSelectedCategory(category); // 클릭한 카테고리를 상태로 설정하여 선택된 버튼을 추적
+        const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory2/${category}`, {
             method: "GET"
         });
 
@@ -70,7 +71,9 @@ const AllProductComponent = () => {
 
     return (
         <div className="allproduct-container">
-            <div className="allproduct-home-header"> {/* 상단 네비게이션 바 */}
+
+            <div className="allproduct-home-header">
+                {/* 상단 네비게이션 바 */}
                 <div className="allproduct-navigation-bar">
                     <button className="allproduct-back-button" onClick={() => { navigate(-1) }}>
                         <img src="assets/common/backIcon.png" alt="Back" className="allproduct-nav-bicon" /> {/* 뒤로 가기 아이콘 */}
@@ -83,16 +86,49 @@ const AllProductComponent = () => {
                     </button>
                 </div>
             </div>
+
             <div className="allproduct-body">
-                {/* 카테고리 바 => 바꿔야함 */}
+
+                {/* 카테고리 바 */}
                 <div className="allproduct-filter-bar">
-                    <button onClick={allProducts} className="allproduct-filter-button selected">와인 전체</button>
-                    <button onClick={() => selectCategory2('레드와인')} className="allproduct-filter-button">레드</button>
-                    <button className="allproduct-filter-button">샴페인</button>
-                    <button onClick={() => selectCategory2('화이트와인')} className="allproduct-filter-button">화이트</button>
-                    <button className="allproduct-filter-button">로제</button>
-                    <button className="allproduct-filter-button">국산</button>
+                    <button 
+                        onClick={allProducts} 
+                        className={`allproduct-filter-button ${selectedCategory === '와인 전체' ? 'selected' : ''}`} 
+                    >
+                        와인 전체
+                    </button>
+                    <button 
+                        onClick={() => selectCategory2('레드와인')} 
+                        className={`allproduct-filter-button ${selectedCategory === '레드와인' ? 'selected' : ''}`}
+                    >
+                        레드
+                    </button>
+                    <button 
+                        onClick={() => selectCategory2('샴페인')} 
+                        className={`allproduct-filter-button ${selectedCategory === '샴페인' ? 'selected' : ''}`}
+                    >
+                        샴페인
+                    </button>
+                    <button 
+                        onClick={() => selectCategory2('화이트와인')} 
+                        className={`allproduct-filter-button ${selectedCategory === '화이트와인' ? 'selected' : ''}`}
+                    >
+                        화이트
+                    </button>
+                    <button 
+                        onClick={() => selectCategory2('로제')} 
+                        className={`allproduct-filter-button ${selectedCategory === '로제' ? 'selected' : ''}`}
+                    >
+                        로제
+                    </button>
+                    <button 
+                        onClick={() => selectCategory2('국산')} 
+                        className={`allproduct-filter-button ${selectedCategory === '국산' ? 'selected' : ''}`}
+                    >
+                        국산
+                    </button>
                 </div>
+
                 {/* 오늘픽업 체크박스 / 인기순,신상품,등등 */}
                 <div className="allproduct-click-container">
                     <div className="allproduct-container1">
