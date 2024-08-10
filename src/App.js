@@ -7,15 +7,18 @@ import SignupComponent, { action as signUpAction } from './pages/signup/SignupCo
 import MypageComponent from './pages/mypage/MypageComponent';
 import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
 import OrderComponent from './pages/order/OrderComponent';
-
-import RootLayout from './pages/rootLayout/root';
-
-import { tokenLoader } from './util/auth';
-import ProtectedRoute from './components/ProtectedRouter';
 import ListToBasketComponent, { loader as basketLoader } from './pages/basket/ListToBasketComponent';
 import AllProductComponent from './pages/product/AllProductComponet';
 import ProductDetailComponent from './pages/product/ProductDetailComponent';
 import { RecoilRoot } from 'recoil';
+
+import KakaoLoginHandler from './pages/login/kakao/KakaoLoginHandler';
+import KakaoSignupHandler from './pages/login/kakao/KakaoSignupHandler';
+
+import RootLayout from './pages/rootLayout/root';
+import ProtectedRoute from './components/ProtectedRouter';
+
+import { tokenLoader } from './util/auth';
 
 // test yoon
 const router = createBrowserRouter([
@@ -43,6 +46,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/eDrink24/order/:userId', element: <OrderComponent />
+      },
+
+      { // 카카오 로그인 대기창
+        path: '/eDrink24/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
+      },
+      { // 카카오 회원가입시, 추가정보 입력창
+        path: '/eDrink24/kakao/signup', element : <KakaoSignupHandler/>
       },
       {
         element: <ProtectedRoute />,

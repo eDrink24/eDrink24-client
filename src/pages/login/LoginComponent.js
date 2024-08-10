@@ -1,9 +1,11 @@
-import { useActionData, Form, useNavigate } from 'react-router-dom';
+import { useActionData, Form, useNavigate, redirect } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import "./LoginComponent.css";
 import FindIdModal from '../login/modal/FindIdModal.js';
 import FindPwModal from '../login/modal/FindPwModal.js';
-import { useEffect, useState } from 'react';
 import AlertModal from '../../components/alert/AlertModal.js';
+
+import { KAKAO_AUTH_URL } from '../../config/kakao/oAuth.js';
 
 function LoginComponent() {
     const data = useActionData();
@@ -138,7 +140,7 @@ function LoginComponent() {
                         <img src="assets/login/google.png" alt='google icon' />
                         <span>구글계정으로 가입하기</span>
                     </button>
-                    <button className="kakao-signup">
+                    <button className="kakao-signup" onClick={() => window.location.href = KAKAO_AUTH_URL}>
                         <img src="assets/login/kakao.png" alt='kakao icon' />
                         <span>카카오로 가입하기</span>
                     </button>
