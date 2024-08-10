@@ -2,13 +2,11 @@ import React, { useState } from 'react'; // useState 임포트 추가
 import { useNavigate } from 'react-router-dom'; // useNavigate 임포트 추가
 import './CategoryComponent.css';
 import FooterComponent from '../../components/footer/FooterComponent.js';
-const categories = ['와인', '양주', '맥주', '전통주', '기타 주류', '논알콜', '안주'];
+const categories = ['와인', '양주', '전통주', '논알콜', '안주'];
 const subcategories = {
-  '와인': ['와인 전체', '레드', '화이트', '로제', '샴페인', '스파클링', '내추럴'],
-  '양주': ['양주 전체', '싱글몰트 위스키'],
-  '맥주': ['맥주 전체'],
-  '전통주': ['전통주 전체'],
-  '기타 주류': ['기타 주류'],
+  '와인': ['레드', '화이트', '스파클링', '로제'],
+  '양주': ['양주'],
+  '전통주': ['약주', '과실주', '탁주', '리큐르', '전통소주', '전통주세트', '기타전통주'],
   '논알콜': ['논알콜'],
   '안주': ['안주'],
 };
@@ -17,8 +15,8 @@ const CategoryComponent = () => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const navigate = useNavigate();
 
-  const handleDirectB2 = () => {
-    navigate("/eDrink24/allproduct");
+  const handleCategory1Click = (category1) => {
+    navigate(`/eDrink24/allproduct/${category1}`);
   };
 
   const handleDirectB1 = () => {
@@ -67,7 +65,7 @@ const CategoryComponent = () => {
           <div className="category-main-content">
             <h2>
               <span className='category-selectedCategoryText'>{selectedCategory}</span>
-              <button className="category-moreButton" onClick={handleDirectB2}>
+              <button className="category-moreButton" onClick={()=>handleCategory1Click(selectedCategory)}>
                 &gt; {/* &gt;로 변경하여 올바른 표시 */}
               </button>
             </h2>

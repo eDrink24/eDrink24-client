@@ -1,16 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import './AllProductComponent.css';
 import FooterComponent from '../../components/footer/FooterComponent.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
+const subcategories = {
+    '와인': ['레드와인', '화이트와인', '스파클링와인', '로제와인'],
+    '양주': ['양주'],
+    '전통주': ['약주', '과실주', '탁주', '리큐르', '전통소주', '전통주세트', '기타전통주'],
+    '논알콜': ['논알콜'],
+    '안주': ['안주'],
+};
 
 const AllProductComponent = () => {
+    const { category1 } = useParams();
     const [products, setProducts] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('와인 전체'); // 선택된 카테고리를 저장하는 상태 변수 추가
+    const [category2List, setCategory2List] = useState([]);
+    const [category, setCategory] = useState([]); // 선택된 하위 카테고리 상태
     const navigate = useNavigate();
 
     useEffect(() => {
-        allProducts();
-    }, []);
+        // 카테고리1에 해당하는 카테고리2 리스트 설정
+        if (subcategories[category1]) {
+            setCategory2List(subcategories[category1]);
+
+            // 기본적으로 첫번째 카테고리2 항목을 선택
+            const defaultCategory2 = subcategories[category1][0]; // 예) 와인에서는 '레드와인'으로 설정
+            setCategory(defaultCategory2);
+            selectCategory2(defaultCategory2); // 기본적으로 첫번째 항목을 선택한 상태로 불러옴.
+        }
+        selectCategory1(category1);
+    }, [category1]);
 
     //전체 제품 보여주기
     const allProducts = async () => {
@@ -25,16 +44,33 @@ const AllProductComponent = () => {
 
             const resData = await response.json();
             setProducts(resData);
-            setSelectedCategory('와인 전체'); // 와인 전체 버튼을 클릭후 다시 클릭하기 위해서 필요
         } catch (error) {
             console.error('Error fetching products:', error);
         }
     };
 
-    // 카테고리별로 제품 보여주기
-    async function selectCategory2(category) {
-        setSelectedCategory(category); // 클릭한 카테고리를 상태로 설정하여 선택된 버튼을 추적
-        const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory2/${category}`, {
+    // 카테고리1에 해당하는 제품 목록만 보여주기
+    async function selectCategory1(category1) {
+
+        const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory1/${category1}`, {
+            method: "GET"
+        });
+
+        console.log("response", response);
+
+        if (response.ok) {
+            const resData = await response.json();
+            setProducts(resData);
+        } else {
+            console.error('Error fetching data:', response.statusText);
+        }
+    }
+
+
+    //카테고리2별로 제품 보여주기
+    async function selectCategory2(category2) {
+        setCategory(category2); // 선택된 카테고리2 상태 업데이트
+        const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory2/${category2}`, {
             method: "GET"
         });
 
@@ -71,9 +107,7 @@ const AllProductComponent = () => {
 
     return (
         <div className="allproduct-container">
-
-            <div className="allproduct-home-header">
-                {/* 상단 네비게이션 바 */}
+            <div className="allproduct-home-header"> {/* 상단 네비게이션 바 */}
                 <div className="allproduct-navigation-bar">
                     <button className="allproduct-back-button" onClick={() => { navigate(-1) }}>
                         <img src="assets/common/backIcon.png" alt="Back" className="allproduct-nav-bicon" /> {/* 뒤로 가기 아이콘 */}
@@ -86,49 +120,17 @@ const AllProductComponent = () => {
                     </button>
                 </div>
             </div>
-
             <div className="allproduct-body">
-
-                {/* 카테고리 바 */}
+                {/* 카테고리 바 => 선택한 category1에 따라 동적 변경 */}
                 <div className="allproduct-filter-bar">
-                    <button 
-                        onClick={allProducts} 
-                        className={`allproduct-filter-button ${selectedCategory === '와인 전체' ? 'selected' : ''}`} 
-                    >
-                        와인 전체
-                    </button>
-                    <button 
-                        onClick={() => selectCategory2('레드와인')} 
-                        className={`allproduct-filter-button ${selectedCategory === '레드와인' ? 'selected' : ''}`}
-                    >
-                        레드
-                    </button>
-                    <button 
-                        onClick={() => selectCategory2('샴페인')} 
-                        className={`allproduct-filter-button ${selectedCategory === '샴페인' ? 'selected' : ''}`}
-                    >
-                        샴페인
-                    </button>
-                    <button 
-                        onClick={() => selectCategory2('화이트와인')} 
-                        className={`allproduct-filter-button ${selectedCategory === '화이트와인' ? 'selected' : ''}`}
-                    >
-                        화이트
-                    </button>
-                    <button 
-                        onClick={() => selectCategory2('로제')} 
-                        className={`allproduct-filter-button ${selectedCategory === '로제' ? 'selected' : ''}`}
-                    >
-                        로제
-                    </button>
-                    <button 
-                        onClick={() => selectCategory2('국산')} 
-                        className={`allproduct-filter-button ${selectedCategory === '국산' ? 'selected' : ''}`}
-                    >
-                        국산
-                    </button>
+                    {category2List.map((category2, index) => (
+                        <button key={index}
+                            onClick={() => selectCategory2(category2)}
+                            className={`allproduct-filter-button ${category === category2 ? 'selected' : ''}`}>
+                            {category2}
+                        </button>
+                    ))}
                 </div>
-
                 {/* 오늘픽업 체크박스 / 인기순,신상품,등등 */}
                 <div className="allproduct-click-container">
                     <div className="allproduct-container1">
