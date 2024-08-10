@@ -116,7 +116,7 @@ function ProductDetailComponent() {
   const stayOnPage = () => {
     setModalIsOpen(false);
 
-    navigate('/eDrink24/allproduct/');
+    navigate('/eDrink24/allproduct');
   };
 
   //바로구매 버튼 클릭 시 결제페이지로 이동
