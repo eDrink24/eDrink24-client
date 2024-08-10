@@ -1,14 +1,15 @@
-import { Form, useActionData, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import DaumPostcode from 'react-daum-postcode';
-import { useEffect, useState } from 'react';
 import Modal from "react-modal";
-import "./SignupComponent.css";
-import AlertModal from '../../components/alert/AlertModal';
+import AlertModal from '../../../components/alert/AlertModal';
+import './KakaoSignupHandler.css';
 
-function SignupComponent() {
-    const data = useActionData();
+function KakaoSignupHandler() {
+    const location = useLocation();
     const navigate = useNavigate();
-
+    const cusData = location.state.cusData;
+    console.log(cusData);
     const [postalCode, setPostalCode] = useState("");
     const [roadAddress, setRoadAddress] = useState("");
     const [detailAddress, setDetailAddress] = useState("");
@@ -16,15 +17,11 @@ function SignupComponent() {
     const [gender, setGender] = useState('남');
     const [maxDate, setMaxDate] = useState("");
 
-    // 아이디 중복체크
-    const [isIdChecked, setIsIdChecked] = useState(false);
-
     // 비밀번호 확인
     const [pw, setPw] = useState("");
     const [pwConfirm, setPwConfirm] = useState("");
     const [pwMatch, setPwMatch] = useState(true);
 
-    // Modal 스타일
     const customStyles = {
         overlay: {
             backgroundColor: "rgba(0,0,0,0.5)",
@@ -58,8 +55,20 @@ function SignupComponent() {
     const changeHandler = (e) => {
         setDetailAddress(e.target.value);
     }
+    
+    // 비밀번호 일치 여부 확인
+    useEffect(() => {
+        setPwMatch(pw === pwConfirm);
+    }, [pw, pwConfirm]);
 
-    // **********************************************************************
+    // 만 19세미만 선택불가
+    useEffect(() => {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        setMaxDate(`${yyyy - 19}-12-31`);
+    }, []);
+
+    // 알림창-------------------------------------------------------------------
     const [alertOpen, setAlertOpen] = useState(false); 
     const [alertMessage, setAlertMessage] = useState(""); 
     const [navigateOnClose, setNavigateOnClose] = useState(false); 
@@ -76,86 +85,20 @@ function SignupComponent() {
         setAlertOpen(false);
     }
 
-    // 알림창 닫힐 때 navigate 호출
     useEffect(() => {
         if (!alertOpen && navigateOnClose) {
             navigate("/eDrink24/login");
         }
     }, [alertOpen, navigateOnClose, navigate]);
+    // -------------------------------------------------------------------------
 
-    // 회원가입 성공시 알람 / 2번째 파라미터값에 true를 줘서
-    useEffect(() => {
-        if (data) {
-            openAlert(data.message, data.success); // success : true
-        }
-    }, [data]);
-    // **********************************************************************
-
-    // 비밀번호 일치 여부 확인
-    useEffect(() => {
-        setPwMatch(pw === pwConfirm);
-    }, [pw, pwConfirm]);
-
-    // 만 19세미만 선택불가
-    useEffect(() => {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        setMaxDate(`${yyyy - 19}-12-31`); // 만 19세 이상
-    }, []);
-
-    // 아이디 중복체크
-    const checkId = async (e) => {
-        e.preventDefault();
-        const loginId = document.getElementById('loginId').value;
-
-        if (!loginId) {
-            openAlert("아이디를 입력해 주세요.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`http://localhost:8090/eDrink24/customerIdCheck/${loginId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            const message = await response.text();
-
-            if (response.status === 409) {
-                openAlert(message); // "이 아이디는 사용불가합니다."
-                setIsIdChecked(false);
-            } else if (response.ok) {
-                openAlert(message); // "이 아이디는 사용가능합니다."
-                setIsIdChecked(true);
-            } else {
-                throw new Error("중복체크 요청 실패");
-            }
-        } catch (error) {
-            openAlert("중복체크 중 오류가 발생했습니다.");
-            setIsIdChecked(false);
-        }
-    };
-
-    // 중복검사 완료후, 입력된 아이디 변경될시
-    const handleIdChange = (e) => {
-        setIsIdChecked(false);
-    }
-
-    // 성별바꾸기
-    const handleGenderChange = (e) => {
-        setGender(e.target.value);
-    };
-
-    // 번호인증
+    // 번호인증-----------------------------------------------------------------
     const [phoneNumber, setPhoneNumber] = useState('');
     const [certificateCode, setCertificateCode] = useState('');
     const [isOpenVerification, setIsOpenVerification] = useState(false);
     const [isVerificated, setIsVerificated] = useState(false);
     const [timer, setTimer] = useState(60);
 
-    // 인증창열기
     const openVerification = (async (e) => {
         e.preventDefault();
         if (phoneNumber.length !== 11) {
@@ -174,15 +117,15 @@ function SignupComponent() {
 
             if (response.ok) {
                 setIsOpenVerification(true);
-                setIsVerificated(false); // 인증 진행 중에는 인증 완료 상태 초기화
-                setTimer(180); // 타이머 초기화
+                setIsVerificated(false); 
+                setTimer(180); 
 
-                // 타이머 시작 ( 남은 시간을 1초씩 줄임 )
+                // 타이머
                 const interval = setInterval(() => {
                     setTimer((prevTimer) => {
                         if (prevTimer <= 1) {
                             clearInterval(interval);
-                            setIsOpenVerification(false); // 타이머가 0이 되면 인증 창 닫기
+                            setIsOpenVerification(false); 
                             return 0;
                         }
                         return prevTimer - 1;
@@ -227,23 +170,18 @@ function SignupComponent() {
         }
     };
 
-    // 타이머 포맷팅
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
         return `${minutes}:${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
     };
-
-    // 회원가입 완료 핸들러
-    const clickHandler = (e) => {
+    //--------------------------------------------------------------------------
+    const clickHandler = async (e) => {
         const dataForm = [
-            { name: 'loginId', value: document.getElementById('loginId').value },
             { name: 'pw', value: document.getElementById('pw').value },
             { name: 'pwConfirm', value: document.getElementById('pwConfirm').value },
-            { name: 'userName', value: document.getElementById('userName').value },
             { name: 'birthdate', value: document.getElementById('birthdate').value },
             { name: 'phoneNum', value: document.getElementById('phoneNum').value },
-            { name: 'email', value: document.getElementById('email').value },
             { name: 'postalCode', value: postalCode },
             { name: 'address1', value: roadAddress },
             { name: 'address2', value: detailAddress }
@@ -262,34 +200,79 @@ function SignupComponent() {
         } else if (!pwMatch) {
             openAlert("비밀번호가 일치하지 않습니다.");
             e.preventDefault();
-        } else if (!isIdChecked) {
-            openAlert("아이디 중복체크를 완료해 주세요.");
-            e.preventDefault();
         } else if (!isVerificated) {
             openAlert("휴대폰 인증을 완료해 주세요.");
+        } else {
+            const sendData = {
+                loginId: cusData.loginId,
+                email: cusData.email,
+                userName: cusData.userName,
+                pw: dataForm[0].value,
+                birthdate: dataForm[2].value,
+                phoneNum: dataForm[3].value,
+                postalCode: dataForm[4].value,
+                address1: dataForm[5].value,
+                address2: dataForm[6].value,
+                gender: gender,
+                linkedId : cusData.linkedId
+            };
+
+            console.log(cusData);
+            console.log(cusData.linkedId);
+
+            const response = await fetch("http://localhost:8090/eDrink24/signup", {
+                method : 'POST',
+                headers : {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sendData)
+            });
+
+            //
+            if (response.ok) {
+                const loginData = {
+                    loginId: sendData.loginId,
+                    pw: sendData.pw
+                };
+
+                const loginResponse = await fetch('http://localhost:8090/eDrink24/authenticate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                });
+
+                if (loginResponse.ok) {
+                    const resData = await loginResponse.json();
+                    const token = resData.token;
+                    const userId = resData.userId;
+
+                    localStorage.setItem('jwtAuthToken', token);
+                    localStorage.setItem('loginId', loginData.loginId);
+                    localStorage.setItem('userId', userId);
+
+                    openAlert("회원가입 및 로그인 성공", true, "/eDrink24");
+                } else {
+                    openAlert("회원가입은 성공했으나, 로그인 중 오류 발생");
+                }
+            } else {
+                const errorText = await response.text();
+                openAlert("서버 오류 발생");
+            }
         }
     }
 
     return (
         <div className="signup-container">
             <div className='signup-header'>
-                <h1>회원가입</h1>
+                <h1>추가정보입력</h1>
                 <button className="close-button" onClick={() => window.location.href = "/eDrink24/login"}>
                     <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
                 </button>
             </div>
 
-            <Form method="post" className="signUpForm" >
-                <div className="form-group">
-                    <label htmlFor="loginId">아이디
-                        <span className="requiredCheck"> *</span>
-                    </label>
-                    <input type="text" name="loginId" id="loginId" className="form-control-loginId"
-                        placeholder="아이디를 입력해 주세요" onChange={handleIdChange} />
-                    <button className={`check-button ${isIdChecked ? "check-complete" : ""}`} onClick={!isIdChecked ? checkId : (e) => e.preventDefault()}>
-                        {isIdChecked ? "체크 완료" : "중복 체크"}
-                    </button>
-                </div>
+            <form method="post" className="signUpForm">
                 <div className="form-group">
                     <label htmlFor="pw">비밀번호
                         <span className="requiredCheck"> *</span>
@@ -309,25 +292,6 @@ function SignupComponent() {
                         </p>
                     )}
                 </div>
-                <div className="form-group">
-                    <label htmlFor="userName">이름
-                        <span className="requiredCheck"> *</span>
-                    </label>
-                    <div className="name-genderGroup">
-                        <input type="text" name="userName" id="userName" className="form-control-userName" placeholder="이름을 입력해 주세요" />
-                        <div className="gender-options">
-                            <label htmlFor="genderMale" className="gender-label">
-                                <input type="radio" name="gender" id="genderMale" value="남" onChange={handleGenderChange} checked={gender === "남"} />
-                                <span></span><span className="text">남</span>
-                            </label>
-                            <label htmlFor="genderFemale" className="gender-label">
-                                <input type="radio" name="gender" id="genderFemale" value="여" onChange={handleGenderChange} checked={gender === "여"} />
-                                <span></span><span className="text">여</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
                 <div className="form-group">
                     <label htmlFor="birthdate">생년월일
                         <span className="requiredCheck"> ( 만 19세미만 가입불가능 ) *</span>
@@ -358,13 +322,6 @@ function SignupComponent() {
                     )}
                     {isOpenVerification && isVerificated && (<p className='crf-complete-text'>인증이 완료되었습니다.</p>)}
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="email">이메일
-                        <span className="requiredCheck"> *</span>
-                    </label>
-                    <input type="text" name="email" id="email" className="form-control" placeholder="이메일을 입력해 주세요" />
-                </div>
                 <div className="form-group">
                     <label>주소
                         <span className="requiredCheck"> *</span>
@@ -384,61 +341,19 @@ function SignupComponent() {
                 </div>
 
                 <div className="form-group">
-                    <button name="signup" className="btn-submit" onClick={clickHandler}>회원 가입 완료</button>
+                    <button type="button" className="btn-submit" onClick={clickHandler}>카카오 회원가입 완료</button>
                 </div>
-            </Form>
+            </form>
 
             <AlertModal
                 isOpen={alertOpen}
                 onRequestClose={closeAlert}
                 message={alertMessage}
                 navigateOnClose={navigateOnClose}
-                navigateOnClosePath="/eDrink24/login" 
+                navigateClosePath="/eDrink24/login" 
             />
         </div>
     );
 }
 
-export async function action({ request }) {
-    const data = await request.formData();
-    console.log(data.get("phoneNum"));
-    const authData = {
-        loginId: data.get('loginId'),
-        pw: data.get('pw'),
-        userName: data.get("userName"),
-        birthdate: data.get("birthdate"),
-        gender: data.get("gender"),
-        phoneNum: data.get("phoneNum"),
-        email: data.get("email"),
-        postalCode: data.get("postalCode"),
-        address1: data.get("address1"),
-        address2: data.get("address2")
-    };
-
-    console.log(authData);
-
-    const response = await fetch("http://localhost:8090/eDrink24/signup", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(authData)
-    });
-
-    console.log("회원가입 요청결과: ", response);
-
-    if (response.ok) {
-        return {
-            success: true,
-            message: "회원가입이 완료되었습니다!"
-        };
-    } else {
-        const errorText = await response.text();
-        return {
-            success: false,
-            message: errorText || "회원가입 중 오류가 발생했습니다."
-        };
-    }
-}
-
-export default SignupComponent;
+export default KakaoSignupHandler;

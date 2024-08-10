@@ -18,11 +18,11 @@ const AlertModal = ({ isOpen, onRequestClose, message, navigateOnClose, navigate
     const alertStyles = {
         overlay: {
             backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",               
+            alignItems: "center",         
+            justifyContent: "center",      
         },
         content: {
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
             margin: "auto",
             width: "300px",
             height: "180px",
@@ -31,8 +31,10 @@ const AlertModal = ({ isOpen, onRequestClose, message, navigateOnClose, navigate
             textAlign: "center",
             backgroundColor: "#fff",
             boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
+  
         },
     };
+    
 
     return (
         <Modal
