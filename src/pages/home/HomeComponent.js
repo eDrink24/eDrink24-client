@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'; // useNavigate는 react-router-d
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import CarouselComponent from '../../components/Banner/CarouselComponent.js';
 import "./HomeComponent.css";
+import MyPlaceComponent from './MyPlaceComponent.js';
 
 function HomeComponent() {
 
@@ -60,17 +61,9 @@ function HomeComponent() {
             </div>
 
             <div className="home-container">
-            {/* 위치 정보 버튼 */}
-            <div className="Home-myPlace-container">
-                <div className="myHome-address">
-                    <img src="assets/common/place.png" className="home-placeIcon" alt="Home place" />
-                    <a href="#" className='pickup-stroe'>주소를 입력해주세요 {}</a>
-                </div>
-                <div className="pickUp-address">
-                    <div className="pickUp">픽업매장</div>
-                    <a href="#" className='pickup-stroe'>주소를 입력해주세요 {}</a>
-                </div>
-            </div>
+                
+                {/* 위치 정보 버튼 */}
+                <MyPlaceComponent />
 
                 {/* 배너 이미지 */}
                 <CarouselComponent />
