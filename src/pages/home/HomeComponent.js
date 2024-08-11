@@ -60,8 +60,17 @@ function HomeComponent() {
             </div>
 
             <div className="home-container">
-
-                <div className="my-place-container"></div>
+            {/* 위치 정보 버튼 */}
+            <div className="Home-myPlace-container">
+                <div className="myHome-address">
+                    <img src="assets/common/place.png" className="home-placeIcon" alt="Home place" />
+                    <a href="#" className='pickup-stroe'>주소를 입력해주세요 {}</a>
+                </div>
+                <div className="pickUp-address">
+                    <div className="pickUp">픽업매장</div>
+                    <a href="#" className='pickup-stroe'>주소를 입력해주세요 {}</a>
+                </div>
+            </div>
 
                 {/* 배너 이미지 */}
                 <CarouselComponent />
