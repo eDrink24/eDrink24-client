@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ProductDetailComponent.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
-import { immediatePurchaseState } from '../basket/BasketAtom';
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { orderState } from '../order/OrderAtom';
 
 function ProductDetailComponent() {
@@ -11,6 +10,7 @@ function ProductDetailComponent() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description'); // 초기 탭을 'description'으로 설정
+  const {category1} = useParams();
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
@@ -24,8 +24,9 @@ function ProductDetailComponent() {
   //제품 사진 클릭 시 제품 상세페이지로 이동
   const DetailProduct = async () => {
     try {
-      console.log("productId", productId);
-      const response = await fetch(`http://localhost:8090/eDrink24/showDetailProduct/${productId}`, {
+      console.log("productId", productId); // productId가 올바른지 확인
+        console.log("category1", category1); // category1이 올바른지 확인
+      const response = await fetch(`http://localhost:8090/eDrink24/showDetailProduct/${category1}/${productId}`, {
         method: "GET"
       });
 
@@ -34,7 +35,7 @@ function ProductDetailComponent() {
       }
 
       const resData = await response.json();
-      console.log(response, resData);
+      console.log("resData",resData);
       setProduct(resData);
     } catch (error) {
       console.error('Error fetching product:', error);

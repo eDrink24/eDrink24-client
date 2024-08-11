@@ -101,8 +101,9 @@ const AllProductComponent = () => {
 
     //제품사진 클릭했을 때 제품상세보기
     const handleProductClickEvent = (productId) => {
-        console.log("products", products);
-        navigate(`/eDrink24/allproduct/${productId}`);
+        console.log("products", products); // productId가 올바른지 확인
+        console.log("Category1:", category1); // category1이 올바른지 확인
+        navigate(`/eDrink24/allproduct/${category1}/${productId}`);
     };
 
     return (
@@ -153,7 +154,7 @@ const AllProductComponent = () => {
             {products.map(product => (
                 <div className="allproduct-product-card" key={product.productId} onClick={() => handleProductClickEvent(product.productId)}>
                     <img src={product.defaultImage} alt={product.productName} className="allproduct-product-defaultImage" />
-
+                    
                     <div className="allproduct-product-info">
                         <div className="allproduct-product-rating">
                             <span className="allproduct-star">★</span>
@@ -164,6 +165,7 @@ const AllProductComponent = () => {
                         <div className="allproduct-product-tag">오늘픽업</div>
                     </div>
                 </div>
+                
             ))}
 
             <FooterComponent />
