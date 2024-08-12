@@ -5,6 +5,7 @@ import HomeComponent from './pages/home/HomeComponent';
 import CategoryComponent from './pages/category/CategoryComponent';
 import SignupComponent, { action as signUpAction } from './pages/signup/SignupComponent';
 import MypageComponent from './pages/mypage/MypageComponent';
+import SearchComponent from './pages/search/SearchComponent';
 import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
 import OrderComponent from './pages/order/OrderComponent';
 import ListToBasketComponent, { loader as basketLoader } from './pages/basket/ListToBasketComponent';
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       { path: '/eDrink24/allproduct/:category1/:category2', element: <AllProductComponent /> },
       { path: '/eDrink24/allproduct/:category1/:category2/:productId', element: <ProductDetailComponent /> },
       { path: '/eDrink24/category', element: <CategoryComponent /> },
+      { path: '/eDrink24/search', element: <SearchComponent />},
       {
         path: '/eDrink24/login', element: <LoginComponent />,
         action: loginAction
