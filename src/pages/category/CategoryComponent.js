@@ -24,59 +24,70 @@ const CategoryComponent = () => {
   };
 
   return (
-    <div className="category-container">
-      {/* 상단 네비게이션 바 */}
-      <div className="category-header">
-        <div className="category-navigation-bar">
-          {/* 뒤로가기 아이콘 */}
-          <button className="category-back-icon-button" onClick={handleDirectB1}>
-            <img className="category-nav-back-icon"
-              src="assets/common/backIcon.png" alt="Back" />
-          </button>
-          {/* 로고 이미지 */}
-          <div className="category-elogo-box">
-            <img className="category-nav-logo" onClick={handleDirectB1}
-              src="assets/common/emart24_logo.png" alt="eMart24" />
-          </div>
-          {/* 검색하기 아이콘 */}
-          <button className="category-search-icon-button">
-            <img className="category-nav-search-icon"
-              src="assets/common/search.png" alt="search" />
-          </button>
-        </div>
-      </div>
 
-      {/* 주류 카테고리 */}
-      <div className="category-body">
-        <div className="category-sidebar-container">
-          <div className="category-sidebar">
-            <ul>
-              {categories.map(category => (
-                <li
-                  key={category}
-                  className={selectedcategory === category ? 'category-active' : ''}
-                  onClick={() => setSelectedCategory(category)}
-                >
-                  {category}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="category-main-content">
-            <h2>
-              <span className='category-selectedCategoryText'>{selectedcategory}</span>
-            </h2>
-            <ul>
-              {subcategories[selectedcategory].map(category2 => (
-                <li key={category2} onClick={()=>handleCategory2Click(selectedcategory,category2)}>{category2}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
+      // 전체 컨테이너
+      <div className="category-container">
+
+            {/* 상단 네비게이션 바 */}
+            <div className="category-nav-bar">
+
+                {/* 뒤로가기 아이콘 */}
+                <button className="category-back" onClick={() => { navigate(-1) }}>
+                    <img className="back-icon" src="assets/common/backicon.png" alt="back" />
+                </button>
+
+                {/* 메인 타이틀 */}
+                <h3>카테고리</h3>
+
+                {/* 장바구니 아이콘 */}
+                <button className="category-bag"  onClick={() => { navigate('/eDrink24/basket') }}>
+                    <img className="bag-cicon" src="assets/common/bag.png" alt="bag" />
+                </button>
+
+            </div>
+
+
+            <div className='line2'></div>
+
+            <div className="category-main-content">
+
+            {/* 주류 카테고리 */}
+              <div className="category-container-content">
+                <div className="category1-content">
+                  <ul>
+                    {categories.map(category => (
+                      <li
+                        key={category}
+                        className={selectedcategory === category ? 'category-active' : ''}
+                        onClick={() => setSelectedCategory(category)}>
+                        {category}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="category2-content">
+                  <ul>
+                    <h2 className='category-selectedCategoryText'>{selectedcategory}</h2>
+                  </ul>
+                  <ul>
+                    {subcategories[selectedcategory].map(category2 => (
+                      <li 
+                        key={category2}
+                        onClick={()=>handleCategory2Click(selectedcategory,category2)}>
+                        {category2}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+
 
       {/* 하단 네비게이션 바 */}
       <FooterComponent />
+
+
     </div>
   );
 };
