@@ -120,8 +120,7 @@ function ProductDetailComponent() {
   // 장바구니 버튼 클릭 후 모달창에서 아니요 누르면 제품목록 페이지로 이동
   const stayOnPage = () => {
     setModalIsOpen(false);
-
-    navigate('/eDrink24/allproduct');
+    navigate(`/eDrink24/allproduct/${category1}`);
   };
 
   //바로구매 버튼 클릭 시 결제페이지로 이동
