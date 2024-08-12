@@ -8,7 +8,7 @@ import MypageComponent from './pages/mypage/MypageComponent';
 import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
 import OrderComponent from './pages/order/OrderComponent';
 import ListToBasketComponent, { loader as basketLoader } from './pages/basket/ListToBasketComponent';
-import AllProductComponent from './pages/product/AllProductComponet';
+import AllProductComponent from './pages/product/AllProductComponent';
 import ProductDetailComponent from './pages/product/ProductDetailComponent';
 import { RecoilRoot } from 'recoil';
 
