@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // useState 임포트 추가
+import React, { useEffect, useState } from 'react'; // useState 임포트 추가
 import { useNavigate } from 'react-router-dom'; // useNavigate 임포트 추가
 import './CategoryComponent.css';
 import FooterComponent from '../../components/footer/FooterComponent.js';
@@ -15,14 +15,9 @@ const CategoryComponent = () => {
   const [selectedcategory, setSelectedCategory] = useState(categories[0]);
   const navigate = useNavigate();
 
-  const handleCategory1Click = (category1) => {
-    navigate(`/eDrink24/allproduct/${category1}`);
-  };
-
   const handleCategory2Click = (category1,category2) => {
     navigate(`/eDrink24/allproduct/${category1}/${category2}`);
   };
-
 
   const handleDirectB1 = () => {
     navigate("/eDrink24");
@@ -70,9 +65,6 @@ const CategoryComponent = () => {
           <div className="category-main-content">
             <h2>
               <span className='category-selectedCategoryText'>{selectedcategory}</span>
-              <button className="category-moreButton" onClick={()=>handleCategory1Click(selectedcategory)}>
-                &gt; {/* &gt;로 변경하여 올바른 표시 */}
-              </button>
             </h2>
             <ul>
               {subcategories[selectedcategory].map(category2 => (

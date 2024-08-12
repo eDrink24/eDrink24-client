@@ -1,5 +1,5 @@
 import React, { useState } from 'react'; // useState를 react에서 가져옵니다
-import { useNavigate } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
+import { useNavigate, useParams } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import CarouselComponent from '../../components/Banner/CarouselComponent.js';
 import "./HomeComponent.css";
@@ -10,6 +10,7 @@ function HomeComponent() {
     // 상태 변수 선언
     const [isExpanded, setIsExpanded] = useState(false); // footer 확장을 위한 상태
     const [activeTab, setActiveTab] = useState('description'); // 초기 탭을 'description'으로 설정
+    const { category1 } = useParams();
 
     const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ function HomeComponent() {
     };
 
     const handleDirectAllproduct = () => {
-        navigate("/eDrink24/allproduct");
+        navigate(`/eDrink24/allproduct/${category1}`);
     };
 
     // 탭 클릭 핸들러 함수

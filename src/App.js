@@ -10,6 +10,7 @@ import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
 import OrderComponent from './pages/order/OrderComponent';
 import ListToBasketComponent, { loader as basketLoader } from './pages/basket/ListToBasketComponent';
 import AllProductComponent from './pages/product/AllProductComponent';
+import CategoriesProductComponent from './pages/product/CategoriesProductComponent';
 import ProductDetailComponent from './pages/product/ProductDetailComponent';
 import { RecoilRoot } from 'recoil';
 
@@ -29,9 +30,8 @@ const router = createBrowserRouter([
     loader: tokenLoader,
     children: [
       { path: '/eDrink24', element: <HomeComponent /> },
-      { path: '/eDrink24/allproduct', element: <AllProductComponent /> },
       { path: '/eDrink24/allproduct/:category1', element: <AllProductComponent /> },
-      { path: '/eDrink24/allproduct/:category1/:category2', element: <AllProductComponent /> },
+      { path: '/eDrink24/allproduct/:category1/:category2', element: <CategoriesProductComponent /> },
       { path: '/eDrink24/allproduct/:category1/:category2/:productId', element: <ProductDetailComponent /> },
       { path: '/eDrink24/category', element: <CategoryComponent /> },
       { path: '/eDrink24/search', element: <SearchComponent />},
