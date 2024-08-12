@@ -18,8 +18,8 @@ const Footer = () => {
         navigate("/eDrink24/search");
     };
 
-    const handleDirectList = () => {
-        navigate("/eDrink24/list");
+    const handleDirectHistory = () => {
+        navigate("/eDrink24/history");
     };
 
     return (
@@ -33,7 +33,7 @@ const Footer = () => {
                     <img className="search-icon" src="assets/common/search.png" alt="search-Button" />
                     <h1>검색</h1>
                 </button>
-                <button type="button" className="listIcon" onClick={handleDirectList}>
+                <button type="button" className="listIcon" onClick={handleDirectHistory}>
                     <img className="list-icon" src="assets/common/receipt.png" alt="receipt-Button" />
                     <h1>내역</h1>
                 </button>
