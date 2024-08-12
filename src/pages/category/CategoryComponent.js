@@ -4,20 +4,25 @@ import './CategoryComponent.css';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 const categories = ['와인', '양주', '전통주', '논알콜', '안주'];
 const subcategories = {
-  '와인': ['레드', '화이트', '스파클링', '로제'],
+  '와인': ['레드와인', '화이트와인', '스파클링와인', '로제와인'],
   '양주': ['양주'],
   '전통주': ['약주', '과실주', '탁주', '리큐르', '전통소주', '전통주세트', '기타전통주'],
-  '논알콜': ['논알콜'],
+  '논알콜': ['무알콜맥주|칵테일'],
   '안주': ['안주'],
 };
 
 const CategoryComponent = () => {
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [selectedcategory, setSelectedCategory] = useState(categories[0]);
   const navigate = useNavigate();
 
   const handleCategory1Click = (category1) => {
     navigate(`/eDrink24/allproduct/${category1}`);
   };
+
+  const handleCategory2Click = (category1,category2) => {
+    navigate(`/eDrink24/allproduct/${category1}/${category2}`);
+  };
+
 
   const handleDirectB1 = () => {
     navigate("/eDrink24");
@@ -54,7 +59,7 @@ const CategoryComponent = () => {
               {categories.map(category => (
                 <li
                   key={category}
-                  className={selectedCategory === category ? 'category-active' : ''}
+                  className={selectedcategory === category ? 'category-active' : ''}
                   onClick={() => setSelectedCategory(category)}
                 >
                   {category}
@@ -64,14 +69,14 @@ const CategoryComponent = () => {
           </div>
           <div className="category-main-content">
             <h2>
-              <span className='category-selectedCategoryText'>{selectedCategory}</span>
-              <button className="category-moreButton" onClick={()=>handleCategory1Click(selectedCategory)}>
+              <span className='category-selectedCategoryText'>{selectedcategory}</span>
+              <button className="category-moreButton" onClick={()=>handleCategory1Click(selectedcategory)}>
                 &gt; {/* &gt;로 변경하여 올바른 표시 */}
               </button>
             </h2>
             <ul>
-              {subcategories[selectedCategory].map(subcategory => (
-                <li key={subcategory}>{subcategory}</li>
+              {subcategories[selectedcategory].map(category2 => (
+                <li key={category2} onClick={()=>handleCategory2Click(selectedcategory,category2)}>{category2}</li>
               ))}
             </ul>
           </div>
