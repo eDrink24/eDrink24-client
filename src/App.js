@@ -30,6 +30,7 @@ const router = createBrowserRouter([
       { path: '/eDrink24', element: <HomeComponent /> },
       { path: '/eDrink24/allproduct', element: <AllProductComponent /> },
       { path: '/eDrink24/allproduct/:category1', element: <AllProductComponent /> },
+      { path: '/eDrink24/allproduct/:category1/:category2', element: <AllProductComponent /> },
       { path: '/eDrink24/allproduct/:category1/:productId', element: <ProductDetailComponent /> },
       { path: '/eDrink24/category', element: <CategoryComponent /> },
       {
