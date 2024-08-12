@@ -26,6 +26,7 @@ function ProductDetailComponent() {
     try {
       console.log("productId", productId); // productId가 올바른지 확인
         console.log("category1", category1); // category1이 올바른지 확인
+        console.log("category2", category2); // category2가 올바른지 확인
       const response = await fetch(`http://localhost:8090/eDrink24/showDetailProduct/${category1}/${category2}/${productId}`, {
         method: "GET"
       });
@@ -39,6 +40,7 @@ function ProductDetailComponent() {
       const resData = await response.json();
       console.log("resData",resData);
       setProduct(resData);
+
     } catch (error) {
       console.error('Error fetching product:', error);
     }
