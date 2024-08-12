@@ -10,7 +10,7 @@ function ProductDetailComponent() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description'); // 초기 탭을 'description'으로 설정
-  const {category1} = useParams();
+  const {category1,category2} = useParams();
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
@@ -26,9 +26,11 @@ function ProductDetailComponent() {
     try {
       console.log("productId", productId); // productId가 올바른지 확인
         console.log("category1", category1); // category1이 올바른지 확인
-      const response = await fetch(`http://localhost:8090/eDrink24/showDetailProduct/${category1}/${productId}`, {
+      const response = await fetch(`http://localhost:8090/eDrink24/showDetailProduct/${category1}/${category2}/${productId}`, {
         method: "GET"
       });
+
+      console.log("response",response);
 
       if (!response.ok) {
         throw new Error('Failed to fetch product');

@@ -118,7 +118,7 @@ const AllProductComponent = () => {
     const handleProductClickEvent = (productId) => {
         console.log("products", products); // productId가 올바른지 확인
         console.log("category1:", category1); // category1이 올바른지 확인
-        navigate(`/eDrink24/allproduct/${category1}/${productId}`);
+        navigate(`/eDrink24/allproduct/${category1}/${category2}/${productId}`);
     };
 
     return (
