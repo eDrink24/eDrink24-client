@@ -102,18 +102,38 @@ function ListToBasketComponent() {
     };
 
     // 수량 업데이트 기능 추가
-    const updateQuantity = (basketId, increment) => { // 수량을 업데이트하는 함수
-        const updatedBaskets = baskets.map(basket => {
-            if (basket.basketId === basketId) {
-                const newQuantity = basket.items[0].basketQuantity + increment;
-                if (newQuantity > 0) { // 수량이 0 이하로 내려가지 않도록 조건 추가
-                    basket.items[0].basketQuantity = newQuantity;
-                }
-            }
-            return basket;
+    const updateQuantity = async (basketId, increment) => {
+        const basket = baskets.find(basket => basket.basketId === basketId);
+        if (!basket) return;
+    
+        const newQuantity = basket.items[0].basketQuantity + increment;
+    
+        if (newQuantity <= 0) return; // 수량이 0 이하로 내려가지 않도록
+    
+        // 서버에 수량 업데이트 요청 보내기
+        const userId = localStorage.getItem("userId");
+        const response = await fetch(`http://localhost:8090/eDrink24/updateBasketQuantity2`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userId:userId,
+                productId: basket.items[0].productId,
+                basketId: basket.basketId,
+                basketQuantity: newQuantity
+            })
         });
-        setBaskets(updatedBaskets); // 업데이트된 장바구니 상태를 설정
+    
+        if (!response.ok) {
+            console.error('Error updating quantity:', response.statusText);
+            return;
+        }
+    
+        // 수량 업데이트 후 장바구니 상태를 새로 고침
+        refreshBaskets();
     };
+    
 
     // 총 계산
     const totalAmount = baskets.reduce((sum, basket) => {
