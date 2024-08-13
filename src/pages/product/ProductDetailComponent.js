@@ -17,6 +17,7 @@ function ProductDetailComponent() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [orderInfo, setOrderInfo] = useRecoilState(orderState);
 
+
   useEffect(() => {
     DetailProduct();
   }, [productId]);
@@ -82,10 +83,10 @@ function ProductDetailComponent() {
         },
         body: JSON.stringify({
           userId: localStorage.getItem("userId"),
-          basketId: null, // auto increment이기 때문에 장바구니에 저장될 때 basketId 저장됨.
+          //basketId: null, // auto increment이기 때문에 장바구니에 저장될 때 basketId 저장됨.
           items: [{
-            itemId: null,
-            basketId: null,
+            //itemId:null,
+            //basketId: null,
             productId: productId,
             defaultImage: product.defaultImage,
             productName: product.productName,

@@ -11,8 +11,8 @@ function OrderComponent() {
     const [basket, setBasket] = useRecoilState(basketState);
     const [selectedBaskets, setSelectedBaskets] = useRecoilState(selectedBasketState);
     const [orderInfo, setOrderInfo] = useRecoilState(orderState);
-    console.log('Current orderInfo:', orderInfo);
     const [productDetailsMap, setProductDetailsMap] = useState(new Map());
+    const [basketItemsList, setBasketItemsList] = useState([]); 
     const [couponList, setCouponList] = useState([]);
     const [storeList, setStoreList] = useState([]);
     const [loadingStores, setLoadingStores] = useState(false);
@@ -20,9 +20,9 @@ function OrderComponent() {
     const [loadingCoupons, setLoadingCoupons] = useState(false);
     const [showStoreList, setShowStoreList] = useState(false);
     const [showCouponList, setShowCouponList] = useState(false);
-
-    const { storeId, pickupDate, coupon, pointUse, paymentMethod, userId } = orderInfo;
-    const navigate = useNavigate();
+    const { storeId, pickupDate, coupon, pointUse, paymentMethod } = orderInfo;
+    const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
+    const navigate = useNavigate();    
 
     // 총액 계산 함수
     const calculateTotals = useCallback(() => {
@@ -36,13 +36,15 @@ function OrderComponent() {
         const pointAmount = pointUse ? subtotal * 0.05 : 0;
         const finalAmount = subtotal - couponDiscount - pointAmount;
 
+
         setOrderInfo(prev => ({
             ...prev,
             totalPrice: subtotal,
             discount: couponDiscount + pointAmount,
             finalAmount: finalAmount
         }));
-    }, [basket, productDetailsMap, coupon, pointUse, setOrderInfo]);
+
+    }, [selectedBaskets, productDetailsMap, coupon, pointUse, setOrderInfo]);
 
     // 선택된 아이템이 변경될 때 장바구니 업데이트
     useEffect(() => {
@@ -52,7 +54,8 @@ function OrderComponent() {
     // 장바구니와 기타 관련 상태가 변경될 때 총액 계산
     useEffect(() => {
         calculateTotals();
-    }, [basket, coupon, pointUse, calculateTotals]);
+    }, [selectedBaskets, coupon, pointUse, calculateTotals]);
+
 
     // 매장 선택 시 주소와 목록 표시 여부 업데이트
     useEffect(() => {
@@ -84,57 +87,75 @@ function OrderComponent() {
     };
 
     // 매장 목록 버튼 클릭 핸들러
-    function handleStoreButtonClick() {
-        if (!showStoreList) {
-            fetchStores();
-        } else {
-            setShowStoreList(false);
-        }
-    }
-
-    // 상품 세부 정보를 가져오는 함수
-    const fetchProductDetails = async (productId) => {
-        try {
-            const response = await axios.get(`http://localhost:8090/eDrink24/showDetailProduct/${productId}`);
-            if (response.status === 200) {
-                return response.data;
-            } else {
-                console.error('Failed to fetch product details. Status:', response.status);
-                return null;
-            }
-        } catch (error) {
-            console.error('Error fetching product details:', error);
-            return null;
-        }
+    const handleStoreButtonClick = () => {
+        setShowStoreList(prev => {
+            if (!prev) fetchStores();
+            return !prev;
+        });
     };
 
-    // 상품 정보를 가져오고 저장하는 함수
+    // 상품 세부 정보를 가져오는 함수
     const fetchProductDetailsForBasket = useCallback(async () => {
-        const productIds = [...new Set(selectedBaskets.map(item => item.productId))];
-        
+        console.log(">>>>>>>>>>>>>2222222", selectedBaskets);
+
         try {
-            const productDetails = await Promise.all(
-                productIds.map(productId => fetchProductDetails(productId))
-            );
+            const basketItems = [];
+            for (const basketId of selectedBaskets) {
+                const items = await fetchBasketItems(basketId);
+                basketItems.push(...items); 
+            }
+            console.log('Fetched Basket Items:', basketItems);
 
-            const detailsMap = new Map();
-            productDetails.forEach(details => {
-                if (details) {
-                    detailsMap.set(details.productId, details);
-                }
+            
+            const productDetailsMap = new Map();
+            basketItems.forEach(item => {
+                const { itemId, basketId, productId, defaultImage, productName, price, basketQuantity } = item;
+                productDetailsMap.set(productId, { itemId, basketId, defaultImage, productName, price, basketQuantity });
             });
-
-            setProductDetailsMap(detailsMap);
+            
+            setBasketItemsList(basketItems);
+            console.log('Product Details Map:', Array.from(productDetailsMap.entries()));
+            setProductDetailsMap(productDetailsMap);
         } catch (error) {
             console.error('Error fetching product details:', error);
         }
     }, [selectedBaskets]);
 
+    // 상품 세부 정보를 가져오는 함수
+    const fetchBasketItems = async (basketId) => {
+        if (!basketId) {
+            console.error('Invalid basketId:', basketId);
+            return [];
+        }
+
+        try {
+            const response = await axios.get(`http://localhost:8090/eDrink24/getBasketItems/${basketId}`);
+            if (response.status === 200) {
+                console.log(`Basket Items for ${basketId}:`, response.data);
+                return response.data;
+            } else {
+                console.error('Failed to fetch basket items. Status:', response.status);
+                return [];
+            }
+        } catch (error) {
+            console.error('Error fetching basket items:', error);
+            return [];
+        }
+    };
+
+    useEffect(() => {
+        if (selectedBaskets.length > 0) {
+            console.log('Selected Baskets:', selectedBaskets);
+            fetchProductDetailsForBasket();
+        }
+    }, [selectedBaskets, fetchProductDetailsForBasket]);
+=======
+
     // 쿠폰 목록을 서버에서 가져오는 함수
     const fetchCoupons = async () => {
         setLoadingCoupons(true);
         try {
-            const response = await axios.get(`http://localhost:8090/eDrink24/showAllCoupon/loginId/${userId}`);
+            const response = await axios.get(`http://localhost:8090/eDrink24/showAllCoupon/userId/${userId}`);
             if (response.status === 200) {
                 setCouponList(response.data);
                 setShowCouponList(true);
@@ -150,55 +171,88 @@ function OrderComponent() {
 
     // 결제 처리 함수
     const handleCheckout = async () => {
-        const orderTransactionDTO = selectedBaskets.map(item => ({
-            storeId,
-            userId: orderInfo.userId,
-            productId: item.productId,
-            orderDate: new Date().toISOString().split('T')[0],
-            pickupDate: pickupDate ? new Date(pickupDate).toISOString().split('T')[0] : null,
-            isCompleted: 'FALSE',
-            orderStatus: 'ORDERED',
-            quantity: item.basketQuantity,
-            price: item.price,
-            changeStatus: 'ORDERED',
-            changeDate: new Date().toISOString().split('T')[0]
-        }));
+    if (!userId) {
+        alert('User ID is missing.');
+        return;
+    }
 
-        try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/buyProductAndSaveHistory`, {
+    console.log('User ID:', userId);
+    const orderTransactionDTO = basketItemsList.map(item => ({
+        storeId,
+        userId,
+        basketId : item.basketId,
+        productId: item.productId,
+        orderDate: new Date().toISOString().split('T')[0],
+        pickupDate: pickupDate ? new Date(pickupDate).toISOString().split('T')[0] : null,
+        isCompleted: 'FALSE',
+        orderStatus: 'ORDERED',
+        quantity: item.basketQuantity,
+        price: productDetailsMap.get(item.productId)?.price || 0,
+        changeStatus: 'ORDERED',
+        changeDate: new Date().toISOString().split('T')[0]
+    }));
+    const basketDTO = {
+        basketId:null,
+        userId: userId,
+        items: basketItemsList.map(item => ({
+            itemId:null,
+            basketId: item.basketId,
+            productId: item.productId,
+            defaultImage: item.defaultImage,
+            productName: item.productName,
+            price: productDetailsMap.get(item.productId)?.price || 0,
+            basketQuantity: item.basketQuantity
+        }))
+    };
+
+      try {
+           // 주문 저장 및 주문 내역 저장
+           const orderResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/buyProductAndSaveHistory`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(orderTransactionDTO),
             });
-
-            if (response.ok) {
-                alert('Purchase successful');
-                navigate('/eDrink24');
-            } else {
-                const errorText = await response.text();
-                alert(`Error processing purchase: ${errorText}`);
+    
+            if (!orderResponse.ok) {
+                const errorText = await orderResponse.text();
+                throw new Error(`Error processing purchase: ${errorText}`);
             }
-        } catch (error) {
-            console.error('Error processing purchase:', error);
-            alert(`Error processing purchase: ${error.message}`);
-        }
-    };
+            navigate("/eDrink24");
+            console.log('Order and history saved successfully');
 
-    // 바로 구매 버튼 클릭 시 제품 정보가 주문 페이지에 보여짐.
-    useEffect(() => {
-        if (orderInfo.selectedItems && orderInfo.selectedItems.length > 0) {
-            setSelectedBaskets(orderInfo.selectedItems);
-        }
-    }, [orderInfo.selectedItems, setSelectedBaskets]);
+            
+            // 장바구니와 장바구니 아이템 삭제
+        const deleteResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderTransactionDTO),
+        });
 
+        console.log(orderTransactionDTO);
+    
+        if (deleteResponse.ok) {
+            console.log('Basket and items deleted successfully');
+            console.log(`deleted Items:`,deleteResponse.data);    
+        } else {
+            const errorText = await deleteResponse.text();
+            throw new Error(`Error processing deletion: ${errorText}`);
+        }
+
+    } catch (error) {
+        console.error('Error processing purchase:', error);
+        alert(`Error processing purchase: ${error.message}`);
+    }       
+};
+  
     return (
 
         <div className="order-container">
             <h1>주문 및 결제</h1>
-
-            <div className="pickup-section" id="storeMap">
+            <div className="pickup-section">
                 <h2>픽업 장소</h2>
                 <NaverMapContainer storeAddress={storeAddress} />
                 <button onClick={handleStoreButtonClick}>
@@ -238,7 +292,6 @@ function OrderComponent() {
                 )}
             </div>
 
-            {/* 방문 시간 지정 */}
             <div className="pickup-time-section">
                 <h2>방문 시간 지정</h2>
                 <input 
@@ -248,7 +301,6 @@ function OrderComponent() {
                 />
             </div>
 
-            {/* 주문상품 */}
             <div className="basket-section">
                 <h2>주문상품</h2>
                 <table>
@@ -261,21 +313,22 @@ function OrderComponent() {
                         </tr>
                     </thead>
                     <tbody>
-                        {selectedBaskets.length > 0 ? (
-                            selectedBaskets.map((item, index) => {
-                                const productDetails = productDetailsMap.get(item.productId) || {};
+                        {basketItemsList.length > 0 ? (
+                            basketItemsList.map((item, index) => {
+                                const productDetails = productDetailsMap.get(item.productId);
+                                
                                 return (
                                     <tr key={index}>
                                         <td>
                                             <img 
-                                                src={productDetails.defaultImage || 'default-image-url.jpg'} 
-                                                alt={productDetails.productName || '상품 이미지 없음'} 
+                                                src={productDetails?.defaultImage || 'default-image-url.jpg'} 
+                                                alt={productDetails?.productName || '상품 이미지 없음'} 
                                                 className="basket-image" 
                                             />
                                         </td>
-                                        <td>{productDetails.productName || '상품 이름 없음'}</td>
+                                        <td>{productDetails?.productName || '상품 이름 없음'}</td>
                                         <td>
-                                            {productDetails.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원
+                                            {productDetails?.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원
                                         </td>
                                         <td>{item.basketQuantity || 0}</td>
                                     </tr>
@@ -290,12 +343,13 @@ function OrderComponent() {
                 </table>
             </div>
 
-            {/* 쿠폰/적립 할인 */}
             <div className="discount-section">
                 <h2>쿠폰/적립 할인</h2>
                 <button onClick={() => {
-                    setShowCouponList(prev => !prev);
-                    if (!showCouponList) fetchCoupons(); // 목록이 보이지 않을 때만 쿠폰 목록을 새로 불러옴
+                    setShowCouponList(prev => {
+                        if (!prev) fetchCoupons(); // 목록이 보이지 않을 때만 쿠폰 목록을 새로 불러옴
+                        return !prev;
+                    });
                 }}>
                     {coupon ? `쿠폰 선택 완료: ${coupon.name} - 할인: ${coupon.discountAmount.toLocaleString()} 원` : "보유 쿠폰 조회하기"}
                 </button>

@@ -18,6 +18,7 @@ import { RecoilRoot } from 'recoil';
 import KakaoLoginHandler from './pages/login/kakao/KakaoLoginHandler';
 import KakaoSignupHandler from './pages/login/kakao/KakaoSignupHandler';
 
+import { RecoilRoot } from 'recoil'; // RecoilRoot 임포트 추가
 import RootLayout from './pages/rootLayout/root';
 import ProtectedRoute from './components/ProtectedRouter';
 
@@ -52,7 +53,10 @@ const router = createBrowserRouter([
       },
       {
         path: '/eDrink24/order/:userId', element: <OrderComponent />
+
+
       },
+
 
       { // 카카오 로그인 대기창
         path: '/eDrink24/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
