@@ -1,125 +1,78 @@
-import "./OrderComponent.css";
-import { useState, useEffect } from "react";
+import './OrderComponent.css';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useLoaderData, useParams, useNavigate, useLocation } from 'react-router-dom';
-import NaverMapContainer from "./NaverMapContainer";
+import { useRecoilState } from 'recoil';
+import { basketState, selectedBasketState } from '../basket/BasketAtom.js';
+import { orderState } from './OrderAtom.js';
+import NaverMapContainer from './NaverMapContainer';
+import { useNavigate } from 'react-router-dom'; 
 
 function OrderComponent() {
-    const initialBasket = useLoaderData();
-    const { userId, loginId, basketIds } = useParams(); // loginId를 받아오는 것으로 수정
-    const navigate = useNavigate();
-    const [basket, setBasket] = useState(Array.isArray(initialBasket) ? initialBasket : []);
-    const [storeId, setStoreId] = useState(null);
-    const [pickupDate, setPickupDate] = useState(null);
-    const [coupon, setCoupon] = useState(null);
-    const [coupons, setCoupons] = useState([]);
-    const [pointUse, setPointUse] = useState(false);
-    const [paymentMethod, setPaymentMethod] = useState('');
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [discount, setDiscount] = useState(0);
-    const [finalAmount, setFinalAmount] = useState(0);
-    const [storeSelectionOpen, setStoreSelectionOpen] = useState(false);
-    const [couponSelectionOpen, setCouponSelectionOpen] = useState(false);
-    const [stores, setStores] = useState([]);
+    const [basket, setBasket] = useRecoilState(basketState);
+    const [selectedBaskets, setSelectedBaskets] = useRecoilState(selectedBasketState);
+    const [orderInfo, setOrderInfo] = useRecoilState(orderState);
+    const [productDetailsMap, setProductDetailsMap] = useState(new Map());
+
+    const [basketItemsList, setBasketItemsList] = useState([]); 
+    const [couponList, setCouponList] = useState([]);
+    const [storeList, setStoreList] = useState([]);
+
     const [loadingStores, setLoadingStores] = useState(false);
     const [storeAddress, setStoreAddress] = useState('');
-//
-    useEffect(() => {
-        if (loginId) {
-            showAllBasket();
-        }
-    }, [loginId]);
+    const [loadingCoupons, setLoadingCoupons] = useState(false);
+    const [showStoreList, setShowStoreList] = useState(false);
+    const [showCouponList, setShowCouponList] = useState(false);
 
-    useEffect(() => {
-        calculateTotals();
-    }, [basket, coupon, pointUse]);
+    const { storeId, pickupDate, coupon, pointUse, paymentMethod } = orderInfo;
+    const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
+    const navigate = useNavigate();    
 
-    useEffect(() => {
-        if (storeSelectionOpen) {
-            fetchStores();
-        }
-    }, [storeSelectionOpen]);
+    // 총액 계산 함수
+    const calculateTotals = useCallback(() => {
+        const subtotal = selectedBaskets.reduce((total, item) => {
+            const productDetails = productDetailsMap.get(item.productId);
+            return total + (productDetails?.price || 0) * item.basketQuantity;
+        }, 0);
 
-    useEffect(() => {
-        if (couponSelectionOpen) {
-            fetchCoupons();
-        }
-    }, [couponSelectionOpen]);
-
-    useEffect(() => {
-        // 매장 주소가 변경될 때마다 지도 업데이트
-        if (storeId) {
-            const selectedStore = stores.find(store => store.storeId === storeId);
-            if (selectedStore) {
-                setStoreAddress(selectedStore.storeAddress);
-            }
-        }
-    }, [storeId, stores]);
-
-    
-
-    async function showAllBasket() {
-        try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${loginId}/${basketIds}`, {
-                method: "GET",
-            });
-
-            if (response.ok) {
-                const resData = await response.json();
-                setBasket(Array.isArray(resData) ? resData : []);
-            } else {
-                console.error('Failed to fetch basket. Status:', response.status);
-                setBasket([]);
-            }
-        } catch (error) {
-            console.error('Error fetching basket:', error);
-            setBasket([]);
-        }
-    }
-
-    async function fetchCoupons() {
-        try {
-            const response = await axios.get(`http://localhost:8090/eDrink24/showAllCoupon/loginId/${loginId}`);
-            if (response.status === 200) {
-                setCoupons(response.data);
-            } else {
-                console.error('Failed to fetch coupons. Status:', response.status);
-            }
-        } catch (error) {
-            console.error('Error fetching coupons:', error);
-        }
-    }
-
-    function handleCouponSelect(selectedCoupon) {
-        setCoupon(selectedCoupon);
-        setCouponSelectionOpen(false);
-    }
-
-    function handleCouponButtonClick() {
-        setCouponSelectionOpen(prev => !prev);
-    }
-
-    function calculateTotals() {
-        const subtotal = basket.reduce((total, item) => total + (item.price * item.basketQuantity), 0);
-        const couponDiscount = coupon ? coupon.discountAmount : 0;
+        const couponDiscount = coupon?.discountAmount || 0;
         const pointAmount = pointUse ? subtotal * 0.05 : 0;
         const finalAmount = subtotal - couponDiscount - pointAmount;
 
-        setTotalPrice(subtotal);
-        setDiscount(couponDiscount + pointAmount);
-        setFinalAmount(finalAmount);
-    }
+        setOrderInfo(prev => ({
+            ...prev,
+            totalPrice: subtotal,
+            discount: couponDiscount + pointAmount,
+            finalAmount: finalAmount
+        }));
+    }, [selectedBaskets, productDetailsMap, coupon, pointUse, setOrderInfo]);
 
-    function handlePaymentMethodChange(event) {
-        setPaymentMethod(event.target.value);
-    }
+    useEffect(() => {
+        console.log(">>>>>>>>>>>>>111", selectedBaskets);
+        setBasket(selectedBaskets);
+    }, [selectedBaskets, setBasket]);
 
-    async function fetchStores() {
+    useEffect(() => {
+        calculateTotals();
+    }, [selectedBaskets, coupon, pointUse, calculateTotals]);
+
+    useEffect(() => {
+        if (storeId) {
+            const selectedStore = storeList.find(store => store.storeId === storeId);
+            if (selectedStore) {
+                setStoreAddress(selectedStore.storeAddress);
+                setShowStoreList(false); // 매장 선택 시 목록 숨기기
+            }
+        }
+    }, [storeId, storeList]);
+
+    // 매장 목록을 서버에서 가져오는 함수
+    const fetchStores = async () => {
         setLoadingStores(true);
         try {
             const response = await axios.get('http://localhost:8090/eDrink24/showAllStore');
             if (response.status === 200) {
-                setStores(response.data);
+                setStoreList(response.data);
+                setShowStoreList(true);
             } else {
                 console.error('Failed to fetch stores. Status:', response.status);
             }
@@ -128,114 +81,226 @@ function OrderComponent() {
         } finally {
             setLoadingStores(false);
         }
-    }
+    };
 
-    function handleStoreSelect(store) {
-        setStoreId(store.storeId);
-        setStoreSelectionOpen(false);
-    }
+    // 매장 목록 버튼 클릭 핸들러
+    const handleStoreButtonClick = () => {
+        setShowStoreList(prev => {
+            if (!prev) fetchStores();
+            return !prev;
+        });
+    };
 
-    function handleStoreButtonClick() {
-        setStoreSelectionOpen(prev => !prev);
-    }
+    // 상품 세부 정보를 가져오는 함수
+    const fetchProductDetailsForBasket = useCallback(async () => {
+        console.log(">>>>>>>>>>>>>2222222", selectedBaskets);
 
-    async function handleCheckout() {
-        const orderTransactionDTO = basket.map(item => ({
-            storeId,
-            userId,
-            productId: item.productId,
-            orderDate: new Date().toISOString().split('T')[0],
-            pickupDate: pickupDate ? new Date(pickupDate).toISOString().split('T')[0] : null,
-            isCompleted: 'FALSE',
-            orderStatus: 'ORDERED',
-            quantity: item.basketQuantity,
-            price: item.price,
-            changeStatus: 'ORDERED',
-            changeDate: new Date().toISOString().split('T')[0]
-        }));
-console.log("orderTransactionDTO", orderTransactionDTO)
-console.log("userId", userId)
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/buyProductAndSaveHistory`, {
-                method: "POST",
+            const basketItems = [];
+            for (const basketId of selectedBaskets) {
+                const items = await fetchBasketItems(basketId);
+                basketItems.push(...items);
+            }
+            console.log('Fetched Basket Items:', basketItems);
+
+            
+            const productDetailsMap = new Map();
+            basketItems.forEach(item => {
+                const { itemId, basketId, productId, defaultImage, productName, price, basketQuantity } = item;
+                productDetailsMap.set(productId, { itemId, basketId, defaultImage, productName, price, basketQuantity });
+            });
+            
+            setBasketItemsList(basketItems);
+            console.log('Product Details Map:', Array.from(productDetailsMap.entries()));
+            setProductDetailsMap(productDetailsMap);
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+        }
+    }, [selectedBaskets]);
+
+    // 상품 세부 정보를 가져오는 함수
+    const fetchBasketItems = async (basketId) => {
+        if (!basketId) {
+            console.error('Invalid basketId:', basketId);
+            return [];
+        }
+
+        try {
+            const response = await axios.get(`http://localhost:8090/eDrink24/getBasketItems/${basketId}`);
+            if (response.status === 200) {
+                console.log(`Basket Items for ${basketId}:`, response.data);
+                return response.data;
+            } else {
+                console.error('Failed to fetch basket items. Status:', response.status);
+                return [];
+            }
+        } catch (error) {
+            console.error('Error fetching basket items:', error);
+            return [];
+        }
+    };
+
+    useEffect(() => {
+        if (selectedBaskets.length > 0) {
+            console.log('Selected Baskets:', selectedBaskets);
+            fetchProductDetailsForBasket();
+        }
+    }, [selectedBaskets, fetchProductDetailsForBasket]);
+
+    // 쿠폰 목록을 서버에서 가져오는 함수
+    const fetchCoupons = async () => {
+        setLoadingCoupons(true);
+        try {
+            const response = await axios.get(`http://localhost:8090/eDrink24/showAllCoupon/userId/${userId}`);
+            if (response.status === 200) {
+                setCouponList(response.data);
+                setShowCouponList(true);
+            } else {
+                console.error('Failed to fetch coupons. Status:', response.status);
+            }
+        } catch (error) {
+            console.error('Error fetching coupons:', error);
+        } finally {
+            setLoadingCoupons(false);
+        }
+    };
+
+    // 결제 처리 함수
+const handleCheckout = async () => {
+    if (!userId) {
+        alert('User ID is missing.');
+        return;
+    }
+
+    console.log('User ID:', userId);
+    const orderTransactionDTO = basketItemsList.map(item => ({
+        storeId,
+        userId,
+        basketId : item.basketId,
+        productId: item.productId,
+        orderDate: new Date().toISOString().split('T')[0],
+        pickupDate: pickupDate ? new Date(pickupDate).toISOString().split('T')[0] : null,
+        isCompleted: 'FALSE',
+        orderStatus: 'ORDERED',
+        quantity: item.basketQuantity,
+        price: productDetailsMap.get(item.productId)?.price || 0,
+        changeStatus: 'ORDERED',
+        changeDate: new Date().toISOString().split('T')[0]
+    }));
+    const basketDTO = {
+        basketId:null,
+        userId: userId,
+        items: basketItemsList.map(item => ({
+            itemId:null,
+            basketId: item.basketId,
+            productId: item.productId,
+            defaultImage: item.defaultImage,
+            productName: item.productName,
+            price: productDetailsMap.get(item.productId)?.price || 0,
+            basketQuantity: item.basketQuantity
+        }))
+    };
+
+    try {
+            // 주문 저장 및 주문 내역 저장
+            const orderResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/buyProductAndSaveHistory`, {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(orderTransactionDTO),
             });
-
-            if (response.ok) {
-                alert("Purchase successful");
-                navigate("/eDrink24");
-            } else {
-                const errorText = await response.text();
-                alert(`Error processing purchase: ${errorText}`);
+    
+            if (!orderResponse.ok) {
+                const errorText = await orderResponse.text();
+                throw new Error(`Error processing purchase: ${errorText}`);
             }
-        } catch (error) {
-            console.error('Error processing purchase:', error);
-            alert(`Error processing purchase: ${error.message}`);
-        }
-    }
+    
+            console.log('Order and history saved successfully');
 
-    const selectedStore = stores.find(store => store.storeId === storeId);
+            
+            // 장바구니와 장바구니 아이템 삭제
+        const deleteResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderTransactionDTO),
+        });
+
+        console.log(orderTransactionDTO);
+    
+        if (deleteResponse.ok) {
+            console.log('Basket and items deleted successfully');
+            console.log(`deleted Items:`,deleteResponse.data);
+    
+            
+        } else {
+            const errorText = await deleteResponse.text();
+            throw new Error(`Error processing deletion: ${errorText}`);
+        }
+    } catch (error) {
+        console.error('Error processing purchase:', error);
+        alert(`Error processing purchase: ${error.message}`);
+    }
+    
+        
+};
+
 
     return (
         <div className="order-container">
             <h1>주문 및 결제</h1>
 
-            {/* 픽업매장 선택하기 */}
-            <div className="pickup-section" id="storeMap">
+            <div className="pickup-section">
                 <h2>픽업 장소</h2>
-                {/* 지도 표시 영역 */}
                 <NaverMapContainer storeAddress={storeAddress} />
                 <button onClick={handleStoreButtonClick}>
-                    {storeId ? `매장 선택 완료: ${stores.find(store => store.storeId === storeId)?.storeName}` : "픽업매장 선택하기"}
+                    {storeId ? `매장 선택 완료: ${storeList.find(store => store.storeId === storeId)?.storeName}` : "픽업매장 선택하기"}
                 </button>
 
-                {/* 선택한 매장 정보 */}
-                {selectedStore && (
+                {storeId && (
                     <div className="selected-store-info">
-                        <p><strong>매장 이름:</strong> {selectedStore.storeName}</p>
-                        <p><strong>주소:</strong> {selectedStore.storeAddress}</p>
-                        <p><strong>전화번호:</strong> {selectedStore.storePhoneNum}</p>
+                        <p><strong>매장 이름:</strong> {storeList.find(store => store.storeId === storeId)?.storeName}</p>
+                        <p><strong>주소:</strong> {storeAddress}</p>
                     </div>
                 )}
 
-                {/* 매장 목록 */}
-                {storeSelectionOpen && (
-                    <div className="store-selection">
-                        {loadingStores ? (
-                            <p>매장 목록을 불러오는 중입니다...</p>
-                        ) : (
-                            <ul>
-                                {stores.length > 0 ? (
-                                    stores.map(store => (
+                {loadingStores ? (
+                    <p>매장 목록을 불러오는 중입니다.</p>
+                ) : (
+                    showStoreList && (
+                        <div className="store-selection">
+                            {storeList.length > 0 ? (
+                                <ul>
+                                    {storeList.map(store => (
                                         <li key={store.storeId}>
-                                            <button onClick={() => handleStoreSelect(store)}>
+                                            <button onClick={() => {
+                                                setOrderInfo(prev => ({ ...prev, storeId: store.storeId }));
+                                                setShowStoreList(false);
+                                            }}>
                                                 {store.storeName} - {store.storeAddress}
                                             </button>
                                         </li>
-                                    ))
-                                ) : (
-                                    <p>매장 목록이 없습니다.</p>
-                                )}
-                            </ul>
-                        )}
-                    </div>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>매장 목록이 없습니다.</p>
+                            )}
+                        </div>
+                    )
                 )}
             </div>
 
-            {/* 방문 시간 지정 */}
             <div className="pickup-time-section">
                 <h2>방문 시간 지정</h2>
                 <input 
                     type="date" 
                     value={pickupDate || ''} 
-                    onChange={(e) => setPickupDate(e.target.value)} 
+                    onChange={(e) => setOrderInfo(prev => ({ ...prev, pickupDate: e.target.value }))} 
                 />
             </div>
 
-            {/* 주문상품 */}
             <div className="basket-section">
                 <h2>주문상품</h2>
                 <table>
@@ -248,15 +313,26 @@ console.log("userId", userId)
                         </tr>
                     </thead>
                     <tbody>
-                        {basket.length > 0 ? (
-                            basket.map((item, index) => (
-                                <tr key={index}>
-                                    <td><img src={item.defaultImage} alt={item.productName} className="basket-image" /></td>
-                                    <td>{item.productName}</td>
-                                    <td>{item.price.toLocaleString()} 원</td>
-                                    <td>{item.basketQuantity}</td>
-                                </tr>
-                            ))
+                        {basketItemsList.length > 0 ? (
+                            basketItemsList.map((item, index) => {
+                                const productDetails = productDetailsMap.get(item.productId);
+                                return (
+                                    <tr key={index}>
+                                        <td>
+                                            <img 
+                                                src={productDetails?.defaultImage || 'default-image-url.jpg'} 
+                                                alt={productDetails?.productName || '상품 이미지 없음'} 
+                                                className="basket-image" 
+                                            />
+                                        </td>
+                                        <td>{productDetails?.productName || '상품 이름 없음'}</td>
+                                        <td>
+                                            {productDetails?.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원
+                                        </td>
+                                        <td>{item.basketQuantity || 0}</td>
+                                    </tr>
+                                );
+                            })
                         ) : (
                             <tr>
                                 <td colSpan="4">장바구니에 아이템이 없습니다.</td>
@@ -266,122 +342,73 @@ console.log("userId", userId)
                 </table>
             </div>
 
-            {/* 쿠폰/적립 할인 */}
             <div className="discount-section">
                 <h2>쿠폰/적립 할인</h2>
-                <button onClick={handleCouponButtonClick}>
+                <button onClick={() => {
+                    setShowCouponList(prev => {
+                        if (!prev) fetchCoupons();
+                        return !prev;
+                    });
+                }}>
                     {coupon ? `쿠폰 선택 완료: ${coupon.name} - 할인: ${coupon.discountAmount.toLocaleString()} 원` : "보유 쿠폰 조회하기"}
                 </button>
 
-                {/* 쿠폰 목록 */}
-                {couponSelectionOpen && (
-                    <div className="coupon-selection">
-                        <ul>
-                            {coupons.length > 0 ? (
-                                coupons.map(coupon => (
-                                    <li key={coupon.couponId}>
-                                        <button onClick={() => handleCouponSelect(coupon)}>
-                                            {coupon.name} - 할인: {coupon.discountAmount.toLocaleString()} 원
-                                        </button>
-                                    </li>
-                                ))
+                {loadingCoupons ? (
+                    <p>쿠폰 목록을 불러오는 중입니다...</p>
+                ) : (
+                    showCouponList && (
+                        <div className="coupon-selection">
+                            {couponList.length > 0 ? (
+                                <ul>
+                                    {couponList.map(couponItem => (
+                                        <li key={couponItem.couponId}>
+                                            <button onClick={() => setOrderInfo(prev => ({ ...prev, coupon: couponItem }))}>
+                                                {couponItem.name} - 할인: {couponItem.discountAmount.toLocaleString()} 원
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
                             ) : (
-                                <p>사용 가능한 쿠폰이 없습니다.</p>
+                                <p>쿠폰이 없습니다.</p>
                             )}
-                        </ul>
-                    </div>
+                        </div>
+                    )
                 )}
 
-                <label>
-                    <input 
-                        type="checkbox" 
-                        checked={pointUse}
-                        onChange={() => setPointUse(prev => !prev)}
-                    />
-                    이마트24 포인트 전액 사용
-                </label>
+                <div className="point-use">
+                    <label>
+                        <input 
+                            type="checkbox" 
+                            checked={pointUse} 
+                            onChange={() => setOrderInfo(prev => ({ ...prev, pointUse: !pointUse }))} 
+                        />
+                        포인트 사용하기
+                    </label>
+                </div>
             </div>
 
-            {/* 최종 결제금액 */}
-            <div className="payment-summary">
-                <h2>최종 결제금액</h2>
-                <div>총 상품금액: {totalPrice.toLocaleString()} 원</div>
-                <div>총 할인금액: {discount.toLocaleString()} 원</div>
-                <div>총 결제금액: {finalAmount.toLocaleString()} 원</div>
-                <div>예상 적립금액: {Math.round(finalAmount * 0.01).toLocaleString()} 원</div>
+            <div className="payment-section">
+                <h2>결제 방법 선택</h2>
+                <select 
+                    value={paymentMethod} 
+                    onChange={(e) => setOrderInfo(prev => ({ ...prev, paymentMethod: e.target.value }))}>
+                    <option value="">결제 방법을 선택하세요</option>
+                    <option value="creditCard">신용카드</option>
+                    <option value="paypal">페이팔</option>
+                    <option value="bankTransfer">계좌이체</option>
+                </select>
             </div>
 
-            {/* 결제수단 */}
-            <div className="payment-methods">
-                <h2>결제수단</h2>
-                <label>
-                    <input 
-                        type="radio" 
-                        name="payment-method" 
-                        value="regular" 
-                        checked={paymentMethod === 'regular'}
-                        onChange={handlePaymentMethodChange}
-                    />
-                    일반결제
-                </label>
-                <label>
-                    <input 
-                        type="radio" 
-                        name="payment-method" 
-                        value="quick" 
-                        checked={paymentMethod === 'quick'}
-                        onChange={handlePaymentMethodChange}
-                    />
-                    간편결제
-                </label>
-                <label>
-                    <input 
-                        type="radio" 
-                        name="payment-method" 
-                        value="naverpay" 
-                        checked={paymentMethod === 'naverpay'}
-                        onChange={handlePaymentMethodChange}
-                    />
-                    네이버페이
-                </label>
-                <label>
-                    <input 
-                        type="radio" 
-                        name="payment-method" 
-                        value="kakaopay" 
-                        checked={paymentMethod === 'kakaopay'}
-                        onChange={handlePaymentMethodChange}
-                    />
-                    카카오페이
-                </label>
-                <label>
-                    <input 
-                        type="radio" 
-                        name="payment-method" 
-                        value="toss" 
-                        checked={paymentMethod === 'toss'}
-                        onChange={handlePaymentMethodChange}
-                    />
-                    토스페이
-                </label>
-                <label>
-                    <input 
-                        type="radio" 
-                        name="payment-method" 
-                        value="payco" 
-                        checked={paymentMethod === 'payco'}
-                        onChange={handlePaymentMethodChange}
-                    />
-                    페이코
-                </label>
+            <div className="total-section">
+                <h2>주문 총액</h2>
+                <p>상품 금액: {orderInfo.totalPrice ? orderInfo.totalPrice.toLocaleString() : '0'} 원</p>
+                <p>쿠폰 할인: {orderInfo.discount ? orderInfo.discount.toLocaleString() : '0'} 원</p>
+                <p>최종 결제 금액: {orderInfo.finalAmount ? orderInfo.finalAmount.toLocaleString() : '0'} 원</p>
             </div>
 
-            {/* 결제하기 버튼 */}
-            <div className="checkout-button">
-                <button onClick={handleCheckout}>
-                    총 {finalAmount.toLocaleString()} 원 결제하기
-                </button>
-            </div>
+            <button className="checkout-button" onClick={handleCheckout}>
+                결제하기
+            </button>
         </div>
     );
 }

@@ -1,28 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ListToBasketComponent.css';
 import { getAuthToken } from '../../util/auth';
 import { json, useLoaderData, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { selectedBasketState } from './BasketAtom';
 
 function ListToBasketComponent() {
-    const xxx = useLoaderData();
-    const [baskets, setBaskets] = useState(xxx);
-    const [selectedBaskets, setSelectedBaskets] = useState([]);
+    const initialBaskets = useLoaderData();
+    const [baskets, setBaskets] = useState(initialBaskets);
+    const [selectedBaskets, setSelectedBaskets] = useRecoilState(selectedBasketState); // Recoil 상태 사용
     const navigate = useNavigate();
+
+    useEffect(() => {
+        refreshBaskets();
+    }, []);
 
     //장바구니에 저장되어 있는 목록 보여주기
     async function refreshBaskets() {
-        const token = getAuthToken();
-        const loginId = localStorage.getItem("loginId");
+        const userId = localStorage.getItem("userId");
 
-        const response = await fetch(`http://localhost:8090/eDrink24/showProductInBasket/${loginId}`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+        const response = await fetch(`http://localhost:8090/eDrink24/showProductInBasket/${userId}`, {
+            method: "GET"
         });
 
         if (response.ok) {
             const resData = await response.json();
+            console.log(resData);
             setBaskets(resData);
             setSelectedBaskets([]);
         } else {
@@ -32,15 +35,11 @@ function ListToBasketComponent() {
 
     //제품 삭제하기
     async function deleteSelectedBaskets() {
-        const token = getAuthToken();
-        const loginId = localStorage.getItem("loginId");
+        const userId = localStorage.getItem("userId");
 
         for (const basketId of selectedBaskets) {
-            const response = await fetch(`http://localhost:8090/eDrink24/deleteProductByBasketIdInBasket/${loginId}/${basketId}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+            const response = await fetch(`http://localhost:8090/eDrink24/deleteProductByBasketIdInBasket/${userId}/${basketId}`, {
+                method: "DELETE"
             });
 
             if (!response.ok) {
@@ -51,53 +50,45 @@ function ListToBasketComponent() {
         refreshBaskets();
     }
 
-    async function showProductToOrderPage() {
-        var xxx = document.querySelectorAll("input:checked");
-        console.log("xxx:",xxx);
-        var basketIds="";
-        xxx.forEach(function(v, idx){
-            console.log(idx,v);
-            if(v.value != "0"){
-                
-                    basketIds += v.value+" ";
-            
-            }
-            console.log(basketIds);
+    
+  // 체크된 제품들 픽업 주문하기 클릭 시 주문 페이지로 이동
+  async function moveToOrderPage() {
 
-        })
-        navigate(`/eDrink24/order/4/kko6235/${basketIds}`);
-    }
+    // 선택된 체크박스들을 가져옵니다.
+    var selectedCheckboxes = document.querySelectorAll("input:checked");
+    var selectedBasketIds = [];
 
-    //
-    async function refreshOrders() {
-        const token = getAuthToken();
-        const loginId = localStorage.getItem("loginId");
-
-        const response = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${loginId}`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-
-        if (response.ok) {
-            const resData = await response.json();
-            setBaskets(resData);
-            setSelectedBaskets([]);
-        } else {
-            console.error('Error fetching data:', response.statusText);
+    // 선택된 체크박스의 값을 가져옵니다.
+    selectedCheckboxes.forEach((checkbox) => {
+        if (checkbox.value !== "0") {
+            selectedBasketIds.push(checkbox.value);
         }
-    }
+    });
 
+    // Recoil 상태 업데이트
+    console.log(">>>>>>>>>>>>>>>>", selectedBasketIds);
+    setSelectedBaskets(selectedBasketIds);
+
+    // userId 가져오기
+    const userId = localStorage.getItem("userId");
+    navigate(`/eDrink24/order/${userId}`);
+}
+
+    // 전체 선택/해제 기능
     const toggleSelectAll = (e) => {
         if (e.target.checked) {
-            const allBasketIds = baskets.map(basket => basket.basketId);
-            setSelectedBaskets(allBasketIds);
+            if(baskets.length > 0){
+                const allBasketIds = baskets.map(basket => basket.basketId);
+                setSelectedBaskets(allBasketIds);
+            }else{
+                setSelectedBaskets([]);
+            }
         } else {
             setSelectedBaskets([]);
         }
     };
 
+    // 개별 항목 선택/해제
     const toggleSelectBasket = (basketId) => {
         if (selectedBaskets.includes(basketId)) {
             setSelectedBaskets(selectedBaskets.filter(id => id !== basketId));
@@ -106,7 +97,8 @@ function ListToBasketComponent() {
         }
     };
 
-    const totalAmount = baskets.reduce((sum, basket) => sum + basket.price * basket.basketQuantity, 0);
+    // 총 계산
+    const totalAmount = baskets.reduce((sum, basket) => sum + basket.items[0].price * basket.items[0].basketQuantity, 0);
 
     return (
         <div className="basket-container">
@@ -116,7 +108,7 @@ function ListToBasketComponent() {
                     <input
                         type="checkbox"
                         onChange={toggleSelectAll}
-                        checked={selectedBaskets.length === baskets.length}
+                        checked={selectedBaskets.length === baskets.length && baskets.length > 0}
                         value="0"
                     />
                     전체 선택
@@ -144,11 +136,11 @@ function ListToBasketComponent() {
                                     />
                                 </td>
                                 <td className="product-info">
-                                    <img src={basket.defaultImage} alt={basket.productName} className="product-image" />
-                                    {basket.productName}
+                                    <img src={basket.items[0].defaultImage} alt={basket.items[0].productName} className="product-image" />
+                                    {basket.items[0].productName}
                                 </td>
-                                <td className="price">{basket.price}원</td>
-                                <td>{basket.basketQuantity}</td>
+                                <td className="price">{basket.items[0].price}원</td>
+                                <td>{basket.items[0].basketQuantity}</td>
                             </tr>
                         ))
                     }
@@ -167,7 +159,7 @@ function ListToBasketComponent() {
                     <span>최종 결제금액</span>
                     <span>{totalAmount}원</span>
                 </div>
-                <button onClick={showProductToOrderPage} className="order-button">픽업 주문하기</button>
+                <button onClick={moveToOrderPage} className="order-button">픽업 주문하기</button>
             </div>
         </div>
     );
@@ -175,9 +167,9 @@ function ListToBasketComponent() {
 
 export async function loader({ request }) {
     const token = getAuthToken();
-    const loginId = localStorage.getItem("loginId");
+    const userId = localStorage.getItem("userId");
 
-    const response = await fetch(`http://localhost:8090/eDrink24/showProductInBasket/${loginId}`, {
+    const response = await fetch(`http://localhost:8090/eDrink24/showProductInBasket/${userId}`, {
         method: "GET",
     });
 

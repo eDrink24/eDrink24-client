@@ -8,6 +8,7 @@ import MypageComponent from './pages/mypage/MypageComponent';
 import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
 import OrderComponent from './pages/order/OrderComponent';
 
+import { RecoilRoot } from 'recoil'; // RecoilRoot 임포트 추가
 import RootLayout from './pages/rootLayout/root';
 
 import { tokenLoader } from './util/auth';
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
         loader: basketLoader
       },
       {
-        path: '/eDrink24/order/:userId/:loginId/:basketIds', element: <OrderComponent />
+        path: '/eDrink24/order/:userId', element: <OrderComponent />
 
       },
       {
@@ -56,7 +57,9 @@ const router = createBrowserRouter([
 // test/test2
 function App() {
   return (
+    <RecoilRoot>
     <RouterProvider router={router} />
+    </RecoilRoot>
   );
 }
 
