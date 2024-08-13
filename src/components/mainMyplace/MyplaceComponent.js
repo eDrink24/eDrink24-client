@@ -5,7 +5,7 @@ import './MyplaceComponent.css';
 function MyPlaceComponent() {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [customerData, setCustomerData] = useState(null);
+    const [customerData, setCustomerData] = useState(null); // 위치설정페이지로 고객정보를 넘겨줌
 
     useEffect(() => {
         const token = localStorage.getItem("jwtAuthToken");
@@ -34,7 +34,7 @@ function MyPlaceComponent() {
     };
 
     const navigateSetLocation = () => {
-        navigate("/eDrink24/myplace_store");
+        navigate("/eDrink24/myplace_store", { state: { customerData } });
     }
 
     return (
@@ -45,7 +45,7 @@ function MyPlaceComponent() {
                 {isLoggedIn && customerData ? (
                     <div className="login-myhome-address-info" onClick={navigateSetLocation}> {/* onClick 부분 주소 수정해야함 */}
                         <img className="placeIcon" src="assets/common/place.png" alt="place-icon" />
-                        <p className="home-place-text">{customerData.address1}</p>
+                        <p className="home-place-text">{customerData.currentLocation}</p>
                     </div>
                 ) : (
                     <div className="logout-myhome-address-info" onClick={() => navigate("/eDrink24/login")}>

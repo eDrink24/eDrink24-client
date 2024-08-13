@@ -1,8 +1,8 @@
 import React, { useState } from 'react'; // useState를 react에서 가져옵니다
 import { useNavigate, useParams } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
+import "./HomeComponent.css";
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import CarouselComponent from '../../components/Banner/CarouselComponent.js';
-import "./HomeComponent.css";
 import MyplaceComponent from '../../components/mainMyplace/MyplaceComponent.js';
 
 function HomeComponent() {

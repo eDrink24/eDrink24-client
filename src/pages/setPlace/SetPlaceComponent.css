@@ -1,2 +1,49 @@
+.setPlace-container {
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-width: 344px; /* 가로 크기 */
+    max-width: 450px;
+    width: 100%;
+    height: auto; 
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto; 
+}
 
+.setPlace-header {
+    height: 102px;
+    padding: 44px 20px 0px 20px;
+    display: flex;
+    background-color: #ffffff;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+}
 
+.setPlace-header h1 {
+    font-size: 20px;
+    font-weight: 500;
+    position: absolute; 
+    left: 50%;
+    transform: translateX(-50%); 
+}
+
+.setPlace-header .close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    right: 0; 
+}
+
+.setPlace-header .close-button img {
+    width: 24px;
+}
+
+.setPlace-map {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 30px 20px 30px;
+    max-width: 390px;
+    min-height: 390px;
+}
