@@ -55,6 +55,8 @@ function HomeComponent() {
 
                 {/* 벨 아이콘 */}
                 <button className="homePage-bell" aria-label="Notifications">
+                    <img className="basket-icon"
+                        src="assets/common/bag.png" alt="bell icon" onClick={() => navigate("/eDrink24/basket")} />
                     <img className="bell-icon"
                         src="assets/common/bell.png" alt="bell icon" />
                 </button>
@@ -62,7 +64,7 @@ function HomeComponent() {
             </div>
 
             <div className="home-container">
-                
+
                 {/* 위치 정보 버튼 */}
                 <MyPlaceComponent />
 

@@ -38,10 +38,11 @@
     display: flex;
     width: 98px;
     height: 40px;
+    margin-left: 5px;
   }
 
   .homePage-bell {
-    width: 58px;
+    width: 100px;
     height: 58px;
     display: flex;
     justify-content: flex-end;
@@ -49,12 +50,18 @@
     background: none;
     border: none;
     align-items: center;
+    margin-right: 5px;
   }
 
   .homePage-bell img {
     height: 24px;
   }
 
+
+  .basket-icon {
+    height: 24px;
+    margin-right:20px;
+  }
 
 /*****************************************************************************/
 /* 컨테이너 스타일 */
