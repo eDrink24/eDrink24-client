@@ -53,7 +53,7 @@ function ListToBasketComponent() {
 
     
  // 체크된 제품들 픽업 주문하기 클릭 시 주문 페이지로 이동
- async function moveToOrderPage() {
+ async function moveToOrderPage(e) {
     const selectedCheckboxes = document.querySelectorAll("input:checked");
     const selectedBasketIds = [];
 
@@ -63,6 +63,11 @@ function ListToBasketComponent() {
             selectedBasketIds.push(checkbox.value);
         }
     });
+
+    if(selectedBasketIds.length === 0){
+        alert("주문페이지로 이동하려면 적어도 하나의 제품을 선택해주세요.");
+        return;
+    }
 
     // Recoil 상태 업데이트
     setSelectedBaskets(selectedBasketIds);
@@ -111,8 +116,18 @@ function ListToBasketComponent() {
     };
 
     // 총 계산
-    const totalAmount = baskets.reduce((sum, basket) => sum + basket.items[0].price * basket.items[0].basketQuantity, 0); // 총 금액 계산
-    const totalQuantity = baskets.reduce((sum, basket) => sum + basket.items[0].basketQuantity, 0); // 총 수량 계산 (새로 추가됨)
+    const totalAmount = baskets.reduce((sum, basket) => {
+        if(selectedBaskets.includes(basket.basketId)){
+           return sum + basket.items[0].price * basket.items[0].basketQuantity
+        }
+        return sum;
+    }, 0); // 총 금액 계산
+    const totalQuantity = baskets.reduce((sum, basket) => {
+        if(selectedBaskets.includes(basket.basketId)) {
+            return sum + basket.items[0].basketQuantity;
+        }
+        return sum;
+    }, 0);
 
     // 탭 클릭 핸들러 함수 ( 클릭한 탭으로 활성 탭이 변경된다.)
     const handleTabClick = (tab) => {
@@ -161,9 +176,6 @@ function ListToBasketComponent() {
                                 <button onClick={deleteSelectedBaskets} className="basket-delete-button">
                                 삭제 하기
                                 </button>
-                            </div>
-                            <div className="basket-pickup-shop-select">
-                                픽업 매장 선택하기
                             </div>
                             <div>
                                 <div className="basket-table">
@@ -224,10 +236,6 @@ function ListToBasketComponent() {
                                     <div className="summary-item">
                                         <span>총 상품금액</span>
                                         <span>{totalAmount}원</span> {/* 총 금액 표시 */}
-                                    </div>
-                                    <div className="summary-item">
-                                        <span>총 할인금액</span>
-                                        <span>0원</span>
                                     </div>
                                     <div className="summary-item total">
                                         <span>최종 결제금액</span>
