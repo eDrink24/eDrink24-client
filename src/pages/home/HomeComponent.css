@@ -38,10 +38,11 @@
     display: flex;
     width: 98px;
     height: 40px;
+    margin-left: 5px;
   }
 
   .homePage-bell {
-    width: 58px;
+    width: 100px;
     height: 58px;
     display: flex;
     justify-content: flex-end;
@@ -49,6 +50,7 @@
     background: none;
     border: none;
     align-items: center;
+    margin-right: 5px;
   }
 
   .homePage-bell img {
@@ -56,9 +58,14 @@
   }
 
 
+  .basket-icon {
+    height: 24px;
+    margin-right:20px;
+  }
+
 /*****************************************************************************/
 /* 컨테이너 스타일 */
-.my-place-container, .banner-container,
+.Home-myPlace-container, .banner-container,
 .category-button-container, .best-product {
     width: auto;
     margin: 20px;
@@ -76,9 +83,39 @@
 }
 
 /* 마이 플레이스 컨테이너 스타일 */
-.my-place-container {
+.Home-myPlace-container {
     height: 80px;
-    background: #da8585;
+}
+
+.myHome-address {
+    height: 36px;
+    background-color: #AAAAAA;
+    display: flex;
+    align-items: center;
+}
+
+.myHome-address img {
+    height: 24px;
+    width: 24px;
+}
+
+.pickUp-address {
+    height: 44px;
+    background-color: #C9C9C9;
+    display: flex;
+    align-items: center;
+}
+
+.pickUp {
+    background-color: #54565A;
+    color: white;
+    width: 64px;
+    height: 23px;
+    display: flex; /* Flexbox 레이아웃을 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    border-radius: 999px;
+    font-size: 12px;
 }
 
 /* 배너 컨테이너 스타일 */

@@ -1,24 +1,26 @@
-import React, { useState } from 'react'; // useState 임포트 추가
+import React, { useEffect, useState } from 'react'; // useState 임포트 추가
 import { useNavigate } from 'react-router-dom'; // useNavigate 임포트 추가
 import './CategoryComponent.css';
 import FooterComponent from '../../components/footer/FooterComponent.js';
-const categories = ['와인', '양주', '맥주', '전통주', '기타 주류', '논알콜', '안주'];
+const categories = ['와인', '양주', '전통주', '논알콜', '안주'];
 const subcategories = {
-  '와인': ['와인 전체', '레드', '화이트', '로제', '샴페인', '스파클링', '내추럴'],
-  '양주': ['양주 전체', '싱글몰트 위스키'],
-  '맥주': ['맥주 전체'],
-  '전통주': ['전통주 전체'],
-  '기타 주류': ['기타 주류'],
-  '논알콜': ['논알콜'],
+  '와인': ['레드와인', '화이트와인', '스파클링와인', '로제와인'],
+  '양주': ['양주'],
+  '전통주': ['약주', '과실주', '탁주', '리큐르', '전통소주', '전통주세트', '기타전통주'],
+  '논알콜': ['무알콜맥주|칵테일'],
   '안주': ['안주'],
 };
 
 const CategoryComponent = () => {
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [selectedcategory, setSelectedCategory] = useState(categories[0]);
   const navigate = useNavigate();
 
-  const handleDirectB2 = () => {
-    navigate("/eDrink24/allproduct");
+  const handleCategory1Click = (category1) => {
+    navigate(`/eDrink24/allproduct/${category1}`);
+  }
+
+  const handleCategory2Click = (category1,category2) => {
+    navigate(`/eDrink24/allproduct/${category1}/${category2}`);
   };
 
   const handleDirectB1 = () => {
@@ -26,62 +28,70 @@ const CategoryComponent = () => {
   };
 
   return (
-    <div className="category-container">
-      {/* 상단 네비게이션 바 */}
-      <div className="category-header">
-        <div className="category-navigation-bar">
-          {/* 뒤로가기 아이콘 */}
-          <button className="category-back-icon-button" onClick={handleDirectB1}>
-            <img className="category-nav-back-icon"
-              src="assets/common/backIcon.png" alt="Back" />
-          </button>
-          {/* 로고 이미지 */}
-          <div className="category-elogo-box">
-            <img className="category-nav-logo" onClick={handleDirectB1}
-              src="assets/common/emart24_logo.png" alt="eMart24" />
-          </div>
-          {/* 검색하기 아이콘 */}
-          <button className="category-search-icon-button">
-            <img className="category-nav-search-icon"
-              src="assets/common/search.png" alt="search" />
-          </button>
-        </div>
-      </div>
 
-      {/* 주류 카테고리 */}
-      <div className="category-body">
-        <div className="category-sidebar-container">
-          <div className="category-sidebar">
-            <ul>
-              {categories.map(category => (
-                <li
-                  key={category}
-                  className={selectedCategory === category ? 'category-active' : ''}
-                  onClick={() => setSelectedCategory(category)}
-                >
-                  {category}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="category-main-content">
-            <h2>
-              <span className='category-selectedCategoryText'>{selectedCategory}</span>
-              <button className="category-moreButton" onClick={handleDirectB2}>
-                &gt; {/* &gt;로 변경하여 올바른 표시 */}
-              </button>
-            </h2>
-            <ul>
-              {subcategories[selectedCategory].map(subcategory => (
-                <li key={subcategory}>{subcategory}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
+      // 전체 컨테이너
+      <div className="category-container">
+
+            {/* 상단 네비게이션 바 */}
+            <div className="category-nav-bar">
+
+                {/* 뒤로가기 아이콘 */}
+                <button className="category-back" onClick={handleDirectB1}>
+                    <img className="back-icon" src="assets/common/backicon.png" alt="back" />
+                </button>
+
+                {/* 메인 타이틀 */}
+                <h3>카테고리</h3>
+
+                {/* 장바구니 아이콘 */}
+                <button className="category-bag"  onClick={() => { navigate('/eDrink24/basket') }}>
+                    <img className="bag-cicon" src="assets/common/bag.png" alt="bag" />
+                </button>
+
+            </div>
+
+
+            <div className='line2'></div>
+
+            <div className="category-main-content">
+
+            {/* 주류 카테고리 */}
+              <div className="category-container-content">
+                <div className="category1-content">
+                  <ul>
+                    {categories.map(category => (
+                      <li
+                        key={category}
+                        className={selectedcategory === category ? 'category-active' : ''}
+                        onClick={() => setSelectedCategory(category)}>
+                        {category}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="category2-content">
+                  <ul>
+                    <li className='category-selectedCategoryText' onClick={handleCategory1Click}>{selectedcategory}</li>
+                  </ul>
+                  <ul>
+                    {subcategories[selectedcategory].map(category2 => (
+                      <li 
+                        key={category2}
+                        onClick={()=>handleCategory2Click(selectedcategory,category2)}>
+                        {category2}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+
 
       {/* 하단 네비게이션 바 */}
       <FooterComponent />
+
+
     </div>
   );
 };

@@ -5,19 +5,26 @@ import HomeComponent from './pages/home/HomeComponent';
 import CategoryComponent from './pages/category/CategoryComponent';
 import SignupComponent, { action as signUpAction } from './pages/signup/SignupComponent';
 import MypageComponent from './pages/mypage/MypageComponent';
+import SearchComponent from './pages/search/SearchComponent';
+import HistoryComponent from './pages/history/HistoryComponent';
 import UpdateCustomerComponent from './pages/mypage/UpdateCustomerComponent';
 import OrderComponent from './pages/order/OrderComponent';
+import ListToBasketComponent, { loader as basketLoader } from './pages/basket/ListToBasketComponent';
+import AllProductComponent from './pages/product/AllProductComponent';
+import CategoriesProductComponent from './pages/product/CategoriesProductComponent';
+import ProductDetailComponent from './pages/product/ProductDetailComponent';
+import { RecoilRoot } from 'recoil';
+
+import KakaoLoginHandler from './pages/login/kakao/KakaoLoginHandler';
+import KakaoSignupHandler from './pages/login/kakao/KakaoSignupHandler';
 
 import { RecoilRoot } from 'recoil'; // RecoilRoot 임포트 추가
 import RootLayout from './pages/rootLayout/root';
+import ProtectedRoute from './components/ProtectedRouter';
 
 import { tokenLoader } from './util/auth';
-import ProtectedRoute from './components/ProtectedRouter';
-import ListToBasketComponent, { loader as basketLoader } from './pages/basket/ListToBasketComponent';
-import AllProductComponent from './pages/product/AllProductComponet';
-import ProductDetailComponent from './pages/product/ProductDetailComponent';
 
-//
+// test yoon
 const router = createBrowserRouter([
   {
     path: "/eDrink24",
@@ -25,9 +32,12 @@ const router = createBrowserRouter([
     loader: tokenLoader,
     children: [
       { path: '/eDrink24', element: <HomeComponent /> },
-      { path: '/eDrink24/allproduct', element: <AllProductComponent /> },
-      { path: '/eDrink24/allproduct/:productId', element: <ProductDetailComponent /> },
+      { path: '/eDrink24/allproduct/:category1', element: <AllProductComponent /> },
+      { path: '/eDrink24/allproduct/:category1/:category2', element: <CategoriesProductComponent /> },
+      { path: '/eDrink24/allproduct/:category1/:category2/:productId', element: <ProductDetailComponent /> },
       { path: '/eDrink24/category', element: <CategoryComponent /> },
+      { path: '/eDrink24/search', element: <SearchComponent />},
+      { path: '/eDrink24/history', element: <HistoryComponent />},
       {
         path: '/eDrink24/login', element: <LoginComponent />,
         action: loginAction
@@ -44,6 +54,15 @@ const router = createBrowserRouter([
       {
         path: '/eDrink24/order/:userId', element: <OrderComponent />
 
+
+      },
+
+
+      { // 카카오 로그인 대기창
+        path: '/eDrink24/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
+      },
+      { // 카카오 회원가입시, 추가정보 입력창
+        path: '/eDrink24/kakao/signup', element : <KakaoSignupHandler/>
       },
       {
         element: <ProtectedRoute />,
@@ -58,8 +77,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <RecoilRoot>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </RecoilRoot>
+    
   );
 }
 

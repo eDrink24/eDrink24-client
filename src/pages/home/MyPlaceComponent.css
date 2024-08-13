@@ -1,0 +1,51 @@
+.home-my-place-container {
+    width: auto;
+    height: 80px;
+    margin: 20px;
+    cursor: pointer;
+    background-color: #AAAAAA;
+}
+
+/*******************************************************************/
+
+.my-home-address {
+    height: 36px;
+    display: flex;
+}
+
+.login-myhome-address-info,
+.logout-myhome-address-info {
+    display: flex;
+    align-items: center;
+}
+
+.my-home-address img {
+    width: 24px;
+    height: 24px;
+    margin: 6px;
+}
+
+/*******************************************************************/
+
+.pickup-shop-address {
+    height: 44px;
+    background-color: #898989;
+    display: flex;
+}
+
+.login-pickup-address-info,
+.logout-pickup-address-info {
+    display: flex;
+    align-items: center;
+}
+
+.login-pickup-address-info span,
+.logout-pickup-address-info span {
+    background-color: #2e2e2e;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    margin: 6px;
+}
+

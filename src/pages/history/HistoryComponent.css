@@ -1,0 +1,88 @@
+* {
+  font-family: 'Spoqa Han Sans Neo', sans-serif; /* 전체 폰트 스타일 */
+  box-sizing: border-box; /* 패딩과 보더를 포함한 박스 사이징 */
+  margin: 0;
+  padding: 0;
+}
+
+/* 전체 컨테이너 스타일 */
+.history-container {
+  background-color: white;
+  max-width: 430px;
+  min-width: 390px;
+  margin: 0 auto; /* 0 = 위,아래의 마진값 / auto = 좌,우의 마진값 */
+}
+
+/*****************************************************************************/
+/* 상단 네비게이션 바 */
+
+.history-nav-bar {
+  height: 102px;
+  padding: 44px 20px 0; /* 위의 패딩값 / 좌,우의 패딩값 / 아래의 패딩값*/
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.history-nav-bar img {
+  width: 24px;
+  height: 24px;
+}
+
+.history-nav-bar button {
+  width: 58px;
+  height: 58px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.history-back{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.history-bag{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/*****************************************************************************/
+/* 오늘픽업과 예약픽업 탭 바 스타일 */
+
+.history-tab-bar {
+  display: flex;
+  border-bottom: 2px solid #ccc; 
+  height: 52px;
+  align-items: center;
+}
+
+.history-tab-item {
+  flex: 1; 
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.history-tab-item.active::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 4px;
+  background-color: black;
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+}
+
+/*****************************************************************************/
+/* 메인 컨턴츠 */
+
+.history-main-content{
+  margin: 20px;
+  height: 100%;
+}

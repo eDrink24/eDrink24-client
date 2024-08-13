@@ -1,13 +1,16 @@
 import React, { useState } from 'react'; // useState를 react에서 가져옵니다
-import { useNavigate } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
+import { useNavigate, useParams } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
 import FooterComponent from '../../components/footer/FooterComponent.js';
+import CarouselComponent from '../../components/Banner/CarouselComponent.js';
 import "./HomeComponent.css";
+import MyPlaceComponent from './MyPlaceComponent.js';
 
 function HomeComponent() {
 
     // 상태 변수 선언
     const [isExpanded, setIsExpanded] = useState(false); // footer 확장을 위한 상태
     const [activeTab, setActiveTab] = useState('description'); // 초기 탭을 'description'으로 설정
+    const { category1 } = useParams();
 
     const navigate = useNavigate();
 
@@ -25,7 +28,7 @@ function HomeComponent() {
     };
 
     const handleDirectAllproduct = () => {
-        navigate("/eDrink24/allproduct");
+        navigate(`/eDrink24/allproduct/${category1}`);
     };
 
     // 탭 클릭 핸들러 함수
@@ -52,6 +55,8 @@ function HomeComponent() {
 
                 {/* 벨 아이콘 */}
                 <button className="homePage-bell" aria-label="Notifications">
+                    <img className="basket-icon"
+                        src="assets/common/bag.png" alt="bell icon" onClick={() => navigate("/eDrink24/basket")} />
                     <img className="bell-icon"
                         src="assets/common/bell.png" alt="bell icon" />
                 </button>
@@ -60,8 +65,12 @@ function HomeComponent() {
 
             <div className="home-container">
 
-                <div className="my-place-container"></div>
-                <div className="banner-container"></div>
+                {/* 위치 정보 버튼 */}
+                <MyPlaceComponent />
+
+                {/* 배너 이미지 */}
+                <CarouselComponent />
+
                 <div className="category-button-container">
                     <button type="button" className="b1" onClick={handleDirectCategory}>
                         <img src="assets/common/menu.png" className="menuButton" alt="Menu Button" />

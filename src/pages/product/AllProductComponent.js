@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import './AllProductComponent.css';
 import FooterComponent from '../../components/footer/FooterComponent.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
+const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
 
 const AllProductComponent = () => {
+    const { category1 } = useParams();
     const [products, setProducts] = useState([]);
-    const [category2, setCategory2] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('와인');
     const navigate = useNavigate();
 
     useEffect(() => {
-        allProducts();
-    }, []);
+        if(category1)    
+            selectCategory1(selectedCategory);
+    }, [selectedCategory]);
 
-    //전체 제품 보여주기
-    const allProducts = async () => {
+    //카테고리1에 따른 전체제품 보여주기
+    const selectCategory1 = async (category1) => {
         try {
-            const response = await fetch('http://localhost:8090/eDrink24/showAllProduct', {
+            const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory1/${category1}`, {
                 method: "GET"
             });
 
@@ -29,21 +33,6 @@ const AllProductComponent = () => {
             console.error('Error fetching products:', error);
         }
     };
-
-    //카테고리별로 제품 보여주기
-    async function selectCategory2(category2) {
-        setCategory2(category2);
-        const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory2/${category2}`, {
-            method: "GET"
-        });
-
-        if (response.ok) {
-            const resData = await response.json();
-            setProducts(resData);
-        } else {
-            console.error('Error fetching data:', response.statusText);
-        }
-    }
 
     //사이드바 선택한거에 따라서 제품 보여주기
     const handleSortEvent = (e) => {
@@ -62,17 +51,34 @@ const AllProductComponent = () => {
         setProducts(sortedProduct);
     };
 
+    const handleCategory1Click = (category1) => {
+        setSelectedCategory(category1);
+        navigate(`/eDrink24/allproduct/${category1}`);
+    }
+
+    const returnHome = () => {
+        navigate(`/eDrink24`);
+    }
+
     //제품사진 클릭했을 때 제품상세보기
     const handleProductClickEvent = (productId) => {
-        console.log("products", products);
-        navigate(`/eDrink24/allproduct/${productId}`);
+        // products 배열에서 클릭된 제품을 찾음
+        const clickedProduct = products.find(product => product.productId === productId); //find메소드는 배열을 순회하며, 제공된 조건에 맞는 첫번째 요소 반환
+                                                                                          //여기서는 product.productId === productId 조건을 사용하여 클릭된 제품의 ID와 일치하는 제품을 찾음
+        //클릭된 제품이 존재할 경우, 해당 제품의 category2 값을 얻음
+        if (clickedProduct) {
+            const category2 = clickedProduct.category2;
+            navigate(`/eDrink24/allproduct/${selectedCategory}/${category2}/${productId}`); //${selectedCategory}=${category1}
+        } else {
+            console.error('제품을 찾지 못했습니다.');
+        }
     };
 
     return (
         <div className="allproduct-container">
             <div className="allproduct-home-header"> {/* 상단 네비게이션 바 */}
                 <div className="allproduct-navigation-bar">
-                    <button className="allproduct-back-button" onClick={() => { navigate(-1) }}>
+                    <button className="allproduct-back-button" onClick={returnHome}>
                         <img src="assets/common/backIcon.png" alt="Back" className="allproduct-nav-bicon" /> {/* 뒤로 가기 아이콘 */}
                     </button>
                     <div className="allproduct-logo-box">
@@ -84,14 +90,17 @@ const AllProductComponent = () => {
                 </div>
             </div>
             <div className="allproduct-body">
-                {/* 카테고리 바 => 바꿔야함 */}
+                {/* 카테고리 바*/}
                 <div className="allproduct-filter-bar">
-                    <button onClick={allProducts} className="allproduct-filter-button selected">와인 전체</button>
-                    <button onClick={() => selectCategory2('레드와인')} className="allproduct-filter-button">레드</button>
-                    <button className="allproduct-filter-button">샴페인</button>
-                    <button onClick={() => selectCategory2('화이트와인')} className="allproduct-filter-button">화이트</button>
-                    <button className="allproduct-filter-button">로제</button>
-                    <button className="allproduct-filter-button">국산</button>
+                {categoryList.map((category1,idx) => (
+                    <button
+                        key={idx}
+                        onClick={()=>handleCategory1Click(category1)}
+                        className={`allproduct-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
+                    >
+                    {category1}
+                    </button>
+                ))}    
                 </div>
                 {/* 오늘픽업 체크박스 / 인기순,신상품,등등 */}
                 <div className="allproduct-click-container">
@@ -126,6 +135,7 @@ const AllProductComponent = () => {
                         <div className="allproduct-product-tag">오늘픽업</div>
                     </div>
                 </div>
+
             ))}
 
             <FooterComponent />

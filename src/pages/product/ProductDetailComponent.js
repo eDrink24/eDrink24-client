@@ -2,16 +2,20 @@ import React, { useEffect, useState } from 'react';
 import './ProductDetailComponent.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
+import { useRecoilState } from 'recoil';
+import { orderState } from '../order/OrderAtom';
 
 function ProductDetailComponent() {
   // 상태 변수 선언
   const [isExpanded, setIsExpanded] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description'); // 초기 탭을 'description'으로 설정
+  const {category1,category2} = useParams();
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [orderInfo, setOrderInfo] = useRecoilState(orderState);
 
 
   useEffect(() => {
@@ -21,18 +25,23 @@ function ProductDetailComponent() {
   //제품 사진 클릭 시 제품 상세페이지로 이동
   const DetailProduct = async () => {
     try {
-      console.log("productId", productId);
-      const response = await fetch(`http://localhost:8090/eDrink24/showDetailProduct/${productId}`, {
+      console.log("productId", productId); // productId가 올바른지 확인
+        console.log("category1", category1); // category1이 올바른지 확인
+        console.log("category2", category2); // category2가 올바른지 확인
+      const response = await fetch(`http://localhost:8090/eDrink24/showDetailProduct/${category1}/${category2}/${productId}`, {
         method: "GET"
       });
+
+      console.log("response",response);
 
       if (!response.ok) {
         throw new Error('Failed to fetch product');
       }
 
       const resData = await response.json();
-      console.log(response, resData);
+      console.log("resData",resData);
       setProduct(resData);
+
     } catch (error) {
       console.error('Error fetching product:', error);
     }
@@ -112,13 +121,29 @@ function ProductDetailComponent() {
   // 장바구니 버튼 클릭 후 모달창에서 아니요 누르면 제품목록 페이지로 이동
   const stayOnPage = () => {
     setModalIsOpen(false);
-
-    navigate('/eDrink24/allproduct/');
+    navigate(`/eDrink24/allproduct/${category1}`);
   };
 
   //바로구매 버튼 클릭 시 결제페이지로 이동
-  const MoveToPaymentPage = () => {
-    navigate('/eDrink24/order/:userId');
+  const moveToOrderPage = () => {
+    const userId = localStorage.getItem("userId");
+
+    //선택한 제품 정보를 orderState에 저장
+    setOrderInfo((prev) => ({ // prev는 현재 상태에서 일부분만 수정하고 나머지는 유지하고 싶을 때 사용
+      ...prev, // 기존 상태 객체를 펼쳐서 복사하고, 복사된 값에서 특정한 값만 수정
+      selectedItems: [
+          {
+              productId: product.productId,
+              productName: product.productName,
+              price: product.price,
+              basketQuantity: quantity,
+              defaultImage: product.defaultImage,
+          },
+      ],
+  }));
+
+  
+    navigate(`/eDrink24/order/${userId}`);
   };
 
   return (
@@ -260,7 +285,7 @@ function ProductDetailComponent() {
 
         <div className="productDetailComponent-option-buy-button">
           <button onClick={saveInBasket} className="productDetailComponent-go-cart">장바구니</button>
-          <button onClick={MoveToPaymentPage} className="productDetailComponent-buy-now">바로구매</button>
+          <button onClick={moveToOrderPage} className="productDetailComponent-buy-now">바로구매</button>
         </div>
       </div>
 
