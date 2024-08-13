@@ -2,7 +2,7 @@ AlertModalOfClickBasketButton.css
 
 /* 알림창 */
 .btn-alert-close {
-    width: 100px;
+    width: 100%;
     padding: 10px;
     background-color: #f0c040;
     border: none;
@@ -12,6 +12,7 @@ AlertModalOfClickBasketButton.css
     font-weight: bold;
     cursor: pointer;
     margin-top: 20px;
+
 }
 
 .alert-h2 {

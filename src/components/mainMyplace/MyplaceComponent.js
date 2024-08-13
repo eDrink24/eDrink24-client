@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './MyPlaceComponent.css';
+import './MyplaceComponent.css';
 
 function MyPlaceComponent() {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ function MyPlaceComponent() {
         const response = await fetch(`http://localhost:8090/eDrink24/selectCustomerMyPage/${loginId}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             }
         });
 
@@ -33,9 +33,9 @@ function MyPlaceComponent() {
         }
     };
 
-    const navigateUpdateCustomer = () => {
-        navigate("/eDrink24/mypage/updateCustomer", { state: { customerData } });
-    };
+    const navigateSetLocation = () => {
+        navigate("/eDrink24/myplace_store");
+    }
 
     return (
         // 로그인 상태 따라 변동되는 주소정보
@@ -43,14 +43,14 @@ function MyPlaceComponent() {
             {/* 회원 주소정보 */}
             <div className="my-home-address">
                 {isLoggedIn && customerData ? (
-                    <div className="login-myhome-address-info" onClick={navigateUpdateCustomer}> {/* onClick 부분 주소 수정해야함 */}
+                    <div className="login-myhome-address-info" onClick={navigateSetLocation}> {/* onClick 부분 주소 수정해야함 */}
                         <img className="placeIcon" src="assets/common/place.png" alt="place-icon" />
-                        <p><strong>{customerData.address1}{customerData.address2}</strong></p>
+                        <p className="home-place-text">{customerData.address1}</p>
                     </div>
                 ) : (
-                    <div className="logout-myhome-address-info" onClick={() => navigate("/eDrink24/login")}> {/* onClick 부분 주소 수정해야함 */}
+                    <div className="logout-myhome-address-info" onClick={() => navigate("/eDrink24/login")}>
                         <img className="placeIcon" src="assets/common/place.png" alt="place-icon" />
-                        <p><strong>주소정보를 추가해주세요!</strong></p>
+                        <p className="home-place-text">로그인이 필요합니다.</p>
                     </div>
                 )}
             </div>
@@ -58,14 +58,23 @@ function MyPlaceComponent() {
             {/* 픽업매장 주소 선택 */}
             <div className="pickup-shop-address">
                 {isLoggedIn && customerData ? (
-                    <div className="login-pickup-address-info" onClick={navigateUpdateCustomer}> {/* onClick 부분 주소 수정해야함 */}
-                        <span>픽업매장</span>
-                        <p><strong>{customerData.address1}</strong></p>
+                    <div className="login-pickup-address-info" onClick={navigateSetLocation}>
+                        <span className='home-place-text1'>픽업매장</span>
+                        <p className="home-place-text">
+                            <span className="home-place-text2">이마트24</span>&nbsp;&nbsp;
+                            {customerData.currentStore ? (
+                                customerData.currentStore
+                            ) : (
+                                <span style={{ color: 'red' }}>단골매장을 선택해주세요!</span>
+                            )}
+                        </p>
                     </div>
                 ) : (
-                    <div className="logout-pickup-address-info" onClick={() => navigate("/eDrink24/login")}> {/* onClick 부분 주소 수정해야함 */}
-                        <span>픽업매장</span>
-                        <p><strong>픽업 매장을 추가해주세요!</strong></p>
+                    <div className="logout-pickup-address-info" onClick={() => navigate("/eDrink24/login")}>
+                        <span className='home-place-text1'>픽업매장</span>
+                        <p className="home-place-text">
+                            <span className="home-place-text2">이마트24</span>
+                        </p>
                     </div>
                 )}
             </div>
