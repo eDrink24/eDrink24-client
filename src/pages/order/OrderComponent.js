@@ -149,7 +149,6 @@ function OrderComponent() {
             fetchProductDetailsForBasket();
         }
     }, [selectedBaskets, fetchProductDetailsForBasket]);
-=======
 
     // 쿠폰 목록을 서버에서 가져오는 함수
     const fetchCoupons = async () => {

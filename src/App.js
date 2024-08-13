@@ -13,7 +13,6 @@ import ListToBasketComponent, { loader as basketLoader } from './pages/basket/Li
 import AllProductComponent from './pages/product/AllProductComponent';
 import CategoriesProductComponent from './pages/product/CategoriesProductComponent';
 import ProductDetailComponent from './pages/product/ProductDetailComponent';
-import { RecoilRoot } from 'recoil';
 
 import KakaoLoginHandler from './pages/login/kakao/KakaoLoginHandler';
 import KakaoSignupHandler from './pages/login/kakao/KakaoSignupHandler';
