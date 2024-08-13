@@ -15,6 +15,10 @@ const CategoryComponent = () => {
   const [selectedcategory, setSelectedCategory] = useState(categories[0]);
   const navigate = useNavigate();
 
+  const handleCategory1Click = (category1) => {
+    navigate(`/eDrink24/allproduct/${category1}`);
+  }
+
   const handleCategory2Click = (category1,category2) => {
     navigate(`/eDrink24/allproduct/${category1}/${category2}`);
   };
@@ -32,7 +36,7 @@ const CategoryComponent = () => {
             <div className="category-nav-bar">
 
                 {/* 뒤로가기 아이콘 */}
-                <button className="category-back" onClick={() => { navigate(-1) }}>
+                <button className="category-back" onClick={handleDirectB1}>
                     <img className="back-icon" src="assets/common/backicon.png" alt="back" />
                 </button>
 
@@ -67,7 +71,7 @@ const CategoryComponent = () => {
                 </div>
                 <div className="category2-content">
                   <ul>
-                    <h2 className='category-selectedCategoryText'>{selectedcategory}</h2>
+                    <li className='category-selectedCategoryText' onClick={handleCategory1Click}>{selectedcategory}</li>
                   </ul>
                   <ul>
                     {subcategories[selectedcategory].map(category2 => (
