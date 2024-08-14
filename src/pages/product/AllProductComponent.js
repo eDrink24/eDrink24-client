@@ -131,7 +131,7 @@ const AllProductComponent = () => {
                         </div>
                         <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
                         <div className="allproduct-product-name">{product.productName}</div>
-                        <div className="allproduct-product-price">{product.price} 원</div>
+                        <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
                         <div className="allproduct-product-tag">오늘픽업</div>
                     </div>
                 </div>

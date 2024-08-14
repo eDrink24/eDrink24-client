@@ -240,7 +240,7 @@ function ListToBasketComponent() {
 
                                             {/* 상품 1개 가격 표시 */}
                                             <div className="basket-original-price">
-                                                <div className="price">{basket.items[0].price}원</div>
+                                                <div className="price">{basket.items[0].price.toLocaleString()}원</div>
                                             </div>
                                             </div>
 
@@ -255,11 +255,11 @@ function ListToBasketComponent() {
                                     </div>
                                     <div className="summary-item">
                                         <span>총 상품금액</span>
-                                        <span>{totalAmount}원</span> {/* 총 금액 표시 */}
+                                        <span>{totalAmount.toLocaleString()}원</span> {/* 총 금액 표시 */}
                                     </div>
                                     <div className="summary-item total">
                                         <span>최종 결제금액</span>
-                                        <span>{totalAmount}원</span> {/* 총 금액 표시 */}
+                                        <span>{totalAmount.toLocaleString()}원</span> {/* 총 금액 표시 */}
                                     </div>
                                     <button onClick={moveToOrderPage} className="order-button">
                                         픽업 주문하기
