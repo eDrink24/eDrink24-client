@@ -14,48 +14,44 @@ function OrderComponent() {
     const [productDetailsMap, setProductDetailsMap] = useState(new Map());
     const [basketItemsList, setBasketItemsList] = useState([]); 
     const [couponList, setCouponList] = useState([]);
+    const [priceList, setPriceList] = useState([]);
     const [storeList, setStoreList] = useState([]);
     const [loadingStores, setLoadingStores] = useState(false);
     const [storeAddress, setStoreAddress] = useState('');
     const [loadingCoupons, setLoadingCoupons] = useState(false);
     const [showStoreList, setShowStoreList] = useState(false);
     const [showCouponList, setShowCouponList] = useState(false);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [discount, setDiscount] = useState(0);
+    const [finalAmount, setFinalAmount] = useState(0);
     const { storeId, pickupDate, coupon, pointUse, paymentMethod } = orderInfo;
     const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
     const navigate = useNavigate();    
 
     // 총액 계산 함수
-    const calculateTotals = useCallback(() => {
-        const subtotal = selectedBaskets.reduce((total, item) => {
-            const productDetails = productDetailsMap.get(item.productId);
-            const price = productDetails ? productDetails.price : 0;
-            return total + (price * item.basketQuantity);
+    function calculateTotals() {
+        const subtotal = Array.from(productDetailsMap.values()).reduce((total, item) => {
+            return total + (item.price * item.basketQuantity);
         }, 0);
-
         const couponDiscount = coupon ? coupon.discountAmount : 0;
         const pointAmount = pointUse ? subtotal * 0.05 : 0;
         const finalAmount = subtotal - couponDiscount - pointAmount;
 
+        setTotalPrice(subtotal);
+        setDiscount(couponDiscount + pointAmount);
+        setFinalAmount(finalAmount);
+    }
 
-        setOrderInfo(prev => ({
-            ...prev,
-            totalPrice: subtotal,
-            discount: couponDiscount + pointAmount,
-            finalAmount: finalAmount
-        }));
-
-    }, [selectedBaskets, productDetailsMap, coupon, pointUse, setOrderInfo]);
-
-    // 선택된 아이템이 변경될 때 장바구니 업데이트
-    useEffect(() => {
+     // 선택된 아이템이 변경될 때 장바구니 업데이트
+     useEffect(() => {
         setBasket(selectedBaskets);
+        console.log("CCCCCCCC:", productDetailsMap)
     }, [selectedBaskets, setBasket]);
 
     // 장바구니와 기타 관련 상태가 변경될 때 총액 계산
     useEffect(() => {
         calculateTotals();
     }, [selectedBaskets, coupon, pointUse, calculateTotals]);
-
 
     // 매장 선택 시 주소와 목록 표시 여부 업데이트
     useEffect(() => {
@@ -405,9 +401,9 @@ function OrderComponent() {
             {/* 주문 총액 */}
             <div className="total-section">
                 <h2>주문 총액</h2>
-                <p>상품 금액: {orderInfo.totalPrice ? orderInfo.totalPrice.toLocaleString() : '0'} 원</p>
-                <p>쿠폰 할인: {orderInfo.discount ? orderInfo.discount.toLocaleString() : '0'} 원</p>
-                <p>최종 결제 금액: {orderInfo.finalAmount ? orderInfo.finalAmount.toLocaleString() : '0'} 원</p>
+                <div>총 상품금액: {totalPrice.toLocaleString()} 원</div>
+                <div>총 할인금액: {discount.toLocaleString()} 원</div>
+                <div>총 결제금액: {finalAmount.toLocaleString()} 원</div>
             </div>
 
             {/* 결제 버튼 */}
