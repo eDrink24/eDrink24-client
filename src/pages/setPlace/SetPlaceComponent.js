@@ -12,7 +12,7 @@ function SetPlaceComponent() {
     const geocoder = new window.kakao.maps.services.Geocoder();
 
     const currentLocation = customerData.currentLocation;
-    const currentStore = customerData.currentStore;
+    const currentStoreId = customerData.currentStoreId;
 
     const [locationData, setLocationData] = useState({
         latitude: null,
@@ -23,7 +23,7 @@ function SetPlaceComponent() {
     const [stores, setStores] = useState([]); // 매장 json
     const [storeMarkers, setStoreMarkers] = useState([]); // 필터된 매장 위치
 
-    const [choiceStore, setChoiceStore] = useState(null);
+    const [choiceStore, setChoiceStore] = useState(); // 선택된 매장
     const [openInfo, setOpenInfo] = useState(null);
 
     // 페이지 랜더링 시, 가져오는 위치
@@ -119,6 +119,37 @@ function SetPlaceComponent() {
         setStoreMarkers(filteredMarkers);
     };
 
+    // 사용자 위치,매장 수정요청
+    const handleSetStore = async () => {
+        if (choiceStore) {
+            try {
+                const response = await fetch('http://localhost:8090/eDrink24/api/updateCustomerToStore', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        customerId: customerData.userId,
+                        currentStoreId: choiceStore.storeId,
+                        currentLocation: locationData.address,
+                    }),
+                });
+
+                if (response.ok) {
+                    alert('단골매장이 설정되었습니다!');
+                } else {
+                    alert('단골매장 설정에 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('단골매장 설정에 실패했습니다.');
+            }
+        } else {
+            alert('매장을 선택해주세요.');
+        }
+    };
+
+
     return (
         <div className="setPlace-container">
             <div className='setPlace-header'>
@@ -196,16 +227,16 @@ function SetPlaceComponent() {
                     <p>내 위치 : {locationData.address}</p>
 
                     {choiceStore && (
-                        <div className="chosen-store">
-                            <p>선택한 매장 : {choiceStore.storeName}</p>
-                            <p>주소 : {choiceStore.storeAddress}</p>
-                            <p>전화번호 : {choiceStore.storePhoneNum}</p>
+                        <div className="setPlace-store">
+                            <p>선택매장id : {choiceStore.storeId} </p>
+                            <p>선택매장이름 : {choiceStore.storeName}</p>
+                            <p>매장주소 : {choiceStore.storeAddress}</p>
                         </div>
                     )}
                 </div>
 
                 <div className="setPlace-update-button">
-                    <button className='setPlace-set-btn'>단골매장 설정하기</button>
+                    <button className='setPlace-set-btn' onClick={handleSetStore}>단골매장 설정하기</button>
                 </div>
             </div>
 
