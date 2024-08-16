@@ -1,7 +1,5 @@
 export function logout() {
-    localStorage.removeItem("jwtAuthToken");
-    localStorage.removeItem("userid");
-    localStorage.removeItem("loginId")
+    localStorage.clear();
 
     window.location.reload();;
 }

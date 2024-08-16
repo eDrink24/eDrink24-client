@@ -180,10 +180,15 @@ export async function action({ request }) {
 
     const token = resData.token;
     const userId = resData.userId;
+    const loginId = resData.loginId;
+    const currentLocation = resData.currentLocation;
+    const currentStoreId = resData.currentStoreId;
 
     localStorage.setItem('jwtAuthToken', token);
-    localStorage.setItem('loginId', authData.loginId);
+    localStorage.setItem('loginId', loginId);
     localStorage.setItem('userId', userId);
+    localStorage.setItem("currentLocation", currentLocation);
+    localStorage.setItem("currentStoreId", currentStoreId);
 
     return { success: true };
 }
