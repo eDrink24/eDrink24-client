@@ -8,14 +8,12 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 function SetPlaceComponent() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { customerData } = location.state || {};
+    const { customerData } = location.state || {}; // 회원정보를 매번 이딴식으로 넘겨줘야하나??
 
     const geocoder = new window.kakao.maps.services.Geocoder();
 
     const currentLocation = customerData?.currentLocation;
     const currentStoreId = customerData?.currentStoreId;
-
-    console.log(currentLocation + " " + currentStoreId)
 
     const [locationData, setLocationData] = useState({
         latitude: null,
@@ -26,6 +24,8 @@ function SetPlaceComponent() {
     const [stores, setStores] = useState([]); // 매장 json
     const [storeMarkers, setStoreMarkers] = useState([]); // 필터된 매장 위치
 
+    console.log(stores[1])
+
     const [choiceStore, setChoiceStore] = useState(); // 선택된 매장
     const [openInfo, setOpenInfo] = useState(null);
 
@@ -35,7 +35,6 @@ function SetPlaceComponent() {
 
     // 알림창 열기
     const openAlert = (message, navigateOnClose = false) => {
-        console.log('Opening Alert with message:', message);
         setAlertMessage(message);
         setAlertOpen(true);
         setNavigateOnClose(navigateOnClose);
@@ -50,7 +49,6 @@ function SetPlaceComponent() {
     }
 
 
-
     // 페이지 랜더링 시, 가져오는 위치
     useEffect(() => {
         const fetchInit = async () => {
@@ -59,12 +57,14 @@ function SetPlaceComponent() {
             } else {
                 fetchCurrentLocation();
             }
-            try {
-                const response = await fetch('assets/store/store_with_latlng.json');
-                const store_data = await response.json();
-                setStores(store_data);
-            } catch (error) {
-                console.error(error);
+            // 지금은 임시로 assets에 넣고 찾아오는데 스케줄링으로 해당 파일을 매번 업데이트 해줘야할듯
+            // 어케해야하노...
+            const response = await fetch('assets/store/store_with_latlng.json');
+            const stores = await response.json();
+            setStores(stores);
+
+            if (currentStoreId != null) {
+                setChoiceStore(stores.find(store => store.storeId === currentStoreId))
             }
         };
         fetchInit();
@@ -101,8 +101,6 @@ function SetPlaceComponent() {
                     ...prevData,
                     address: result[0].address.address_name
                 }));
-            } else {
-                console.error(status);
             }
         });
     };

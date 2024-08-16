@@ -5,7 +5,10 @@ import './MyplaceComponent.css';
 function MyPlaceComponent() {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [customerData, setCustomerData] = useState(null); // 위치설정페이지로 고객정보를 넘겨줌
+    const [customerData, setCustomerData] = useState(null);
+
+    const [stores, setStores] = useState([]); // 가게 데이터 불러오기
+    const [storeName, setStoreName] = useState(''); // 가게 이름
 
     useEffect(() => {
         const token = localStorage.getItem("jwtAuthToken");
@@ -13,11 +16,30 @@ function MyPlaceComponent() {
 
         if (token && loginId) {
             setIsLoggedIn(true);
-            fetchCustomerData(token, loginId);
+            fetchCustomerData(loginId);
         }
     }, []);
 
-    const fetchCustomerData = async (token, loginId) => {
+    useEffect(() => {
+        const fetchStores = async () => {
+            const response = await fetch('assets/store/store_with_latlng.json');
+            const data = await response.json();
+            setStores(data);
+        }
+        fetchStores();
+    }, []);
+
+    useEffect(() => {
+        if (stores.length > 0 && customerData && customerData.currentStoreId) {
+            const currentStore = stores.find(store => store.storeId === customerData.currentStoreId);
+            if (currentStore) {
+                setStoreName(currentStore.storeName);
+            }
+        }
+    }, [stores, customerData]);
+
+
+    const fetchCustomerData = async (loginId) => { // 회원정보도 맨날 불러와야하나..?
         const response = await fetch(`http://localhost:8090/eDrink24/selectCustomerMyPage/${loginId}`, {
             method: 'GET',
             headers: {
@@ -43,7 +65,7 @@ function MyPlaceComponent() {
             {/* 회원 주소정보 */}
             <div className="my-home-address">
                 {isLoggedIn && customerData ? (
-                    <div className="login-myhome-address-info" onClick={navigateSetLocation}> {/* onClick 부분 주소 수정해야함 */}
+                    <div className="login-myhome-address-info" onClick={navigateSetLocation}>
                         <img className="placeIcon" src="assets/common/place.png" alt="place-icon" />
                         <p className="home-place-text">{customerData.currentLocation}</p>
                     </div>
@@ -62,8 +84,8 @@ function MyPlaceComponent() {
                         <span className='home-place-text1'>픽업매장</span>
                         <p className="home-place-text">
                             <span className="home-place-text2">이마트24</span>&nbsp;&nbsp;
-                            {customerData.currentStore ? (
-                                customerData.currentStore
+                            {storeName ? (
+                                storeName
                             ) : (
                                 <span style={{ color: 'red' }}>단골매장을 선택해주세요!</span>
                             )}
