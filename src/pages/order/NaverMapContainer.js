@@ -68,7 +68,7 @@ const NaverMapContainer = ({ storeAddress }) => {
 
     }, [storeAddress]); // storeAddress가 변경될 때마다 지도 업데이트
 
-    return <div ref={mapContainer} style={{ width: '150%', height: '200px' }} />;
+    return <div ref={mapContainer} style={{ width: '100%', height: '200px' }} />;
 };
 
 export default NaverMapContainer;

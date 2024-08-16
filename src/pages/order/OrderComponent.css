@@ -1,9 +1,10 @@
 /* 전체 주문 / 결제 페이지 스타일 */
 .order-container {
+  padding: 20px;
   background-color: white;
-    padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 390px;
+    width:100%;
+    max-width: 455px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -52,7 +53,7 @@
 /* 섹션 스타일 */
 .pickup-section, .pickup-time-section, .basket-section, .discount-section, .payment-summary, .payment-methods, .checkout-button {
   position: relative;
-  width: 75%;
+  width: 100%;
   background: #FFFFFF;
   border-bottom: 1px solid #B3BAC3;
   padding: 10px 20px; /* 패딩 추가 */
