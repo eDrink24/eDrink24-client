@@ -181,7 +181,7 @@ function OrderComponent() {
         pickupDate: pickupDate ? new Date(pickupDate).toISOString().split('T')[0] : null,
         isCompleted: 'FALSE',
         orderStatus: 'ORDERED',
-        quantity: item.basketQuantity,
+        orderQuantity: item.basketQuantity,
         price: productDetailsMap.get(item.productId)?.price || 0,
         changeStatus: 'ORDERED',
         changeDate: new Date().toISOString().split('T')[0]

@@ -146,6 +146,9 @@ function ProductDetailComponent() {
     navigate(`/eDrink24/order/${userId}`);
   };
 
+  const total = product.price * quantity;
+  const formattedTotal = total.toLocaleString();
+
   return (
     <div className="productDetailComponent-container">
 
@@ -277,7 +280,7 @@ function ProductDetailComponent() {
 
             <div className="productDetailComponent-total-info">
               <span className="productDetailComponent-total-quantity">총 수량: {quantity}개</span>
-              <span className="productDetailComponent-total-price">총 가격: {Number(product.price).toLocaleString() * quantity}원</span>
+              <span className="productDetailComponent-total-price">총 가격: {formattedTotal}원</span>
             </div>
 
           </div>
