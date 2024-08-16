@@ -54,41 +54,10 @@ function OrderComponent() {
     }, [selectedBaskets, coupon, pointUse, calculateTotals]);
 
     // 매장 선택 시 주소와 목록 표시 여부 업데이트
-    useEffect(() => {
-        if (storeId) {
-            const selectedStore = storeList.find(store => store.storeId === storeId);
-            if (selectedStore) {
-                setStoreAddress(selectedStore.storeAddress);
-                setShowStoreList(false); // 매장 선택 시 목록 숨기기
-            }
-        }
-    }, [storeId, storeList]);
 
     // 매장 목록을 서버에서 가져오는 함수
-    const fetchStores = async () => {
-        setLoadingStores(true);
-        try {
-            const response = await axios.get('http://localhost:8090/eDrink24/showAllStore');
-            if (response.status === 200) {
-                setStoreList(response.data);
-                setShowStoreList(true);
-            } else {
-                console.error('Failed to fetch stores. Status:', response.status);
-            }
-        } catch (error) {
-            console.error('Error fetching stores:', error);
-        } finally {
-            setLoadingStores(false);
-        }
-    };
 
     // 매장 목록 버튼 클릭 핸들러
-    const handleStoreButtonClick = () => {
-        setShowStoreList(prev => {
-            if (!prev) fetchStores();
-            return !prev;
-        });
-    };
 
     // 상품 세부 정보를 가져오는 함수
     const fetchProductDetailsForBasket = useCallback(async () => {
@@ -177,14 +146,13 @@ function OrderComponent() {
         userId,
         basketId : item.basketId,
         productId: item.productId,
-        orderDate: new Date().toISOString().split('T')[0],
-        pickupDate: pickupDate ? new Date(pickupDate).toISOString().split('T')[0] : null,
+        orderDate: new Date().toISOString(),
         isCompleted: 'FALSE',
         orderStatus: 'ORDERED',
-        quantity: item.basketQuantity,
+        orderQuantity: item.basketQuantity,
         price: productDetailsMap.get(item.productId)?.price || 0,
         changeStatus: 'ORDERED',
-        changeDate: new Date().toISOString().split('T')[0]
+        changeDate: new Date().toISOString()
     }));
     const basketDTO = {
         basketId:null,
@@ -247,54 +215,6 @@ function OrderComponent() {
 
         <div className="order-container">
             <h1>주문 및 결제</h1>
-            <div className="pickup-section">
-                <h2>픽업 장소</h2>
-                <NaverMapContainer storeAddress={storeAddress} />
-                <button onClick={handleStoreButtonClick}>
-                    {storeId ? `매장 선택 완료: ${storeList.find(store => store.storeId === storeId)?.storeName}` : "픽업매장 선택하기"}
-                </button>
-
-                {storeId && (
-                    <div className="selected-store-info">
-                        <p><strong>매장 이름:</strong> {storeList.find(store => store.storeId === storeId)?.storeName}</p>
-                        <p><strong>주소:</strong> {storeAddress}</p>
-                    </div>
-                )}
-
-                {loadingStores ? (
-                    <p>매장 목록을 불러오는 중입니다.</p>
-                ) : (
-                    showStoreList && (
-                        <div className="store-selection">
-                            {storeList.length > 0 ? (
-                                <ul>
-                                    {storeList.map(store => (
-                                        <li key={store.storeId}>
-                                            <button onClick={() => {
-                                                setOrderInfo(prev => ({ ...prev, storeId: store.storeId }));
-                                                setShowStoreList(false); // 매장 선택 시 목록 숨기기
-                                            }}>
-                                                {store.storeName} - {store.storeAddress}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>매장 목록이 없습니다.</p>
-                            )}
-                        </div>
-                    )
-                )}
-            </div>
-
-            <div className="pickup-time-section">
-                <h2>방문 시간 지정</h2>
-                <input 
-                    type="date" 
-                    value={pickupDate || ''} 
-                    onChange={(e) => setOrderInfo(prev => ({ ...prev, pickupDate: e.target.value }))} 
-                />
-            </div>
 
             <div className="basket-section">
                 <h2>주문상품</h2>
