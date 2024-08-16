@@ -1,0 +1,107 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './MyplaceComponent.css';
+
+function MyPlaceComponent() {
+    const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [customerData, setCustomerData] = useState(null);
+
+    const [stores, setStores] = useState([]); // 가게 데이터 불러오기
+    const [storeName, setStoreName] = useState(''); // 가게 이름
+
+    useEffect(() => {
+        const token = localStorage.getItem("jwtAuthToken");
+        const loginId = localStorage.getItem("loginId");
+
+        if (token && loginId) {
+            setIsLoggedIn(true);
+            fetchCustomerData(loginId);
+        }
+    }, []);
+
+    useEffect(() => {
+        const fetchStores = async () => {
+            const response = await fetch('assets/store/store_with_latlng.json');
+            const data = await response.json();
+            setStores(data);
+        }
+        fetchStores();
+    }, []);
+
+    useEffect(() => {
+        if (stores.length > 0 && customerData && customerData.currentStoreId) {
+            const currentStore = stores.find(store => store.storeId === customerData.currentStoreId);
+            if (currentStore) {
+                setStoreName(currentStore.storeName);
+            }
+        }
+    }, [stores, customerData]);
+
+
+    const fetchCustomerData = async (loginId) => { // 회원정보도 맨날 불러와야하나..?
+        const response = await fetch(`http://localhost:8090/eDrink24/selectCustomerMyPage/${loginId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response) {
+            const data = await response.json();
+            setCustomerData(data);
+        } else {
+            console.error('error:', response.errorStatus());
+        }
+    };
+
+    const navigateSetLocation = () => {
+        navigate("/eDrink24/myplace_store", { state: { customerData } });
+    }
+
+    return (
+        // 로그인 상태 따라 변동되는 주소정보
+        <div className="home-my-place-container">
+            {/* 회원 주소정보 */}
+            <div className="my-home-address">
+                {isLoggedIn && customerData ? (
+                    <div className="login-myhome-address-info" onClick={navigateSetLocation}>
+                        <img className="placeIcon" src="assets/common/place.png" alt="place-icon" />
+                        <p className="home-place-text">{customerData.currentLocation}</p>
+                    </div>
+                ) : (
+                    <div className="logout-myhome-address-info" onClick={() => navigate("/eDrink24/login")}>
+                        <img className="placeIcon" src="assets/common/place.png" alt="place-icon" />
+                        <p className="home-place-text">로그인이 필요합니다.</p>
+                    </div>
+                )}
+            </div>
+
+            {/* 픽업매장 주소 선택 */}
+            <div className="pickup-shop-address">
+                {isLoggedIn && customerData ? (
+                    <div className="login-pickup-address-info" onClick={navigateSetLocation}>
+                        <span className='home-place-text1'>픽업매장</span>
+                        <p className="home-place-text">
+                            <span className="home-place-text2">이마트24</span>&nbsp;&nbsp;
+                            {storeName ? (
+                                storeName
+                            ) : (
+                                <span style={{ color: 'red' }}>단골매장을 선택해주세요!</span>
+                            )}
+                        </p>
+                    </div>
+                ) : (
+                    <div className="logout-pickup-address-info" onClick={() => navigate("/eDrink24/login")}>
+                        <span className='home-place-text1'>픽업매장</span>
+                        <p className="home-place-text">
+                            <span className="home-place-text2">이마트24</span>
+                        </p>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+export default MyPlaceComponent;

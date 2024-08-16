@@ -3,14 +3,17 @@
     height: 80px;
     margin: 20px;
     cursor: pointer;
-    background-color: #AAAAAA;
+    background-color: #EAEAEA;
+    border-radius: 10px;
 }
 
 /*******************************************************************/
 
 .my-home-address {
-    height: 36px;
+    height: 40px;
     display: flex;
+    border-top-left-radius: 10px ;
+    border-top-right-radius: 10px ;
 }
 
 .login-myhome-address-info,
@@ -22,15 +25,18 @@
 .my-home-address img {
     width: 24px;
     height: 24px;
-    margin: 6px;
+    margin : 10px 10px 10px 10px;
 }
+
 
 /*******************************************************************/
 
 .pickup-shop-address {
-    height: 44px;
-    background-color: #898989;
+    height: 45px;
+    background-color: #F5F5F5;
     display: flex;
+    border-bottom-left-radius: 10px ;
+    border-bottom-right-radius: 10px ;
 }
 
 .login-pickup-address-info,
@@ -39,13 +45,22 @@
     align-items: center;
 }
 
-.login-pickup-address-info span,
-.logout-pickup-address-info span {
+.login-pickup-address-info .home-place-text1,
+.logout-pickup-address-info .home-place-text1span {
     background-color: #2e2e2e;
     color: white;
     padding: 8px 10px;
     border-radius: 999px;
     font-size: 12px;
-    margin: 6px;
+    margin: 6px 6px 6px 10px;
 }
 
+.home-place-text {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.home-place-text2 {
+    color:#FFB71B;
+}

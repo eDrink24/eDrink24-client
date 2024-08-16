@@ -23,6 +23,7 @@ function UpdateCustomerComponent() {
     const [initCustomerData, setInitCustomerData] = useState(null);
     const location = useLocation();
     const { customerData } = location.state || {};
+
     useEffect(() => {
         if (customerData) {
             setInitCustomerData(customerData);

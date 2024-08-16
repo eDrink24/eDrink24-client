@@ -1,5 +1,6 @@
 import './App.css';
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import LoginComponent, { action as loginAction } from './pages/login/LoginComponent';
 import HomeComponent from './pages/home/HomeComponent';
 import CategoryComponent from './pages/category/CategoryComponent';
@@ -17,10 +18,11 @@ import ShowOrdersPageComponent from './pages/admin/ShowOrdersPageComponent'
 import KakaoLoginHandler from './pages/login/kakao/KakaoLoginHandler';
 import KakaoSignupHandler from './pages/login/kakao/KakaoSignupHandler';
 
-import { RecoilRoot } from 'recoil'; // RecoilRoot 임포트 추가
 import RootLayout from './pages/rootLayout/root';
 import ProtectedRoute from './components/ProtectedRouter';
+import SetPlaceComponent from './pages/setPlace/SetPlaceComponent';
 
+import { RecoilRoot } from 'recoil'; // RecoilRoot 임포트 추가
 import { tokenLoader } from './util/auth';
 import PickupCompletedPage from './pages/admin/PickupCompletedPageComponent';
 
@@ -37,8 +39,8 @@ const router = createBrowserRouter([
       { path: '/eDrink24/allproduct/:category1/:category2', element: <CategoriesProductComponent /> },
       { path: '/eDrink24/allproduct/:category1/:category2/:productId', element: <ProductDetailComponent /> },
       { path: '/eDrink24/category', element: <CategoryComponent /> },
-      { path: '/eDrink24/search', element: <SearchComponent />},
-      { path: '/eDrink24/history', element: <HistoryComponent />},
+      { path: '/eDrink24/search', element: <SearchComponent /> },
+      { path: '/eDrink24/history', element: <HistoryComponent /> },
       {
         path: '/eDrink24/login', element: <LoginComponent />,
         action: loginAction
@@ -66,24 +68,26 @@ const router = createBrowserRouter([
         path: '/eDrink24/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
       },
       { // 카카오 회원가입시, 추가정보 입력창
-        path: '/eDrink24/kakao/signup', element : <KakaoSignupHandler/>
+        path: '/eDrink24/kakao/signup', element: <KakaoSignupHandler />
       },
+
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "/eDrink24/mypage/updateCustomer", element: <UpdateCustomerComponent /> }
+          { path: "/eDrink24/mypage/updateCustomer", element: <UpdateCustomerComponent /> },
+          { path: "/eDrink24/myplace_store", element: <SetPlaceComponent /> }
         ]
       }
     ]
   }
 ])
-// test/test2
+
 function App() {
   return (
     <RecoilRoot>
       <RouterProvider router={router} />
     </RecoilRoot>
-    
+
   );
 }
 

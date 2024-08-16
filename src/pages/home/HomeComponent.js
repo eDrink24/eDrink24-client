@@ -1,9 +1,9 @@
 import React, { useState } from 'react'; // useState를 react에서 가져옵니다
 import { useNavigate, useParams } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
+import "./HomeComponent.css";
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import CarouselComponent from '../../components/Banner/CarouselComponent.js';
-import "./HomeComponent.css";
-import MyPlaceComponent from './MyPlaceComponent.js';
+import MyplaceComponent from '../../components/mainMyplace/MyplaceComponent.js';
 
 function HomeComponent() {
 
@@ -19,26 +19,12 @@ function HomeComponent() {
         navigate("/eDrink24");
     };
 
-    const handleDirectMyPage = () => {
-        navigate("/eDrink24/mypage");
-    };
-
     const handleDirectCategory = () => {
         navigate("/eDrink24/category");
     };
 
     const handleDirectAllproduct = () => {
         navigate(`/eDrink24/allproduct/${category1}`);
-    };
-
-    // 탭 클릭 핸들러 함수
-    const handleTabClick = (tab) => {
-        setActiveTab(tab); // 클릭한 탭으로 활성 탭 변경
-    };
-
-    // 푸터 확장/축소 토글 함수
-    const toggleExpand = () => {
-        setIsExpanded(!isExpanded);
     };
 
     return (
@@ -66,7 +52,7 @@ function HomeComponent() {
             <div className="home-container">
 
                 {/* 위치 정보 버튼 */}
-                <MyPlaceComponent />
+                <MyplaceComponent />
 
                 {/* 배너 이미지 */}
                 <CarouselComponent />
@@ -74,19 +60,19 @@ function HomeComponent() {
                 <div className="category-button-container">
                     <button type="button" className="b1" onClick={handleDirectCategory}>
                         <img src="assets/common/menu.png" className="menuButton" alt="Menu Button" />
-                        <h1>카테고리</h1>
+                        <p className="home-category">카테고리</p>
                     </button>
                     <button type="button" className="b2" onClick={handleDirectAllproduct}>
                         <img src="assets/common/search.png" className="searchButton" alt="Search Button" />
-                        <h1>전체상품</h1>
+                        <p className="home-category">전체상품</p>
                     </button>
                     <button type="button" className="b3" onClick={handleDirectHome}>
                         <img src="assets/common/gift.png" className="giftButton" alt="Gift Button" />
-                        <h1>이벤트</h1>
+                        <p className="home-category">이벤트</p>
                     </button>
                     <button type="button" className="b4" onClick={handleDirectHome}>
                         <img src="assets/common/chatbot.png" className="chatbotButton" alt="Chatbot Button" />
-                        <h1>챗봇</h1>
+                        <p className="home-category">챗봇</p>
                     </button>
                 </div>
                 <div className='line'></div>

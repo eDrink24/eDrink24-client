@@ -20,7 +20,8 @@ const AlertModal = ({ isOpen, onRequestClose, message, navigateOnClose, navigate
             backgroundColor: "rgba(0,0,0,0.5)",
             display: "flex",               
             alignItems: "center",         
-            justifyContent: "center",      
+            justifyContent: "center",
+            zIndex: 1999,      
         },
         content: {
             margin: "auto",
@@ -31,6 +32,8 @@ const AlertModal = ({ isOpen, onRequestClose, message, navigateOnClose, navigate
             textAlign: "center",
             backgroundColor: "#fff",
             boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
+            zIndex: 2000, // Modal content z-index
+   
   
         },
     };
