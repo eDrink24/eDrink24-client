@@ -1,31 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import './HistoryComponent.css';
 
 function HistoryComponent() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('today-pickup'); // 초기 탭을 'today-pickup'으로 설정
     
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
-    const [customerData, setCustomerData] = useState(null); // 고객 데이터 관리
+    // 로그인 상태와 고객 데이터를 관리하는 상태
+    const [isLoggedIn, setIsLoggedIn] = useState(false); 
+    const [customerData, setCustomerData] = useState(null);
+    const [orderHistory, setOrderHistory] = useState([]); // 주문 내역을 저장하는 상태
+    const [productDetailsMap, setProductDetailsMap] = useState(new Map()); // 제품 세부 정보를 저장하는 상태
 
+    // 컴포넌트가 처음 렌더링될 때 실행되는 useEffect
     useEffect(() => {
         const token = localStorage.getItem("jwtAuthToken");
-        const loginId = localStorage.getItem("loginId");
+        const userId = localStorage.getItem("userId"); // userId를 localStorage에서 가져옴
 
-        if (token && loginId) {
+        if (token && userId) {
             setIsLoggedIn(true);
-            fetchCustomerData(token, loginId);
+            fetchCustomerData(token, userId);
+            fetchOrderHistory(userId); // 주문 내역 불러오기
         }
     }, []);
 
-    const fetchCustomerData = async (token, loginId) => {
+    // 고객 데이터를 서버에서 가져오는 함수
+    const fetchCustomerData = async (token, userId) => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/selectCustomerMyPage/${loginId}`, {
+            const response = await fetch(`http://localhost:8090/eDrink24/selectCustomerMyPage/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // 필요한 경우 Authorization 헤더 추가
                 }
             });
 
@@ -40,17 +46,62 @@ function HistoryComponent() {
         }
     };
 
+    // 주문 내역을 서버에서 가져오는 함수
+    const fetchOrderHistory = async (userId) => {
+        try {
+            const response = await fetch(`http://localhost:8090/eDrink24/getOrderHistory/${userId}`, { // userId 사용
+                method: 'GET', 
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setOrderHistory(data);
+                fetchProductDetails(data);
+            } else {
+                console.error('Failed to fetch order history');
+            }
+        } catch (error) {
+            console.error('Error fetching order history:', error);
+        }
+    };
+
+    // 각 주문 항목에 대한 제품 세부 정보를 가져오는 함수
+    const fetchProductDetails = async (orders) => {
+        try {
+            const detailsMap = new Map();
+            for (const order of orders) {
+                for (const item of order.items) {
+                    if (!detailsMap.has(item.productId)) {
+                        const response = await fetch(`http://localhost:8090/eDrink24/getProductDetails/${item.productId}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        });
+                        if (response.ok) {
+                            const productDetails = await response.json();
+                            detailsMap.set(item.productId, productDetails);
+                        } else {
+                            console.error(`Failed to fetch details for productId: ${item.productId}`);
+                        }
+                    }
+                }
+            }
+            setProductDetailsMap(detailsMap);
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+        }
+    };
+
+    // 고객 정보 수정 페이지로 이동하는 함수
     const navigateUpdateCustomer = () => {
         navigate("/eDrink24/mypage/updateCustomer", { state: { customerData } });
     };
 
-    // 탭 클릭 핸들러 함수 (클릭한 탭으로 활성 탭이 변경된다.)
-    const handleTabClick = (tab) => {
-        setActiveTab(tab); // 활성 탭으로 변경
-    };
-
     return (
-
         // 전체 컨테이너
         <div className="history-container">
 
@@ -63,68 +114,67 @@ function HistoryComponent() {
                 </button>
 
                 {/* 메인 타이틀 */}
-                <h3>주문/픽업조회</h3>
+                <h3>주문/픽업조회{'('}
+                    {isLoggedIn && customerData && (
+                        <span className="additionalInfo">
+                            {customerData.totalPoint}
+                        </span>
+                    )}{')'}</h3>
 
                 {/* 장바구니 아이콘 */}
-                <button className="history-bag"  onClick={() => { navigate('/eDrink24/basket') }}>
+                <button className="history-bag" onClick={() => { navigate('/eDrink24/basket') }}>
                     <img className="history-cicon" src="assets/common/bag.png" alt="bag" />
                 </button>
 
             </div>
 
+            <div className="history-container">
+                {/* 주문 내역 표시 */}
+                {orderHistory.length > 0 ? (
+                    orderHistory.map((order, index) => (
+                        <div key={index}>
 
-            {/* 탭 내비게이션 */}
-            <div className="history-tab-bar">
-                <div className={`history-tab-item ${activeTab === 'today-pickup' ? 'active' : ''}`}
-                    onClick={() => handleTabClick('today-pickup')}>
-                    <span>오늘픽업{'('}
-                    {isLoggedIn && customerData && (
-                        <span className="additionalInfo">
-                            {customerData.totalPoint}
-                            {/* ==> customerData._________ 여기에 출력하고자 하는걸 넣으면 됨.  */}
-                        </span>
-                    )}{')'}
-                    </span>
-                </div>
-                <div className={`history-tab-item ${activeTab === 'reservation' ? 'active' : ''}`}
-                    onClick={() => handleTabClick('reservation')}>
-                    <span>예약픽업{'('}
-                    {isLoggedIn && customerData && (
-                        <span className="additionalInfo">
-                            {customerData.totalPoint}
-                            {/* ==> customerData._________ 여기에 출력하고자 하는걸 넣으면 됨.  */}
-                        </span>
-                    )}{')'}
-                    </span>
-                </div>
-                </div>
+                            {/* 구매일자 표시 */}
+                            <div className="history-container-top">
+                                <span><strong>구매일자:</strong> {order.orderDate}</span>
+                                <a href="#" className="more-button">상세보기&gt;</a> 
+                                {/* 1. 수정 필요: '상세보기' 버튼의 href 속성에 올바른 링크 추가 */}
+                            </div>
 
+                            {/* 구매한 상품정보 표시 */}
+                            {order.items.map((item, itemIndex) => {
+                                const productDetails = productDetailsMap.get(item.productId);
+                                return (
+                                    <div className="history-item-container" key={itemIndex}>
+                                        <div className="history-item-img">
+                                            <img className="Image20" src={productDetails?.defaultImage || 'assets/common/Image20.png'} alt="상품이미지" />
+                                            {/* 2. 수정 필요: 실제 이미지 경로가 유효한지 확인 */}
+                                        </div>
+                                        <div className="history-item-content">
+                                            <div className="history-item-name"><strong>상품명:</strong> {productDetails?.productName || '상품명 없음'}</div>
+                                            <div className="history-item-quantity"><strong>수량:</strong> {item.orderQuantity}개</div>
+                                            <div className="history-item-total-amount"><strong>총 금액:</strong> {productDetails?.price?.toLocaleString() || '가격 정보 없음'} 원</div> 
+                                            {/* 3. 수정 필요: 가격 형식 및 계산이 정확한지 확인 */}
+                                        </div>
+                                    </div>
+                                );
+                            })}
 
-            <div className="history-main-content">
+                            {/* 리뷰작성 버튼 */}
+                            <div className="history-review-button">
+                                <button>리뷰작성</button> 
+                                {/* 4. 수정 필요: '리뷰작성' 버튼에 올바른 링크 추가 */}
+                            </div>
 
-                {/* 오늘 픽업 내용 */}
-                {activeTab === 'today-pickup' && (
-                    <div className="history-today-pickup active">
-                        <div className="history-header">
-                            오늘픽업 내용 {/* 여기에 컨텐츠 들어감 */}
                         </div>
-                    </div>
+                    ))
+                ) : (
+                    <p className="history-no-orders">주문내역이 없습니다.</p> 
                 )}
-
-
-                {/* 예약 픽업 내용 */}
-                {activeTab === 'reservation' && (
-                    <div className="history-reservation active">
-                        예약픽업 내용 {/* 여기에 컨텐츠 들어감 */}
-                    </div>
-                )}
-
             </div>
-
 
             {/* 하단 네비게이션 바 */}
             <FooterComponent />
-
 
         </div>
     );
