@@ -7,28 +7,27 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 function SetPlaceComponent() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const { customerData } = location.state || {}; // 회원정보를 매번 이딴식으로 넘겨줘야하나??
 
     const geocoder = new window.kakao.maps.services.Geocoder();
 
-    const currentLocation = customerData?.currentLocation;
-    const currentStoreId = customerData?.currentStoreId;
+    const currentLocation = localStorage.getItem("currentLocation")
+    const currentStoreId = localStorage.getItem("currentStoreId")
 
-    const [locationData, setLocationData] = useState({
+
+    const [locationData, setLocationData] = useState({ // 현재위치 정보
         latitude: null,
         longitude: null,
         address: ""
     });
 
-    const [stores, setStores] = useState([]); // 매장 json
+    const [stores, setStores] = useState([]); // 매장 json => client에 있는 정보
     const [storeMarkers, setStoreMarkers] = useState([]); // 필터된 매장 위치
 
-    console.log(stores[1])
-
     const [choiceStore, setChoiceStore] = useState(); // 선택된 매장
-    const [openInfo, setOpenInfo] = useState(null);
+    const [openInfo, setOpenInfo] = useState(null); // 마커인포
 
+
+    // 알람 state
     const [alertOpen, setAlertOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [navigateOnClose, setNavigateOnClose] = useState(false);
@@ -63,12 +62,17 @@ function SetPlaceComponent() {
             const stores = await response.json();
             setStores(stores);
 
+
+            console.log(currentStoreId)
+
             if (currentStoreId != null) {
-                setChoiceStore(stores.find(store => store.storeId === currentStoreId))
+                setChoiceStore(stores.find(store => store.storeId === parseInt(currentStoreId)))
             }
+
         };
         fetchInit();
-    }, [currentLocation]);
+    }, [currentStoreId, currentLocation]);
+
 
     // 위치 데이터 변경 시, 주소 가져오기
     useEffect(() => {
@@ -152,13 +156,21 @@ function SetPlaceComponent() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        customerId: customerData.userId,
+                        userId: parseInt(localStorage.getItem("userId"), 10),
                         currentStoreId: choiceStore.storeId,
                         currentLocation: locationData.address,
                     }),
                 });
 
                 if (response.ok) {
+                    console.log(currentStoreId);
+                    console.log(choiceStore.storeId);
+                    localStorage.removeItem("currentLocation")
+                    localStorage.removeItem("currentStoreId");
+
+                    localStorage.setItem("currentLocation", locationData.address);
+                    localStorage.setItem("currentStoreId", choiceStore.storeId);
+
                     openAlert('단골매장이 설정되었습니다!', true);
                 } else {
                     openAlert('단골매장 설정에 실패했습니다.');

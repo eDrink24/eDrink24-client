@@ -8,8 +8,6 @@ import MyplaceComponent from '../../components/mainMyplace/MyplaceComponent.js';
 function HomeComponent() {
 
     // 상태 변수 선언
-    const [isExpanded, setIsExpanded] = useState(false); // footer 확장을 위한 상태
-    const [activeTab, setActiveTab] = useState('description'); // 초기 탭을 'description'으로 설정
     const { category1 } = useParams();
 
     const navigate = useNavigate();
