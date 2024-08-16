@@ -53,7 +53,7 @@ function ListToBasketComponent() {
 
     
  // 체크된 제품들 픽업 주문하기 클릭 시 주문 페이지로 이동
- async function moveToOrderPage() {
+ async function moveToOrderPage(e) {
     const selectedCheckboxes = document.querySelectorAll("input:checked");
     const selectedBasketIds = [];
 
@@ -63,6 +63,11 @@ function ListToBasketComponent() {
             selectedBasketIds.push(checkbox.value);
         }
     });
+
+    if(selectedBasketIds.length === 0){
+        alert("주문페이지로 이동하려면 적어도 하나의 제품을 선택해주세요.");
+        return;
+    }
 
     // Recoil 상태 업데이트
     setSelectedBaskets(selectedBasketIds);
@@ -97,22 +102,52 @@ function ListToBasketComponent() {
     };
 
     // 수량 업데이트 기능 추가
-    const updateQuantity = (basketId, increment) => { // 수량을 업데이트하는 함수
-        const updatedBaskets = baskets.map(basket => {
-            if (basket.basketId === basketId) {
-                const newQuantity = basket.items[0].basketQuantity + increment;
-                if (newQuantity > 0) { // 수량이 0 이하로 내려가지 않도록 조건 추가
-                    basket.items[0].basketQuantity = newQuantity;
-                }
-            }
-            return basket;
+    const updateQuantity = async (basketId, increment) => {
+        const basket = baskets.find(basket => basket.basketId === basketId);
+        if (!basket) return;
+    
+        const newQuantity = basket.items[0].basketQuantity + increment;
+    
+        if (newQuantity <= 0) return; // 수량이 0 이하로 내려가지 않도록
+    
+        // 서버에 수량 업데이트 요청 보내기
+        const userId = localStorage.getItem("userId");
+        const response = await fetch(`http://localhost:8090/eDrink24/updateBasketQuantity2`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userId:userId,
+                productId: basket.items[0].productId,
+                basketId: basket.basketId,
+                basketQuantity: newQuantity
+            })
         });
-        setBaskets(updatedBaskets); // 업데이트된 장바구니 상태를 설정
+    
+        if (!response.ok) {
+            console.error('Error updating quantity:', response.statusText);
+            return;
+        }
+    
+        // 수량 업데이트 후 장바구니 상태를 새로 고침
+        refreshBaskets();
     };
+    
 
     // 총 계산
-    const totalAmount = baskets.reduce((sum, basket) => sum + basket.items[0].price * basket.items[0].basketQuantity, 0); // 총 금액 계산
-    const totalQuantity = baskets.reduce((sum, basket) => sum + basket.items[0].basketQuantity, 0); // 총 수량 계산 (새로 추가됨)
+    const totalAmount = baskets.reduce((sum, basket) => {
+        if(selectedBaskets.includes(basket.basketId)){
+           return sum + basket.items[0].price * basket.items[0].basketQuantity
+        }
+        return sum;
+    }, 0); // 총 금액 계산
+    const totalQuantity = baskets.reduce((sum, basket) => {
+        if(selectedBaskets.includes(basket.basketId)) {
+            return sum + basket.items[0].basketQuantity;
+        }
+        return sum;
+    }, 0);
 
     // 탭 클릭 핸들러 함수 ( 클릭한 탭으로 활성 탭이 변경된다.)
     const handleTabClick = (tab) => {
@@ -162,9 +197,6 @@ function ListToBasketComponent() {
                                 삭제 하기
                                 </button>
                             </div>
-                            <div className="basket-pickup-shop-select">
-                                픽업 매장 선택하기
-                            </div>
                             <div>
                                 <div className="basket-table">
                                         {baskets.map(basket => (
@@ -208,7 +240,7 @@ function ListToBasketComponent() {
 
                                             {/* 상품 1개 가격 표시 */}
                                             <div className="basket-original-price">
-                                                <div className="price">{basket.items[0].price}원</div>
+                                                <div className="price">{basket.items[0].price.toLocaleString()}원</div>
                                             </div>
                                             </div>
 
@@ -223,15 +255,11 @@ function ListToBasketComponent() {
                                     </div>
                                     <div className="summary-item">
                                         <span>총 상품금액</span>
-                                        <span>{totalAmount}원</span> {/* 총 금액 표시 */}
-                                    </div>
-                                    <div className="summary-item">
-                                        <span>총 할인금액</span>
-                                        <span>0원</span>
+                                        <span>{totalAmount.toLocaleString()}원</span> {/* 총 금액 표시 */}
                                     </div>
                                     <div className="summary-item total">
                                         <span>최종 결제금액</span>
-                                        <span>{totalAmount}원</span> {/* 총 금액 표시 */}
+                                        <span>{totalAmount.toLocaleString()}원</span> {/* 총 금액 표시 */}
                                     </div>
                                     <button onClick={moveToOrderPage} className="order-button">
                                         픽업 주문하기

@@ -146,6 +146,9 @@ function ProductDetailComponent() {
     navigate(`/eDrink24/order/${userId}`);
   };
 
+  const total = product.price * quantity;
+  const formattedTotal = total.toLocaleString();
+
   return (
     <div className="productDetailComponent-container">
 
@@ -213,7 +216,7 @@ function ProductDetailComponent() {
         </div>
 
         <div className="productDetailComponent-price-per">
-          <span className="productDetailComponent-price-item">{product.price} 원</span>
+          <span className="productDetailComponent-price-item">{Number(product.price).toLocaleString()} 원</span>
         </div>
 
         <img className="productDetailComponent-today-pickup-img"
@@ -271,13 +274,13 @@ function ProductDetailComponent() {
                 <button className="productDetailComponent-quantity-button" onClick={increaseQuantity}>+</button>
               </div>
               <div className="productDetailComponent-price-per-info">
-                <span className="productDetailComponent-price-per-item">{product.price}원</span>
+                <span className="productDetailComponent-price-per-item">{Number(product.price).toLocaleString()}원</span>
               </div>
             </div>
 
             <div className="productDetailComponent-total-info">
               <span className="productDetailComponent-total-quantity">총 수량: {quantity}개</span>
-              <span className="productDetailComponent-total-price">총 가격: {product.price * quantity}원</span>
+              <span className="productDetailComponent-total-price">총 가격: {formattedTotal}원</span>
             </div>
 
           </div>

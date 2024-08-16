@@ -151,7 +151,7 @@ const CategoriesProductComponent = () => {
                         </div>
                         <div className="categoriesproduct-product-enrollDate">{product.enrollDate}</div>
                         <div className="categoriesproduct-product-name">{product.productName}</div>
-                        <div className="categoriesproduct-product-price">{product.price} 원</div>
+                        <div className="categoriesproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
                         <div className="categoriesproduct-product-tag">오늘픽업</div>
                     </div>
                 </div>

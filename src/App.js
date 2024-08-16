@@ -14,7 +14,7 @@ import ListToBasketComponent, { loader as basketLoader } from './pages/basket/Li
 import AllProductComponent from './pages/product/AllProductComponent';
 import CategoriesProductComponent from './pages/product/CategoriesProductComponent';
 import ProductDetailComponent from './pages/product/ProductDetailComponent';
-
+import ShowOrdersPageComponent from './pages/admin/ShowOrdersPageComponent'
 import KakaoLoginHandler from './pages/login/kakao/KakaoLoginHandler';
 import KakaoSignupHandler from './pages/login/kakao/KakaoSignupHandler';
 
@@ -24,6 +24,8 @@ import SetPlaceComponent from './pages/setPlace/SetPlaceComponent';
 
 import { RecoilRoot } from 'recoil'; // RecoilRoot 임포트 추가
 import { tokenLoader } from './util/auth';
+import PickupCompletedPage from './pages/admin/PickupCompletedPageComponent';
+
 
 // test yoon
 const router = createBrowserRouter([
@@ -54,10 +56,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/eDrink24/order/:userId', element: <OrderComponent />
-
-
       },
-
+      {
+        path: '/eDrink24/admin', element: <ShowOrdersPageComponent />
+      },
+      {
+        path: '/eDrink24/admin/pickupCompleted', element: <PickupCompletedPage />
+      },
 
       { // 카카오 로그인 대기창
         path: '/eDrink24/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
