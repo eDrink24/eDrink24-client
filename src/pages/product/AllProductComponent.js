@@ -174,7 +174,10 @@ const AllProductComponent = () => {
                         <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
                         <div className="allproduct-product-name">{product.productName}</div>
                         <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
-                        <div className="allproduct-product-tag">오늘픽업</div>
+                        {invToStore.some(inv =>
+                            inv.productId === product.productId && inv.quantity > 0) && (
+                                <div className="allproduct-product-tag">오늘픽업</div>
+                            )}
                     </div>
                 </div>
 
