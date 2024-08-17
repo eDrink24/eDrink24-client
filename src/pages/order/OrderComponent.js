@@ -141,19 +141,26 @@ function OrderComponent() {
     }
 
     console.log('User ID:', userId);
-    const orderTransactionDTO = basketItemsList.map(item => ({
-        storeId,
-        userId,
-        basketId : item.basketId,
-        productId: item.productId,
-        orderDate: new Date().toISOString(),
-        isCompleted: 'FALSE',
-        orderStatus: 'ORDERED',
-        orderQuantity: item.basketQuantity,
-        price: productDetailsMap.get(item.productId)?.price || 0,
-        changeStatus: 'ORDERED',
-        changeDate: new Date().toISOString()
-    }));
+    const orderTransactionDTO = basketItemsList.map(item => {
+        const orderDate = new Date();
+        const pickupDate = new Date(orderDate);
+        pickupDate.setDate(orderDate.getDate() + 2);
+    
+        return {
+            storeId,
+            userId,
+            basketId: item.basketId,
+            productId: item.productId,
+            orderDate: orderDate.toISOString(),
+            pickupDate: pickupDate.toISOString(),
+            isCompleted: 'FALSE',
+            orderStatus: 'ORDERED',
+            orderQuantity: item.basketQuantity,
+            price: productDetailsMap.get(item.productId)?.price || 0,
+            changeStatus: 'ORDERED',
+            changeDate: orderDate.toISOString()
+        };
+    });
     const basketDTO = {
         basketId:null,
         userId: userId,
