@@ -14,7 +14,7 @@ const AdminOrderComponent = () => {
     const [selectedProductId, setSelectedProductId] = useState(null); // 발주할 productId 저장
     const [adminOrderList, setAdminOrderList] = useState([]);
     const navigate = useNavigate();
-    const storeId = 1; // (내일 LocalStorage 데이터로 변경)
+    //const storeId = localStorage.getItem("currentStoreId");
 
     useEffect(() => {
         if (selectedCategory)    
@@ -63,6 +63,7 @@ const AdminOrderComponent = () => {
 
     // 발주 요청
     const handleAdminOrder = async () => {
+        const storeId = localStorage.getItem("currentStoreId");
         if (selectedProductId && quantity > 0) {
             // adminOrderList에서 선택된 productId의 quantity 업데이트
             const updatedOrderList = adminOrderList.map(item =>
@@ -72,7 +73,7 @@ const AdminOrderComponent = () => {
 
             // InventoryDTO 생성
             const InventoryDTO = {
-                storeId: 1,
+                storeId,
                 productId: selectedProductId,
                 quantity: quantity
             };
