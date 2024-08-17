@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import AlertModal from '../../components/alert/AlertModal.js';
@@ -163,8 +163,6 @@ function SetPlaceComponent() {
                 });
 
                 if (response.ok) {
-                    console.log(currentStoreId);
-                    console.log(choiceStore.storeId);
                     localStorage.removeItem("currentLocation")
                     localStorage.removeItem("currentStoreId");
 
