@@ -15,6 +15,7 @@ import AllProductComponent from './pages/product/AllProductComponent';
 import CategoriesProductComponent from './pages/product/CategoriesProductComponent';
 import ProductDetailComponent from './pages/product/ProductDetailComponent';
 import ShowOrdersPageComponent from './pages/admin/ShowOrdersPageComponent'
+import AdminOrderComponent from './pages/admin/AdminOrderComponent';
 import KakaoLoginHandler from './pages/login/kakao/KakaoLoginHandler';
 import KakaoSignupHandler from './pages/login/kakao/KakaoSignupHandler';
 
@@ -63,7 +64,9 @@ const router = createBrowserRouter([
       {
         path: '/eDrink24/admin/pickupCompleted', element: <PickupCompletedPage />
       },
-
+      {
+        path: '/eDrink24/admin/adminOrder', element: <AdminOrderComponent />
+      },
       { // 카카오 로그인 대기창
         path: '/eDrink24/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
       },
