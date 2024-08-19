@@ -24,8 +24,9 @@ function OrderComponent() {
     const [totalPrice, setTotalPrice] = useState(0);
     const [discount, setDiscount] = useState(0);
     const [finalAmount, setFinalAmount] = useState(0);
-    const { storeId, pickupDate, coupon, pointUse, paymentMethod } = orderInfo;
+    const { pickupDate, coupon, pointUse, paymentMethod } = orderInfo;
     const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
+    const storeId = localStorage.getItem('currentStoreId');
     const navigate = useNavigate();    
 
     // 총액 계산 함수
