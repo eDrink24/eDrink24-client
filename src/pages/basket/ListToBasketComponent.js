@@ -75,7 +75,7 @@ function ListToBasketComponent() {
     // userId 가져오기
     const userId = localStorage.getItem("userId");
 
-    navigate(`/eDrink24/order/${userId}`);
+    navigate(`/eDrink24/order`);
 }
 
     // 전체 선택/해제 기능

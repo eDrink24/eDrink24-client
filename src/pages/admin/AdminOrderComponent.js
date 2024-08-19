@@ -40,6 +40,7 @@ const AdminOrderComponent = () => {
                 storeId: 1,  // 나중에 수정
                 productId: product.productId,
                 InventoryQuantity: 0,  // 초기 수량 0
+                productName : product.productName                
             }));
 
             setAdminOrderList(newAdminOrderList);
@@ -65,6 +66,14 @@ const AdminOrderComponent = () => {
     const handleAdminOrder = async () => {
         const storeId = localStorage.getItem("currentStoreId");
         if (selectedProductId && quantity > 0) {
+            // 선택된 productId에 해당하는 제품을 찾기
+            const selectedProduct = products.find(product => product.productId === selectedProductId);
+
+            if (!selectedProduct) {
+                alert("Product not found.");
+                return;
+            }
+
             // adminOrderList에서 선택된 productId의 quantity 업데이트
             const updatedOrderList = adminOrderList.map(item =>
                 item.productId === selectedProductId ? { ...item, InventoryQuantity: quantity } : item
@@ -75,7 +84,9 @@ const AdminOrderComponent = () => {
             const InventoryDTO = {
                 storeId,
                 productId: selectedProductId,
-                quantity: quantity
+                quantity: quantity,
+                productName : selectedProduct.productName,
+                adminOrderQuantity : quantity
             };
             try {
                 const response = await fetch(`http://localhost:8090/eDrink24/updateOrInsertInventory/${storeId}/${selectedProductId}`, {
