@@ -14,7 +14,6 @@ import ListToBasketComponent, { loader as basketLoader } from './pages/basket/Li
 import AllProductComponent from './pages/product/AllProductComponent';
 import CategoriesProductComponent from './pages/product/CategoriesProductComponent';
 import ProductDetailComponent from './pages/product/ProductDetailComponent';
-import ShowOrdersPageComponent from './pages/admin/ShowOrdersPageComponent'
 import AdminOrderComponent from './pages/admin/AdminOrderComponent';
 import KakaoLoginHandler from './pages/login/kakao/KakaoLoginHandler';
 import KakaoSignupHandler from './pages/login/kakao/KakaoSignupHandler';
@@ -25,8 +24,10 @@ import SetPlaceComponent from './pages/setPlace/SetPlaceComponent';
 
 import { RecoilRoot } from 'recoil'; // RecoilRoot 임포트 추가
 import { tokenLoader } from './util/auth';
-import PickupCompletedPage from './pages/admin/PickupCompletedPageComponent';
 import AdminOrderListComponent from './pages/admin/AdminOrderListComponent';
+import AdminComponent from './pages/admin/AdminComponent';
+import ShowTodayPickupPageComponent from './pages/admin/ShowTodayPickupPageComponent';
+import TodayPickupCompletedPageComponent from './pages/admin/TodayPickupCompletedPageComponent';
 
 
 // test yoon
@@ -60,10 +61,13 @@ const router = createBrowserRouter([
         path: '/eDrink24/order', element: <OrderComponent />
       },
       {
-        path: '/eDrink24/admin', element: <ShowOrdersPageComponent />
+        path: '/eDrink24/admin', element: <AdminComponent />
       },
       {
-        path: '/eDrink24/admin/pickupCompleted', element: <PickupCompletedPage />
+        path: '/eDrink24/todayPickup', element: <ShowTodayPickupPageComponent />
+      },
+      {
+        path: '/eDrink24/admin/todayPickupCompleted', element: <TodayPickupCompletedPageComponent />
       },
       {
         path: '/eDrink24/admin/adminOrder', element: <AdminOrderComponent />
@@ -71,6 +75,9 @@ const router = createBrowserRouter([
       {
         path: '/eDrink24/admin/adminOrderList', element: <AdminOrderListComponent />
       },
+      // {
+      //   path: '/eDrink24/admin/ShowReservationPickup', element: <ShowReservationPickupComponent />
+      // },
       { // 카카오 로그인 대기창
         path: '/eDrink24/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
       },

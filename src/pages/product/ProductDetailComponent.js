@@ -126,24 +126,24 @@ function ProductDetailComponent() {
 
   //바로구매 버튼 클릭 시 결제페이지로 이동
   const moveToOrderPage = () => {
-    const userId = localStorage.getItem("userId");
+    const selectedItem = {
+      productId: product.productId,
+      productName: product.productName,
+      price: product.price,
+      basketQuantity: quantity,
+      defaultImage: product.defaultImage,
+    }
 
     //선택한 제품 정보를 orderState에 저장
     setOrderInfo((prev) => ({ // prev는 현재 상태에서 일부분만 수정하고 나머지는 유지하고 싶을 때 사용
       ...prev, // 기존 상태 객체를 펼쳐서 복사하고, 복사된 값에서 특정한 값만 수정
-      selectedItems: [
-          {
-              productId: product.productId,
-              productName: product.productName,
-              price: product.price,
-              basketQuantity: quantity,
-              defaultImage: product.defaultImage,
-          },
-      ],
+      selectedItems: [...prev.selectedItems, selectedItem],
+      totalPrice: prev.totalPrice + (product.price * quantity),
+      finalAmount: prev.finalAmount + (product.price * quantity)
   }));
 
   
-    navigate(`/eDrink24/order/${userId}`);
+    navigate(`/eDrink24/order`);
   };
 
   const total = product.price * quantity;

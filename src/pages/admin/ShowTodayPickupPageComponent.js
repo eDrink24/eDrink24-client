@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './ShowOrdersPageComponent.css'; // CSS 파일을 임포트합니다.
+import './ShowTodayPickupPageComponent.css'; // CSS 파일을 임포트합니다.
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 
-const ShowOrdersPageComponent = () => {
+const ShowTodayPickupPageComponent = () => {
     const [orders, setOrders] = useState([]);
     console.log("orders",orders);
     const [selectedOrdersId, setSelectedOrdersId] = useState([]);
@@ -89,7 +89,7 @@ const ShowOrdersPageComponent = () => {
 
     return (
         <div className="admin-container">
-            <h1 className="admin-title">픽업주문 목록</h1>
+            <h1 className="admin-title">즉시픽업 목록</h1>
             <div className="order-list">
                 <label className="admin-all">
                     <input
@@ -132,4 +132,4 @@ const ShowOrdersPageComponent = () => {
     );
 };
 
-export default ShowOrdersPageComponent;
+export default ShowTodayPickupPageComponent;
