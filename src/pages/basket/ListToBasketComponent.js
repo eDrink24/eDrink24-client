@@ -5,18 +5,18 @@ import { getAuthToken } from '../../util/auth';
 import { json, useLoaderData, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { selectedBasketState } from './BasketAtom';
-import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
-
-import { getLoadDirection, drawRoute } from "../../service/directionService"
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { getLoadDirection, drawRoute } from "../../service/directionService";
 
 function ListToBasketComponent() {
-    // 초기 장바구니 데이터를 로드
     const initialBaskets = useLoaderData();
     const [baskets, setBaskets] = useState(initialBaskets); // 장바구니 상태 관리
     const [selectedBaskets, setSelectedBaskets] = useRecoilState(selectedBasketState); // 선택된 장바구니 항목 관리
+    const [todayPickupBaskets, setTodayPickupBaskets] = useState([]);
+    const [reservationPickupBaskets, setReservationPickupBaskets] = useState([]);
+    const [storeId, setStoreId] = useState(localStorage.getItem("currentStoreId"));
     const navigate = useNavigate(); // 페이지 이동을 위한 훅
 
-    // Ref 생성: 각각의 섹션을 참조하기 위함
     const todayPickupRef = useRef(null); // 오늘 픽업 섹션의 Ref
     const reservationPickupRef = useRef(null); // 예약 픽업 섹션의 Ref
 
@@ -30,22 +30,45 @@ function ListToBasketComponent() {
 
         if (response.ok) {
             const resData = await response.json();
-
-            console.log(resData);
-
             setBaskets(resData); // 새로운 장바구니 데이터로 상태 업데이트
+            await classifyBaskets(resData); // 장바구니 항목 분류
             setSelectedBaskets([]); // 선택된 장바구니 항목 초기화
         } else {
             console.error('Error fetching data:', response.statusText);
         }
     }, [setBaskets, setSelectedBaskets]);
 
-    // 컴포넌트가 마운트될 때 장바구니 데이터를 새로고침
+    // 장바구니 항목을 재고에 따라 오늘픽업과 예약픽업으로 분류하는 함수
+    const classifyBaskets = async (baskets) => {
+        const todayPickup = [];
+        const reservationPickup = [];
+        for (const basket of baskets) {
+            const isInInventory = await checkInventory(basket.items[0].productId);
+            if (isInInventory) {
+                todayPickup.push(basket);
+            } else {
+                reservationPickup.push(basket);
+            }
+        }
+        setTodayPickupBaskets(todayPickup);
+        setReservationPickupBaskets(reservationPickup);
+    };
+
+    const checkInventory = async (productId) => {
+        try {
+            const response = await fetch(`http://localhost:8090/eDrink24/checkInventory/${storeId}/${productId}`);
+            if (!response.ok) throw new Error('Failed to check inventory');
+            return response.json();
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    };
+
     useEffect(() => {
         refreshBaskets();
     }, [refreshBaskets]);
 
-    // 특정 섹션으로 스크롤하는 함수
     const scrollToSection = (sectionRef, sectionName) => {
         setActiveSection(sectionName); // 현재 활성화된 섹션 설정
 
@@ -58,17 +81,14 @@ function ListToBasketComponent() {
         });
     };
 
-    // 현재 활성화된 섹션(오늘픽업 또는 예약픽업)을 추적하기 위한 상태
     const [activeSection, setActiveSection] = useState('todayPickup');
 
-    // 스크롤 위치에 따라 활성화된 섹션을 업데이트하는 이벤트 리스너 설정
     useEffect(() => {
         const handleScroll = () => {
             const offset = 146; // 네비게이션 바의 높이
             const todayPickupPosition = todayPickupRef.current.offsetTop - offset;
             const reservationPickupPosition = reservationPickupRef.current.offsetTop - offset;
 
-            // 스크롤 위치에 따라 활성화된 섹션 변경
             if (window.scrollY >= reservationPickupPosition) {
                 setActiveSection('reservationPickup');
             } else if (window.scrollY >= todayPickupPosition) {
@@ -76,14 +96,13 @@ function ListToBasketComponent() {
             }
         };
 
-        window.addEventListener('scroll', handleScroll); // 스크롤 이벤트 리스너 추가
+        window.addEventListener('scroll', handleScroll);
 
         return () => {
-            window.removeEventListener('scroll', handleScroll); // 스크롤 이벤트 리스너 제거
+            window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
-    // 선택된 장바구니 항목들을 삭제하는 함수
     async function deleteSelectedBaskets() {
         const userId = localStorage.getItem("userId");
 
@@ -97,10 +116,9 @@ function ListToBasketComponent() {
             }
         }
 
-        refreshBaskets(); // 장바구니 데이터 새로고침
+        refreshBaskets();
     }
 
-    // 체크된 제품들을 주문 페이지로 이동시키는 함수
     async function moveToOrderPage() {
         const selectedCheckboxes = document.querySelectorAll("input:checked");
         const selectedBasketIds = [];
@@ -116,16 +134,10 @@ function ListToBasketComponent() {
             return;
         }
 
-        setSelectedBaskets(selectedBasketIds); // 선택된 장바구니 항목 설정
+        setSelectedBaskets(selectedBasketIds);
+        navigate(`/eDrink24/order`);
+    }
 
-        const userId = localStorage.getItem("userId");
-
-
-    navigate(`/eDrink24/order`);
-}
-
-
-    // 모든 장바구니 항목 선택/해제하는 함수
     const toggleSelectAll = (e) => {
         if (e.target.checked) {
             if (baskets.length > 0) {
@@ -139,7 +151,6 @@ function ListToBasketComponent() {
         }
     };
 
-    // 개별 장바구니 항목 선택/해제하는 함수
     const toggleSelectBasket = (basketId) => {
         if (selectedBaskets.includes(basketId)) {
             setSelectedBaskets(selectedBaskets.filter(id => id !== basketId));
@@ -148,7 +159,6 @@ function ListToBasketComponent() {
         }
     };
 
-    // 장바구니 항목의 수량을 업데이트하는 함수
     const updateQuantity = async (basketId, increment) => {
         const basket = baskets.find(basket => basket.basketId === basketId);
         if (!basket) return;
@@ -176,10 +186,9 @@ function ListToBasketComponent() {
             return;
         }
 
-        refreshBaskets(); // 장바구니 데이터 새로고침
+        refreshBaskets();
     };
 
-    // 선택된 장바구니 항목들의 총 금액을 계산
     const totalAmount = baskets.reduce((sum, basket) => {
         if (selectedBaskets.includes(basket.basketId)) {
             return sum + basket.items[0].price * basket.items[0].basketQuantity;
@@ -187,7 +196,6 @@ function ListToBasketComponent() {
         return sum;
     }, 0);
 
-    // 선택된 장바구니 항목들의 총 수량을 계산
     const totalQuantity = baskets.reduce((sum, basket) => {
         if (selectedBaskets.includes(basket.basketId)) {
             return sum + basket.items[0].basketQuantity;
@@ -195,26 +203,22 @@ function ListToBasketComponent() {
         return sum;
     }, 0);
 
-    //------------------------------------------------------------------------
-    // 지도 API
     const geocoder = new window.kakao.maps.services.Geocoder();
-
     const currentLocation = localStorage.getItem("currentLocation");
     const currentStoreId = parseInt(localStorage.getItem("currentStoreId"));
 
     const [storeData, setStoreData] = useState();
-    const [centerMap, setCenterMap] = useState({ latitude: null, longitude: null }); // 맵 중심점
+    const [centerMap, setCenterMap] = useState({ latitude: null, longitude: null });
     const [locationData, setLocationData] = useState({
         latitude: null,
         longitude: null,
         address: ""
     });
 
-    const mapRef = useRef(null); // 랜더링 없이 Map 컴포넌트에 접근
+    const mapRef = useRef(null);
 
     useEffect(() => {
         const fetchStore = async () => {
-
             if (isNaN(currentStoreId)) {
                 return;
             }
@@ -239,7 +243,6 @@ function ListToBasketComponent() {
 
     }, [currentStoreId, currentLocation]);
 
-    // 맵 센터설정 + 경로 띄우기
     useEffect(() => {
         if (storeData && locationData.latitude && locationData.longitude) {
             const center = calculateCenter(
@@ -260,10 +263,9 @@ function ListToBasketComponent() {
                 lng: storeData.longitude
             };
 
-            // 경로구하기
             getLoadDirection(startPoint, endPoint).then(data => {
                 if (data) {
-                    const map = mapRef.current; // 현재 Map 참조
+                    const map = mapRef.current;
                     drawRoute(map, data);
                 } else {
                     console.log('Failed to load direction data');
@@ -272,7 +274,6 @@ function ListToBasketComponent() {
         }
     }, [storeData, locationData]);
 
-    // 매장과 현위치 간의 중간지점 구하기
     const calculateCenter = (lat1, lng1, lat2, lng2) => {
         return {
             latitude: (parseFloat(lat1) + parseFloat(lat2)) / 2,
@@ -307,7 +308,6 @@ function ListToBasketComponent() {
     const errorHandler = (error) => {
         console.log(error);
     };
-    //------------------------------------------------------------------------------------
 
     return (
         <div className="basket-container">
@@ -345,7 +345,7 @@ function ListToBasketComponent() {
                     </span>
                     <div className="basket-today-pickup">
                         <TodayItem
-                            baskets={baskets}
+                            baskets={todayPickupBaskets}
                             selectedBaskets={selectedBaskets}
                             toggleSelectAll={toggleSelectAll}
                             deleteSelectedBaskets={deleteSelectedBaskets}
@@ -361,7 +361,7 @@ function ListToBasketComponent() {
                     </span>
                     <div className="basket-reservation-pickup">
                         <TodayItem
-                            baskets={baskets}
+                            baskets={reservationPickupBaskets}
                             selectedBaskets={selectedBaskets}
                             toggleSelectAll={toggleSelectAll}
                             deleteSelectedBaskets={deleteSelectedBaskets}
@@ -382,7 +382,7 @@ function ListToBasketComponent() {
                                 center={{ lat: centerMap.latitude, lng: centerMap.longitude }}
                                 style={{ width: '390px', height: '290px' }}
                                 level={5}
-                                ref={mapRef} // ref 추가
+                                ref={mapRef}
                             >
                                 {locationData.latitude && locationData.longitude && (
                                     <MapMarker position={{ lat: locationData.latitude, lng: locationData.longitude }} />
@@ -402,13 +402,11 @@ function ListToBasketComponent() {
                         )}
                     </div>
 
-
                     {/* 매장보여주기 */}
                     <div className="basket-set-location">
                         {storeData && <span className='basket-storeName'><img src='assets/common/location_on.png' alt='location' /> {storeData.storeName}</span>}
                         <button className='basket-set-location-btn' onClick={() => navigate("/eDrink24/myplace_store")} >다른 매장 선택하기</button>
                     </div>
-
                 </div>
             </div>
 
