@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { format, parseISO } from 'date-fns';
+import './TodayPickupCompletedPageComponent.css';
 
-const PickupCompletedPage = () => {
+const TodayPickupCompletedPageComponent = () => {
     const [completedOrders, setCompletedOrders] = useState([]);
 
     useEffect(() => {
@@ -28,7 +29,7 @@ const PickupCompletedPage = () => {
 
     return (
         <div className="admin-container">
-            <h1 className="admin-title">픽업주문 완료내역</h1>
+            <h1 className="admin-title">픽업 완료내역</h1>
             <div className="order-list">
                 <ul>
                     {completedOrders.map(order => (
@@ -52,4 +53,4 @@ const PickupCompletedPage = () => {
     );
 };
 
-export default PickupCompletedPage;
+export default TodayPickupCompletedPageComponent;
