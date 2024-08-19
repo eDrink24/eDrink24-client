@@ -16,210 +16,188 @@
     height: auto;
     margin: 0 auto; /* 화면 중앙에 배치 */
 }
-/**************************************************************************/
-.basket-home-header {
-    height: 102px;
-    width:100%;
+
+/*****************************************************************************/
+
+/* 상단 네비게이션 바 및 픽업 네비게이션 바를 포함한 상단 컨텐츠 */
+.basket-top-content {
     display: flex;
-    padding: 44px 20px 0px 20px;
-    box-sizing: border-box;
-    
+    flex-direction: column;
+    background-color: #ffffff;
+    width: 100%;
 }
 
-.basket-navigation-bar {
+/*****************************************************************************/
+/* 상단 네비게이션 바 */
+
+.basket-nav-bar {
+    height: 102px;
+    padding: 44px 20px 0; /* 위의 패딩값 / 좌,우의 패딩값 / 아래의 패딩값 */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    margin: 0 auto;
-    box-sizing: border-box;
 }
 
-.basket-back-button {
-    background: none;
-    border: none;
+.basket-nav-bar img {
+    width: 24px;
+    height: 24px;
+}
+
+.basket-nav-bar button {
     width: 58px;
     height: 58px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.basket-back {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
+    justify-content: flex-start;
 }
 
-.basket-navigation-bar .basket-nav-bicon {
-    width: 24px; /* 아이콘 버튼의 너비 */
-    height: 24px; /* 아이콘 버튼의 높이 */
-    margin: 0;
-}
-
-.basket-home-button {
-    background: none;
-    border: none;
-    width: 58px;
-    height: 58px;
+.basket-home {
     display: flex;
     align-items: center;
     justify-content: flex-end;
 }
 
-.basket-navigation-bar .basket-nav-hicon {
-    width: 24px; /* 아이콘 버튼의 너비 */
-    height: 24px; /* 아이콘 버튼의 높이 */
-    margin: 0;
-}
+/*****************************************************************************/
+/* (오늘픽업/예약픽업) 네비게이션 바 */
 
-.basket-logo-box {
+.basket-pickup-bar {
+    height: 64px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    flex-grow: 1;
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/**************************************************************************/
-/* 오늘픽업과 예약픽업 탭 바 스타일 */
-
-.basket-nav-bar {
-    display: flex; /* 탭 항목들을 가로로 배치 */
-    border-bottom: 2px solid #ccc; /* 하단에 구분선 추가 */
-}
-
-.basket-nav-item {
-    flex: 1; /* 모든 탭 항목을 동일한 너비로 설정 */
-    padding: 10px;
-    text-align: center;
+.basket-nav-pickup {
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    position: relative; /* 하단 표시줄을 위한 위치 설정 */
+    margin-top: 20px;
+    padding: 10px 20px;
+    border-bottom: 4px solid transparent;
+    transition: border-bottom 0.3s ease;
 }
 
-.basket-nav-item.active::after {
-    content: '';
-    display: block;
-    width: 100%; /* 탭 항목의 너비에 맞게 설정 */
-    height: 4px; /* 하단 표시줄의 높이 */
-    background-color: black; /* 하단 표시줄 색상 */
-    position: absolute;
-    bottom: -2px; /* 부모 요소 기준 하단에서 2px */
-    left: 0;
+/* 현재 활성화된 섹션이나 hover 시에 파란색 하단 테두리 */
+.basket-nav-pickup.active{
+    border-bottom: 4px solid #007bff;
+}
+
+/*****************************************************************************/
+/* 메인 콘텐츠 컨테이너 */
+
+.basket-content-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
 }
 
 .basket-content {
-    height: auto; /* 콘텐츠 영역의 높이 설정 */
+    padding-top: 16px 20px;
+    background-color: white;
+    margin-bottom: 16px;
 }
 
-/**************************************************************************/
+.basket-today-pickup,
+.basket-reservation-pickup {
+    margin: 44px 0;
+}
 
-/* 장바구니 헤더 */
-.basket-header {
-    height: 52px;
+.title1 {
+    height: 44px;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 20px;
 }
 
-/* 전체 선택 체크박스와 텍스트 */
-.basket-all {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
+.title1 strong {
+    padding: 0 20px;
 }
 
-.basket-all input {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    cursor: pointer;
-}
+/* 구분선 제거된 주석 
+.line {
+    width: 100%;
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px 0;
+} */
 
-/* 삭제 버튼 */
-.basket-delete-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* 픽업 매장 선택 버튼 */
-.basket-pickup-shop-select {
-    height: 48px;
-    margin: 20px;
-    background-color: #AAAAAA;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* 장바구니 테이블 스타일 */
-.basket-table {
-    border-collapse: collapse;
-}
-
-.basket-item-container {
-    height: auto;
+/*****************************************************************************/
+.basket-content-last {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 20px;
+    background-color: #f8f9fa;
 }
 
-.basket-item {
-    height: 100px;
+.basket-showStore-map {
+    width: 100%;
     display: flex;
+    justify-content: center;
+    margin: 0 auto;
 }
 
-.basket-item-container input {
-    width: 24px;
-    height: 24px;
-}
-
-.basket-item-info {
+.basket-nostore-message {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 290px; /* 맵의 높이와 동일하게 설정 */
+    width: 100%;
+    font-size: 18px;
+    color: #ff0000;
+    background-color: #f8f9fa;
 }
 
-.basket-item-imge {
-    width: 100px;
-    height: 100px;
+.basket-set-location {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 16px;
 }
 
-.basket-item-name {
+.basket-storeName {
     display: flex;
     align-items: center;
 }
 
-.basket-quantitiy-content{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.basket-quantitiy-box {
-    width: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.basket-quantitiy-box button{
-    width: 32px;
-    height: 32px;
-    background-color: #AAAAAA;
-}
-
-.basket-quantitiy{
+.basket-set-location-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #007bff;
     border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.basket-original-price {
-    font-size: 20px;
-    font-weight: 700;
+.basket-set-location-btn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
-/**************************************************************************/
 
+/*****************************************************************************/
 /* 장바구니 요약 섹션 */
+
 .basket-summary {
     margin-top: 20px;
     padding: 20px;
@@ -227,17 +205,17 @@
     flex-direction: column;
     position: sticky;
     bottom: 0;
-    left: 50%;
+    left: 0;
     z-index: 1000;
     justify-content: flex-end;
-    transition: height 0.3s ease;
     background-color: #ffffff;
+    width: 100%;
 }
 
 .summary-item {
     display: flex;
     justify-content: space-between;
-    margin: 10px;
+    margin: 10px 0;
     font-size: 18px;
 }
 
@@ -256,7 +234,7 @@
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 40px;
+    margin-top: 20px;
     transition: background-color 0.3s, box-shadow 0.3s;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

@@ -12,7 +12,7 @@ const AllProductComponent = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(category1)    
+        if (category1)
             selectCategory1(selectedCategory);
     }, [selectedCategory]);
 
@@ -64,7 +64,7 @@ const AllProductComponent = () => {
     const handleProductClickEvent = (productId) => {
         // products 배열에서 클릭된 제품을 찾음
         const clickedProduct = products.find(product => product.productId === productId); //find메소드는 배열을 순회하며, 제공된 조건에 맞는 첫번째 요소 반환
-                                                                                          //여기서는 product.productId === productId 조건을 사용하여 클릭된 제품의 ID와 일치하는 제품을 찾음
+        //여기서는 product.productId === productId 조건을 사용하여 클릭된 제품의 ID와 일치하는 제품을 찾음
         //클릭된 제품이 존재할 경우, 해당 제품의 category2 값을 얻음
         if (clickedProduct) {
             const category2 = clickedProduct.category2;
@@ -73,6 +73,41 @@ const AllProductComponent = () => {
             console.error('제품을 찾지 못했습니다.');
         }
     };
+
+    const [invToStore, setInvToStore] = useState([]);
+    const [showTodayPu, setShowTodayPu] = useState(false);
+    const currentStoreId = localStorage.getItem("currentStoreId");
+
+    useEffect(() => {
+        const fetchInvByStoreId = async () => {
+            if (currentStoreId) {
+                try {
+                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`, {
+                        method: 'GET'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch inventory');
+                    }
+
+                    const invData = await response.json();
+                    setInvToStore(invData);
+                } catch (error) {
+                    console.error('Error fetching inventory:', error);
+                }
+            } else {
+                console.error('Store ID not found in localStorage');
+            }
+        };
+
+        fetchInvByStoreId();
+    }, [currentStoreId]);
+
+    // "오늘픽업" 필터 적용
+    const filterTodayPu = showTodayPu
+        ? products.filter(product =>
+            invToStore.some(inv => inv.productId === product.productId && inv.quantity > 0))
+        : products;
 
     return (
         <div className="allproduct-container">
@@ -92,22 +127,29 @@ const AllProductComponent = () => {
             <div className="allproduct-body">
                 {/* 카테고리 바*/}
                 <div className="allproduct-filter-bar">
-                {categoryList.map((category1,idx) => (
-                    <button
-                        key={idx}
-                        onClick={()=>handleCategory1Click(category1)}
-                        className={`allproduct-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
-                    >
-                    {category1}
-                    </button>
-                ))}    
+                    {categoryList.map((category1, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => handleCategory1Click(category1)}
+                            className={`allproduct-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
+                        >
+                            {category1}
+                        </button>
+                    ))}
                 </div>
                 {/* 오늘픽업 체크박스 / 인기순,신상품,등등 */}
                 <div className="allproduct-click-container">
+
                     <div className="allproduct-container1">
-                        <input id="today-pickup" type="checkbox" />
+                        <input
+                            id="today-pickup"
+                            type="checkbox"
+                            checked={showTodayPu}
+                            onChange={(e) => setShowTodayPu(e.target.checked)}
+                        />
                         <label htmlFor="today-pickup">오늘픽업</label>
                     </div>
+
                     <div className="allproduct-container2">
                         <select onChange={handleSortEvent}>
                             <option value="신상품순">신상품순</option>
@@ -121,7 +163,7 @@ const AllProductComponent = () => {
                 </div>
             </div>
 
-            {products.map(product => (
+            {filterTodayPu.map(product => (
                 <div className="allproduct-product-card" key={product.productId} onClick={() => handleProductClickEvent(product.productId)}>
                     <img src={product.defaultImage} alt={product.productName} className="allproduct-product-defaultImage" />
 
@@ -132,7 +174,10 @@ const AllProductComponent = () => {
                         <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
                         <div className="allproduct-product-name">{product.productName}</div>
                         <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
-                        <div className="allproduct-product-tag">오늘픽업</div>
+                        {invToStore.some(inv =>
+                            inv.productId === product.productId && inv.quantity > 0) && (
+                                <div className="allproduct-product-tag">오늘픽업</div>
+                            )}
                     </div>
                 </div>
 
@@ -144,3 +189,8 @@ const AllProductComponent = () => {
 }
 
 export default AllProductComponent;
+
+/* 
+    1. inventory에 로컬스토리지의 동일한 storeId를 가진 제품목록을 싸그리가져오기
+    2. 가져온거에서 일차하는 productId가 있으면? "오늘픽업" : "" 
+*/ 

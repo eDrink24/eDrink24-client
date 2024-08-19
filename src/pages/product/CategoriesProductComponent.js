@@ -21,7 +21,7 @@ const CategoriesProductComponent = () => {
     useEffect(() => {
         // 카테고리1에 해당하는 카테고리2 리스트 설정
         if (subcategories[category1]) {
-            setCategory2List(subcategories[category1]);           
+            setCategory2List(subcategories[category1]);
         }
 
         // category2가 있으면 selectCategory2만 호출
@@ -34,7 +34,7 @@ const CategoriesProductComponent = () => {
             setCategory(defaultCategory2);
             selectCategory2(defaultCategory2); // 기본적으로 첫번째 항목을 선택한 상태로 불러옴.
         }
-    }, [category1,category2]);
+    }, [category1, category2]);
 
     //카테고리2별로 제품 보여주기
     async function selectCategory2(category2) {
@@ -96,6 +96,42 @@ const CategoriesProductComponent = () => {
         navigate(`/eDrink24`);
     };
 
+    // 오늘픽업 필터링 - Young5097
+    const currentStoreId = localStorage.getItem("currentStoreId");
+    const [invToStore, setInvToStore] = useState([]);
+    const [showTodayPu, setShowTodayPu] = useState(false);
+
+    useEffect(() => {
+        const fetchInvByStoreId = async () => {
+            if (currentStoreId) {
+
+                try {
+                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`,
+                        { method: 'GET' }
+                    );
+                    if (response.ok) {
+                        const invData = await response.json();
+                        setInvToStore(invData);
+                    } else {
+                        console.error(`Error: ${response.status} - ${response.statusText}`)
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                } // try-catch
+
+            } else {
+                console.error('Not found in localStorage');
+            } // if-else
+        }
+        fetchInvByStoreId();
+    }, [currentStoreId]);
+
+    // "오늘픽업" 필터 적용- Young5097
+    const filterTodayPu = showTodayPu ? products.filter(product =>
+        invToStore.some(inv => inv.productId === product.productId && inv.quantity > 0))
+        : products;
+
     return (
         <div className="categoriesproduct-container">
             <div className="categoriesproduct-home-header"> {/* 상단 네비게이션 바 */}
@@ -111,6 +147,7 @@ const CategoriesProductComponent = () => {
                     </button>
                 </div>
             </div>
+
             <div className="categoriesproduct-body">
                 {/* 카테고리 바 => 선택한 category1에 따라 동적 변경 */}
                 <div className="categoriesproduct-filter-bar">
@@ -122,12 +159,20 @@ const CategoriesProductComponent = () => {
                         </button>
                     ))}
                 </div>
+
                 {/* 오늘픽업 체크박스 / 인기순,신상품,등등 */}
                 <div className="categoriesproduct-click-container">
+
                     <div className="categoriesproduct-container1">
-                        <input id="today-pickup" type="checkbox" />
+                        <input
+                            id="today-pickup"
+                            type="checkbox"
+                            checked={showTodayPu}
+                            onChange={(e) => setShowTodayPu(e.target.checked)}
+                        />
                         <label htmlFor="today-pickup">오늘픽업</label>
                     </div>
+
                     <div className="categoriesproduct-container2">
                         <select onChange={handleSortEvent}>
                             <option value="신상품순">신상품순</option>
@@ -141,7 +186,7 @@ const CategoriesProductComponent = () => {
                 </div>
             </div>
 
-            {products.map(product => (
+            {filterTodayPu.map(product => (
                 <div className="categoriesproduct-product-card" key={product.productId} onClick={() => handleProductClickEvent(product.productId)}>
                     <img src={product.defaultImage} alt={product.productName} className="categoriesproduct-product-defaultImage" />
 
@@ -152,7 +197,12 @@ const CategoriesProductComponent = () => {
                         <div className="categoriesproduct-product-enrollDate">{product.enrollDate}</div>
                         <div className="categoriesproduct-product-name">{product.productName}</div>
                         <div className="categoriesproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
-                        <div className="categoriesproduct-product-tag">오늘픽업</div>
+
+                        {/* invMyStore에 productId가 있고 0보다 크면 '오늘픽업' */}
+                        {invToStore.some(inv =>
+                            inv.productId === product.productId && inv.quantity > 0) && (
+                                <div className="categoriesproduct-product-tag">오늘픽업</div>
+                            )}
                     </div>
                 </div>
 
