@@ -8,10 +8,23 @@ export const basketState = atom({
   
 });
 
-// 사용자가 선택한 항목을 관리
-export const selectedBasketState = atom({
+// 사용자가 선택한 항목을 관리(오늘픽업)
+export const selectedTodayPickupBaskets = atom({
   
-  key: 'selectedBasketState',
+  key: 'selectedTodayPickupBaskets',
   default: []
   
+});
+
+// 사용자가 선택한 항목을 관리(예약픽업)
+export const selectedReservationPickupBaskets = atom({
+  
+  key: 'selectedReservationPickupBaskets',
+  default: []
+  
+});
+
+export const basketPickupTypesState = atom({
+  key: 'basketPickupTypesState',
+  default: {}, // { basketId: '픽업 유형', ... }
 });
