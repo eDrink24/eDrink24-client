@@ -25,9 +25,11 @@ import SetPlaceComponent from './pages/setPlace/SetPlaceComponent';
 import { RecoilRoot } from 'recoil'; // RecoilRoot 임포트 추가
 import { tokenLoader } from './util/auth';
 import AdminOrderListComponent from './pages/admin/AdminOrderListComponent';
+import ShowReservationPickupComponent from './pages/admin/ShowReservationPickupComponent';
 import AdminComponent from './pages/admin/AdminComponent';
 import ShowTodayPickupPageComponent from './pages/admin/ShowTodayPickupPageComponent';
 import TodayPickupCompletedPageComponent from './pages/admin/TodayPickupCompletedPageComponent';
+
 
 
 // test yoon
@@ -73,11 +75,11 @@ const router = createBrowserRouter([
         path: '/eDrink24/admin/adminOrder', element: <AdminOrderComponent />
       },
       {
+        path: '/eDrink24/admin/ShowReservationPickup', element: <ShowReservationPickupComponent />
+      },
+      {
         path: '/eDrink24/admin/adminOrderList', element: <AdminOrderListComponent />
       },
-      // {
-      //   path: '/eDrink24/admin/ShowReservationPickup', element: <ShowReservationPickupComponent />
-      // },
       { // 카카오 로그인 대기창
         path: '/eDrink24/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
       },
