@@ -27,6 +27,7 @@ import { RecoilRoot } from 'recoil'; // RecoilRoot 임포트 추가
 import { tokenLoader } from './util/auth';
 import PickupCompletedPage from './pages/admin/PickupCompletedPageComponent';
 import AdminOrderListComponent from './pages/admin/AdminOrderListComponent';
+import ShowReservationPickupComponent from './pages/admin/ShowReservationPickupComponent';
 
 
 // test yoon
@@ -67,6 +68,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/eDrink24/admin/adminOrder', element: <AdminOrderComponent />
+      },
+      {
+        path: '/eDrink24/admin/ShowReservationPickup', element: <ShowReservationPickupComponent />
       },
       {
         path: '/eDrink24/admin/adminOrderList', element: <AdminOrderListComponent />
