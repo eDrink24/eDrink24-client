@@ -7,8 +7,10 @@ function MyPlaceComponent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [customerData, setCustomerData] = useState(null);
 
-    const [stores, setStores] = useState([]); // 가게 데이터 불러오기
+    const [store, setStore] = useState([]); // 가게 데이터 불러오기
     const [storeName, setStoreName] = useState(''); // 가게 이름
+
+    const currentStoreId = parseInt(localStorage.getItem("currentStoreId"));
 
     useEffect(() => {
         const token = localStorage.getItem("jwtAuthToken");
@@ -21,22 +23,26 @@ function MyPlaceComponent() {
     }, []);
 
     useEffect(() => {
-        const fetchStores = async () => {
-            const response = await fetch('assets/store/store_with_latlng.json');
-            const data = await response.json();
-            setStores(data);
-        }
-        fetchStores();
-    }, []);
-
-    useEffect(() => {
-        if (stores.length > 0 && customerData && customerData.currentStoreId) {
-            const currentStore = stores.find(store => store.storeId === customerData.currentStoreId);
-            if (currentStore) {
-                setStoreName(currentStore.storeName);
+        const fetchStore = async () => {
+            const response = await fetch(`http://localhost:8090/eDrink24/api/findStore/${currentStoreId}`, {
+                method: "GET"
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setStore(data)
+            } else {
+                console.log("NOT FOUND");
             }
         }
-    }, [stores, customerData]);
+        fetchStore();
+    }, []);
+
+
+    useEffect(() => {
+        if (store && customerData && customerData.currentStoreId) {
+            setStoreName(store.storeName);
+        }
+    }, [store, customerData]);
 
 
     const fetchCustomerData = async (loginId) => { // 회원정보도 맨날 불러와야하나..?

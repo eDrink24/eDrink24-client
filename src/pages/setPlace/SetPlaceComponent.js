@@ -56,19 +56,21 @@ function SetPlaceComponent() {
             } else {
                 fetchCurrentLocation();
             }
-            // 지금은 임시로 assets에 넣고 찾아오는데 스케줄링으로 해당 파일을 매번 업데이트 해줘야할듯
-            // 어케해야하노...
-            const response = await fetch('assets/store/store_with_latlng.json');
-            const stores = await response.json();
-            setStores(stores);
 
+            const response = await fetch('http://localhost:8090/eDrink24/api/findStore/findAll', {
+                method: "GET"
+            });
 
-            console.log(currentStoreId)
+            if (response.ok) {
+                const stores = await response.json();
+                setStores(stores);
 
-            if (currentStoreId != null) {
-                setChoiceStore(stores.find(store => store.storeId === parseInt(currentStoreId)))
+                if (currentStoreId != null) {
+                    setChoiceStore(stores.find(store => store.storeId === parseInt(currentStoreId)))
+                }
+            } else {
+                console.log("SERVER ERROR")
             }
-
         };
         fetchInit();
     }, [currentStoreId, currentLocation]);
