@@ -4,16 +4,20 @@ import TodayItem from './TodayItemComponent'; // TodayItem 컴포넌트 추가
 import { getAuthToken } from '../../util/auth';
 import { json, useLoaderData, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { selectedBasketState } from './BasketAtom';
+import { selectedTodayPickupBaskets as recoilTodayPickupBaskets, selectedReservationPickupBaskets as recoilReservationPickupBaskets, basketPickupTypesState } from './BasketAtom';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { getLoadDirection, drawRoute } from "../../service/directionService";
+
 
 function ListToBasketComponent() {
     const initialBaskets = useLoaderData();
     const [baskets, setBaskets] = useState(initialBaskets); // 장바구니 상태 관리
-    const [selectedBaskets, setSelectedBaskets] = useRecoilState(selectedBasketState); // 선택된 장바구니 항목 관리
+    const [selectedTodayPickupBaskets, setSelectedTodayPickupBaskets] = useRecoilState(recoilTodayPickupBaskets);
+    const [selectedReservationPickupBaskets, setSelectedReservationPickupBaskets] = useRecoilState(recoilReservationPickupBaskets);
     const [todayPickupBaskets, setTodayPickupBaskets] = useState([]);
     const [reservationPickupBaskets, setReservationPickupBaskets] = useState([]);
+    const [isAllTodayPickupSelected, setIsAllTodayPickupSelected] = useState(false);
+    const [isAllReservationPickupSelected, setIsAllReservationPickupSelected] = useState(false);
     const [storeId, setStoreId] = useState(localStorage.getItem("currentStoreId"));
     const navigate = useNavigate(); // 페이지 이동을 위한 훅
 
@@ -32,11 +36,13 @@ function ListToBasketComponent() {
             const resData = await response.json();
             setBaskets(resData); // 새로운 장바구니 데이터로 상태 업데이트
             await classifyBaskets(resData); // 장바구니 항목 분류
-            setSelectedBaskets([]); // 선택된 장바구니 항목 초기화
+            setSelectedTodayPickupBaskets([]); // 선택된 장바구니 항목 초기화
+            setSelectedReservationPickupBaskets([]);
+
         } else {
             console.error('Error fetching data:', response.statusText);
         }
-    }, [setBaskets, setSelectedBaskets]);
+    }, []);
 
     // 장바구니 항목을 재고에 따라 오늘픽업과 예약픽업으로 분류하는 함수
     const classifyBaskets = async (baskets) => {
@@ -103,59 +109,80 @@ function ListToBasketComponent() {
         };
     }, []);
 
-    async function deleteSelectedBaskets() {
+    const deleteSelectedBaskets = async () => {
         const userId = localStorage.getItem("userId");
 
-        for (const basketId of selectedBaskets) {
-            const response = await fetch(`http://localhost:8090/eDrink24/deleteProductByBasketIdInBasket/${userId}/${basketId}`, {
-                method: "DELETE"
-            });
+        const deleteBaskets = async (basketIds) => {
+            for (const basketId of basketIds) {
+                const response = await fetch(`http://localhost:8090/eDrink24/deleteProductByBasketIdInBasket/${userId}/${basketId}`, {
+                    method: "DELETE"
+                });
 
-            if (!response.ok) {
-                console.error('Error deleting basket:', response.statusText);
+                if (!response.ok) {
+                    console.error('Error deleting basket:', response.statusText);
+                }
             }
-        }
+        };
 
+        await deleteBaskets(selectedTodayPickupBaskets);
+        await deleteBaskets(selectedReservationPickupBaskets);
         refreshBaskets();
-    }
+    };
 
-    async function moveToOrderPage() {
-        const selectedCheckboxes = document.querySelectorAll("input:checked");
-        const selectedBasketIds = [];
-
-        selectedCheckboxes.forEach((checkbox) => {
-            if (checkbox.value !== "0") {
-                selectedBasketIds.push(checkbox.value);
-            }
-        });
-
-        if (selectedBasketIds.length === 0) {
+    //주문페이지로 이동
+    const moveToOrderPage = () => {
+        if (selectedTodayPickupBaskets.length === 0 && selectedReservationPickupBaskets.length === 0) {
             alert("주문페이지로 이동하려면 적어도 하나의 제품을 선택해주세요.");
             return;
         }
 
-        setSelectedBaskets(selectedBasketIds);
-        navigate(`/eDrink24/order`);
-    }
+        localStorage.setItem("selectedBaskets", JSON.stringify({
+            todayPickup: selectedTodayPickupBaskets,
+            reservationPickup: selectedReservationPickupBaskets
+        }));
 
-    const toggleSelectAll = (e) => {
-        if (e.target.checked) {
-            if (baskets.length > 0) {
-                const allBasketIds = baskets.map(basket => basket.basketId);
-                setSelectedBaskets(allBasketIds);
-            } else {
-                setSelectedBaskets([]);
+        navigate(`/eDrink24/order`);
+    };
+
+    // 오늘픽업/예약픽업 전체 선택/해제 기능
+    const toggleSelectAll = (section) => {
+        if (section === 'todayPickup') {
+            if (todayPickupBaskets.length > 0) {
+                if (isAllTodayPickupSelected) {
+                    setSelectedTodayPickupBaskets([]);
+                } else {
+                    const allBasketIds = todayPickupBaskets.map(basket => basket.basketId);
+                    setSelectedTodayPickupBaskets(allBasketIds);
+                }
+                setIsAllTodayPickupSelected(!isAllTodayPickupSelected);
             }
-        } else {
-            setSelectedBaskets([]);
+        } else if (section === 'reservationPickup') {
+            if (reservationPickupBaskets.length > 0) {
+                if (isAllReservationPickupSelected) {
+                    setSelectedReservationPickupBaskets([]);
+                } else {
+                    const allBasketIds = reservationPickupBaskets.map(basket => basket.basketId);
+                    setSelectedReservationPickupBaskets(allBasketIds);
+                }
+                setIsAllReservationPickupSelected(!isAllReservationPickupSelected);
+            }
         }
     };
 
-    const toggleSelectBasket = (basketId) => {
-        if (selectedBaskets.includes(basketId)) {
-            setSelectedBaskets(selectedBaskets.filter(id => id !== basketId));
-        } else {
-            setSelectedBaskets([...selectedBaskets, basketId]);
+    // 오늘픽업/예약픽업 개별 선택/해제 기능
+    const toggleSelectBasket = (section, basketId) => {
+        if (section === 'todayPickup') {
+            if (selectedTodayPickupBaskets.includes(basketId)) {
+                setSelectedTodayPickupBaskets(selectedTodayPickupBaskets.filter(id => id !== basketId));
+            } else {
+                setSelectedTodayPickupBaskets([...selectedTodayPickupBaskets, basketId]);
+            }
+        } else if (section === 'reservationPickup') {
+            if (selectedReservationPickupBaskets.includes(basketId)) {
+                setSelectedReservationPickupBaskets(selectedReservationPickupBaskets.filter(id => id !== basketId));
+            } else {
+                setSelectedReservationPickupBaskets([...selectedReservationPickupBaskets, basketId]);
+            }
         }
     };
 
@@ -190,14 +217,14 @@ function ListToBasketComponent() {
     };
 
     const totalAmount = baskets.reduce((sum, basket) => {
-        if (selectedBaskets.includes(basket.basketId)) {
+        if (selectedTodayPickupBaskets.includes(basket.basketId) || selectedReservationPickupBaskets.includes(basket.basketId)) {
             return sum + basket.items[0].price * basket.items[0].basketQuantity;
         }
         return sum;
     }, 0);
 
     const totalQuantity = baskets.reduce((sum, basket) => {
-        if (selectedBaskets.includes(basket.basketId)) {
+        if (selectedTodayPickupBaskets.includes(basket.basketId) || selectedReservationPickupBaskets.includes(basket.basketId)) {
             return sum + basket.items[0].basketQuantity;
         }
         return sum;
@@ -344,14 +371,16 @@ function ListToBasketComponent() {
                         <strong>오늘픽업</strong>
                     </span>
                     <div className="basket-today-pickup">
-                        <TodayItem
-                            baskets={todayPickupBaskets}
-                            selectedBaskets={selectedBaskets}
-                            toggleSelectAll={toggleSelectAll}
-                            deleteSelectedBaskets={deleteSelectedBaskets}
-                            toggleSelectBasket={toggleSelectBasket}
-                            updateQuantity={updateQuantity}
-                        />
+                        {todayPickupBaskets.length > 0 && (
+                            <TodayItem
+                                baskets={todayPickupBaskets}
+                                selectedBaskets={selectedTodayPickupBaskets}
+                                toggleSelectAll={() => toggleSelectAll('todayPickup')}
+                                deleteSelectedBaskets={deleteSelectedBaskets}
+                                toggleSelectBasket={(basketId) => toggleSelectBasket('todayPickup', basketId)}
+                                updateQuantity={updateQuantity}
+                            />
+                        )}
                     </div>
                 </div>
 
@@ -360,16 +389,20 @@ function ListToBasketComponent() {
                         <strong>예약픽업</strong>
                     </span>
                     <div className="basket-reservation-pickup">
-                        <TodayItem
-                            baskets={reservationPickupBaskets}
-                            selectedBaskets={selectedBaskets}
-                            toggleSelectAll={toggleSelectAll}
-                            deleteSelectedBaskets={deleteSelectedBaskets}
-                            toggleSelectBasket={toggleSelectBasket}
-                            updateQuantity={updateQuantity}
-                        />
+                        {reservationPickupBaskets.length > 0 && (
+                            <TodayItem
+                                baskets={reservationPickupBaskets}
+                                selectedBaskets={selectedReservationPickupBaskets}
+                                toggleSelectAll={() => toggleSelectAll('reservationPickup')}
+                                deleteSelectedBaskets={deleteSelectedBaskets}
+                                toggleSelectBasket={(basketId) => toggleSelectBasket('reservationPickup', basketId)}
+                                updateQuantity={updateQuantity}
+                            />
+                        )}
+
                     </div>
                 </div>
+
 
                 {/* 지도 + 매장변경 */}
                 <div className="basket-content-last">

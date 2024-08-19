@@ -116,7 +116,6 @@ const ShowOrdersPageComponent = () => {
                                 <div><strong>Order Date:</strong> {format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</div>
                                 <div><strong>Completed:</strong> {order.isCompleted ? 'Yes' : 'No'}</div>
                                 <div><strong>Status:</strong> {order.changeStatus}</div>
-                                <div><strong>Date:</strong> {format(parseISO(order.changeDate), 'yyyy-MM-dd HH:mm:ss')}</div>
                                 <div><strong>Quantity:</strong> {order.orderQuantity}</div>
                             </div>
                         </li>

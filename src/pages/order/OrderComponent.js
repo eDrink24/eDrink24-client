@@ -1,32 +1,31 @@
 import './OrderComponent.css';
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
-import { basketState, selectedBasketState } from '../basket/BasketAtom.js';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { basketState, selectedTodayPickupBaskets, selectedReservationPickupBaskets } from '../basket/BasketAtom.js';
 import { orderState } from './OrderAtom.js';
 import NaverMapContainer from './NaverMapContainer';
 import { useNavigate } from 'react-router-dom'; 
 
 function OrderComponent() {
     const [basket, setBasket] = useRecoilState(basketState);
-    const [selectedBaskets, setSelectedBaskets] = useRecoilState(selectedBasketState);
     const [orderInfo, setOrderInfo] = useRecoilState(orderState);
     const [productDetailsMap, setProductDetailsMap] = useState(new Map());
     const [basketItemsList, setBasketItemsList] = useState([]); 
     const [couponList, setCouponList] = useState([]);
-    const [priceList, setPriceList] = useState([]);
-    const [storeList, setStoreList] = useState([]);
-    const [loadingStores, setLoadingStores] = useState(false);
-    const [storeAddress, setStoreAddress] = useState('');
     const [loadingCoupons, setLoadingCoupons] = useState(false);
-    const [showStoreList, setShowStoreList] = useState(false);
     const [showCouponList, setShowCouponList] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
     const [discount, setDiscount] = useState(0);
     const [finalAmount, setFinalAmount] = useState(0);
-    const { pickupDate, coupon, pointUse, paymentMethod } = orderInfo;
+    const {coupon, pointUse, paymentMethod } = orderInfo;
+    
     const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
     const storeId = localStorage.getItem('currentStoreId');
+
+    const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
+    const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
+
     const navigate = useNavigate();    
 
     // 총액 계산 함수
@@ -45,34 +44,28 @@ function OrderComponent() {
 
      // 선택된 아이템이 변경될 때 장바구니 업데이트
      useEffect(() => {
-        setBasket(selectedBaskets);
-        console.log("CCCCCCCC:", productDetailsMap)
-    }, [selectedBaskets, setBasket]);
+        const allSelectedBaskets = [...todayPickupBaskets, ...reservationPickupBaskets];
+        setBasket(allSelectedBaskets);
+    }, [todayPickupBaskets, reservationPickupBaskets, setBasket]);
 
     // 장바구니와 기타 관련 상태가 변경될 때 총액 계산
     useEffect(() => {
         calculateTotals();
-    }, [selectedBaskets, coupon, pointUse, calculateTotals]);
-
-    // 매장 선택 시 주소와 목록 표시 여부 업데이트
-
-    // 매장 목록을 서버에서 가져오는 함수
-
-    // 매장 목록 버튼 클릭 핸들러
+    }, [basket, coupon, pointUse, calculateTotals]);
 
     // 상품 세부 정보를 가져오는 함수
     const fetchProductDetailsForBasket = useCallback(async () => {
-        console.log(">>>>>>>>>>>>>2222222", selectedBaskets);
+        console.log(">>>>>>>>>>>>>2222222", selectedTodayPickupBaskets);
 
         try {
             const basketItems = [];
-            for (const basketId of selectedBaskets) {
+            const allSelectedBaskets = [...todayPickupBaskets, ...reservationPickupBaskets];
+            for (const basketId of allSelectedBaskets) {
                 const items = await fetchBasketItems(basketId);
                 basketItems.push(...items); 
             }
             console.log('Fetched Basket Items:', basketItems);
 
-            
             const productDetailsMap = new Map();
             basketItems.forEach(item => {
                 const { itemId, basketId, productId, defaultImage, productName, price, basketQuantity } = item;
@@ -85,7 +78,7 @@ function OrderComponent() {
         } catch (error) {
             console.error('Error fetching product details:', error);
         }
-    }, [selectedBaskets]);
+    }, [selectedTodayPickupBaskets]);
 
     // 상품 세부 정보를 가져오는 함수
     const fetchBasketItems = async (basketId) => {
@@ -110,11 +103,11 @@ function OrderComponent() {
     };
 
     useEffect(() => {
-        if (selectedBaskets.length > 0) {
-            console.log('Selected Baskets:', selectedBaskets);
+        if (todayPickupBaskets.length > 0 || reservationPickupBaskets.length > 0) {
+            console.log('Selected TodayPickupBaskets:', selectedTodayPickupBaskets);
             fetchProductDetailsForBasket();
         }
-    }, [selectedBaskets, fetchProductDetailsForBasket]);
+    }, [todayPickupBaskets, reservationPickupBaskets, fetchProductDetailsForBasket]);
 
     // 쿠폰 목록을 서버에서 가져오는 함수
     const fetchCoupons = async () => {
@@ -157,25 +150,12 @@ function OrderComponent() {
             isCompleted: 'FALSE',
             orderStatus: 'ORDERED',
             orderQuantity: item.basketQuantity,
-            pickupType:'RESERVATION',
+            pickupType: todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION', // 픽업 유형 결정
             price: productDetailsMap.get(item.productId)?.price || 0,
             changeStatus: 'ORDERED',
             changeDate: orderDate.toISOString()
         };
     });
-    const basketDTO = {
-        basketId:null,
-        userId: userId,
-        items: basketItemsList.map(item => ({
-            itemId:null,
-            basketId: item.basketId,
-            productId: item.productId,
-            defaultImage: item.defaultImage,
-            productName: item.productName,
-            price: productDetailsMap.get(item.productId)?.price || 0,
-            basketQuantity: item.basketQuantity
-        }))
-    };
 
       try {
            // 주문 저장 및 주문 내역 저장
@@ -195,7 +175,7 @@ function OrderComponent() {
             console.log('Order and history saved successfully');
 
             
-            // 장바구니와 장바구니 아이템 삭제
+        // 장바구니와 장바구니 아이템 삭제
         const deleteResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
             method: 'DELETE',
             headers: {
@@ -234,6 +214,7 @@ function OrderComponent() {
                             <th>상품 이름</th>
                             <th>가격</th>
                             <th>수량</th>
+                            <th>픽업 유형</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -255,6 +236,7 @@ function OrderComponent() {
                                             {productDetails?.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원
                                         </td>
                                         <td>{item.basketQuantity || 0}</td>
+                                        <td>{todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION'}</td>
                                     </tr>
                                 );
                             })
