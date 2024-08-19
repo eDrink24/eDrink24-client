@@ -120,8 +120,10 @@ function ListToBasketComponent() {
 
         const userId = localStorage.getItem("userId");
 
-        navigate(`/eDrink24/order/${userId}`); // 주문 페이지로 이동
-    }
+
+    navigate(`/eDrink24/order`);
+}
+
 
     // 모든 장바구니 항목 선택/해제하는 함수
     const toggleSelectAll = (e) => {

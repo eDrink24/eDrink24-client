@@ -156,6 +156,7 @@ function OrderComponent() {
             isCompleted: 'FALSE',
             orderStatus: 'ORDERED',
             orderQuantity: item.basketQuantity,
+            pickupType:'RESERVATION',
             price: productDetailsMap.get(item.productId)?.price || 0,
             changeStatus: 'ORDERED',
             changeDate: orderDate.toISOString()
