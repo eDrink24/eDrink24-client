@@ -1,9 +1,9 @@
-import React, { useState } from 'react'; // useState를 react에서 가져옵니다
+import React from 'react'; // useState를 react에서 가져옵니다
 import { useNavigate, useParams } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
-import "./HomeComponent.css";
-import FooterComponent from '../../components/footer/FooterComponent.js';
 import CarouselComponent from '../../components/Banner/CarouselComponent.js';
+import FooterComponent from '../../components/footer/FooterComponent.js';
 import MyplaceComponent from '../../components/mainMyplace/MyplaceComponent.js';
+import "./HomeComponent.css";
 
 function HomeComponent() {
 
@@ -34,7 +34,7 @@ function HomeComponent() {
                 {/* emart24 로고 */}
                 <div className="homePage-emart24Logo-box">
                     <img className="homePage-logo"
-                        src="assets/common/emart24_logo.png" alt="emart24 logo" />
+                        src="assets/common/eDrinkLogo.png" alt="emart24 logo" />
                 </div>
 
                 {/* 벨 아이콘 */}
