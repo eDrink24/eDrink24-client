@@ -9,15 +9,21 @@ import { useNavigate } from 'react-router-dom';
 function OrderComponent() {
     const [basket, setBasket] = useRecoilState(basketState);
     const [orderInfo, setOrderInfo] = useRecoilState(orderState);
+    const [orderResult, setOrderResult] = useState({ coupon: null, paymentMethod: '' }); //pkh
     const [productDetailsMap, setProductDetailsMap] = useState(new Map());
-    const [basketItemsList, setBasketItemsList] = useState([]); 
+    const [basketItemsList, setBasketItemsList] = useState([]);
+    const [coupon, setCoupon] = useState(null); // 선택된 쿠폰 상태
     const [couponList, setCouponList] = useState([]);
     const [loadingCoupons, setLoadingCoupons] = useState(false);
     const [showCouponList, setShowCouponList] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [addedPoint, setAddedPoint] = useState(0); //pkh
+    const [totalPoint, setTotalPoint] = useState(0); //pkh
     const [discount, setDiscount] = useState(0);
     const [finalAmount, setFinalAmount] = useState(0);
-    const {coupon, pointUse, paymentMethod } = orderInfo;
+    const [userPoints, setUserPoints] = useState(0);  // 사용자의 총 포인트
+    const [pointsToUse, setPointsToUse] = useState(0);  // 사용자가 입력한 포인트
+    const { paymentMethod } = orderResult;
     
     const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
     const storeId = localStorage.getItem('currentStoreId');
@@ -27,19 +33,53 @@ function OrderComponent() {
 
     const navigate = useNavigate();
 
-    // 총액 계산 함수
+    console.log()
+
+    // 총액 계산 함수 pkh
     function calculateTotals() {
         const subtotal = Array.from(productDetailsMap.values()).reduce((total, item) => {
             return total + (item.price * item.basketQuantity);
         }, 0);
         const couponDiscount = coupon ? coupon.discountAmount : 0;
-        const pointAmount = pointUse ? subtotal * 0.05 : 0;
+        
+        // 사용자가 입력한 포인트 값을 결제 금액에서 차감 pkh
+        const pointAmount = pointsToUse;
         const finalAmount = subtotal - couponDiscount - pointAmount;
+
+        // finalAmount의 1%를 totalPoint로 설정 pkh
+        const addedPoint = finalAmount * 0.01;
+        const totalPoint = userPoints - pointAmount + addedPoint; 
 
         setTotalPrice(subtotal);
         setDiscount(couponDiscount + pointAmount);
         setFinalAmount(finalAmount);
+        setAddedPoint(addedPoint);
+        setTotalPoint(totalPoint);
     }
+
+    // 포인트 조회 함수 pkh
+    const fetchUserPoints = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8090/eDrink24/showTotalPoint/${userId}`);
+            if (response.status === 200) {
+                setUserPoints(response.data);
+            } else {
+                console.error('Failed to fetch user points. Status:', response.status);
+            }
+        } catch (error) {
+            console.error('Error fetching user points:', error);
+        }
+    };
+
+    // 사용자가 입력한 포인트 적용 함수 pkh
+    const applyPoints = () => {
+        if (pointsToUse > userPoints) {
+            alert('사용할 포인트가 보유 포인트를 초과할 수 없습니다.');
+            setPointsToUse(userPoints);
+        } else {
+            calculateTotals();
+        }
+    };
 
      // 선택된 아이템이 변경될 때 장바구니 업데이트
      useEffect(() => {
@@ -59,11 +99,10 @@ function OrderComponent() {
     // 장바구니와 기타 관련 상태가 변경될 때 총액 계산
     useEffect(() => {
         calculateTotals();
-    }, [basket, coupon, pointUse, calculateTotals]);
+    }, [basket, coupon, pointsToUse, calculateTotals]);
 
     // 상품 세부 정보를 가져오는 함수
     const fetchProductDetailsForBasket = useCallback(async () => {
-        console.log(">>>>>>>>>>>>>2222222", selectedTodayPickupBaskets);
 
         try {
             const basketItems = [];
@@ -91,15 +130,12 @@ function OrderComponent() {
     // 상품 세부 정보를 가져오는 함수
     const fetchBasketItems = async (basketId) => {
         if (!basketId) {
-            console.error('Invalid basketId:', basketId);
             return [];
         }
 
         try {
             const response = await axios.get(`http://localhost:8090/eDrink24/getBasketItems/${basketId}`);
             if (response.status === 200) {
-                console.log(`Basket Items for ${basketId}:`, response.data);
-                console.log("todayPickupBaskets",todayPickupBaskets);
                 return response.data;
             } else {
                 console.error('Failed to fetch basket items. Status:', response.status);
@@ -113,8 +149,6 @@ function OrderComponent() {
 
     useEffect(() => {
         if (todayPickupBaskets.length > 0 || reservationPickupBaskets.length > 0) {
-            console.log('Selected TodayPickupBaskets:', todayPickupBaskets);
-            console.log('Selected ReservationPickupBaskets:', reservationPickupBaskets);
             fetchProductDetailsForBasket();
         }
     }, [todayPickupBaskets, reservationPickupBaskets, fetchProductDetailsForBasket]);
@@ -137,39 +171,55 @@ function OrderComponent() {
         }
     };
 
+    const handleCouponSelection = (couponItem) => {
+        setCoupon(couponItem);
+        console.log("Selected Coupon:", couponItem);
+    };
+
     // 결제 처리 함수
     const handleCheckout = async () => {
-    if (!userId) {
-        alert('User ID is missing.');
-        return;
-    }
-
-    //바로구매버튼 클릭 시 제품 정보와 픽업유형 수정 - giuk-kim2
-    console.log('User ID:', userId);
-    const orderTransactionDTO = basketItemsList.map(item => {
-        const orderDate = new Date();
-        const pickupDate = new Date(orderDate);
-        
-        
-        console.log("set"+orderInfo.DirectPickup);
-        return {
+        if (!userId) {
+            alert('User ID is missing.');
+            return;
+        }
+    
+        console.log('User ID:', userId);
+        const orderTransactionDTO = basketItemsList.map(item => {
+            const orderDate = new Date();
+            const pickupType = (orderInfo.pickupType==="TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION');
+            const pickupDate = new Date(orderDate);
+            const orderAmount = finalAmount;
+            const pointAmount = pointsToUse;
+            const couponId = coupon ? coupon.couponId : null; // 선택된 쿠폰 ID 가져오기
             
-            storeId,
-            userId,
-            basketId: item.basketId,
-            productId: item.productId,
-            orderDate: orderDate.toISOString(),
-            pickupDate: pickupDate.toISOString(),
-            isCompleted: 'FALSE',
-            orderStatus: 'ORDERED',
-            orderQuantity: item.basketQuantity,
-            pickupType: (orderInfo.pickupType==="TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION'), // 픽업 유형 결정
-            price: productDetailsMap.get(item.productId)?.price || 0,
-            changeStatus: 'ORDERED',
-            changeDate: orderDate.toISOString()
-
-        };
-    });
+        
+            if (pickupType === 'TODAY') {
+                pickupDate.setDate(orderDate.getDate() + 1);
+            } else {
+                pickupDate.setDate(orderDate.getDate() + 5);
+            }
+        
+            return {
+                storeId,
+                userId,
+                basketId: item.basketId,
+                productId: item.productId,
+                orderDate: orderDate.toISOString(),
+                pickupDate: pickupDate.toISOString(),
+                isCompleted: 'FALSE',
+                orderStatus: 'ORDERED',
+                orderQuantity: item.basketQuantity,
+                pickupType: pickupType,
+                price: productDetailsMap.get(item.productId)?.price || 0,
+                changeStatus: 'ORDERED',
+                changeDate: orderDate.toISOString(),
+                orderAmount: orderAmount,
+                addedPoint : addedPoint,
+                pointAmount: pointAmount,
+                totalPoint : totalPoint,
+                couponId:couponId
+            };
+        });
 
       try {
            // 주문 저장 및 주문 내역 저장
@@ -271,14 +321,14 @@ function OrderComponent() {
                 <h2>쿠폰/적립 할인</h2>
                 <button onClick={() => {
                     setShowCouponList(prev => {
-                        if (!prev) fetchCoupons(); // 목록이 보이지 않을 때만 쿠폰 목록을 새로 불러옴
+                        if (!prev) fetchCoupons(); // 목록이 보이지 않을 때만 쿠폰 목록을 새로 불러옴 pkh
                         return !prev;
                     });
                 }}>
                     {coupon ? `쿠폰 선택 완료: ${coupon.name} - 할인: ${coupon.discountAmount.toLocaleString()} 원` : "보유 쿠폰 조회하기"}
                 </button>
 
-                {/* 쿠폰 목록 */}
+                {/* 쿠폰 목록  pkh */}
                 {loadingCoupons ? (
                     <p>쿠폰 목록을 불러오는 중입니다...</p>
                 ) : (
@@ -288,7 +338,7 @@ function OrderComponent() {
                                 <ul>
                                     {couponList.map(couponItem => (
                                         <li key={couponItem.couponId}>
-                                            <button onClick={() => setOrderInfo(prev => ({ ...prev, coupon: couponItem }))}>
+                                            <button onClick={() => handleCouponSelection(couponItem)}>
                                                 {couponItem.name} - 할인: {couponItem.discountAmount.toLocaleString()} 원
                                             </button>
                                         </li>
@@ -301,16 +351,21 @@ function OrderComponent() {
                     )
                 )}
 
-                {/* 포인트 사용 여부 */}
+                {/* 포인트 사용 여부  pkh */}
                 <div className="point-use">
-                    <label>
-                        <input 
-                            type="checkbox" 
-                            checked={pointUse} 
-                            onChange={() => setOrderInfo(prev => ({ ...prev, pointUse: !pointUse }))} 
-                        />
-                        포인트 사용하기
-                    </label>
+                    <h2>포인트 사용</h2>
+                    <button onClick={fetchUserPoints}>포인트 조회</button>
+                    {userPoints > 0 && (
+                        <div>
+                            <p>보유 포인트: {userPoints} P</p>
+                            <input 
+                                type="number" 
+                                value={pointsToUse} 
+                                onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))} 
+                            />
+                            <button onClick={applyPoints}>포인트 적용</button>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -319,7 +374,7 @@ function OrderComponent() {
                 <h2>결제 방법 선택</h2>
                 <select 
                     value={paymentMethod} 
-                    onChange={(e) => setOrderInfo(prev => ({ ...prev, paymentMethod: e.target.value }))}>
+                    onChange={(e) => setOrderResult(prev => ({ ...prev, paymentMethod: e.target.value }))}>
                     <option value="">결제 방법을 선택하세요</option>
                     <option value="creditCard">신용카드</option>
                     <option value="paypal">페이팔</option>
