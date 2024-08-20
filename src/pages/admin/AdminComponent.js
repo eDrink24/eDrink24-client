@@ -4,6 +4,7 @@ import ShowOrdersPageComponent from './ShowTodayPickupPageComponent'; // 경로�
 import AdminOrderComponent from './AdminOrderComponent';
 import AdminOrderListComponent from './AdminOrderListComponent';
 import PickupCompletedPageComponent from './TodayPickupCompletedPageComponent';
+import ShowReservationPickupComponent from './ShowReservationPickupComponent';
 
 const AdminComponent = () => {
     const [activeTab, setActiveTab] = useState('즉시픽업 목록');
@@ -21,7 +22,7 @@ const AdminComponent = () => {
             case '발주신청':
                 return <AdminOrderComponent />;
             case '즉시발주신청':
-                return <div>즉시발주신청 컴포넌트</div>;
+                return <ShowReservationPickupComponent />;
             case '발주신청내역':
                 return <AdminOrderListComponent />;
             default:

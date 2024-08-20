@@ -8,52 +8,89 @@ import NaverMapContainer from './NaverMapContainer';
 import { useNavigate } from 'react-router-dom'; 
 
 function OrderComponent() {
-    const [basket, setBasket] = useRecoilState(basketState);
-    const [orderInfo, setOrderInfo] = useRecoilState(orderState);
-    const [productDetailsMap, setProductDetailsMap] = useState(new Map());
-    const [basketItemsList, setBasketItemsList] = useState([]); 
-    const [couponList, setCouponList] = useState([]);
-    const [loadingCoupons, setLoadingCoupons] = useState(false);
-    const [showCouponList, setShowCouponList] = useState(false);
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [discount, setDiscount] = useState(0);
-    const [finalAmount, setFinalAmount] = useState(0);
-    const {coupon, pointUse, paymentMethod } = orderInfo;
+    const [basket, setBasket] = useRecoilState(basketState);//pkh
+    const [orderResult, setOrderResult] = useState({ coupon: null, paymentMethod: '' }); //pkh
+    const [productDetailsMap, setProductDetailsMap] = useState(new Map()); //pkh
+    const [basketItemsList, setBasketItemsList] = useState([]); //pkh
+    const [coupon, setCoupon] = useState(null); // 선택된 쿠폰 상태
+    const [couponList, setCouponList] = useState([]); //pkh
+    const [loadingCoupons, setLoadingCoupons] = useState(false); //pkh
+    const [showCouponList, setShowCouponList] = useState(false); //pkh
+    const [totalPrice, setTotalPrice] = useState(0); //pkh
+    const [addedPoint, setAddedPoint] = useState(0); //pkh
+    const [totalPoint, setTotalPoint] = useState(0); //pkh
+    const [discount, setDiscount] = useState(0); //pkh
+    const [finalAmount, setFinalAmount] = useState(0); //pkh
+    const [userPoints, setUserPoints] = useState(0);  // 사용자의 총 포인트
+    const [pointsToUse, setPointsToUse] = useState(0);  // 사용자가 입력한 포인트
+    const {paymentMethod } = orderResult;
     
     const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
-    const storeId = localStorage.getItem('currentStoreId');
+    const storeId = localStorage.getItem('currentStoreId'); //pkh
 
-    const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
-    const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
+    const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets); //pkh
+    const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets); //pkh
 
-    const navigate = useNavigate();    
+    const navigate = useNavigate(); //pkh   
 
-    // 총액 계산 함수
+    // 총액 계산 함수 pkh
     function calculateTotals() {
         const subtotal = Array.from(productDetailsMap.values()).reduce((total, item) => {
             return total + (item.price * item.basketQuantity);
         }, 0);
         const couponDiscount = coupon ? coupon.discountAmount : 0;
-        const pointAmount = pointUse ? subtotal * 0.05 : 0;
+        
+        // 사용자가 입력한 포인트 값을 결제 금액에서 차감 pkh
+        const pointAmount = pointsToUse;
         const finalAmount = subtotal - couponDiscount - pointAmount;
+
+        // finalAmount의 1%를 totalPoint로 설정 pkh
+        const addedPoint = finalAmount * 0.01;
+        const totalPoint = userPoints - pointAmount + addedPoint; 
 
         setTotalPrice(subtotal);
         setDiscount(couponDiscount + pointAmount);
         setFinalAmount(finalAmount);
+        setAddedPoint(addedPoint);
+        setTotalPoint(totalPoint);
     }
 
-     // 선택된 아이템이 변경될 때 장바구니 업데이트
+    // 포인트 조회 함수 pkh
+    const fetchUserPoints = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8090/eDrink24/showTotalPoint/${userId}`);
+            if (response.status === 200) {
+                setUserPoints(response.data);
+            } else {
+                console.error('Failed to fetch user points. Status:', response.status);
+            }
+        } catch (error) {
+            console.error('Error fetching user points:', error);
+        }
+    };
+
+    // 사용자가 입력한 포인트 적용 함수 pkh
+    const applyPoints = () => {
+        if (pointsToUse > userPoints) {
+            alert('사용할 포인트가 보유 포인트를 초과할 수 없습니다.');
+            setPointsToUse(userPoints);
+        } else {
+            calculateTotals();
+        }
+    };
+
+     // 선택된 아이템이 변경될 때 장바구니 업데이트 pkh
      useEffect(() => {
         const allSelectedBaskets = [...todayPickupBaskets, ...reservationPickupBaskets];
         setBasket(allSelectedBaskets);
     }, [todayPickupBaskets, reservationPickupBaskets, setBasket]);
 
-    // 장바구니와 기타 관련 상태가 변경될 때 총액 계산
+    // 장바구니와 기타 관련 상태가 변경될 때 총액 계산 pkh 
     useEffect(() => {
         calculateTotals();
-    }, [basket, coupon, pointUse, calculateTotals]);
+    }, [basket, coupon, pointsToUse, calculateTotals]);
 
-    // 상품 세부 정보를 가져오는 함수
+    // 상품 세부 정보를 가져오는 함수 pkh
     const fetchProductDetailsForBasket = useCallback(async () => {
         console.log(">>>>>>>>>>>>>2222222", selectedTodayPickupBaskets);
 
@@ -80,7 +117,7 @@ function OrderComponent() {
         }
     }, [selectedTodayPickupBaskets]);
 
-    // 상품 세부 정보를 가져오는 함수
+    // 상품 세부 정보를 가져오는 함수 pkh
     const fetchBasketItems = async (basketId) => {
         if (!basketId) {
             console.error('Invalid basketId:', basketId);
@@ -109,7 +146,7 @@ function OrderComponent() {
         }
     }, [todayPickupBaskets, reservationPickupBaskets, fetchProductDetailsForBasket]);
 
-    // 쿠폰 목록을 서버에서 가져오는 함수
+    // 쿠폰 목록을 서버에서 가져오는 함수 pkh
     const fetchCoupons = async () => {
         setLoadingCoupons(true);
         try {
@@ -125,9 +162,16 @@ function OrderComponent() {
         } finally {
             setLoadingCoupons(false);
         }
+        console.log("coupon:", couponList);
+        console.log("orderResult", orderResult);
     };
 
-    // 결제 처리 함수
+    const handleCouponSelection = (couponItem) => {
+        setCoupon(couponItem);
+        console.log("Selected Coupon:", couponItem);
+    };
+
+    // 결제 처리 함수 pkh
     const handleCheckout = async () => {
     if (!userId) {
         alert('User ID is missing.');
@@ -137,8 +181,18 @@ function OrderComponent() {
     console.log('User ID:', userId);
     const orderTransactionDTO = basketItemsList.map(item => {
         const orderDate = new Date();
+        const pickupType = todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION';
         const pickupDate = new Date(orderDate);
-        pickupDate.setDate(orderDate.getDate() + 2);
+        const orderAmount = finalAmount;
+        const pointAmount = pointsToUse;
+        const couponId = coupon ? coupon.couponId : null; // 선택된 쿠폰 ID 가져오기
+        
+    
+        if (pickupType === 'TODAY') {
+            pickupDate.setDate(orderDate.getDate() + 1);
+        } else {
+            pickupDate.setDate(orderDate.getDate() + 5);
+        }
     
         return {
             storeId,
@@ -150,15 +204,20 @@ function OrderComponent() {
             isCompleted: 'FALSE',
             orderStatus: 'ORDERED',
             orderQuantity: item.basketQuantity,
-            pickupType: todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION', // 픽업 유형 결정
+            pickupType: pickupType,
             price: productDetailsMap.get(item.productId)?.price || 0,
             changeStatus: 'ORDERED',
-            changeDate: orderDate.toISOString()
+            changeDate: orderDate.toISOString(),
+            orderAmount: orderAmount,
+            addedPoint : addedPoint,
+            pointAmount: pointAmount,
+            totalPoint : totalPoint,
+            couponId:couponId
         };
     });
 
       try {
-           // 주문 저장 및 주문 내역 저장
+           // 주문 저장 및 주문 내역 저장 pkh
            const orderResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/buyProductAndSaveHistory`, {
                 method: 'POST',
                 headers: {
@@ -175,7 +234,7 @@ function OrderComponent() {
             console.log('Order and history saved successfully');
 
             
-        // 장바구니와 장바구니 아이템 삭제
+        // 장바구니와 장바구니 아이템 삭제 pkh
         const deleteResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
             method: 'DELETE',
             headers: {
@@ -184,7 +243,7 @@ function OrderComponent() {
             body: JSON.stringify(orderTransactionDTO),
         });
 
-        console.log(orderTransactionDTO);
+        console.log("AAAAAA", orderTransactionDTO);
     
         if (deleteResponse.ok) {
             console.log('Basket and items deleted successfully');
@@ -253,14 +312,14 @@ function OrderComponent() {
                 <h2>쿠폰/적립 할인</h2>
                 <button onClick={() => {
                     setShowCouponList(prev => {
-                        if (!prev) fetchCoupons(); // 목록이 보이지 않을 때만 쿠폰 목록을 새로 불러옴
+                        if (!prev) fetchCoupons(); // 목록이 보이지 않을 때만 쿠폰 목록을 새로 불러옴 pkh
                         return !prev;
                     });
                 }}>
                     {coupon ? `쿠폰 선택 완료: ${coupon.name} - 할인: ${coupon.discountAmount.toLocaleString()} 원` : "보유 쿠폰 조회하기"}
                 </button>
 
-                {/* 쿠폰 목록 */}
+                {/* 쿠폰 목록  pkh */}
                 {loadingCoupons ? (
                     <p>쿠폰 목록을 불러오는 중입니다...</p>
                 ) : (
@@ -270,7 +329,7 @@ function OrderComponent() {
                                 <ul>
                                     {couponList.map(couponItem => (
                                         <li key={couponItem.couponId}>
-                                            <button onClick={() => setOrderInfo(prev => ({ ...prev, coupon: couponItem }))}>
+                                            <button onClick={() => handleCouponSelection(couponItem)}>
                                                 {couponItem.name} - 할인: {couponItem.discountAmount.toLocaleString()} 원
                                             </button>
                                         </li>
@@ -283,25 +342,30 @@ function OrderComponent() {
                     )
                 )}
 
-                {/* 포인트 사용 여부 */}
+                {/* 포인트 사용 여부  pkh */}
                 <div className="point-use">
-                    <label>
-                        <input 
-                            type="checkbox" 
-                            checked={pointUse} 
-                            onChange={() => setOrderInfo(prev => ({ ...prev, pointUse: !pointUse }))} 
-                        />
-                        포인트 사용하기
-                    </label>
+                    <h2>포인트 사용</h2>
+                    <button onClick={fetchUserPoints}>포인트 조회</button>
+                    {userPoints > 0 && (
+                        <div>
+                            <p>보유 포인트: {userPoints} P</p>
+                            <input 
+                                type="number" 
+                                value={pointsToUse} 
+                                onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))} 
+                            />
+                            <button onClick={applyPoints}>포인트 적용</button>
+                        </div>
+                    )}
                 </div>
             </div>
 
-            {/* 결제 방법 선택 */}
+            {/* 결제 방법 선택  pkh */}
             <div className="payment-section">
                 <h2>결제 방법 선택</h2>
                 <select 
                     value={paymentMethod} 
-                    onChange={(e) => setOrderInfo(prev => ({ ...prev, paymentMethod: e.target.value }))}>
+                    onChange={(e) => setOrderResult(prev => ({ ...prev, paymentMethod: e.target.value }))}>
                     <option value="">결제 방법을 선택하세요</option>
                     <option value="creditCard">신용카드</option>
                     <option value="paypal">페이팔</option>
@@ -309,7 +373,7 @@ function OrderComponent() {
                 </select>
             </div>
 
-            {/* 주문 총액 */}
+            {/* 주문 총액  pkh */}
             <div className="total-section">
                 <h2>주문 총액</h2>
                 <div>총 상품금액: {totalPrice.toLocaleString()} 원</div>
@@ -317,7 +381,7 @@ function OrderComponent() {
                 <div>총 결제금액: {finalAmount.toLocaleString()} 원</div>
             </div>
 
-            {/* 결제 버튼 */}
+            {/* 결제 버튼  pkh */}
             <button className="checkout-button" onClick={handleCheckout}>
                 결제하기
             </button>
