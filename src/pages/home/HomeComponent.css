@@ -36,9 +36,8 @@
   .homePage-emart24Logo-box,
   .homePage-emart24Logo-box img {
     display: flex;
-    width: 98px;
-    height: 40px;
-    margin-left: 5px;
+    width: auto;
+    height: 32px;
   }
 
   .homePage-bell {

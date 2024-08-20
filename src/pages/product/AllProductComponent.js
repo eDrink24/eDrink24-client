@@ -1,22 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import './AllProductComponent.css';
-import FooterComponent from '../../components/footer/FooterComponent.js';
 import { useNavigate, useParams } from 'react-router-dom';
+import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
+import FooterComponent from '../../components/footer/FooterComponent.js';
+import './AllProductComponent.css';
 
 const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
 
+// LikeButton 컴포넌트 정의
+const LikeButton = ({ onClick }) => {
+    const handleClick = (event) => {
+        event.stopPropagation();
+        onClick();
+    };
+
+    return (
+        <button className="allproduct-like-button" onClick={handleClick}>
+            ♥
+        </button>
+    );
+};
+
+// ReviewButton 컴포넌트 정의
+const ReviewButton = ({ onClick }) => {
+    const handleClick = (event) => {
+        event.stopPropagation();
+        onClick();
+    };
+
+    return (
+        <button className="allproduct-review-button" onClick={handleClick}>
+            ★
+        </button>
+    );
+};
+
+// handleLikeClick 함수 정의
+const handleLikeClick = (productId) => {
+    // 좋아요 클릭 시 발생할 동작을 처리합니다.
+    console.log(`Liked product with ID: ${productId}`);
+};
+
 const AllProductComponent = () => {
-    const { category1 } = useParams();
+    const { category1, productId } = useParams();  // productId도 useParams로 가져옴
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('와인');
     const navigate = useNavigate();
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [quantity] = useState(1);
+    const [product, setProduct] = useState(null);  // 선택된 product를 저장
 
     useEffect(() => {
-        if (category1)
+        if (category1) {
             selectCategory1(selectedCategory);
-    }, [selectedCategory]);
+        }
+    }, [selectedCategory, category1]);
 
-    //카테고리1에 따른 전체제품 보여주기
     const selectCategory1 = async (category1) => {
         try {
             const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory1/${category1}`, {
@@ -29,12 +67,17 @@ const AllProductComponent = () => {
 
             const resData = await response.json();
             setProducts(resData);
+
+            // productId가 있는 경우 해당 제품을 product 상태로 설정
+            if (productId) {
+                const foundProduct = resData.find(prod => prod.productId === parseInt(productId));
+                setProduct(foundProduct || null);
+            }
         } catch (error) {
             console.error('Error fetching products:', error);
         }
     };
 
-    //사이드바 선택한거에 따라서 제품 보여주기
     const handleSortEvent = (e) => {
         const sortOption = e.target.value;
         let sortedProduct = [...products];
@@ -60,15 +103,12 @@ const AllProductComponent = () => {
         navigate(`/eDrink24`);
     }
 
-    //제품사진 클릭했을 때 제품상세보기
     const handleProductClickEvent = (productId) => {
-        // products 배열에서 클릭된 제품을 찾음
-        const clickedProduct = products.find(product => product.productId === productId); //find메소드는 배열을 순회하며, 제공된 조건에 맞는 첫번째 요소 반환
-        //여기서는 product.productId === productId 조건을 사용하여 클릭된 제품의 ID와 일치하는 제품을 찾음
-        //클릭된 제품이 존재할 경우, 해당 제품의 category2 값을 얻음
+        const clickedProduct = products.find(product => product.productId === productId);
         if (clickedProduct) {
+            setProduct(clickedProduct);  // 클릭된 제품을 product 상태로 설정
             const category2 = clickedProduct.category2;
-            navigate(`/eDrink24/allproduct/${selectedCategory}/${category2}/${productId}`); //${selectedCategory}=${category1}
+            navigate(`/eDrink24/allproduct/${selectedCategory}/${category2}/${productId}`);
         } else {
             console.error('제품을 찾지 못했습니다.');
         }
@@ -103,29 +143,99 @@ const AllProductComponent = () => {
         fetchInvByStoreId();
     }, [currentStoreId]);
 
-    // "오늘픽업" 필터 적용
     const filterTodayPu = showTodayPu
         ? products.filter(product =>
             invToStore.some(inv => inv.productId === product.productId && inv.quantity > 0))
         : products;
 
+    // CartButton 컴포넌트 수정
+    const CartButton = ({ onClick, productId }) => {
+        const handleClick = (event) => {
+            event.stopPropagation();
+            onClick(productId);  // 클릭된 제품의 productId를 넘김
+        };
+
+        return (
+            <button onClick={handleClick} className="productDetailComponent-go-cart">
+                장바구니
+            </button>
+        );
+    };
+
+    // saveInBasket 함수 수정
+    const saveInBasket = async (productId) => {
+        const productToSave = products.find(prod => prod.productId === productId);
+
+        if (!productToSave) {
+            console.error('No product found');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8090/eDrink24/saveProductToBasket`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: localStorage.getItem("userId"),
+                    items: [{
+                        productId: productToSave.productId,
+                        defaultImage: productToSave.defaultImage,
+                        productName: productToSave.productName,
+                        price: productToSave.price,
+                        basketQuantity: quantity
+                    }]
+                })
+            });
+
+            if (response.ok) {
+                setModalIsOpen(true);
+            } else {
+                throw new Error('Failed to save product to basket');
+            }
+
+            console.log("Product saved to basket:", productToSave);
+
+        } catch (error) {
+            console.error('Error saving product to basket:', error);
+        }
+    };
+
+    const goToBasketPage = () => {
+        setModalIsOpen(false);
+        navigate('/eDrink24/basket');
+    };
+
+    const stayOnPage = () => {
+        setModalIsOpen(false);
+        navigate(`/eDrink24/allproduct/${category1}`);
+    };
+
     return (
         <div className="allproduct-container">
-            <div className="allproduct-home-header"> {/* 상단 네비게이션 바 */}
-                <div className="allproduct-navigation-bar">
-                    <button className="allproduct-back-button" onClick={returnHome}>
-                        <img src="assets/common/backIcon.png" alt="Back" className="allproduct-nav-bicon" /> {/* 뒤로 가기 아이콘 */}
-                    </button>
-                    <div className="allproduct-logo-box">
-                        <img src="assets/common/emart24_logo.png" alt="eMart24" className="allproduct-nav-logo" /> {/* 로고 이미지 */}
-                    </div>
-                    <button className="allproduct-cart-button">
-                        <img src="assets/common/cartIcon.png" alt="Cart" className="allproduct-nav-cicon" onClick={() => { navigate('/eDrink24/basket') }} /> {/* 장바구니로 가기 아이콘 */}
-                    </button>
-                </div>
+
+            {/* 상단 네비게이션 바 */}
+            <div className="allproduct-nav-bar">
+                {/* 뒤로가기 아이콘 */}
+                <button className="allproduct-back-button" onClick={() => { navigate(-1) }}>
+                    <img className="allproduct-back-icon" src="assets/common/backIcon.png" alt=" " />
+                </button>
+
+                {/* 로고 이미지 */}
+                <img className="allproduct-logo" src="assets/common/eDrinkLogo.png" alt=" " />
+
+                {/* 장바구니 아이콘 */}
+                <button className="allproduct-bag-button"  onClick={() => { navigate('/eDrink24/basket') }}>
+                    <img className="allproduct-bag-icon" src="assets/common/bag.png" alt=" " />
+                </button>
             </div>
-            <div className="allproduct-body">
-                {/* 카테고리 바*/}
+
+
+            {/* 서브 네비게이션 바 */}
+            <div className="allproduct-sub-nav">
+                {/* 카테고리 필터 */}
+                <div className="cc">
                 <div className="allproduct-filter-bar">
                     {categoryList.map((category1, idx) => (
                         <button
@@ -137,10 +247,18 @@ const AllProductComponent = () => {
                         </button>
                     ))}
                 </div>
-                {/* 오늘픽업 체크박스 / 인기순,신상품,등등 */}
-                <div className="allproduct-click-container">
+                    
+                {/* 필터 아이콘 */}
+                <button className="allproduct-filter-button2">
+                    <img className="allproduct-filter-icon" src="assets/common/filter.png" alt=" " />
+                </button>
+                </div>
 
-                    <div className="allproduct-container1">
+                <div className='line2'></div>
+
+                {/* 체크 박스 / 드롭다운 박스 */}
+                <div className="allproduct-click-bar">
+                    <div className="allproduct-check-box">
                         <input
                             id="today-pickup"
                             type="checkbox"
@@ -150,7 +268,7 @@ const AllProductComponent = () => {
                         <label htmlFor="today-pickup">오늘픽업</label>
                     </div>
 
-                    <div className="allproduct-container2">
+                    <div className="allproduct-dropdown-box">
                         <select onChange={handleSortEvent}>
                             <option value="신상품순">신상품순</option>
                             <option value="판매량순">판매량순</option>
@@ -163,25 +281,48 @@ const AllProductComponent = () => {
                 </div>
             </div>
 
+
+<div className="aa">
             {filterTodayPu.map(product => (
-                <div className="allproduct-product-card" key={product.productId} onClick={() => handleProductClickEvent(product.productId)}>
+                <div
+                    className="allproduct-product-card"
+                    key={product.productId}
+                    onClick={() => handleProductClickEvent(product.productId)}
+                >
+                <div className="allproduct-product-card-img">
                     <img src={product.defaultImage} alt={product.productName} className="allproduct-product-defaultImage" />
+                </div>
 
                     <div className="allproduct-product-info">
-                        <div className="allproduct-product-rating">
-                            <span className="allproduct-star">★</span>
-                        </div>
                         <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
                         <div className="allproduct-product-name">{product.productName}</div>
                         <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
+
+                        {/* 장바구니 버튼을 CartButton 컴포넌트로 변경 */}
+                        <CartButton onClick={saveInBasket} productId={product.productId} />
+                        <LikeButton onClick={() => handleLikeClick(product.productId)} />
+                        <ReviewButton
+                            onClick={() => console.log(`Reviewed product with ID: ${product.productId}`)}
+                        />
+
+                        {/* 오늘픽업 아이콘 ==> 오늘픽업 체크박스 클릭하면 뜬다. */}
                         {invToStore.some(inv =>
                             inv.productId === product.productId && inv.quantity > 0) && (
                                 <div className="allproduct-product-tag">오늘픽업</div>
                             )}
                     </div>
                 </div>
-
             ))}
+
+</div>
+
+            <AlertModalOfClickBasketButton
+                isOpen={modalIsOpen}
+                onRequestClose={() => setModalIsOpen(false)}
+                message="장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?"
+                navigateOnYes={goToBasketPage}
+                navigateOnNo={stayOnPage}
+            />
 
             <FooterComponent />
         </div>
@@ -189,8 +330,3 @@ const AllProductComponent = () => {
 }
 
 export default AllProductComponent;
-
-/* 
-    1. inventory에 로컬스토리지의 동일한 storeId를 가진 제품목록을 싸그리가져오기
-    2. 가져온거에서 일차하는 productId가 있으면? "오늘픽업" : "" 
-*/ 
