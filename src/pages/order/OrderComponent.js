@@ -186,6 +186,7 @@ function OrderComponent() {
         console.log('User ID:', userId);
         const orderTransactionDTO = basketItemsList.map(item => {
             const orderDate = new Date();
+            orderDate.setHours(orderDate.getHours() + 9); // UTC 기준시간이라서 한국 표준시로 바꿔줄려면 9시간 더해줘야함.
             const pickupType = (orderInfo.pickupType==="TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION');
             const pickupDate = new Date(orderDate);
             const orderAmount = finalAmount;
