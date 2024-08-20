@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './AdminComponent.css';
-import ShowOrdersPageComponent from './ShowTodayPickupPageComponent'; // 경로를 실제 경로로 수정
 import AdminOrderComponent from './AdminOrderComponent';
 import AdminOrderListComponent from './AdminOrderListComponent';
+import ShowReservationPickupComponent from './ShowReservationPickupComponent';
+import ShowOrdersPageComponent from './ShowTodayPickupPageComponent'; // 경로를 실제 경로로 수정
 import PickupCompletedPageComponent from './TodayPickupCompletedPageComponent';
 
 const AdminComponent = () => {
@@ -21,7 +22,7 @@ const AdminComponent = () => {
             case '발주신청':
                 return <AdminOrderComponent />;
             case '즉시발주신청':
-                return <div>즉시발주신청 컴포넌트</div>;
+                return <ShowReservationPickupComponent />;
             case '발주신청내역':
                 return <AdminOrderListComponent />;
             default:

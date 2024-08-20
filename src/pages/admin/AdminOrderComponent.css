@@ -1,4 +1,4 @@
-.allproduct-container {
+.adminorder-allproduct-container {
     display: flex;
     flex-direction: column; /* 세로 방향으로 배치 */
     align-items: center; /* 가운데 정렬 */
@@ -12,7 +12,7 @@
     margin: 0 auto;
 }
 
-.allproduct-home-header {
+.adminorder-allproduct-home-header {
     height: 102px;
     width:100%;
     display: flex;
@@ -20,7 +20,7 @@
     box-sizing: border-box;
 }
 
-.allproduct-navigation-bar {
+.adminorder-allproduct-navigation-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -29,46 +29,46 @@
     box-sizing: border-box;
 }
 
-.allproduct-back-button {
+.adminorder-allproduct-back-button {
     background: none;
     border: none;
     width: 58px;
     height: 58px;
 }
 
-.allproduct-navigation-bar .allproduct-nav-bicon {
+.adminorder-allproduct-navigation-bar .adminorder-allproduct-nav-bicon {
     width: 24px; /* 아이콘 버튼의 너비 */
     height: 24px; /* 아이콘 버튼의 높이 */
     margin: 0;
 }
 
-.allproduct-cart-button {
+.adminorder-allproduct-cart-button {
     background: none;
     border: none;
     width: 58px;
     height: 58px;
 }
 
-.allproduct-navigation-bar .allproduct-nav-cicon {
+.adminorder-allproduct-navigation-bar .adminorder-allproduct-nav-cicon {
     width: 24px; /* 아이콘 버튼의 너비 */
     height: 24px; /* 아이콘 버튼의 높이 */
     margin: 0;
 }
 
-.allproduct-logo-box {
+.adminorder-allproduct-logo-box {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-grow: 1;
 }
 
-.allproduct-navigation-bar .allproduct-nav-logo {
+.adminorder-allproduct-navigation-bar .adminorder-allproduct-nav-logo {
     width: 98px;
     height: 40px;
     margin: 0;
 }
 
-.allproduct-filter-bar {
+.adminorder-allproduct-filter-bar {
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -79,7 +79,7 @@
     padding: 0;
 }
 
-.allproduct-filter-button {
+.adminorder-allproduct-filter-button {
     border: none;
     background: none;
     padding: 8px 12px;
@@ -89,44 +89,44 @@
     cursor: pointer;
 }
 
-.allproduct-filter-button.selected { 
+.adminorder-allproduct-filter-button.selected { 
     background-color: #000000; /* 선택된 버튼의 배경색 */
     color: #ffffff; /* 선택된 버튼의 텍스트 색상 */
 }
 
-.allproduct-click-container {
+.adminorder-allproduct-click-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
     padding: 0 20px;
 }
 
-.allproduct-container1,
-.allproduct-container2 {
+.adminorder-allproduct-container1,
+.adminorder-allproduct-container2 {
     display: flex;
     align-items: center;
 }
 
-.allproduct-container1 {
+.adminorder-allproduct-container1 {
     width: auto;
 }
 
-.allproduct-container2 {
+.adminorder-allproduct-container2 {
     width: auto;
     justify-content: flex-end;
 }
 
-.allproduct-container1 input {
+.adminorder-allproduct-container1 input {
     width: 24px;
     height: 24px;
 }
 
-.allproduct-container1 label {
+.adminorder-allproduct-container1 label {
     margin: 0;
     padding-left: 8px;
 }
 
-.allproduct-product-card-container {
+.adminorder-allproduct-product-card-container {
     display: flex;
     flex-wrap: wrap; /* 카드가 화면에 맞춰서 줄 바꿈 */
     justify-content: space-around; /* 카드 사이에 여백을 배분 */
@@ -134,7 +134,7 @@
     padding: 10px;
 }
 
-.allproduct-product-card {
+.adminorder-allproduct-product-card {
     width: calc(50% - 20px); /* 두 카드가 한 줄에 배치되도록 너비 설정 */
     margin: 10px; /* 카드 간의 여백 */
     border: none;
@@ -142,34 +142,34 @@
     background-color: #ffffff;
 }
 
-.allproduct-product-defaultImage {
+.adminorder-allproduct-product-defaultImage {
     width: 100%;
     height: auto;
 }
 
-.allproduct-product-info {
+.adminorder-allproduct-product-info {
     padding: 10px;
     text-align: center;
 }
 
-.allproduct-product-rating {
+.adminorder-allproduct-product-rating {
     font-size: 14px;
     color: #ffc107;
 }
 
-.allproduct-product-name {
+.adminorder-allproduct-product-name {
     font-size: 16px;
     margin: 10px 0;
     color: #333;
 }
 
-.allproduct-product-price {
+.adminorder-allproduct-product-price {
     font-size: 16px;
     font-weight: bold;
     color: #000;
 }
 
-.allproduct-product-tag {
+.adminorder-allproduct-product-tag {
     display: inline-block;
     margin-top: 10px;
     padding: 5px 10px;
@@ -179,7 +179,7 @@
     font-size: 12px;
 }
 
-.quantity-modal {
+.adminorder-quantity-modal {
     position: fixed;
     top: 50%;
     left: 50%;
