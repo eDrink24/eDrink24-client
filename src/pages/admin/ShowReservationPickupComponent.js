@@ -154,7 +154,7 @@ const ShowReservationPickupComponent = () => {
 
     return (
         <div className="adminReservation-container">
-            <h1 className="adminReservation-title">픽업주문 목록</h1>
+            <h1 className="adminReservation-title">발주신청 목록</h1>
             <div className="order-list">
                 <label className="adminReservation-all">
                     <input
