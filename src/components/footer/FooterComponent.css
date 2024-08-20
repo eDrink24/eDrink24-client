@@ -24,13 +24,13 @@
     box-sizing: border-box; /* 패딩과 보더를 포함한 박스 크기 계산 */
 }
 
-.homePage-fix-nav-box button {
+.homePage-fix-nav-box .homeIcon,.searchIcon,.listIcon,.myIcon {
     border: 0;
     background: none;
     cursor: pointer;
 }
 
-.homePage-fix-nav-box img {
+.homePage-fix-nav-box .home-icon,.search-icon,.list-icon,.my-icon{
     width: 24px;
     height: 24px;
 }

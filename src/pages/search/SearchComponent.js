@@ -1,74 +1,168 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import "./SearchComponent.css";
+import FooterComponent from '../../components/footer/FooterComponent.js';
+import AlertModal from '../../components/alert/AlertModal.js';
 
 function SearchComponent() {
     const navigate = useNavigate();
-    const valueRef = useRef(null);
-    const [filteredData, setFilteredData] = useState([]); // 필터링된 데이터를 저장할 상태
-    const [dbData, setDbData] = useState([]); // 서버에서 가져온 전체 데이터를 저장할 상태
+    const [keyword, setKeyword] = useState(''); // 검색어
+    const [products, setProducts] = useState([]);
 
-    // 전체 제품 목록을 가져오는 함수
-    const fetchAllProducts = async () => {
+    const fetchSearch = async () => {
+        const trimKeyword = keyword.trim();
+
+        if (!trimKeyword || trimKeyword.length < 2) {
+            setAlertMessage("2글자 이상 입력해주세요.")
+            openAlert(true);
+            return;
+        }
+
         try {
-            const response = await axios.get("http://localhost:8090/eDrink24/showAllProduct"); // 전체 제품 목록을 가져오는 API 호출
-            setDbData(response.data);
+            const response = await fetch(`http://localhost:8090/eDrink24/api/search/${encodeURIComponent(trimKeyword)}`, {
+                method: "GET"
+            });
+
+            if (!response.ok) {
+                setAlertMessage("서버통신 오류");
+                openAlert(true);
+                return;
+            }
+
+            const resData = await response.json();
+            setProducts(resData);
         } catch (error) {
-            console.error('Error fetching data:', error);
+            setAlertMessage("서버통신 오류");
+            openAlert(true);
+        }
+    }
+
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+
+    const openAlert = () => {
+        setAlertOpen(true);
+    }
+
+    const closeAlert = () => {
+        setAlertOpen(false);
+    }
+
+    // 제품사진 클릭했을 때 제품상세보기
+    const handleProductClickEvent = (productId) => {
+        const product = products.find(product => product.productId === productId);
+
+        if (product) {
+            const { category1, category2 } = product;
+            console.log("product", product);
+            console.log("category1:", category1);
+            console.log("category2:", category2);
+            navigate(`/eDrink24/allproduct/${category1}/${category2}/${productId}`);
+        } else {
+            console.error("Product not found");
         }
     };
 
+    // 오늘픽업 필터링
+    const currentStoreId = localStorage.getItem("currentStoreId");
+    const [invToStore, setInvToStore] = useState([]);
+    const [showTodayPu, setShowTodayPu] = useState(false);
+
     useEffect(() => {
-        fetchAllProducts(); // 컴포넌트 마운트 시 전체 제품 목록을 가져옴
-    }, []);
+        const fetchInvByStoreId = async () => {
+            if (currentStoreId) {
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-        const value = valueRef.current.value;
+                try {
+                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`,
+                        { method: 'GET' }
+                    );
+                    if (response.ok) {
+                        const invData = await response.json();
+                        setInvToStore(invData);
+                    } else {
+                        console.error(`Error: ${response.status} - ${response.statusText}`)
+                    }
 
-        // 검색어로 데이터를 필터링합니다.
-        const filtered = dbData.filter((el) => 
-            (el.name && el.name.toLowerCase().includes(value.toLowerCase())) ||   // 제품 이름에서 검색
-            (el.product && el.product.toLowerCase().includes(value.toLowerCase())) ||  // 카테고리1에서 검색
-            (el.category2 && el.category2.toLowerCase().includes(value.toLowerCase()))   // 카테고리2에서 검색
-        );
-        setFilteredData(filtered);
-    };
+                } catch (error) {
+                    console.error(error);
+                } // try-catch
+
+            } else {
+                console.error('Not found in localStorage');
+            } // if-else
+        }
+        fetchInvByStoreId();
+    }, [currentStoreId]);
+
+    // "오늘픽업" 필터 적용
+    const filterTodayPu = showTodayPu ? products.filter(product =>
+        invToStore.some(inv => inv.productId === product.productId && inv.quantity > 0))
+        : products;
 
     return (
         <div className="search-container">
-            <div className="search-header"> {/* 상단 네비게이션 바 */}
+            <div className="search-header">
                 <div className="search-navigation-bar">
-                    <div>
-                        <button className="search-back-button" onClick={() => { navigate(-1) }}>
-                            <img src="assets/common/backIcon.png" alt="Back" className="search-nav-bicon" /> {/* 뒤로 가기 아이콘 */}
-                        </button>
-                    </div>
-                    <form className="search-container" onSubmit={submitHandler}>
-                        <input type="text" ref={valueRef} placeholder="Search products..." /> {/* 입력 필드에 useRef 연결 */}
-                        <button type="submit">검색</button>
-                    </form>
+                    <button className="search-back-button" onClick={() => { navigate(-1) }}>
+                        <img src="assets/common/backIcon.png" alt="Back" className="search-nav-bicon" />
+                    </button>
+
+                    <input type="text" className="search-input"
+                        placeholder="  키워드를 입력해주세요."
+                        value={keyword}
+                        onChange={(event) => setKeyword(event.target.value)}
+                    />
+
+                    <button type="submit"
+                        className="search-keyword-button"
+                        onClick={fetchSearch}
+                    >
+                        검색
+                    </button>
                 </div>
             </div>
 
-            <div className="search-main-content">
-                {filteredData.length > 0 ? (
-                    <ul>
-                        {filteredData.map((product, index) => (  // index를 map 함수의 두 번째 매개변수로 받아옴
-                            <li key={product.id || index}>  {/* key prop에 고유한 product.id 사용, 없으면 index 사용 */}
-                                <img src={product.defaultImage} alt={product.productName} className="allproduct-product-defaultImage" />
-                                <h3>{product.name}</h3>
-                                <p>item name: {product.productName}</p>
-                                <p>Category1: {product.category1}</p>
-                                <p>Price: {product.price}</p>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>검색하신 상품을 찾을 수 없습니다.</p>
-                )}
+            <div className="search-body">
+                <div className="search-pickup-container">
+                    <input
+                        id="today-pickup"
+                        type="checkbox"
+                        checked={showTodayPu}
+                        onChange={(e) => setShowTodayPu(e.target.checked)}
+                    />
+                    <label htmlFor="today-pickup">오늘픽업</label>
+                </div>
+                <div className="search-product-grid">
+                    {filterTodayPu.map(product => (
+                        <div className="search-product-card" key={product.productId} onClick={() => handleProductClickEvent(product.productId)}>
+                            <img src={product.defaultImage} alt={product.productName} className="search-product-defaultImage" />
+
+                            <div className="search-product-info">
+                                <div className="search-product-rating">
+                                    <span className="search-star">★</span>
+                                </div>
+                                <div className="search-product-enrollDate">{product.enrollDate}</div>
+                                <div className="search-product-name">{product.productName}</div>
+                                <div className="search-product-price">{Number(product.price).toLocaleString()} 원</div>
+
+                                {invToStore.some(inv =>
+                                    inv.productId === product.productId && inv.quantity > 0) && (
+                                        <div className="search-product-tag">오늘픽업</div>
+                                    )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
+
+            <FooterComponent />
+
+            <AlertModal
+                isOpen={alertOpen}
+                onRequestClose={closeAlert}
+                message={alertMessage}
+            />
+
         </div>
     );
 }
