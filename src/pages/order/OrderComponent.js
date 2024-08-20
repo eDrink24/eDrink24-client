@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { basketState, selectedTodayPickupBaskets, selectedReservationPickupBaskets } from '../basket/BasketAtom.js';
 import { orderState } from './OrderAtom.js';
-import NaverMapContainer from './NaverMapContainer';
 import { useNavigate } from 'react-router-dom'; 
 
 function OrderComponent() {
@@ -26,7 +25,7 @@ function OrderComponent() {
     const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
 
-    const navigate = useNavigate();    
+    const navigate = useNavigate();
 
     // 총액 계산 함수
     function calculateTotals() {
@@ -44,9 +43,18 @@ function OrderComponent() {
 
      // 선택된 아이템이 변경될 때 장바구니 업데이트
      useEffect(() => {
+        if(orderInfo.selectedItems.length > 0){
+            const productDetailsMap = new Map();
+            orderInfo.selectedItems.forEach(item => {
+                productDetailsMap.set(item.productId, item);
+            });
+
+            setBasketItemsList(orderInfo.selectedItems);
+            setProductDetailsMap(productDetailsMap);
+        }
         const allSelectedBaskets = [...todayPickupBaskets, ...reservationPickupBaskets];
         setBasket(allSelectedBaskets);
-    }, [todayPickupBaskets, reservationPickupBaskets, setBasket]);
+    }, [orderInfo, todayPickupBaskets, reservationPickupBaskets, setBasket]);
 
     // 장바구니와 기타 관련 상태가 변경될 때 총액 계산
     useEffect(() => {
@@ -91,6 +99,7 @@ function OrderComponent() {
             const response = await axios.get(`http://localhost:8090/eDrink24/getBasketItems/${basketId}`);
             if (response.status === 200) {
                 console.log(`Basket Items for ${basketId}:`, response.data);
+                console.log("todayPickupBaskets",todayPickupBaskets);
                 return response.data;
             } else {
                 console.error('Failed to fetch basket items. Status:', response.status);
@@ -104,7 +113,8 @@ function OrderComponent() {
 
     useEffect(() => {
         if (todayPickupBaskets.length > 0 || reservationPickupBaskets.length > 0) {
-            console.log('Selected TodayPickupBaskets:', selectedTodayPickupBaskets);
+            console.log('Selected TodayPickupBaskets:', todayPickupBaskets);
+            console.log('Selected ReservationPickupBaskets:', reservationPickupBaskets);
             fetchProductDetailsForBasket();
         }
     }, [todayPickupBaskets, reservationPickupBaskets, fetchProductDetailsForBasket]);
@@ -134,13 +144,16 @@ function OrderComponent() {
         return;
     }
 
+    //바로구매버튼 클릭 시 제품 정보와 픽업유형 수정 - giuk-kim2
     console.log('User ID:', userId);
     const orderTransactionDTO = basketItemsList.map(item => {
         const orderDate = new Date();
         const pickupDate = new Date(orderDate);
-        pickupDate.setDate(orderDate.getDate() + 2);
-    
+        
+        
+        console.log("set"+orderInfo.DirectPickup);
         return {
+            
             storeId,
             userId,
             basketId: item.basketId,
@@ -150,10 +163,11 @@ function OrderComponent() {
             isCompleted: 'FALSE',
             orderStatus: 'ORDERED',
             orderQuantity: item.basketQuantity,
-            pickupType: todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION', // 픽업 유형 결정
+            pickupType: (orderInfo.pickupType==="TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION'), // 픽업 유형 결정
             price: productDetailsMap.get(item.productId)?.price || 0,
             changeStatus: 'ORDERED',
             changeDate: orderDate.toISOString()
+
         };
     });
 
@@ -236,7 +250,11 @@ function OrderComponent() {
                                             {productDetails?.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원
                                         </td>
                                         <td>{item.basketQuantity || 0}</td>
-                                        <td>{todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION'}</td>
+                                        {/* //바로구매버튼 클릭 시 제품 정보와 픽업유형 수정 - giuk-kim2 */}
+                                        <td>{   
+                                                (orderInfo.pickupType==="TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION')
+                                            }
+                                        </td>
                                     </tr>
                                 );
                             })

@@ -17,7 +17,6 @@ function ProductDetailComponent() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [orderInfo, setOrderInfo] = useRecoilState(orderState);
 
-
   useEffect(() => {
     DetailProduct();
   }, [productId]);
@@ -25,28 +24,22 @@ function ProductDetailComponent() {
   //제품 사진 클릭 시 제품 상세페이지로 이동
   const DetailProduct = async () => {
     try {
-      console.log("productId", productId); // productId가 올바른지 확인
-        console.log("category1", category1); // category1이 올바른지 확인
-        console.log("category2", category2); // category2가 올바른지 확인
       const response = await fetch(`http://localhost:8090/eDrink24/showDetailProduct/${category1}/${category2}/${productId}`, {
         method: "GET"
       });
-
-      console.log("response",response);
 
       if (!response.ok) {
         throw new Error('Failed to fetch product');
       }
 
       const resData = await response.json();
-      console.log("resData",resData);
       setProduct(resData);
 
     } catch (error) {
       console.error('Error fetching product:', error);
     }
   };
-
+  
   if (!product) {
     return <div>Loading...</div>;
   }
@@ -104,8 +97,6 @@ function ProductDetailComponent() {
 
       const resData = await response.json();
       setProduct(resData);
-      console.log("Product saved to basket:", resData);
-
 
     } catch (error) {
       console.error('Error saving product to basket:', error);
@@ -125,25 +116,51 @@ function ProductDetailComponent() {
   };
 
   //바로구매 버튼 클릭 시 결제페이지로 이동
-  const moveToOrderPage = () => {
-    const selectedItem = {
-      productId: product.productId,
-      productName: product.productName,
-      price: product.price,
-      basketQuantity: quantity,
-      defaultImage: product.defaultImage,
+  const moveToOrderPage = async () => {
+    try{
+      const storeId = localStorage.getItem("currentStoreId");
+
+        const selectedItem = {
+          productId: product.productId,
+          productName: product.productName,
+          price: product.price,
+          basketQuantity: quantity,
+          defaultImage: product.defaultImage,
+        };
+
+        // checkInventory함수 이용해서 productId 존재 시 픽업 유형 TODAY로 설정 - giuk-kim2
+        const pickupType = (await checkInventory(productId)) ? 'TODAY' : 'RESERVATION';
+        console.log(await checkInventory(productId));
+        console.log(pickupType);
+
+
+        //선택한 제품 정보를 orderState에 저장
+        setOrderInfo((prev) => ({ // prev는 현재 상태에서 일부분만 수정하고 나머지는 유지하고 싶을 때 사용
+          ...prev, // 기존 상태 객체를 펼쳐서 복사하고, 복사된 값에서 특정한 값만 수정
+          selectedItems: [selectedItem],
+          pickupType // orderstate에 Recoil형태로 저장    
+        }));
+
+    navigate(`/eDrink24/order`);
+
+  } catch(error){
+      console.error("Error during moving to order page:", error);
+      alert("There was an error while checking the inventory.");
     }
 
-    //선택한 제품 정보를 orderState에 저장
-    setOrderInfo((prev) => ({ // prev는 현재 상태에서 일부분만 수정하고 나머지는 유지하고 싶을 때 사용
-      ...prev, // 기존 상태 객체를 펼쳐서 복사하고, 복사된 값에서 특정한 값만 수정
-      selectedItems: [...prev.selectedItems, selectedItem],
-      totalPrice: prev.totalPrice + (product.price * quantity),
-      finalAmount: prev.finalAmount + (product.price * quantity)
-  }));
+  };
 
-  
-    navigate(`/eDrink24/order`);
+  const checkInventory = async (productId) => {
+    const storeId = localStorage.getItem("currentStoreId");
+    try {
+      const response = await fetch(`http://localhost:8090/eDrink24/checkInventory/${storeId}/${productId}`);
+      if (!response.ok) throw new Error('Failed to check inventory');
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
   const total = product.price * quantity;
