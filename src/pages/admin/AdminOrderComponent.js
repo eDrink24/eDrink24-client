@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './AdminOrderComponent.css';
-import FooterComponent from '../../components/footer/FooterComponent.js';
 import { useNavigate, useParams } from 'react-router-dom';
+import FooterComponent from '../../components/footer/FooterComponent.js';
+import './AdminOrderComponent.css';
 
 // 제품 카테고리 목록
 const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
@@ -173,38 +173,38 @@ const AdminOrderComponent = () => {
     );
 
     return (
-        <div className="allproduct-container">
-            <div className="allproduct-home-header">
-                <div className="allproduct-navigation-bar">
-                    <button className="allproduct-back-button" onClick={returnHome}>
-                        <img src="assets/common/backIcon.png" alt="Back" className="allproduct-nav-bicon" />
+        <div className="adminorder-allproduct-container">
+            <div className="adminorder-allproduct-home-header">
+                <div className="adminorder-allproduct-navigation-bar">
+                    <button className="adminorder-allproduct-back-button" onClick={returnHome}>
+                        <img src="assets/common/backIcon.png" alt="Back" className="adminorder-allproduct-nav-bicon" />
                     </button>
-                    <div className="allproduct-logo-box">
-                        <img src="assets/common/emart24_logo.png" alt="eMart24" className="allproduct-nav-logo" />
+                    <div className="adminorder-allproduct-logo-box">
+                        <img src="assets/common/emart24_logo.png" alt="eMart24" className="adminorder-allproduct-nav-logo" />
                     </div>
-                    <button className="allproduct-cart-button">
-                        <img src="assets/common/cartIcon.png" alt="Cart" className="allproduct-nav-cicon" onClick={() => { navigate('/eDrink24/basket') }} />
+                    <button className="adminorder-allproduct-cart-button">
+                        <img src="assets/common/cartIcon.png" alt="Cart" className="adminorder-allproduct-nav-cicon" onClick={() => { navigate('/eDrink24/basket') }} />
                     </button>
                 </div>
             </div>
-            <div className="allproduct-body">
-                <div className="allproduct-filter-bar">
+            <div className="adminorder-allproduct-body">
+                <div className="adminorder-allproduct-filter-bar">
                     {categoryList.map((category1, idx) => (
                         <button
                             key={idx}
                             onClick={() => handleCategory1Click(category1)}
-                            className={`allproduct-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
+                            className={`adminorder-allproduct-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
                         >
                             {category1}
                         </button>
                     ))}
                 </div>
-                <div className="allproduct-click-container">
-                    <div className="allproduct-container1">
+                <div className="adminorder-allproduct-click-container">
+                    <div className="adminorder-allproduct-container1">
                         <input id="today-pickup" type="checkbox" />
                         <label htmlFor="today-pickup">오늘픽업</label>
                     </div>
-                    <div className="allproduct-container2">
+                    <div className="adminorder-allproduct-container2">
                         <select onChange={handleSortEvent}>
                             <option value="신상품순">신상품순</option>
                             <option value="판매량순">판매량순</option>
@@ -216,26 +216,26 @@ const AdminOrderComponent = () => {
                     </div>
                 </div>
                 {/* 검색창 추가 */}
-                <div className="allproduct-search-bar">
+                <div className="adminorder-allproduct-search-bar">
                     <input
                         type="text"
                         placeholder="상품 이름 검색"
                         value={searchProduct}
                         onChange={handleSearchChange} // 검색 핸들러 호출
-                        className="allproduct-search-input"
+                        className="adminorder-allproduct-search-input"
                     />
                 </div>
             </div>
 
             {/* 필터링된 제품 목록 렌더링 */}
             {filteredProducts.map(product => (
-                <div className="allproduct-product-card" key={product.productId}>
-                    {/* < img src={product.defaultImage} alt={product.productName} className="allproduct-product-defaultImage" /> */}
+                <div className="adminorder-allproduct-product-card" key={product.productId}>
+                    {/* < img src={product.defaultImage} alt={product.productName} className="adminorder-allproduct-product-defaultImage" /> */}
 
-                    <div className="allproduct-product-info">
-                        <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
-                        <div className="allproduct-product-name">{product.productName}</div>
-                        <div className="allproduct-product-price">{product.price} 원</div>
+                    <div className="adminorder-allproduct-product-info">
+                        <div className="adminorder-allproduct-product-enrollDate">{product.enrollDate}</div>
+                        <div className="adminorder-allproduct-product-name">{product.productName}</div>
+                        <div className="adminorder-allproduct-product-price">{product.price} 원</div>
                         <button onClick={() => handleOrderClick(product.productId)}>발주하기</button>
                     </div>
                 </div>
@@ -243,7 +243,7 @@ const AdminOrderComponent = () => {
 
             {/* 수량 입력 모달 */}
             {showQuantityModal && (
-                <div className="quantity-modal">
+                <div className="adminorder-quantity-modal">
                     <h3>발주할 수량을 입력하세요</h3>
                     <input
                         type="number"

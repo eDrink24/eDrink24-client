@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import './ShowReservationPickupComponent.css';
-import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './ShowReservationPickupComponent.css';
 
 // 제품 카테고리 목록
 const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
@@ -154,7 +154,7 @@ const ShowReservationPickupComponent = () => {
 
     return (
         <div className="adminReservation-container">
-            <h1 className="adminReservation-title">픽업주문 목록</h1>
+            <h1 className="adminReservation-title">발주신청 목록</h1>
             <div className="order-list">
                 <label className="adminReservation-all">
                     <input
