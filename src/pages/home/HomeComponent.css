@@ -8,60 +8,62 @@
 
 /* 전체 컨테이너 스타일 */
 .homePage-container {
-    background-color: white;
-    padding-bottom: 90px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    min-width: 344px; /* 가로 크기 */
+    min-width: 344px;
     max-width: 450px;
     width: 100%;
-    height: auto; 
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 0 auto; 
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 /*****************************************************************************/
 /* 상단 네비게이션 바 */
-  
-  .homePage-nav-box {
+
+.homePage-nav-bar {
     height: 102px;
-    padding: 44px 20px 0px 20px;
+    padding-top: 44px;
     display: flex;
-    background-color: #ffffff;
-    justify-content: space-between;
-    text-align: center;
     align-items: center;
-  }
+    justify-content: space-between;
+    background-color: #ffffff;
+}
 
-  .homePage-emart24Logo-box,
-  .homePage-emart24Logo-box img {
+.homePage-logo {
+    height: 24px;
+    padding-left: 20px;
     display: flex;
-    width: 98px;
-    height: 40px;
-    margin-left: 5px;
-  }
+}
 
-  .homePage-bell {
-    width: 100px;
+.homePage-icon-content{
+    display: flex;
+}
+
+.homePage-bell-button {
+    width: 44px;
     height: 58px;
     display: flex;
+    align-items: center;
     justify-content: flex-end;
-    cursor: pointer;
     background: none;
     border: none;
+    cursor: pointer;
+}
+
+.homePage-basket-button {
+    width: 58px;
+    height: 58px;
+    display: flex;
     align-items: center;
-    margin-right: 5px;
-  }
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
 
-  .homePage-bell img {
+.homePage-nav-bar button img {
+    width: 24px;
     height: 24px;
-  }
-
-
-  .basket-icon {
-    height: 24px;
-    margin-right:20px;
-  }
+}
 
 /*****************************************************************************/
 /* 컨테이너 스타일 */

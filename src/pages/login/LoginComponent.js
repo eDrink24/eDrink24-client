@@ -1,9 +1,9 @@
-import { useActionData, Form, useNavigate, redirect } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import "./LoginComponent.css";
+import { Form, useActionData, useNavigate } from 'react-router-dom';
+import AlertModal from '../../components/alert/AlertModal.js';
 import FindIdModal from '../login/modal/FindIdModal.js';
 import FindPwModal from '../login/modal/FindPwModal.js';
-import AlertModal from '../../components/alert/AlertModal.js';
+import "./LoginComponent.css";
 
 import { KAKAO_AUTH_URL } from '../../config/kakao/oAuth.js';
 
@@ -92,7 +92,7 @@ function LoginComponent() {
                     onRequestClose={closeFindPwModal}
                 />
                 <div className='login-header'>
-                    <img src="assets/common/emart24_logo.png" alt="emart24 로고" />
+                    <img src="assets/common/eDrinkLogo.png" alt="emart24 로고" />
                     <button className="close-button" onClick={() => { navigate("/eDrink24") }}>
                         <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
                     </button>

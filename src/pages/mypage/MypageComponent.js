@@ -1,8 +1,8 @@
-import './MypageComponent.css';
-import FooterComponent from '../../components/footer/FooterComponent.js'; // Footer 컴포넌트 import
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import FooterComponent from '../../components/footer/FooterComponent.js'; // Footer 컴포넌트 import
 import { logout } from '../login/LogoutComponent';
+import './MypageComponent.css';
 
 function MypageComponent() {
     const navigate = useNavigate();
@@ -50,7 +50,7 @@ function MypageComponent() {
                     <button className="back-button" onClick={() => { navigate(-1) }}>{'<'}</button>
                     <h1>마이페이지</h1>
                     <div>
-                        <button className="settings-button"><img src="assets/common/alert.png" alt="알람" /></button>
+                        <button className="settings-button"><img src="assets/common/bell.png" alt="알람" /></button>
                     </div>
                 </div>
 
