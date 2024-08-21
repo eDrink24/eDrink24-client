@@ -29,6 +29,7 @@ import ShowReservationPickupComponent from './pages/admin/ShowReservationPickupC
 import AdminComponent from './pages/admin/AdminComponent';
 import ShowTodayPickupPageComponent from './pages/admin/ShowTodayPickupPageComponent';
 import TodayPickupCompletedPageComponent from './pages/admin/TodayPickupCompletedPageComponent';
+import OrderHistoryComponent from './pages/order/OrderHistoryComponent';
 
 
 
@@ -61,6 +62,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/eDrink24/order', element: <OrderComponent />
+      },
+      {
+        path: '/eDrink24/orderHistory', element: <OrderHistoryComponent />
       },
       {
         path: '/eDrink24/admin', element: <AdminComponent />
