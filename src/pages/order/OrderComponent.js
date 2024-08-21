@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 function OrderComponent() {
     const [basket, setBasket] = useRecoilState(basketState);
     const [orderInfo, setOrderInfo] = useRecoilState(orderState);
-    const [orderResult, setOrderResult] = useState({ coupon: null, paymentMethod: '' }); //pkh
+     const [orderResult, setOrderResult] = useState({ coupon: null, paymentMethod: '' }); //pkh
     const [productDetailsMap, setProductDetailsMap] = useState(new Map());
     const [basketItemsList, setBasketItemsList] = useState([]);
     const [coupon, setCoupon] = useState(null); // 선택된 쿠폰 상태
@@ -23,7 +23,7 @@ function OrderComponent() {
     const [finalAmount, setFinalAmount] = useState(0);
     const [userPoints, setUserPoints] = useState(0);  // 사용자의 총 포인트
     const [pointsToUse, setPointsToUse] = useState(0);  // 사용자가 입력한 포인트
-    const { paymentMethod } = orderResult;
+     const { paymentMethod } = orderResult;
     
     const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
     const storeId = localStorage.getItem('currentStoreId');
@@ -33,7 +33,6 @@ function OrderComponent() {
 
     const navigate = useNavigate();
 
-    console.log()
 
     // 총액 계산 함수 pkh
     function calculateTotals() {
@@ -236,7 +235,7 @@ function OrderComponent() {
                 const errorText = await orderResponse.text();
                 throw new Error(`Error processing purchase: ${errorText}`);
             }
-            navigate("/eDrink24");
+            navigate("/eDrink24/orderHistory");
             console.log('Order and history saved successfully');
 
             

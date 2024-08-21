@@ -1,0 +1,299 @@
+/* 주문내역조회 */
+.order-history {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: #FFFFFF;
+}
+
+.rectangle-3582 {
+  position: absolute;
+  width: 350px;
+  height: 152px;
+  left: 20px;
+  top: 604px;
+  background: #FFFFFF;
+}
+
+.rectangle-3583, .rectangle-3584, .rectangle-3567, .rectangle-3580, .rectangle-3575, .rectangle-3581 {
+  position: absolute;
+  width: 170px;
+  height: 32px;
+  background: #FFFFFF;
+  border: 1px solid #B3BAC3;
+}
+
+.rectangle-3583 {
+  left: 20px;
+  top: 724px;
+}
+
+.rectangle-3584 {
+  left: 200px;
+  top: 724px;
+}
+
+.rectangle-3567 {
+  left: 20px;
+  top: 320px;
+}
+
+.rectangle-3580 {
+  left: 20px;
+  top: 552px;
+}
+
+.rectangle-3575 {
+  left: 200px;
+  top: 320px;
+}
+
+.rectangle-3581 {
+  left: 200px;
+  top: 552px;
+}
+
+.product-title, .order-date {
+  position: absolute;
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: -0.408px;
+  color: #142129;
+}
+
+.product-title-1 {
+  width: 189px;
+  height: 14px;
+  left: 136px;
+  top: 208px;
+}
+
+.product-title-2 {
+  width: 131px;
+  height: 14px;
+  left: 136px;
+  top: 440px;
+}
+
+.product-title-3 {
+  width: 134px;
+  height: 14px;
+  left: 136px;
+  top: 612px;
+}
+
+.order-date-1 {
+  width: 82px;
+  height: 16px;
+  left: 20px;
+  top: 166px;
+}
+
+.quantity, .price, .currency {
+  position: absolute;
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: -0.408px;
+  color: #687787;
+}
+
+.quantity-1 {
+  width: 55px;
+  height: 14px;
+  left: 136px;
+  top: 230px;
+}
+
+.quantity-2 {
+  width: 55px;
+  height: 14px;
+  left: 136px;
+  top: 462px;
+}
+
+.quantity-3 {
+  width: 55px;
+  height: 14px;
+  left: 136px;
+  top: 634px;
+}
+
+.price {
+  font-weight: 700;
+  color: #142129;
+}
+
+.price-1 {
+  width: 44px;
+  height: 14px;
+  left: 136px;
+  top: 278px;
+}
+
+.price-2 {
+  width: 44px;
+  height: 14px;
+  left: 136px;
+  top: 510px;
+}
+
+.price-3 {
+  width: 52px;
+  height: 14px;
+  left: 136px;
+  top: 682px;
+}
+
+.currency-1 {
+  width: 10.67px;
+  height: 12.28px;
+  left: 182px;
+  top: 278.48px;
+  background: #142129;
+}
+
+.currency-2 {
+  width: 10.67px;
+  height: 12.28px;
+  left: 182px;
+  top: 510.48px;
+  background: #142129;
+}
+
+.currency-3 {
+  width: 10.67px;
+  height: 12.28px;
+  left: 190px;
+  top: 682.48px;
+  background: #142129;
+}
+
+.action-text {
+  position: absolute;
+  width: 40.33px;
+  height: 10.88px;
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 10px;
+  text-align: center;
+  letter-spacing: -0.408px;
+  color: #000000;
+}
+
+.action-text-reorder {
+  width: 30.67px;
+  left: 88.81px;
+  top: 735px;
+}
+
+.action-text-review {
+  width: 40.33px;
+  left: 265px;
+  top: 735px;
+}
+
+.vector {
+  position: absolute;
+  background: #142129;
+}
+
+/* Additional Styles for specific vectors */
+.vector-1 {
+  width: 8.89px;
+  height: 10.82px;
+  left: 110.58px;
+  top: 735.01px;
+}
+
+.vector-2 {
+  width: 9.8px;
+  height: 10.18px;
+  left: 99.59px;
+  top: 735.67px;
+}
+
+.vector-3 {
+  width: 9.46px;
+  height: 10.85px;
+  left: 88.81px;
+  top: 735px;
+}
+
+.vector-4 {
+  width: 9.07px;
+  height: 10.85px;
+  left: 296.26px;
+  top: 735.01px;
+}
+
+/* More vector styles can be defined here... */
+
+/* Navigation Bar */
+.navbar {
+  position: absolute;
+  width: 390px;
+  height: 88px;
+  left: 0px;
+  top: 756px;
+  background: #FFFFFF;
+}
+
+.navbar-item {
+  position: absolute;
+  width: 97px;
+  height: 88px;
+  background: #FFFFFF;
+}
+
+.navbar-item-home {
+  width: 98px;
+  left: 0px;
+}
+
+.navbar-item-search {
+  left: 98px;
+}
+
+.navbar-item-receipt {
+  left: 195px;
+}
+
+.navbar-item-my {
+  width: 97px;
+  left: 293px;
+}
+
+/* Navbar Icons */
+.icon-home, .icon-search, .icon-receipt, .icon-my {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+}
+
+.icon-home {
+  left: 37px;
+  top: 766px;
+}
+
+.icon-search {
+  left: 135px;
+  top: 766px;
+}
+
+.icon-receipt {
+  left: 232px;
+  top: 766px;
+}
+
+.icon-my {
+  left: 330px;
+  top: 766px;
+}
