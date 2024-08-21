@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { basketState, selectedTodayPickupBaskets, selectedReservationPickupBaskets } from '../basket/BasketAtom.js';
 import { orderState } from './OrderAtom.js';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 function OrderComponent() {
     const [basket, setBasket] = useRecoilState(basketState);
@@ -24,7 +24,7 @@ function OrderComponent() {
     const [userPoints, setUserPoints] = useState(0);  // 사용자의 총 포인트
     const [pointsToUse, setPointsToUse] = useState(0);  // 사용자가 입력한 포인트
     const { paymentMethod } = orderResult;
-    
+
     const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
     const storeId = localStorage.getItem('currentStoreId');
 
@@ -41,14 +41,14 @@ function OrderComponent() {
             return total + (item.price * item.basketQuantity);
         }, 0);
         const couponDiscount = coupon ? coupon.discountAmount : 0;
-        
+
         // 사용자가 입력한 포인트 값을 결제 금액에서 차감 pkh
         const pointAmount = pointsToUse;
         const finalAmount = subtotal - couponDiscount - pointAmount;
 
         // finalAmount의 1%를 totalPoint로 설정 pkh
         const addedPoint = finalAmount * 0.01;
-        const totalPoint = userPoints - pointAmount + addedPoint; 
+        const totalPoint = userPoints - pointAmount + addedPoint;
 
         setTotalPrice(subtotal);
         setDiscount(couponDiscount + pointAmount);
@@ -81,9 +81,9 @@ function OrderComponent() {
         }
     };
 
-     // 선택된 아이템이 변경될 때 장바구니 업데이트
-     useEffect(() => {
-        if(orderInfo.selectedItems.length > 0){
+    // 선택된 아이템이 변경될 때 장바구니 업데이트
+    useEffect(() => {
+        if (orderInfo.selectedItems.length > 0) {
             const productDetailsMap = new Map();
             orderInfo.selectedItems.forEach(item => {
                 productDetailsMap.set(item.productId, item);
@@ -109,7 +109,7 @@ function OrderComponent() {
             const allSelectedBaskets = [...todayPickupBaskets, ...reservationPickupBaskets];
             for (const basketId of allSelectedBaskets) {
                 const items = await fetchBasketItems(basketId);
-                basketItems.push(...items); 
+                basketItems.push(...items);
             }
             console.log('Fetched Basket Items:', basketItems);
 
@@ -118,7 +118,7 @@ function OrderComponent() {
                 const { itemId, basketId, productId, defaultImage, productName, price, basketQuantity } = item;
                 productDetailsMap.set(productId, { itemId, basketId, defaultImage, productName, price, basketQuantity });
             });
-            
+
             setBasketItemsList(basketItems);
             console.log('Product Details Map:', Array.from(productDetailsMap.entries()));
             setProductDetailsMap(productDetailsMap);
@@ -176,30 +176,118 @@ function OrderComponent() {
         console.log("Selected Coupon:", couponItem);
     };
 
-    // 결제 처리 함수
+    // // 결제 처리 함수
+    // const handleCheckout = async () => {
+    //     if (!userId) {
+    //         alert('User ID is missing.');
+    //         return;
+    //     }
+
+    //     console.log('User ID:', userId);
+    //     const orderTransactionDTO = basketItemsList.map(item => {
+    //         const orderDate = new Date();
+    //         orderDate.setHours(orderDate.getHours() + 9); // UTC 기준시간이라서 한국 표준시로 바꿔줄려면 9시간 더해줘야함.
+    //         const pickupType = (orderInfo.pickupType === "TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION');
+    //         const pickupDate = new Date(orderDate);
+    //         const orderAmount = finalAmount;
+    //         const pointAmount = pointsToUse;
+    //         const couponId = coupon ? coupon.couponId : null; // 선택된 쿠폰 ID 가져오기
+
+
+    //         if (pickupType === 'TODAY') {
+    //             pickupDate.setDate(orderDate.getDate() + 1);
+    //         } else {
+    //             pickupDate.setDate(orderDate.getDate() + 5);
+    //         }
+
+    //         return {
+    //             storeId,
+    //             userId,
+    //             basketId: item.basketId,
+    //             productId: item.productId,
+    //             orderDate: orderDate.toISOString(),
+    //             pickupDate: pickupDate.toISOString(),
+    //             isCompleted: 'FALSE',
+    //             orderStatus: 'ORDERED',
+    //             orderQuantity: item.basketQuantity,
+    //             pickupType: pickupType,
+    //             price: productDetailsMap.get(item.productId)?.price || 0,
+    //             changeStatus: 'ORDERED',
+    //             changeDate: orderDate.toISOString(),
+    //             orderAmount: orderAmount,
+    //             addedPoint: addedPoint,
+    //             pointAmount: pointAmount,
+    //             totalPoint: totalPoint,
+    //             couponId: couponId
+    //         };
+    //     });
+
+    //     try {
+    //         // 주문 저장 및 주문 내역 저장
+    //         const orderResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/buyProductAndSaveHistory`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(orderTransactionDTO),
+    //         });
+
+    //         if (!orderResponse.ok) {
+    //             const errorText = await orderResponse.text();
+    //             throw new Error(`Error processing purchase: ${errorText}`);
+    //         }
+    //         navigate("/eDrink24");
+    //         console.log('Order and history saved successfully');
+
+
+    //         // 장바구니와 장바구니 아이템 삭제
+    //         const deleteResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(orderTransactionDTO),
+    //         });
+
+    //         console.log(orderTransactionDTO);
+
+    //         if (deleteResponse.ok) {
+    //             console.log('Basket and items deleted successfully');
+    //             console.log(`deleted Items:`, deleteResponse.data);
+    //         } else {
+    //             const errorText = await deleteResponse.text();
+    //             throw new Error(`Error processing deletion: ${errorText}`);
+    //         }
+
+    //     } catch (error) {
+    //         console.error('Error processing purchase:', error);
+    //         alert(`Error processing purchase: ${error.message}`);
+    //     }
+    // };
+
     const handleCheckout = async () => {
         if (!userId) {
             alert('User ID is missing.');
             return;
         }
-    
+
         console.log('User ID:', userId);
         const orderTransactionDTO = basketItemsList.map(item => {
             const orderDate = new Date();
-            orderDate.setHours(orderDate.getHours() + 9); // UTC 기준시간이라서 한국 표준시로 바꿔줄려면 9시간 더해줘야함.
-            const pickupType = (orderInfo.pickupType==="TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION');
+            orderDate.setHours(orderDate.getHours() + 9);
+
+            const pickupType = (orderInfo.pickupType === "TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION');
             const pickupDate = new Date(orderDate);
             const orderAmount = finalAmount;
             const pointAmount = pointsToUse;
-            const couponId = coupon ? coupon.couponId : null; // 선택된 쿠폰 ID 가져오기
-            
-        
+            const couponId = coupon ? coupon.couponId : null;
+
             if (pickupType === 'TODAY') {
                 pickupDate.setDate(orderDate.getDate() + 1);
             } else {
                 pickupDate.setDate(orderDate.getDate() + 5);
             }
-        
+
             return {
                 storeId,
                 userId,
@@ -215,56 +303,41 @@ function OrderComponent() {
                 changeStatus: 'ORDERED',
                 changeDate: orderDate.toISOString(),
                 orderAmount: orderAmount,
-                addedPoint : addedPoint,
+                addedPoint: addedPoint,
                 pointAmount: pointAmount,
-                totalPoint : totalPoint,
-                couponId:couponId
+                totalPoint: totalPoint,
+                couponId: couponId
             };
         });
 
-      try {
-           // 주문 저장 및 주문 내역 저장
-           const orderResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/buyProductAndSaveHistory`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(orderTransactionDTO),
-            });
-    
-            if (!orderResponse.ok) {
-                const errorText = await orderResponse.text();
-                throw new Error(`Error processing purchase: ${errorText}`);
+        try {
+            localStorage.setItem('orderTransactionDTO', JSON.stringify(orderTransactionDTO));
+            localStorage.setItem('userId', userId);
+
+            // 결제API
+            const paymentResponse = await axios.get('http://localhost:8090/eDrink24/api/kakaoPay', {});
+
+            const { next_redirect_pc_url, next_redirect_mobile_url, tid } = paymentResponse.data;
+            localStorage.setItem('tid', tid);
+
+            const userAgent = navigator.userAgent;
+            let redirectURL;
+            if (/Android|iPhone|iPad/i.test(userAgent)) {
+                redirectURL = next_redirect_mobile_url;
+            } else {
+                redirectURL = next_redirect_pc_url;
             }
-            navigate("/eDrink24");
-            console.log('Order and history saved successfully');
 
-            
-        // 장바구니와 장바구니 아이템 삭제
-        const deleteResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderTransactionDTO),
-        });
+            window.location.href = redirectURL;
 
-        console.log(orderTransactionDTO);
-    
-        if (deleteResponse.ok) {
-            console.log('Basket and items deleted successfully');
-            console.log(`deleted Items:`,deleteResponse.data);    
-        } else {
-            const errorText = await deleteResponse.text();
-            throw new Error(`Error processing deletion: ${errorText}`);
+        } catch (error) {
+            console.error('Error during payment process:', error);
+            alert(`Error during payment process: ${error.message}`);
         }
+    };
 
-    } catch (error) {
-        console.error('Error processing purchase:', error);
-        alert(`Error processing purchase: ${error.message}`);
-    }       
-};
-  
+
+
     return (
 
         <div className="order-container">
@@ -286,14 +359,14 @@ function OrderComponent() {
                         {basketItemsList.length > 0 ? (
                             basketItemsList.map((item, index) => {
                                 const productDetails = productDetailsMap.get(item.productId);
-                                
+
                                 return (
                                     <tr key={index}>
                                         <td>
-                                            <img 
-                                                src={productDetails?.defaultImage || 'default-image-url.jpg'} 
-                                                alt={productDetails?.productName || '상품 이미지 없음'} 
-                                                className="basket-image" 
+                                            <img
+                                                src={productDetails?.defaultImage || 'default-image-url.jpg'}
+                                                alt={productDetails?.productName || '상품 이미지 없음'}
+                                                className="basket-image"
                                             />
                                         </td>
                                         <td>{productDetails?.productName || '상품 이름 없음'}</td>
@@ -302,9 +375,9 @@ function OrderComponent() {
                                         </td>
                                         <td>{item.basketQuantity || 0}</td>
                                         {/* //바로구매버튼 클릭 시 제품 정보와 픽업유형 수정 - giuk-kim2 */}
-                                        <td>{   
-                                                (orderInfo.pickupType==="TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION')
-                                            }
+                                        <td>{
+                                            (orderInfo.pickupType === "TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION')
+                                        }
                                         </td>
                                     </tr>
                                 );
@@ -359,10 +432,10 @@ function OrderComponent() {
                     {userPoints > 0 && (
                         <div>
                             <p>보유 포인트: {userPoints} P</p>
-                            <input 
-                                type="number" 
-                                value={pointsToUse} 
-                                onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))} 
+                            <input
+                                type="number"
+                                value={pointsToUse}
+                                onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
                             />
                             <button onClick={applyPoints}>포인트 적용</button>
                         </div>
@@ -373,8 +446,8 @@ function OrderComponent() {
             {/* 결제 방법 선택 */}
             <div className="payment-section">
                 <h2>결제 방법 선택</h2>
-                <select 
-                    value={paymentMethod} 
+                <select
+                    value={paymentMethod}
                     onChange={(e) => setOrderResult(prev => ({ ...prev, paymentMethod: e.target.value }))}>
                     <option value="">결제 방법을 선택하세요</option>
                     <option value="creditCard">신용카드</option>
