@@ -31,8 +31,6 @@ function OrderComponent() {
     const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
 
-    const navigate = useNavigate();
-
     console.log()
 
     // 총액 계산 함수 pkh
@@ -314,7 +312,7 @@ function OrderComponent() {
             localStorage.setItem('orderTransactionDTO', JSON.stringify(orderTransactionDTO));
             localStorage.setItem('userId', userId);
 
-            // 결제API
+            // 결제요청 API - Young5097
             const paymentResponse = await axios.get('http://localhost:8090/eDrink24/api/kakaoPay', {});
 
             const { next_redirect_pc_url, next_redirect_mobile_url, tid } = paymentResponse.data;
@@ -331,7 +329,6 @@ function OrderComponent() {
             window.location.href = redirectURL;
 
         } catch (error) {
-            console.error('Error during payment process:', error);
             alert(`Error during payment process: ${error.message}`);
         }
     };
