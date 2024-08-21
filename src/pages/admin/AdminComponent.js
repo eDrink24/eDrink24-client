@@ -5,7 +5,6 @@ import AdminOrderListComponent from './AdminOrderListComponent';
 import ShowReservationPickupComponent from './ShowReservationPickupComponent';
 import ShowOrdersPageComponent from './ShowTodayPickupPageComponent'; // 경로를 실제 경로로 수정
 import PickupCompletedPageComponent from './TodayPickupCompletedPageComponent';
-import ShowReservationPickupComponent from './ShowReservationPickupComponent';
 
 const AdminComponent = () => {
     const [activeTab, setActiveTab] = useState('즉시픽업 목록');
