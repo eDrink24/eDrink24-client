@@ -1,18 +1,56 @@
-import React from 'react'; // useState를 react에서 가져옵니다
-import { useNavigate, useParams } from 'react-router-dom'; // useNavigate는 react-router-dom에서 가져옵니다
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import CarouselComponent from '../../components/Banner/CarouselComponent.js';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import MyplaceComponent from '../../components/mainMyplace/MyplaceComponent.js';
+import OtherProductCardComponent from '../../components/ProductCard/OtherProductCardComponent.js';
+import ProductCardComponent from '../../components/ProductCard/ProductCardComponent.js';
 import "./HomeComponent.css";
 
 function HomeComponent() {
-
-    // 상태 변수 선언
     const { category1 } = useParams();
-
     const navigate = useNavigate();
+    
+    const [products, setProducts] = useState([]);
+    const [invToStore, setInvToStore] = useState([]);  // 재고 데이터 상태 정의
 
-    // 버튼 클릭 핸들러 함수
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch('http://localhost:8090/eDrink24/showProductByCategory1/와인');
+                const data = await response.json();
+                setProducts(data);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        };
+
+        fetchProducts();
+
+        // 재고 데이터를 API 호출을 통해서 가져옴
+        const fetchInvByStoreId = async () => {
+            const currentStoreId = localStorage.getItem("currentStoreId");
+            if (currentStoreId) {
+                try {
+                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`);
+                    const invData = await response.json();
+                    setInvToStore(invData);
+                } catch (error) {
+                    console.error('Error fetching inventory:', error);
+                }
+            } else {
+                console.error('Store ID not found in localStorage');
+            }
+        };
+
+        fetchInvByStoreId();
+    }, []);
+
+    // "오늘 픽업" 제품 필터링
+    const todayPickupProducts = products.filter(product =>
+        invToStore.some(inv => inv.productId === product.productId && inv.quantity > 0)
+    );
+
     const handleDirectHome = () => {
         navigate("/eDrink24");
     };
@@ -27,123 +65,64 @@ function HomeComponent() {
 
     return (
         <div className="homePage-container">
-
-            {/* 상단 네비게이션 바 */}
             <div className="homePage-nav-bar">
-                {/* 로고 이미지 */}
                 <img className="homePage-logo" src="assets/common/eDrinkLogo.png" alt=" " />
-
-            <div className="homePage-icon-content">
-                {/* 벨 아이콘 */}
-                <button className="homePage-bell-button">
-                    <img className="homePage-bell-icon" src="assets/common/bell.png" alt=" " />
-                </button>
-
-                {/* 장바구니 아이콘 */}
-                <button className="homePage-basket-button" aria-label="Notifications">
-                    <img className="homePage-basket-icon" src="assets/common/bag.png" alt=" " onClick={() => navigate("/eDrink24/basket")} />
-                </button>
-            </div>
-            </div>
-
-            <div className="home-container">
-
-                {/* 위치 정보 버튼 */}
-                <MyplaceComponent />
-
-                {/* 배너 이미지 */}
-                <CarouselComponent />
-
-                <div className="category-button-container">
-                    <button type="button" className="b1" onClick={handleDirectCategory}>
-                        <img src="assets/common/menu.png" className="menuButton" alt="Menu Button" />
-                        <p className="home-category">카테고리</p>
+                <div className="homePage-icon-content">
+                    <button className="homePage-bell-button">
+                        <img className="homePage-bell-icon" src="assets/common/bell.png" alt=" " />
                     </button>
-                    <button type="button" className="b2" onClick={handleDirectAllproduct}>
-                        <img src="assets/common/search.png" className="searchButton" alt="Search Button" />
-                        <p className="home-category">전체상품</p>
-                    </button>
-                    <button type="button" className="b3" onClick={handleDirectHome}>
-                        <img src="assets/common/gift.png" className="giftButton" alt="Gift Button" />
-                        <p className="home-category">이벤트</p>
-                    </button>
-                    <button type="button" className="b4" onClick={handleDirectHome}>
-                        <img src="assets/common/chatbot.png" className="chatbotButton" alt="Chatbot Button" />
-                        <p className="home-category">챗봇</p>
+                    <button className="homePage-basket-button" aria-label="Notifications">
+                        <img className="homePage-basket-icon" src="assets/common/bag.png" alt=" " onClick={() => navigate("/eDrink24/basket")} />
                     </button>
                 </div>
+            </div>
+
+            <MyplaceComponent />
+            <CarouselComponent />
+
+            <div className="category-button-container">
+                <button type="button" className="b1" onClick={handleDirectCategory}>
+                    <img src="assets/common/menu.png" className="menuButton" alt="Menu Button" />
+                    <p className="home-category">카테고리</p>
+                </button>
+                <button type="button" className="b2" onClick={handleDirectAllproduct}>
+                    <img src="assets/common/search.png" className="searchButton" alt="Search Button" />
+                    <p className="home-category">전체상품</p>
+                </button>
+                <button type="button" className="b3" onClick={handleDirectHome}>
+                    <img src="assets/common/gift.png" className="giftButton" alt="Gift Button" />
+                    <p className="home-category">이벤트</p>
+                </button>
+                <button type="button" className="b4" onClick={handleDirectHome}>
+                    <img src="assets/common/chatbot.png" className="chatbotButton" alt="Chatbot Button" />
+                    <p className="home-category">챗봇</p>
+                </button>
+            </div>
+
+            <div className="homeProduct-container">
                 <div className='line'></div>
                 <div className="best-product">
-                    <h1>인기상품</h1>
-                    <a href="#" className='more-button'>더보기 {">"}</a>
-                </div>
-
-                <div className="best-container">
-                    <div className="ItemCard">
-                        {/* 카드 배경 */}
-                        <div className="itemcard-container"></div>
-
-                        {/* 배경색이 있는 작은 사각형 */}
-                        <div className="today-pickup"></div>
-
-                        {/* 하트 아이콘 */}
-                        <div className="Heart">
-                            <img className="heartIcon" src="assets/common/heart.png" alt="heart icon" />
-                        </div>
-
-                        {/* 텍스트들 */}
-                        <div className="PickupText">오늘픽업</div>
-                        <div className="ProductTitle">샤토 생 미셸 컬럼비아 밸리 리슬링</div>
-                        <div className="Price">31,000 원</div>
-
-                        {/* 이미지 및 배경 */}
-                        <div className="itemImage">
-                            <img className="Image20" src="assets/common/Image20.png" alt="상품 이미지" />
-                        </div>
-
-                        {/* 평가 및 별 아이콘 */}
-                        <div className="Rating">4.8 ( 후기 35 )</div>
-                        <div className="Star">★</div>
+                    <div className="bestTitle">
+                        <h1>오늘픽업</h1>
+                        <a href="#" className='more-button'>더보기 {">"}</a>
+                    </div>
+                    <div className="ProductCard">
+                        <ProductCardComponent products={todayPickupProducts.slice(0, 6)} />
                     </div>
                 </div>
 
                 <div className='line'></div>
                 <div className="best-product">
-                    <h1>인기상품</h1>
-                    <a href="#" className='more-button'>더보기 {">"}</a>
-                </div>
-
-                <div className="best-container">
-                    <div className="ItemCard">
-                        {/* 카드 배경 */}
-                        <div className="itemcard-container"></div>
-
-                        {/* 배경색이 있는 작은 사각형 */}
-                        <div className="today-pickup"></div>
-
-                        {/* 하트 아이콘 */}
-                        <div className="Heart">
-                            <img className="heartIcon" src="assets/common/heart.png" alt="heart icon" />
-                        </div>
-
-                        {/* 텍스트들 */}
-                        <div className="PickupText">오늘픽업</div>
-                        <div className="ProductTitle">샤토 생 미셸 컬럼비아 밸리 리슬링</div>
-                        <div className="Price">31,000 원</div>
-
-                        {/* 이미지 및 배경 */}
-                        <div className="itemImage">
-                            <img className="Image20" src="assets/common/Image20.png" alt="상품 이미지" />
-                        </div>
-
-                        {/* 평가 및 별 아이콘 */}
-                        <div className="Rating">4.8 ( 후기 35 )</div>
-                        <div className="Star">★</div>
+                    <div className="bestTitle">
+                        <h1>전체상품</h1>
+                        <a href="#" className='more-button'>더보기 {">"}</a>
+                    </div>
+                    <div className="ProductCard2">
+                        <OtherProductCardComponent products={products.slice(0, 9)} />
                     </div>
                 </div>
             </div>
 
-            {/* 하단고정 네비게이션 바 */}
             <FooterComponent />
         </div>
     );
