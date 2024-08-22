@@ -38,11 +38,11 @@ import OrderHistoryComponent from './pages/order/OrderHistoryComponent';
 // test yoon
 const router = createBrowserRouter([
   {
-    path: "/eDrink24",
+    path: "/",
     element: <RootLayout />,
     loader: tokenLoader,
     children: [
-      { path: '/eDrink24', element: <HomeComponent /> },
+      { path: '/', element: <HomeComponent /> },
       { path: '/eDrink24/allproduct/:category1', element: <AllProductComponent /> },
       { path: '/eDrink24/allproduct/:category1/:category2', element: <CategoriesProductComponent /> },
       { path: '/eDrink24/allproduct/:category1/:category2/:productId', element: <ProductDetailComponent /> },
