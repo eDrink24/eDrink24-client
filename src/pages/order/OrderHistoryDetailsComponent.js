@@ -51,6 +51,16 @@ function OrderHistoryDetailsComponent() {
         fetchOrderHistoryDetails();
     }, [userId, orderDate]);
 
+    // 픽업 남은 시간 계산
+    const countPickupTime = (pickupDate, orderDate) => {
+        const pickup = new Date(pickupDate);
+        const order = new Date(orderDate);
+        const diffTime = pickup - order; // 초 차이
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // 남은 일 수
+        const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // 남은 시간
+        return `${diffDays}일 ${diffHours}시간`;
+    };
+
     // 총 상품금액, 총 할인금액, 총 결제금액, 예상 적립금액 계산
     const totalAmount = orderHistoryDetails.reduce((total, item) => total + (item.price * item.orderQuantity), 0);
     console.log("CCCCCCCCCCC1",totalAmount);
@@ -81,7 +91,7 @@ function OrderHistoryDetailsComponent() {
                                     <th>픽업유형</th>
                                     <th>픽업완료여부</th>
                                     <th>픽업매장</th>
-                                    <th>픽업일시</th>
+                                    <th>남은 픽업시간</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -101,7 +111,7 @@ function OrderHistoryDetailsComponent() {
                                         <td>{item.pickupType === 'TODAY' ? '오늘 픽업' : '예약 픽업'}</td>
                                         <td>{item.isCompleted == 1 ? '완료' : '미완료'}</td>
                                         <td>{item.storeName}</td>
-                                        <td>{item.pickupDate}</td>
+                                        <td>{item.isCompleted == 0 ? countPickupTime(item.pickupDate, item.orderDate):'픽업완료'}</td>
                                     </tr>
                                 ))}
                             </tbody>
