@@ -1,0 +1,328 @@
+/* 모든 요소에 기본 폰트 패밀리 설정 */
+* {
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+    box-sizing: border-box; /* 패딩과 보더를 포함한 박스 사이징 */
+    margin: 0;
+    padding: 0;
+}
+
+/* 전체 컨테이너 스타일 */
+.homePage-container {
+    min-width: 344px;
+    max-width: 450px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/*****************************************************************************/
+/* 상단 네비게이션 바 */
+
+.homePage-nav-bar {
+    height: 102px;
+    padding-top: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+}
+
+.homePage-logo {
+    height: 24px;
+    padding-left: 20px;
+    display: flex;
+}
+
+.homePage-icon-content{
+    display: flex;
+}
+
+.homePage-bell-button {
+    width: 44px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.homePage-basket-button {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.homePage-nav-bar button img {
+    width: 24px;
+    height: 24px;
+}
+
+/*****************************************************************************/
+/* 컨테이너 스타일 */
+.Home-myPlace-container, .banner-container,
+.category-button-container, .best-product {
+    width: auto;
+    margin: 20px;
+}
+
+.line {
+    width: auto;
+}
+
+.best-container {
+    width: auto;
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+/* 마이 플레이스 컨테이너 스타일 */
+.Home-myPlace-container {
+    height: 80px;
+}
+
+.myHome-address {
+    height: 36px;
+    background-color: #AAAAAA;
+    display: flex;
+    align-items: center;
+}
+
+.myHome-address img {
+    height: 24px;
+    width: 24px;
+}
+
+.pickUp-address {
+    height: 44px;
+    background-color: #C9C9C9;
+    display: flex;
+    align-items: center;
+}
+
+.pickUp {
+    background-color: #54565A;
+    color: white;
+    width: 64px;
+    height: 23px;
+    display: flex; /* Flexbox 레이아웃을 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    border-radius: 999px;
+    font-size: 12px;
+}
+
+/* 배너 컨테이너 스타일 */
+.banner-container {
+    height: 144px;
+    background: #667cd7;
+}
+
+/* 카테고리 버튼 컨테이너 스타일 */
+.category-button-container {
+    height: 72px;
+    display: flex;
+}
+
+/* 버튼 기본 스타일 */
+.b1, .b2, .b3, .b4 {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.category-button-container
+.menuButton, .searchButton,
+ .giftButton, .chatbotButton {
+    margin-top: 12px;
+    margin-bottom: 4px;
+    width: 24px;
+    height: 24px;
+}
+
+.category-button-container h1 {
+    font-size: 10px;
+    font-weight:500;;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* 라인 스타일 */
+.line {
+    height: 8px;
+    background-color: #F5F7F9;
+}
+
+/* 베스트 상품 스타일 */
+.best-product {
+    display: flex;
+    align-items: flex-end;
+}
+
+/* 헤더 텍스트 스타일 */
+h1 {
+    font-size: 18px;
+    font-weight: 500;
+    flex-grow: 1;
+    margin: 0;
+}
+
+.home-category {
+    font-size: 13px;
+    font-weight: 500;
+    flex-grow: 1;
+    margin: 0;
+}
+
+/* 더 보기 버튼 스타일 */
+.more-button {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+}
+
+
+/*******************************************************************************/
+
+
+/* 전체 카드 스타일 */
+.ItemCard {
+    position: relative;
+    width: 120px;
+    height: 255px;
+}
+
+/* 큰 사각형 배경 */
+.itemcard-container {
+    width: 120px;
+    height: 255px;
+    background: white;
+    position: absolute; /* 부모 요소에 대해 절대 위치를 설정 */
+    top: 0; /* 상단에 가깝게 위치하도록 설정 */
+    left: 0; /* 왼쪽에 위치하도록 설정 */
+}
+
+
+/* 배경색이 있는 작은 사각형 */
+.today-pickup {
+    width: 56px;
+    height: 24px;
+    background: #FFB71B;
+    border-radius: 12px;
+    position: absolute;
+    top: 130px;
+    left: 0;
+}
+
+/* 하트 아이콘 스타일 */
+.Heart {
+    width: 20px;
+    height: 20px;
+    padding: 3.95px 1.95px 2.34px 2px;
+    position: absolute;
+    top: 130px;
+    left: 100px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heartIcon {
+    width: 14px;
+    height: 14px;
+}
+
+/* 텍스트 스타일 */
+.PickupText, .ProductTitle, .ProductSubtitle, .Price, .Rating {
+    position: absolute;
+    width: auto;
+    word-wrap: break-word;
+}
+
+.PickupText {
+    color: white;
+    font-size: 10px;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    top: 132px;
+    left: 10px; /* Added left padding for better alignment */
+}
+
+.ProductTitle {
+    color: #54565A;
+    font-size: 14px;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    top: 160px;
+    left: 10px; /* Added left padding for better alignment */
+}
+
+.Price {
+    color: black;
+    font-size: 14px;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+    font-weight: 700;
+    line-height: 22px;
+    top: 208px;
+    left: 10px; /* Added left padding for better alignment */
+}
+
+/* 이미지 및 배경 스타일 */
+.MaskGroup {
+    width: 120px;
+    height: 120px;
+    position: relative;
+}
+
+.Rectangle104 {
+    width: 120px;
+    height: 120px;
+    background: #C9C9C9;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.Image20 {
+    width: 120px;
+    height: 120px;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* 평가 및 별 아이콘 스타일 */
+.Rating {
+    color: #AAAAAA;
+    font-size: 10px;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+    font-weight: 500;
+    line-height: 22px;
+    position: absolute;
+    top: 232px;
+    left: 0;
+}
+
+.Star {
+    padding: 1.40px 1.13px;
+    position: absolute;
+    top: 232px;
+    left: 76px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,121 @@
+* {
+  font-family: 'Spoqa Han Sans Neo', sans-serif; /* 전체 폰트 스타일 */
+  box-sizing: border-box; /* 패딩과 보더를 포함한 박스 사이징 */
+  margin: 0;
+  padding: 0;
+}
+
+/* 전체 컨테이너 스타일 */
+.category-container {
+  background-color: white;
+  max-width: 430px;
+  min-width: 390px;
+  margin: 0 auto; /* 수평 중앙 정렬 */
+}
+
+/*****************************************************************************/
+/* 상단 네비게이션 바 */
+
+.category-nav-bar {
+  height: 102px;
+  padding: 44px 20px 0; /* 패딩: 위, 좌우, 아래 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.category-nav-bar button {
+  width: 58px;
+  height: 58px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.category-nav-bar img {
+  width: 24px;
+  height: 24px;
+}
+
+.category-back {
+  justify-content: flex-start;
+}
+
+.category-bag {
+  justify-content: flex-end;
+}
+
+/*****************************************************************************/
+/* 구분선 스타일 */
+
+.line2 {
+  height: 2px;
+  background-color: #F4F4F5;
+}
+
+/*****************************************************************************/
+/* 메인 콘텐츠 스타일 */
+
+.category-main-content {
+  height: 724px;
+}
+
+.category-container-content {
+  display: flex;
+  height: 100%;
+  background-color: #f4f5f7;
+}
+
+.category1-content{
+  flex: 0.8;
+  font-weight: 500;
+}
+
+.category2-content{
+  flex: 1.2;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.category1-content ul,
+.category2-content ul {
+  list-style-type: none;
+}
+
+.category1-content li,
+.category2-content li {
+  height: 58px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  color: #333;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.category2-content h2{
+  height: 58px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  color: #333;
+  font-size: 16px;
+}
+
+.category1-content li.category-active {
+  background-color: #ffffff;
+/*  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+.category-selectedCategoryText{
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.category2-content li:hover {
+  background-color: black; /* 커서를 올렸을 때 변경될 배경색 */
+  color: #ffffff; /* 텍스트 색상도 변경 */
+}

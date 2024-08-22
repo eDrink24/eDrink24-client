@@ -1,0 +1,193 @@
+/* 전체 주문 / 결제 페이지 스타일 */
+.order-container {
+  padding: 20px;
+  background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width:100%;
+    max-width: 455px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    margin: 0 auto;
+}
+
+/* 헤더 스타일 */
+.header {
+  width: 100%;
+  height: 58px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #B3BAC3;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+/* 왼쪽 화살표 아이콘 스타일 */
+.arrow-left {
+  width: 24px;
+  height: 24px;
+  margin-right: 16px; /* 화살표 아이콘과 제목 사이의 간격 */
+}
+
+/* 제목 스타일 */
+.header h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* 구분선 스타일 */
+.separator {
+  width: 100%;
+  height: 8px;
+  background: #EFF1F3;
+}
+
+/* 페이지 구분선 위치 설정 */
+.separator-1 { margin-top: 762px; }
+.separator-2 { margin-top: 999px; }
+.separator-3 { margin-top: 1261px; }
+.separator-4 { margin-top: 1546px; }
+
+/* 섹션 스타일 */
+.pickup-section, .pickup-time-section, .basket-section, .discount-section, .payment-summary, .payment-methods, .checkout-button {
+  position: relative;
+  width: 100%;
+  background: #FFFFFF;
+  border-bottom: 1px solid #B3BAC3;
+  padding: 10px 20px; /* 패딩 추가 */
+  box-sizing: border-box; /* 패딩과 테두리 포함 */
+}
+
+/* 제목 및 내용 스타일 */
+.pickup-section h2, .pickup-time-section h2, .basket-section h2, .discount-section h2, .payment-summary h2, .payment-methods h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.pickup-section button, .checkout-button button {
+  width: 100%;
+  height: 48px;
+  background: #FFB71B;
+  border: none;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+/* Store Selection Container */
+.store-selection {
+  position: absolute;
+  top: 70px; /* 위치 조정 */
+  right: 20px; /* 위치 조정 */
+  background-color: #ffffff; /* 배경색 */
+  border: 1px solid #ddd; /* 테두리 색상 */
+  border-radius: 6px; /* 둥근 모서리 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* 그림자 */
+  padding: 12px; /* 여백 */
+  z-index: 1000; /* 다른 요소들 위에 표시 */
+  max-height: 300px; /* 최대 높이 */
+  overflow-y: auto; /* 스크롤 */
+  width: 320px; /* 너비 */
+}
+
+/* Store Selection List */
+.store-selection ul {
+  list-style-type: none; /* 리스트 스타일 제거 */
+  padding: 0; /* 패딩 제거 */
+  margin: 0; /* 마진 제거 */
+}
+
+/* Store Selection List Item */
+.store-selection li {
+  margin-bottom: 8px; /* 항목 간의 간격 */
+}
+
+/* Store Selection Button */
+.store-selection button {
+  display: block; /* 블록 요소로 설정 */
+  width: 100%; /* 너비 전체 차지 */
+  padding: 8px; /* 패딩 */
+  background-color: #f9f9f9; /* 배경색 */
+  border: 1px solid #ddd; /* 테두리 색상 */
+  border-radius: 4px; /* 둥근 모서리 */
+  font-size: 14px; /* 폰트 크기 줄이기 */
+  color: #555; /* 글자 색상 */
+  cursor: pointer; /* 커서 변경 */
+  text-align: left; /* 텍스트 정렬 */
+  transition: background-color 0.3s, border-color 0.3s; /* 부드러운 배경색과 테두리 색상 변화 */
+}
+
+/* Store Selection Button Hover */
+.store-selection button:hover {
+  background-color: #f0f0f0; /* 호버 시 배경색 */
+  border-color: #ccc; /* 호버 시 테두리 색상 */
+}
+
+/* Store Selection Loading Message */
+.store-selection p {
+  color: #777; /* 텍스트 색상 */
+  font-size: 14px; /* 폰트 크기 줄이기 */
+  text-align: center; /* 중앙 정렬 */
+  margin: 0; /* 마진 제거 */
+}
+
+
+/* 테이블 스타일 */
+.basket-section table {
+  width: 90%;
+  border-collapse: collapse;
+}
+
+.basket-section th, .basket-section td {
+  border-bottom: 1px solid #B3BAC3;
+  padding: 8px;
+  text-align: left;
+}
+
+.basket-section th {
+  background: #F7F7F7;
+}
+/* 이미지 스타일 */
+.basket-image {
+  width: 50px;  /* 이미지 너비를 50px로 설정 */
+  height: 40px; /* 이미지 높이를 50px로 설정 */
+  object-fit: cover; /* 이미지 비율을 유지하며 잘라냄 */
+}
+
+/* 입력 필드 스타일 */
+.input-field {
+  width: 100%;
+  height: 48px;
+  background: #FFFFFF;
+  border: 1px solid #B3BAC3;
+  box-sizing: border-box; /* 테두리와 패딩 포함 */
+  margin-bottom: 10px; /* 항목 간 간격 추가 */
+}
+
+/* 쿠폰/포인트 체크박스 스타일 */
+.discount-section label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.discount-section input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* 결제수단 스타일 */
+.payment-methods label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* 결제하기 버튼 스타일 */
+.checkout-button button {
+  background: #FFB71B;
+  color: #FFFFFF;
+}

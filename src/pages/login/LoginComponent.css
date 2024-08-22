@@ -1,51 +1,90 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f5f5f5;
+/* LoginComponent.css */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 844px;
-    margin: 0;
 }
 
-.login-container {
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 390px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: left;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-header img {
-    width: 100px;
-}
-
-header .close-button {
+.modal-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     background: none;
     border: none;
     font-size: 1.5em;
     cursor: pointer;
 }
 
-h1 {
-    font-size: 24px;
+* {
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+
+
+.login-container {
+    background-color: white;
+    padding: 44px 20px 90px 20px;
+    min-width: 344px;
+    max-width: 450px;
+    width:100%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     text-align: left;
-    margin: 3px;
+    margin: 0 auto;
+}
+
+.login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.login-header img {
+    width: 100px;
+}
+
+.login-header img.XButton {
+    width: 24px;
+}
+
+.login-header .close-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
 }
 
 .greet {
     margin-top: 30px;
     margin-bottom: 20px;
+}
+
+.greet h1 {
+    font-size: 24px;
+    text-align: left;
+    margin: 3px;
+    font-weight: 500;
 }
 
 form {
@@ -72,7 +111,7 @@ form {
 
 .password-container {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .password-input {
@@ -93,6 +132,10 @@ form {
     outline: none;
 }
 
+.failed-input {
+    border: px solid red;
+}
+
 .show-password {
     position: absolute;
     right: 10px;
@@ -105,8 +148,8 @@ form {
 }
 
 .show-password img {
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     display: block;
 }
 
@@ -117,9 +160,12 @@ form {
     border-color:rgb(224, 218, 218);
     border-width: 1px;
     border-radius: 5px;
+    margin-top:10px;
     margin-bottom: 10px;
     cursor: pointer;
     height: 60px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .options {
@@ -127,10 +173,14 @@ form {
     justify-content: right;
     font-size: 0.8em;
     margin-bottom: 20px;
+    cursor: pointer;
 }
 
 .options a {
     margin: 5px;
+    text-decoration: none; 
+    color: #6D6E71;
+    font-weight: 400;
 }
 
 .signup-options {
@@ -144,6 +194,7 @@ form {
 .signup-options p {
     margin: 0;
     margin-bottom: 10px;
+    color: #6D6E71;
 }
 
 .normal-signup {
@@ -159,7 +210,8 @@ form {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1em;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .google-signup {
@@ -175,7 +227,8 @@ form {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1em;
+    font-size: 14px;
+    font-weight: 500;
     color:black;
 }
 
@@ -193,7 +246,8 @@ form {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1em;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .google-signup img,
@@ -203,4 +257,9 @@ form {
     margin-right: 5px;
 }
 
-
+.error-message {
+    color: red;
+    margin: 0px;
+    font-size: 0.9em;
+    text-align: center;
+}
