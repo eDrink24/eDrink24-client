@@ -261,15 +261,13 @@ function OrderComponent() {
     //         console.error('Error processing purchase:', error);
     //         alert(`Error processing purchase: ${error.message}`);
     //     }
-    // };
-
+    // };   
     const handleCheckout = async () => {
         if (!userId) {
             alert('User ID is missing.');
             return;
         }
 
-        console.log('User ID:', userId);
         const orderTransactionDTO = basketItemsList.map(item => {
             const orderDate = new Date();
             orderDate.setHours(orderDate.getHours() + 9);
@@ -313,7 +311,12 @@ function OrderComponent() {
             localStorage.setItem('userId', userId);
 
             // 결제요청 API - Young5097
-            const paymentResponse = await axios.get('http://localhost:8090/eDrink24/api/kakaoPay', {});
+            const paymentResponse = await axios.post('http://localhost:8090/eDrink24/api/kakaoPay', localStorage.getItem("orderTransactionDTO"),
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
             const { next_redirect_pc_url, next_redirect_mobile_url, tid } = paymentResponse.data;
             localStorage.setItem('tid', tid);
