@@ -29,22 +29,21 @@ function HomeComponent() {
         <div className="homePage-container">
 
             {/* 상단 네비게이션 바 */}
-            <div className="homePage-nav-box">
+            <div className="homePage-nav-bar">
+                {/* 로고 이미지 */}
+                <img className="homePage-logo" src="assets/common/eDrinkLogo.png" alt=" " />
 
-                {/* emart24 로고 */}
-                <div className="homePage-emart24Logo-box">
-                    <img className="homePage-logo"
-                        src="assets/common/eDrinkLogo.png" alt="emart24 logo" />
-                </div>
-
+            <div className="homePage-icon-content">
                 {/* 벨 아이콘 */}
-                <button className="homePage-bell" aria-label="Notifications">
-                    <img className="basket-icon"
-                        src="assets/common/bag.png" alt="bell icon" onClick={() => navigate("/eDrink24/basket")} />
-                    <img className="bell-icon"
-                        src="assets/common/bell.png" alt="bell icon" />
+                <button className="homePage-bell-button">
+                    <img className="homePage-bell-icon" src="assets/common/bell.png" alt=" " />
                 </button>
 
+                {/* 장바구니 아이콘 */}
+                <button className="homePage-basket-button" aria-label="Notifications">
+                    <img className="homePage-basket-icon" src="assets/common/bag.png" alt=" " onClick={() => navigate("/eDrink24/basket")} />
+                </button>
+            </div>
             </div>
 
             <div className="home-container">

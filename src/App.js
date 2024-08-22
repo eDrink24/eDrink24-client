@@ -31,6 +31,7 @@ import ShowTodayPickupPageComponent from './pages/admin/ShowTodayPickupPageCompo
 import TodayPickupCompletedPageComponent from './pages/admin/TodayPickupCompletedPageComponent';
 import PaymentApproval from './components/payment/PaymentApproval';
 import PaymentCancelOrFail from './components/payment/PaymentCancelOrFail';
+import OrderHistoryComponent from './pages/order/OrderHistoryComponent';
 
 
 
@@ -63,6 +64,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/eDrink24/order', element: <OrderComponent />
+      },
+      {
+        path: '/eDrink24/orderHistory', element: <OrderHistoryComponent />
       },
       {
         path: '/eDrink24/admin', element: <AdminComponent />

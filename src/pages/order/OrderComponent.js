@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 function OrderComponent() {
     const [basket, setBasket] = useRecoilState(basketState);
     const [orderInfo, setOrderInfo] = useRecoilState(orderState);
-    const [orderResult, setOrderResult] = useState({ coupon: null, paymentMethod: '' }); //pkh
+     const [orderResult, setOrderResult] = useState({ coupon: null, paymentMethod: '' }); //pkh
     const [productDetailsMap, setProductDetailsMap] = useState(new Map());
     const [basketItemsList, setBasketItemsList] = useState([]);
     const [coupon, setCoupon] = useState(null); // 선택된 쿠폰 상태
@@ -32,6 +32,8 @@ function OrderComponent() {
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
 
     console.log()
+    const navigate = useNavigate();
+
 
     // 총액 계산 함수 pkh
     function calculateTotals() {
