@@ -29,6 +29,8 @@ import ShowReservationPickupComponent from './pages/admin/ShowReservationPickupC
 import AdminComponent from './pages/admin/AdminComponent';
 import ShowTodayPickupPageComponent from './pages/admin/ShowTodayPickupPageComponent';
 import TodayPickupCompletedPageComponent from './pages/admin/TodayPickupCompletedPageComponent';
+import PaymentApproval from './components/payment/PaymentApproval';
+import PaymentCancelOrFail from './components/payment/PaymentCancelOrFail';
 import OrderHistoryComponent from './pages/order/OrderHistoryComponent';
 
 
@@ -95,7 +97,10 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { path: "/eDrink24/mypage/updateCustomer", element: <UpdateCustomerComponent /> },
-          { path: "/eDrink24/myplace_store", element: <SetPlaceComponent /> }
+          { path: "/eDrink24/myplace_store", element: <SetPlaceComponent /> },
+          { path: "/eDrink24/order/approval", element: <PaymentApproval /> }, // 결제완료처리페이지
+          { path: "/eDrink24/order/cancelOrFail", element: <PaymentCancelOrFail /> } // 결제취소or오류
+
         ]
       }
     ]
