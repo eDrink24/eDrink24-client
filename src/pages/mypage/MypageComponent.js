@@ -39,7 +39,7 @@ function MypageComponent() {
     }
 
     const navigateUpdateCustomer = () => {
-        navigate("/eDrink24/mypage/updateCustomer", { state: { customerData } })
+        navigate("/mypage/updateCustomer", { state: { customerData } })
     }
 
     return (
@@ -66,7 +66,7 @@ function MypageComponent() {
                         </div>
                     </div>
                 ) : (
-                    <div className="login-signup-prompt" onClick={() => navigate("/eDrink24/login")} >
+                    <div className="login-signup-prompt" onClick={() => navigate("/login")} >
                         <div className="prompt-text">
                             <p><strong>로그인, 회원가입 하러가기!</strong></p>
                             <p>3초면돼요, 더 편리한 서비스를 이용하세요</p>
@@ -92,7 +92,7 @@ function MypageComponent() {
                         <span>찜</span>
                     </div>
                     <div className="icon-item">
-                        <img src="assets/mypage/basket.png" alt="장바구니" onClick={() => { navigate('/eDrink24/basket') }} />
+                        <img src="assets/mypage/basket.png" alt="장바구니" onClick={() => { navigate('/basket') }} />
                         <span>장바구니</span>
                     </div>
                 </div>
@@ -135,7 +135,7 @@ function MypageComponent() {
                                     </div>
                                 </>
                                 :
-                                <div className="icon-item2" onClick={() => navigate("/eDrink24/login")}>
+                                <div className="icon-item2" onClick={() => navigate("/login")}>
                                     <img src="assets/mypage/로그아웃.png" alt="로그아웃" />
                                     <span>로그인</span>
                                 </div>

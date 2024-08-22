@@ -22,7 +22,7 @@ function LoginComponent() {
     };
 
     const handleDirectNormalSignup = () => {
-        navigate("/eDrink24/signup");
+        navigate("/signup");
     }
 
     // ********************************************************
@@ -81,7 +81,7 @@ function LoginComponent() {
                     onRequestClose={closeAlert}
                     message={alertMessage}
                     navigateOnClose={navigateOnClose}
-                    navigateClosePath={"/eDrink24"}
+                    navigateClosePath={"/"}
                 />
                 <FindIdModal
                     isOpen={openFindId}
@@ -93,7 +93,7 @@ function LoginComponent() {
                 />
                 <div className='login-header'>
                     <img src="assets/common/eDrinkLogo.png" alt="emart24 로고" />
-                    <button className="close-button" onClick={() => { navigate("/eDrink24") }}>
+                    <button className="close-button" onClick={() => { navigate("/") }}>
                         <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
                     </button>
                 </div>

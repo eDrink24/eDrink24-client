@@ -52,15 +52,15 @@ function HomeComponent() {
     );
 
     const handleDirectHome = () => {
-        navigate("/eDrink24");
+        navigate("/");
     };
 
     const handleDirectCategory = () => {
-        navigate("/eDrink24/category");
+        navigate("/category");
     };
 
     const handleDirectAllproduct = () => {
-        navigate(`/eDrink24/allproduct/${category1}`);
+        navigate(`/allproduct/${category1}`);
     };
 
     return (

@@ -141,7 +141,7 @@ function ListToBasketComponent() {
             reservationPickup: selectedReservationPickupBaskets
         }));
 
-        navigate(`/eDrink24/order`);
+        navigate(`/order`);
     };
 
     // 오늘픽업/예약픽업 전체 선택/해제 기능
@@ -346,7 +346,7 @@ function ListToBasketComponent() {
                         <img className="back-icon" src="assets/common/backicon.png" alt="back" />
                     </button>
                     <h3>장바구니</h3>
-                    <button className="basket-home" onClick={() => { navigate("/eDrink24") }}>
+                    <button className="basket-home" onClick={() => { navigate("/") }}>
                         <img className="history-icon" src="assets/common/home.png" alt="home" />
                     </button>
                 </div>
@@ -438,7 +438,7 @@ function ListToBasketComponent() {
                     {/* 매장보여주기 */}
                     <div className="basket-set-location">
                         {storeData && <span className='basket-storeName'><img src='assets/common/location_on.png' alt='location' /> {storeData.storeName}</span>}
-                        <button className='basket-set-location-btn' onClick={() => navigate("/eDrink24/myplace_store")} >다른 매장 선택하기</button>
+                        <button className='basket-set-location-btn' onClick={() => navigate("/myplace_store")} >다른 매장 선택하기</button>
                     </div>
                 </div>
             </div>
