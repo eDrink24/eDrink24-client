@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 function OrderComponent() {
     const [basket, setBasket] = useRecoilState(basketState);
     const [orderInfo, setOrderInfo] = useRecoilState(orderState);
-     const [orderResult, setOrderResult] = useState({ coupon: null, paymentMethod: '' }); //pkh
+    const [orderResult, setOrderResult] = useState({ coupon: null, paymentMethod: '' }); //pkh
     const [productDetailsMap, setProductDetailsMap] = useState(new Map());
     const [basketItemsList, setBasketItemsList] = useState([]);
     const [coupon, setCoupon] = useState(null); // 선택된 쿠폰 상태
@@ -176,94 +176,7 @@ function OrderComponent() {
         console.log("Selected Coupon:", couponItem);
     };
 
-    // // 결제 처리 함수
-    // const handleCheckout = async () => {
-    //     if (!userId) {
-    //         alert('User ID is missing.');
-    //         return;
-    //     }
 
-    //     console.log('User ID:', userId);
-    //     const orderTransactionDTO = basketItemsList.map(item => {
-    //         const orderDate = new Date();
-    //         orderDate.setHours(orderDate.getHours() + 9); // UTC 기준시간이라서 한국 표준시로 바꿔줄려면 9시간 더해줘야함.
-    //         const pickupType = (orderInfo.pickupType === "TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION');
-    //         const pickupDate = new Date(orderDate);
-    //         const orderAmount = finalAmount;
-    //         const pointAmount = pointsToUse;
-    //         const couponId = coupon ? coupon.couponId : null; // 선택된 쿠폰 ID 가져오기
-
-
-    //         if (pickupType === 'TODAY') {
-    //             pickupDate.setDate(orderDate.getDate() + 1);
-    //         } else {
-    //             pickupDate.setDate(orderDate.getDate() + 5);
-    //         }
-
-    //         return {
-    //             storeId,
-    //             userId,
-    //             basketId: item.basketId,
-    //             productId: item.productId,
-    //             orderDate: orderDate.toISOString(),
-    //             pickupDate: pickupDate.toISOString(),
-    //             isCompleted: 'FALSE',
-    //             orderStatus: 'ORDERED',
-    //             orderQuantity: item.basketQuantity,
-    //             pickupType: pickupType,
-    //             price: productDetailsMap.get(item.productId)?.price || 0,
-    //             changeStatus: 'ORDERED',
-    //             changeDate: orderDate.toISOString(),
-    //             orderAmount: orderAmount,
-    //             addedPoint: addedPoint,
-    //             pointAmount: pointAmount,
-    //             totalPoint: totalPoint,
-    //             couponId: couponId
-    //         };
-    //     });
-
-    //     try {
-    //         // 주문 저장 및 주문 내역 저장
-    //         const orderResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/buyProductAndSaveHistory`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(orderTransactionDTO),
-    //         });
-
-    //         if (!orderResponse.ok) {
-    //             const errorText = await orderResponse.text();
-    //             throw new Error(`Error processing purchase: ${errorText}`);
-    //         }
-    //         navigate("/eDrink24");
-    //         console.log('Order and history saved successfully');
-
-
-    //         // 장바구니와 장바구니 아이템 삭제
-    //         const deleteResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
-    //             method: 'DELETE',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(orderTransactionDTO),
-    //         });
-
-    //         console.log(orderTransactionDTO);
-
-    //         if (deleteResponse.ok) {
-    //             console.log('Basket and items deleted successfully');
-    //             console.log(`deleted Items:`, deleteResponse.data);
-    //         } else {
-    //             const errorText = await deleteResponse.text();
-    //             throw new Error(`Error processing deletion: ${errorText}`);
-    //         }
-
-    //     } catch (error) {
-    //         console.error('Error processing purchase:', error);
-    //         alert(`Error processing purchase: ${error.message}`);
-    //     }
-    // };   
     const handleCheckout = async () => {
         if (!userId) {
             alert('User ID is missing.');

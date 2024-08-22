@@ -14,15 +14,15 @@ function HomeComponent() {
 
     // 버튼 클릭 핸들러 함수
     const handleDirectHome = () => {
-        navigate("/eDrink24");
+        navigate("/");
     };
 
     const handleDirectCategory = () => {
-        navigate("/eDrink24/category");
+        navigate("/category");
     };
 
     const handleDirectAllproduct = () => {
-        navigate(`/eDrink24/allproduct/${category1}`);
+        navigate(`/allproduct/${category1}`);
     };
 
     return (
@@ -33,17 +33,17 @@ function HomeComponent() {
                 {/* 로고 이미지 */}
                 <img className="homePage-logo" src="assets/common/eDrinkLogo.png" alt=" " />
 
-            <div className="homePage-icon-content">
-                {/* 벨 아이콘 */}
-                <button className="homePage-bell-button">
-                    <img className="homePage-bell-icon" src="assets/common/bell.png" alt=" " />
-                </button>
+                <div className="homePage-icon-content">
+                    {/* 벨 아이콘 */}
+                    <button className="homePage-bell-button">
+                        <img className="homePage-bell-icon" src="assets/common/bell.png" alt=" " />
+                    </button>
 
-                {/* 장바구니 아이콘 */}
-                <button className="homePage-basket-button" aria-label="Notifications">
-                    <img className="homePage-basket-icon" src="assets/common/bag.png" alt=" " onClick={() => navigate("/eDrink24/basket")} />
-                </button>
-            </div>
+                    {/* 장바구니 아이콘 */}
+                    <button className="homePage-basket-button" aria-label="Notifications">
+                        <img className="homePage-basket-icon" src="assets/common/bag.png" alt=" " onClick={() => navigate("/basket")} />
+                    </button>
+                </div>
             </div>
 
             <div className="home-container">

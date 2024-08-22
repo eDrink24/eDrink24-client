@@ -85,7 +85,7 @@ function UpdateCustomerComponent() {
 
     useEffect(() => {
         if (!alertOpen && navigationClose) {
-            navigate("/eDrink24/mypage");
+            navigate("/mypage");
         }
     }, [alertOpen, navigationClose, navigate]);
     // ***********************************************************
@@ -155,7 +155,7 @@ function UpdateCustomerComponent() {
                 onRequestClose={closeAlert}
                 message={alertMessage}
                 navigateOnClose={navigationClose}
-                navigateOnClosePath="/eDrink24/mypage" // 경로를 지정합니다.
+                navigateOnClosePath="/mypage" // 경로를 지정합니다.
             />
             <div className='updateCustomer-header'>
                 <h1>회원정보수정</h1>

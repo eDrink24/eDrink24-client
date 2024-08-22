@@ -6,7 +6,7 @@ const ProtectedRoute = () => {
 
     if (!token) {
         alert("로그인이 필요한 서비스입니다.")
-        return <Navigate to="/eDrink24/login" replace />
+        return <Navigate to="/login" replace />
     }
 
     return <Outlet />;

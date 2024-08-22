@@ -62,7 +62,7 @@ function MyPlaceComponent() {
     };
 
     const navigateSetLocation = () => {
-        navigate("/eDrink24/myplace_store", { state: { customerData } });
+        navigate("/myplace_store", { state: { customerData } });
     }
 
     return (
@@ -76,7 +76,7 @@ function MyPlaceComponent() {
                         <p className="home-place-text">{customerData.currentLocation}</p>
                     </div>
                 ) : (
-                    <div className="logout-myhome-address-info" onClick={() => navigate("/eDrink24/login")}>
+                    <div className="logout-myhome-address-info" onClick={() => navigate("/login")}>
                         <img className="placeIcon" src="assets/common/place.png" alt="place-icon" />
                         <p className="home-place-text">로그인이 필요합니다.</p>
                     </div>
@@ -98,7 +98,7 @@ function MyPlaceComponent() {
                         </p>
                     </div>
                 ) : (
-                    <div className="logout-pickup-address-info" onClick={() => navigate("/eDrink24/login")}>
+                    <div className="logout-pickup-address-info" onClick={() => navigate("/login")}>
                         <span className='home-place-text1'>픽업매장</span>
                         <p className="home-place-text">
                             <span className="home-place-text2">이마트24</span>

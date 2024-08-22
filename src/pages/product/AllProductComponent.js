@@ -18,10 +18,10 @@ const LikeButton = () => {
 
     return (
         <button className="allproduct-like-button" onClick={handleClick}>
-            <img 
-                className="allproduct-like-icon" 
-                src={liked ? "assets/common/fill-heart.png" : "assets/common/empty-heart.png"} 
-                alt="Like Icon" 
+            <img
+                className="allproduct-like-icon"
+                src={liked ? "assets/common/fill-heart.png" : "assets/common/empty-heart.png"}
+                alt="Like Icon"
             />
         </button>
     );
@@ -119,12 +119,12 @@ const AllProductComponent = () => {
     // 카테고리 버튼 클릭 처리
     const handleCategory1Click = (category1) => {
         setSelectedCategory(category1);
-        navigate(`/eDrink24/allproduct/${category1}`);
+        navigate(`/allproduct/${category1}`);
     };
 
     // 홈으로 이동
     const returnHome = () => {
-        navigate(`/eDrink24`);
+        navigate(`/`);
     };
 
     // 제품 클릭 시 상세 페이지로 이동
@@ -133,7 +133,7 @@ const AllProductComponent = () => {
         if (clickedProduct) {
             setProduct(clickedProduct);
             const category2 = clickedProduct.category2;
-            navigate(`/eDrink24/allproduct/${selectedCategory}/${category2}/${productId}`);
+            navigate(`/allproduct/${selectedCategory}/${category2}/${productId}`);
         } else {
             console.error('제품을 찾지 못했습니다.');
         }
@@ -218,13 +218,13 @@ const AllProductComponent = () => {
     // 장바구니 페이지로 이동
     const goToBasketPage = () => {
         setModalIsOpen(false);
-        navigate('/eDrink24/basket');
+        navigate('/basket');
     };
 
     // 현재 페이지에 머무름
     const stayOnPage = () => {
         setModalIsOpen(false);
-        navigate(`/eDrink24/allproduct/${category1}`);
+        navigate(`/allproduct/${category1}`);
     };
 
     // 카테고리-필터 바 가로 스크롤(=드래그) 기능
@@ -233,19 +233,19 @@ const AllProductComponent = () => {
         let isDown = false;
         let startX;
         let scrollLeft;
-    
+
         const handleMouseDown = (e) => {
             isDown = true;
             slider.classList.add('active');
             startX = e.pageX - slider.offsetLeft;
             scrollLeft = slider.scrollLeft;
         };
-    
+
         const handleMouseLeaveOrUp = () => {
             isDown = false;
             slider.classList.remove('active');
         };
-    
+
         const handleMouseMove = (e) => {
             if (!isDown) return;
             e.preventDefault();
@@ -253,12 +253,12 @@ const AllProductComponent = () => {
             const walk = (x - startX) * 2; // 드래그 속도 조절
             slider.scrollLeft = scrollLeft - walk;
         };
-    
+
         slider.addEventListener('mousedown', handleMouseDown);
         slider.addEventListener('mouseleave', handleMouseLeaveOrUp);
         slider.addEventListener('mouseup', handleMouseLeaveOrUp);
         slider.addEventListener('mousemove', handleMouseMove);
-    
+
         // 클린업 함수
         return () => {
             slider.removeEventListener('mousedown', handleMouseDown);
@@ -281,7 +281,7 @@ const AllProductComponent = () => {
                 <img className="allproduct-logo" src="assets/common/eDrinkLogo.png" alt=" " />
 
                 {/* 장바구니 아이콘 */}
-                <button className="allproduct-bag-button" onClick={() => { navigate('/eDrink24/basket') }}>
+                <button className="allproduct-bag-button" onClick={() => { navigate('/basket') }}>
                     <img className="allproduct-bag-icon" src="assets/common/bag.png" alt=" " />
                 </button>
             </div>
@@ -324,7 +324,7 @@ const AllProductComponent = () => {
 
                     <div className="allproduct-dropdown-box">
                         <select onChange={handleSortEvent}>
-{/*                           <option value="신상품순">신상품순</option>
+                            {/*                           <option value="신상품순">신상품순</option>
                             <option value="판매량순">판매량순</option>
                             <option value="평점순">평점순</option>
                             <option value="리뷰순">리뷰순</option> */}
@@ -354,25 +354,25 @@ const AllProductComponent = () => {
 
                         <div className="allproduct-icon-button">
                             <div className="allproduct-review">
-                            {/* 장바구니 버튼을 CartButton 컴포넌트로 변경 */}
-                            <ReviewButton
-                                onClick={() => console.log(`Reviewed product with ID: ${product.productId}`)}
-                            />
+                                {/* 장바구니 버튼을 CartButton 컴포넌트로 변경 */}
+                                <ReviewButton
+                                    onClick={() => console.log(`Reviewed product with ID: ${product.productId}`)}
+                                />
                             </div>
 
                             <div className="allproduct-button">
-                            {/* 오늘픽업 아이콘 */}
-                            <div className="allproduct-product-tag-container">
-                                {invToStore.some(inv =>
-                                    inv.productId === product.productId && inv.quantity > 0) ? (
-                                    <div className="allproduct-product-tag">오늘픽업</div>
-                                ) : (
-                                    <div className="allproduct-product-tag-placeholder"></div> // 빈 공간을 위한 placeholder
-                                )}
+                                {/* 오늘픽업 아이콘 */}
+                                <div className="allproduct-product-tag-container">
+                                    {invToStore.some(inv =>
+                                        inv.productId === product.productId && inv.quantity > 0) ? (
+                                        <div className="allproduct-product-tag">오늘픽업</div>
+                                    ) : (
+                                        <div className="allproduct-product-tag-placeholder"></div> // 빈 공간을 위한 placeholder
+                                    )}
+                                </div>
+                                <LikeButton onClick={() => handleLikeClick(product.productId)} />
+                                <CartButton onClick={saveInBasket} productId={product.productId} />
                             </div>
-                            <LikeButton onClick={() => handleLikeClick(product.productId)} />
-                            <CartButton onClick={saveInBasket} productId={product.productId} />
-                        </div>
                         </div>
                     </div>
                 ))}

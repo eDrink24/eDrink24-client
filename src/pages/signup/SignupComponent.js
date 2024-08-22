@@ -60,15 +60,15 @@ function SignupComponent() {
     }
 
     // **********************************************************************
-    const [alertOpen, setAlertOpen] = useState(false); 
-    const [alertMessage, setAlertMessage] = useState(""); 
-    const [navigateOnClose, setNavigateOnClose] = useState(false); 
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [navigateOnClose, setNavigateOnClose] = useState(false);
 
     // 알림창 열기
     const openAlert = (message, navigateOnClose = false) => {
         setAlertMessage(message);
         setAlertOpen(true);
-        setNavigateOnClose(navigateOnClose); 
+        setNavigateOnClose(navigateOnClose);
     }
 
     // 알림창 닫기
@@ -79,7 +79,7 @@ function SignupComponent() {
     // 알림창 닫힐 때 navigate 호출
     useEffect(() => {
         if (!alertOpen && navigateOnClose) {
-            navigate("/eDrink24/login");
+            navigate("/login");
         }
     }, [alertOpen, navigateOnClose, navigate]);
 
@@ -274,7 +274,7 @@ function SignupComponent() {
         <div className="signup-container">
             <div className='signup-header'>
                 <h1>회원가입</h1>
-                <button className="close-button" onClick={() => window.location.href = "/eDrink24/login"}>
+                <button className="close-button" onClick={() => window.location.href = "/login"}>
                     <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
                 </button>
             </div>
@@ -393,7 +393,7 @@ function SignupComponent() {
                 onRequestClose={closeAlert}
                 message={alertMessage}
                 navigateOnClose={navigateOnClose}
-                navigateOnClosePath="/eDrink24/login" 
+                navigateOnClosePath="/login"
             />
         </div>
     );

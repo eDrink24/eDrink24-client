@@ -55,7 +55,7 @@ function KakaoSignupHandler() {
     const changeHandler = (e) => {
         setDetailAddress(e.target.value);
     }
-    
+
     // 비밀번호 일치 여부 확인
     useEffect(() => {
         setPwMatch(pw === pwConfirm);
@@ -69,15 +69,15 @@ function KakaoSignupHandler() {
     }, []);
 
     // 알림창-------------------------------------------------------------------
-    const [alertOpen, setAlertOpen] = useState(false); 
-    const [alertMessage, setAlertMessage] = useState(""); 
-    const [navigateOnClose, setNavigateOnClose] = useState(false); 
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [navigateOnClose, setNavigateOnClose] = useState(false);
 
     // 알림창 열기
     const openAlert = (message, navigateOnClose = false) => {
         setAlertMessage(message);
         setAlertOpen(true);
-        setNavigateOnClose(navigateOnClose); 
+        setNavigateOnClose(navigateOnClose);
     }
 
     // 알림창 닫기
@@ -87,7 +87,7 @@ function KakaoSignupHandler() {
 
     useEffect(() => {
         if (!alertOpen && navigateOnClose) {
-            navigate("/eDrink24/login");
+            navigate("/login");
         }
     }, [alertOpen, navigateOnClose, navigate]);
     // -------------------------------------------------------------------------
@@ -117,15 +117,15 @@ function KakaoSignupHandler() {
 
             if (response.ok) {
                 setIsOpenVerification(true);
-                setIsVerificated(false); 
-                setTimer(180); 
+                setIsVerificated(false);
+                setTimer(180);
 
                 // 타이머
                 const interval = setInterval(() => {
                     setTimer((prevTimer) => {
                         if (prevTimer <= 1) {
                             clearInterval(interval);
-                            setIsOpenVerification(false); 
+                            setIsOpenVerification(false);
                             return 0;
                         }
                         return prevTimer - 1;
@@ -214,15 +214,15 @@ function KakaoSignupHandler() {
                 address1: dataForm[5].value,
                 address2: dataForm[6].value,
                 gender: gender,
-                linkedId : cusData.linkedId
+                linkedId: cusData.linkedId
             };
 
             console.log(cusData);
             console.log(cusData.linkedId);
 
             const response = await fetch("http://localhost:8090/eDrink24/signup", {
-                method : 'POST',
-                headers : {
+                method: 'POST',
+                headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(sendData)
@@ -252,7 +252,7 @@ function KakaoSignupHandler() {
                     localStorage.setItem('loginId', loginData.loginId);
                     localStorage.setItem('userId', userId);
 
-                    openAlert("회원가입 및 로그인 성공", true, "/eDrink24");
+                    openAlert("회원가입 및 로그인 성공", true, "/");
                 } else {
                     openAlert("회원가입은 성공했으나, 로그인 중 오류 발생");
                 }
@@ -267,7 +267,7 @@ function KakaoSignupHandler() {
         <div className="signup-container">
             <div className='signup-header'>
                 <h1>추가정보입력</h1>
-                <button className="close-button" onClick={() => window.location.href = "/eDrink24/login"}>
+                <button className="close-button" onClick={() => window.location.href = "/login"}>
                     <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
                 </button>
             </div>
@@ -350,7 +350,7 @@ function KakaoSignupHandler() {
                 onRequestClose={closeAlert}
                 message={alertMessage}
                 navigateOnClose={navigateOnClose}
-                navigateClosePath="/eDrink24/login" 
+                navigateClosePath="/login"
             />
         </div>
     );

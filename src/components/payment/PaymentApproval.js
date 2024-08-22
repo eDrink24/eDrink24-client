@@ -73,7 +73,7 @@ function PaymentApproval() {
         localStorage.removeItem("selectedBaskets");
         localStorage.removeItem("orderTransactionDTO");
         localStorage.removeItem("tid");
-        navigate("/eDrink24");
+        navigate("/");
     }
 
     return (

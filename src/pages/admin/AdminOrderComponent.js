@@ -19,7 +19,7 @@ const AdminOrderComponent = () => {
 
     // 카테고리가 변경될 때마다 호출
     useEffect(() => {
-        if (selectedCategory)    
+        if (selectedCategory)
             selectCategory1(selectedCategory);
     }, [selectedCategory]);
 
@@ -39,10 +39,10 @@ const AdminOrderComponent = () => {
 
             // 관리자 발주 목록 초기화
             const newAdminOrderList = resData.map(product => ({
-                storeId: 1, 
+                storeId: 1,
                 productId: product.productId,
                 InventoryQuantity: 0,
-                productName: product.productName                
+                productName: product.productName
             }));
 
             setAdminOrderList(newAdminOrderList);
@@ -159,7 +159,7 @@ const AdminOrderComponent = () => {
 
     // 홈으로 돌아가기 함수
     const returnHome = () => {
-        navigate(`/eDrink24`);
+        navigate(`/`);
     }
 
     // 검색 입력 핸들러
@@ -183,7 +183,7 @@ const AdminOrderComponent = () => {
                         <img src="assets/common/emart24_logo.png" alt="eMart24" className="adminorder-allproduct-nav-logo" />
                     </div>
                     <button className="adminorder-allproduct-cart-button">
-                        <img src="assets/common/cartIcon.png" alt="Cart" className="adminorder-allproduct-nav-cicon" onClick={() => { navigate('/eDrink24/basket') }} />
+                        <img src="assets/common/cartIcon.png" alt="Cart" className="adminorder-allproduct-nav-cicon" onClick={() => { navigate('/basket') }} />
                     </button>
                 </div>
             </div>
