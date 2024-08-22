@@ -99,7 +99,7 @@ function OrderHistoryDetailsComponent() {
                                         <td>{item.price.toLocaleString()} 원</td>
                                         <td>{item.orderQuantity || 0}</td>
                                         <td>{item.pickupType === 'TODAY' ? '오늘 픽업' : '예약 픽업'}</td>
-                                        <td>{item.isCompleted === 1 ? '완료' : '미완료'}</td>
+                                        <td>{item.isCompleted == 1 ? '완료' : '미완료'}</td>
                                         <td>{item.storeName}</td>
                                         <td>{item.pickupDate}</td>
                                     </tr>
