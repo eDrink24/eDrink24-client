@@ -39,35 +39,24 @@
     z-index: 1;
   }
   
-  /* 캐러셀 버튼 스타일 */
-  .carousel-button {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: background-color 0.3s;
-    border-radius: 50%;
-    z-index: 2; /* 버튼을 이미지 위에 표시 */
-  }
-  
-  .carousel-button:hover {
-    background-color: rgba(0, 0, 0, 0.7); /* 버튼에 커서를 가져가면 색상이 변함을 설정 */
-  }
-  
   /* 슬라이드 인디케이터 스타일 */
   .carousel-indicator {
     position: absolute;
-    bottom: 10px;
-    left: 87%;
-    /*transform: translateX(-50%);*/
-    background-color: rgba(0, 0, 0, 0.5);
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
     color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
     font-size: 12px;
-    pointer-events: none;
-    z-index: 2; /* 인디케이터를 이미지 위에 표시 */
+    z-index: 2;
+    padding: 5px 0;
+  /*  pointer-events: none; */
+  }
+
+  .carousel-indicator button {
+    width: 24px;
+    height: 24px;
+    background: none;
+    color: white;
+    border: none;
   }
   
