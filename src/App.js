@@ -32,9 +32,9 @@ import TodayPickupCompletedPageComponent from './pages/admin/TodayPickupComplete
 import PaymentApproval from './components/payment/PaymentApproval';
 import PaymentCancelOrFail from './components/payment/PaymentCancelOrFail';
 import OrderHistoryComponent from './pages/order/OrderHistoryComponent';
+import ReviewComponent from './pages/review/ReviewComponent';
+import CheckMyReviewComponent from './pages/review/CheckMyReviewComponent';
 import OrderHistoryDetailsComponent from './pages/order/OrderHistoryDetailsComponent';
-
-
 
 // test yoon
 const router = createBrowserRouter([
@@ -71,6 +71,12 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin', element: <AdminComponent />
+      },
+      {
+        path: '/review', element: <ReviewComponent />
+      },
+      {
+        path: '/checkMyReview', element: <CheckMyReviewComponent />
       },
       {
         path: '/todayPickup', element: <ShowTodayPickupPageComponent />
