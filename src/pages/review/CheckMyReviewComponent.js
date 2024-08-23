@@ -51,7 +51,7 @@ const CheckMyReviewComponent = () => {
             alert("리뷰가 수정되었습니다!!");
             // 수정 모드 종료
             setIsEditing(false);
-            navigate(`/eDrink24/orderhistory`);
+            navigate(`/orderhistory`);
 
         } catch (error) {
             console.error("Error fetching updateReviews:", error);

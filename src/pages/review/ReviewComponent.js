@@ -42,7 +42,7 @@ const ReviewComponent = () => {
             });
             if (response.ok) {
                 alert('리뷰가 성공적으로 저장되었습니다.');
-                navigate('/eDrink24/orderHistory');
+                navigate('/orderHistory');
                 
             }else{
                 alert('물건 픽업 후 다시 시도해주세요.');
