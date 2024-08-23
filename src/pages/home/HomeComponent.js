@@ -46,10 +46,10 @@ function HomeComponent() {
         fetchInvByStoreId();
     }, []);
 
-    // // "오늘 픽업" 제품 필터링
-    // const todayPickupProducts = products.filter(product =>
-    //     invToStore.some(inv => inv.productId === product.productId && inv.quantity > 0)
-    // );
+    // "오늘 픽업" 제품 필터링
+    const todayPickupProducts = products.filter(product =>
+        invToStore.some(inv => inv.productId === product.productId && inv.quantity > 0)
+    );
 
     const handleDirectHome = () => {
         navigate("/");
@@ -107,7 +107,7 @@ function HomeComponent() {
                         <a href="#" className='more-button'>더보기 {">"}</a>
                     </div>
                     <div className="ProductCard">
-                        {/* <ProductCardComponent products={todayPickupProducts.slice(0, 6)} /> */}
+                        <ProductCardComponent products={todayPickupProducts.slice(0, 6)} />
                     </div>
                 </div>
 
@@ -118,7 +118,7 @@ function HomeComponent() {
                         <a href="#" className='more-button'>더보기 {">"}</a>
                     </div>
                     <div className="ProductCard2">
-                        {/* <OtherProductCardComponent products={products.slice(0, 9)} /> */}
+                        <OtherProductCardComponent products={products.slice(0, 9)} />
                     </div>
                 </div>
             </div>

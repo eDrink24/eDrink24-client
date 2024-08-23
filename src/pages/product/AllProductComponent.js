@@ -37,8 +37,6 @@ const ReviewButton = ({ onClick }) => {
     return (
         <button className="allproduct-review-button" onClick={handleClick}>
             <img className="allproduct-review-icon" src="assets/common/star.png" alt=" " />
-            <span className="allproduct-review-rating">4.6</span> {/* 평점 표시 */}
-            <span className="allproduct-review-count">123</span> {/* 리뷰 갯수 표시 */}
         </button>
     );
 };
@@ -71,6 +69,8 @@ const AllProductComponent = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 상태
     const [quantity] = useState(1); // 장바구니에 추가할 수량
     const [product, setProduct] = useState(null); // 선택된 제품 상태
+    const [reviewCount, setReviewCount] = useState(0);
+    const [reviewRating, setReviewRating] = useState(0);
 
     useEffect(() => {
         if (category1) {
@@ -91,6 +91,7 @@ const AllProductComponent = () => {
 
             const resData = await response.json();
             setProducts(resData);
+            console.log(">>>>>>>>",resData);
 
             if (productId) {
                 const foundProduct = resData.find(prod => prod.productId === parseInt(productId));
@@ -324,7 +325,7 @@ const AllProductComponent = () => {
 
                     <div className="allproduct-dropdown-box">
                         <select onChange={handleSortEvent}>
-                            {/*                           <option value="신상품순">신상품순</option>
+                        {/*<option value="신상품순">신상품순</option>
                             <option value="판매량순">판매량순</option>
                             <option value="평점순">평점순</option>
                             <option value="리뷰순">리뷰순</option> */}
@@ -350,6 +351,7 @@ const AllProductComponent = () => {
                             <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
                             <div className="allproduct-product-name">{product.productName}</div>
                             <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
+                            <div className="allproduct-product-rating">{product.rating}</div>
                         </div>
 
                         <div className="allproduct-icon-button">
