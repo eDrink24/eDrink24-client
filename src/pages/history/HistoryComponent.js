@@ -5,9 +5,9 @@ import './HistoryComponent.css';
 
 function HistoryComponent() {
     const navigate = useNavigate();
-    
+
     // 로그인 상태와 고객 데이터를 관리하는 상태
-    const [isLoggedIn, setIsLoggedIn] = useState(false); 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [customerData, setCustomerData] = useState(null);
     const [orderHistory, setOrderHistory] = useState([]); // 주문 내역을 저장하는 상태
     const [productDetailsMap, setProductDetailsMap] = useState(new Map()); // 제품 세부 정보를 저장하는 상태
@@ -50,7 +50,7 @@ function HistoryComponent() {
     const fetchOrderHistory = async (userId) => {
         try {
             const response = await fetch(`http://localhost:8090/eDrink24/getOrderHistory/${userId}`, { // userId 사용
-                method: 'GET', 
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 }
@@ -98,7 +98,7 @@ function HistoryComponent() {
 
     // 고객 정보 수정 페이지로 이동하는 함수
     const navigateUpdateCustomer = () => {
-        navigate("/eDrink24/mypage/updateCustomer", { state: { customerData } });
+        navigate("/mypage/updateCustomer", { state: { customerData } });
     };
 
     return (
@@ -122,7 +122,7 @@ function HistoryComponent() {
                     )}{')'}</h3>
 
                 {/* 장바구니 아이콘 */}
-                <button className="history-bag" onClick={() => { navigate('/eDrink24/basket') }}>
+                <button className="history-bag" onClick={() => { navigate('/basket') }}>
                     <img className="history-cicon" src="assets/common/bag.png" alt="bag" />
                 </button>
 
@@ -137,7 +137,7 @@ function HistoryComponent() {
                             {/* 구매일자 표시 */}
                             <div className="history-container-top">
                                 <span><strong>구매일자:</strong> {order.orderDate}</span>
-                                <a href="#" className="more-button">상세보기&gt;</a> 
+                                <a href="#" className="more-button">상세보기&gt;</a>
                                 {/* 1. 수정 필요: '상세보기' 버튼의 href 속성에 올바른 링크 추가 */}
                             </div>
 
@@ -153,7 +153,7 @@ function HistoryComponent() {
                                         <div className="history-item-content">
                                             <div className="history-item-name"><strong>상품명:</strong> {productDetails?.productName || '상품명 없음'}</div>
                                             <div className="history-item-quantity"><strong>수량:</strong> {item.orderQuantity}개</div>
-                                            <div className="history-item-total-amount"><strong>총 금액:</strong> {productDetails?.price?.toLocaleString() || '가격 정보 없음'} 원</div> 
+                                            <div className="history-item-total-amount"><strong>총 금액:</strong> {productDetails?.price?.toLocaleString() || '가격 정보 없음'} 원</div>
                                             {/* 3. 수정 필요: 가격 형식 및 계산이 정확한지 확인 */}
                                         </div>
                                     </div>
@@ -162,14 +162,14 @@ function HistoryComponent() {
 
                             {/* 리뷰작성 버튼 */}
                             <div className="history-review-button">
-                                <button>리뷰작성</button> 
+                                <button>리뷰작성</button>
                                 {/* 4. 수정 필요: '리뷰작성' 버튼에 올바른 링크 추가 */}
                             </div>
 
                         </div>
                     ))
                 ) : (
-                    <p className="history-no-orders">주문내역이 없습니다.</p> 
+                    <p className="history-no-orders">주문내역이 없습니다.</p>
                 )}
             </div>
 

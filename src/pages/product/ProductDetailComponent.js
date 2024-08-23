@@ -10,7 +10,7 @@ function ProductDetailComponent() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description'); // 초기 탭을 'description'으로 설정
-  const {category1,category2} = useParams();
+  const { category1, category2 } = useParams();
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ function ProductDetailComponent() {
       console.error('Error fetching product:', error);
     }
   };
-  
+
   if (!product) {
     return <div>Loading...</div>;
   }
@@ -106,44 +106,44 @@ function ProductDetailComponent() {
   // 장바구니 버튼 클릭 후 모달창에서 예 누르면 장바구니 페이지로 이동
   const goToBasketPage = () => {
     setModalIsOpen(false);
-    navigate('/eDrink24/basket');
+    navigate('/basket');
   };
 
   // 장바구니 버튼 클릭 후 모달창에서 아니요 누르면 제품목록 페이지로 이동
   const stayOnPage = () => {
     setModalIsOpen(false);
-    navigate(`/eDrink24/allproduct/${category1}`);
+    navigate(`/allproduct/${category1}`);
   };
 
   //바로구매 버튼 클릭 시 결제페이지로 이동
   const moveToOrderPage = async () => {
-    try{
+    try {
       const storeId = localStorage.getItem("currentStoreId");
 
-        const selectedItem = {
-          productId: product.productId,
-          productName: product.productName,
-          price: product.price,
-          basketQuantity: quantity,
-          defaultImage: product.defaultImage,
-        };
+      const selectedItem = {
+        productId: product.productId,
+        productName: product.productName,
+        price: product.price,
+        basketQuantity: quantity,
+        defaultImage: product.defaultImage,
+      };
 
-        // checkInventory함수 이용해서 productId 존재 시 픽업 유형 TODAY로 설정 - giuk-kim2
-        const pickupType = (await checkInventory(productId)) ? 'TODAY' : 'RESERVATION';
-        console.log(await checkInventory(productId));
-        console.log(pickupType);
+      // checkInventory함수 이용해서 productId 존재 시 픽업 유형 TODAY로 설정 - giuk-kim2
+      const pickupType = (await checkInventory(productId)) ? 'TODAY' : 'RESERVATION';
+      console.log(await checkInventory(productId));
+      console.log(pickupType);
 
 
-        //선택한 제품 정보를 orderState에 저장
-        setOrderInfo((prev) => ({ // prev는 현재 상태에서 일부분만 수정하고 나머지는 유지하고 싶을 때 사용
-          ...prev, // 기존 상태 객체를 펼쳐서 복사하고, 복사된 값에서 특정한 값만 수정
-          selectedItems: [selectedItem],
-          pickupType // orderstate에 Recoil형태로 저장    
-        }));
+      //선택한 제품 정보를 orderState에 저장
+      setOrderInfo((prev) => ({ // prev는 현재 상태에서 일부분만 수정하고 나머지는 유지하고 싶을 때 사용
+        ...prev, // 기존 상태 객체를 펼쳐서 복사하고, 복사된 값에서 특정한 값만 수정
+        selectedItems: [selectedItem],
+        pickupType // orderstate에 Recoil형태로 저장    
+      }));
 
-    navigate(`/eDrink24/order`);
+      navigate(`/order`);
 
-  } catch(error){
+    } catch (error) {
       console.error("Error during moving to order page:", error);
       alert("There was an error while checking the inventory.");
     }
@@ -188,13 +188,13 @@ function ProductDetailComponent() {
           </button>
 
           {/* 홈으로가기 아이콘 */}
-          <button className="productDetailComponent-home-icon-button" onClick={() => { navigate("/eDrink24") }}>
+          <button className="productDetailComponent-home-icon-button" onClick={() => { navigate("/") }}>
             <img className="productDetailComponent-nav-home-icon"
               src="assets/common/home.png" alt="home" />
           </button>
 
           {/* 장바구니담기 아이콘 */}
-          <button className="productDetailComponent-bag-icon-button" onClick={() => { navigate("/eDrink24/basket") }}>
+          <button className="productDetailComponent-bag-icon-button" onClick={() => { navigate("/basket") }}>
             <img className="productDetailComponent-nav-bag-icon"
               src="assets/common/bag.png" alt="bag" />
           </button>

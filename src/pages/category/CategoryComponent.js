@@ -16,76 +16,76 @@ const CategoryComponent = () => {
   const navigate = useNavigate();
 
   const handleCategory1Click = (category1) => {
-    navigate(`/eDrink24/allproduct/${category1}`);
+    navigate(`/allproduct/${category1}`);
   }
 
-  const handleCategory2Click = (category1,category2) => {
-    navigate(`/eDrink24/allproduct/${category1}/${category2}`);
+  const handleCategory2Click = (category1, category2) => {
+    navigate(`/allproduct/${category1}/${category2}`);
   };
 
   const handleDirectB1 = () => {
-    navigate("/eDrink24");
+    navigate("/");
   };
 
   return (
 
-      // 전체 컨테이너
-      <div className="category-container">
+    // 전체 컨테이너
+    <div className="category-container">
 
-            {/* 상단 네비게이션 바 */}
-            <div className="category-nav-bar">
+      {/* 상단 네비게이션 바 */}
+      <div className="category-nav-bar">
 
-                {/* 뒤로가기 아이콘 */}
-                <button className="category-back" onClick={handleDirectB1}>
-                    <img className="back-icon" src="assets/common/backicon.png" alt="back" />
-                </button>
+        {/* 뒤로가기 아이콘 */}
+        <button className="category-back" onClick={handleDirectB1}>
+          <img className="back-icon" src="assets/common/backicon.png" alt="back" />
+        </button>
 
-                {/* 메인 타이틀 */}
-                <h3>카테고리</h3>
+        {/* 메인 타이틀 */}
+        <h3>카테고리</h3>
 
-                {/* 장바구니 아이콘 */}
-                <button className="category-bag"  onClick={() => { navigate('/eDrink24/basket') }}>
-                    <img className="bag-cicon" src="assets/common/bag.png" alt="bag" />
-                </button>
+        {/* 장바구니 아이콘 */}
+        <button className="category-bag" onClick={() => { navigate('/basket') }}>
+          <img className="bag-cicon" src="assets/common/bag.png" alt="bag" />
+        </button>
 
-            </div>
+      </div>
 
 
-            <div className='line2'></div>
+      <div className='line2'></div>
 
-            <div className="category-main-content">
+      <div className="category-main-content">
 
-            {/* 주류 카테고리 */}
-              <div className="category-container-content">
-                <div className="category1-content">
-                  <ul>
-                    {categories.map(category => (
-                      <li
-                        key={category}
-                        className={selectedcategory === category ? 'category-active' : ''}
-                        onClick={() => setSelectedCategory(category)}>
-                        {category}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="category2-content">
-                  <ul>
-                    <li className='category-selectedCategoryText' onClick={handleCategory1Click}>{selectedcategory}</li>
-                  </ul>
-                  <ul>
-                    {subcategories[selectedcategory].map(category2 => (
-                      <li 
-                        key={category2}
-                        onClick={()=>handleCategory2Click(selectedcategory,category2)}>
-                        {category2}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+        {/* 주류 카테고리 */}
+        <div className="category-container-content">
+          <div className="category1-content">
+            <ul>
+              {categories.map(category => (
+                <li
+                  key={category}
+                  className={selectedcategory === category ? 'category-active' : ''}
+                  onClick={() => setSelectedCategory(category)}>
+                  {category}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="category2-content">
+            <ul>
+              <li className='category-selectedCategoryText' onClick={handleCategory1Click}>{selectedcategory}</li>
+            </ul>
+            <ul>
+              {subcategories[selectedcategory].map(category2 => (
+                <li
+                  key={category2}
+                  onClick={() => handleCategory2Click(selectedcategory, category2)}>
+                  {category2}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
-            </div>
+      </div>
 
 
       {/* 하단 네비게이션 바 */}

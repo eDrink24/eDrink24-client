@@ -32,10 +32,6 @@ const Carousel = () => {
 
   return (
     <div className="carousel">
-      {/* 왼쪽-이전 슬라이드 버튼 */}
-        <button onClick={goToPrevious} className="carousel-button carousel-button-left">
-          ❮
-        </button>
 
         {/* 슬라이드 이미지들의 컨테이너 */}
         <div className="carousel-images">
@@ -49,15 +45,23 @@ const Carousel = () => {
           ))}
         </div>
 
+        {/* 현재 슬라이드의 페이지를 알 수 있게 표시하는 인디케이터 */}
+        <div className="carousel-indicator">
+
+        <button onClick={goToPrevious} className="carousel-nextButton-left">
+          ❮
+        </button>
+
+          {currentIndex + 1} / {imageList.length}
+
         {/* 오른쪽-다음 슬라이드 버튼 */}
-        <button onClick={goToNext} className="carousel-button carousel-button-right">
+        <button onClick={goToNext} className="carousel-nextButton-right">
           ❯
         </button>
 
-        {/* 현재 슬라이드의 페이지를 알 수 있게 표시하는 인디케이터 */}
-        <div className="carousel-indicator">
-          {currentIndex + 1} / {imageList.length}
         </div>
+
+
     </div>
   );
 };

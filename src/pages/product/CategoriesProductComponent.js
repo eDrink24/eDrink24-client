@@ -57,7 +57,7 @@ const CategoriesProductComponent = () => {
             console.log("Response Data:", resData);
 
             setProducts(resData);
-            navigate(`/eDrink24/allproduct/${category1}/${category2}`);
+            navigate(`/allproduct/${category1}/${category2}`);
         } else {
             console.error('Error fetching data:', response.statusText);
         }
@@ -85,15 +85,15 @@ const CategoriesProductComponent = () => {
         console.log("products", products); // productId가 올바른지 확인
         console.log("category1:", category1); // category1이 올바른지 확인
         console.log("category2:", category2); // category2가 올바른지 확인
-        navigate(`/eDrink24/allproduct/${category1}/${category2}/${productId}`);
+        navigate(`/allproduct/${category1}/${category2}/${productId}`);
     };
 
     const backCategoryPage = () => {
-        navigate(`/eDrink24/category`);
+        navigate(`/category`);
     };
 
     const backMainPage = () => {
-        navigate(`/eDrink24`);
+        navigate(`/`);
     };
 
     // 오늘픽업 필터링 - Young5097
@@ -143,7 +143,7 @@ const CategoriesProductComponent = () => {
                         <img src="assets/common/emart24_logo.png" alt="eMart24" className="categoriesproduct-nav-logo" /> {/* 로고 이미지 */}
                     </div>
                     <button className="categoriesproduct-cart-button">
-                        <img src="assets/common/cartIcon.png" alt="Cart" className="categoriesproduct-nav-cicon" onClick={() => { navigate('/eDrink24/basket') }} /> {/* 장바구니로 가기 아이콘 */}
+                        <img src="assets/common/cartIcon.png" alt="Cart" className="categoriesproduct-nav-cicon" onClick={() => { navigate('/basket') }} /> {/* 장바구니로 가기 아이콘 */}
                     </button>
                 </div>
             </div>

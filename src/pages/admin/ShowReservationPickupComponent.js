@@ -54,7 +54,7 @@ const ShowReservationPickupComponent = () => {
             }
             const resData = await response.json();
             console.log("resData:", resData);
-            
+
             // 데이터가 변경된 경우 상태 업데이트
             if (JSON.stringify(resData) !== JSON.stringify(orders)) {
                 setOrders(resData);
@@ -149,7 +149,7 @@ const ShowReservationPickupComponent = () => {
     };
 
     const showAdminOrderListPage = () => {
-        navigate(`/eDrink24/admin/AdminOrderListComponent`);
+        navigate(`/admin/AdminOrderListComponent`);
     };
 
     return (

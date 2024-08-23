@@ -32,6 +32,7 @@ import TodayPickupCompletedPageComponent from './pages/admin/TodayPickupComplete
 import PaymentApproval from './components/payment/PaymentApproval';
 import PaymentCancelOrFail from './components/payment/PaymentCancelOrFail';
 import OrderHistoryComponent from './pages/order/OrderHistoryComponent';
+import OrderHistoryDetailsComponent from './pages/order/OrderHistoryDetailsComponent';
 
 
 

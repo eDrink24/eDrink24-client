@@ -10,7 +10,7 @@ function PaymentCancelOrFail() {
     localStorage.removeItem("orderTransactionDTO");
     localStorage.removeItem("tid");
 
-    navigate("/eDrink24");
+    navigate("/");
   }, [navigate]);
 
   return (

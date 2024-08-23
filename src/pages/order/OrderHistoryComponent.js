@@ -8,7 +8,7 @@ function OrderHistoryComponent() {
     const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
     //const storeId = localStorage.getItem('currentStoreId');
 
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
 
     // 주문 내역 가져오기
     const fetchOrderHistory = async () => {
@@ -32,7 +32,7 @@ function OrderHistoryComponent() {
     // 주문 내역을 orderDate 기준으로 그룹화
     const groupByOrderDate = (orders) => {
         return orders.reduce((groupedOrders, order) => {
-            const date = new Date(order.orderDate).toLocaleDateString();
+            const date = new Date(order.orderDate);
             if (!groupedOrders[date]) {
                 groupedOrders[date] = [];
             }
@@ -44,6 +44,11 @@ function OrderHistoryComponent() {
     useEffect(() => {
         fetchOrderHistory();
     }, []);
+
+    // clickOrderHistoryDetails 실행하면 orderDate값 넘겨줌
+    const clickOrderHistoryDetails = async (date) => {
+        navigate("/eDrink24/orderHistoryDetails", { state: { orderDate: date }});
+    }
   
     return (
         <div className="order-container">
@@ -54,7 +59,7 @@ function OrderHistoryComponent() {
                 {Object.keys(orderHistory).length > 0 ? (
                     Object.keys(orderHistory).map((date, index) => (
                         <div key={index} className="order-group">
-                            <h3>{date}</h3>
+                            <h3>{new Date(date).getFullYear() + ". "+ new Date(date).getMonth()+ ". " + new Date(date).getDate()}</h3>
                             <table>
                                 <thead>
                                     <tr>
@@ -62,9 +67,11 @@ function OrderHistoryComponent() {
                                         <th>상품 이름</th>
                                         <th>가격</th>
                                         <th>수량</th>
+                                        <th>픽업유형</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <button onClick={() => clickOrderHistoryDetails(date)}>상세보기</button>
                                     {orderHistory[date].map((item, index) => (
                                         <tr key={index}>
                                             <td>
@@ -78,6 +85,7 @@ function OrderHistoryComponent() {
                                             <td>{item.productName || '상품 이름 없음'}</td>
                                             <td>{item.price !== undefined ? item.price.toLocaleString() : '가격 정보 없음'} 원</td>
                                             <td>{item.orderQuantity || 0}</td>
+                                            <td>{item.pickupType === `TODAY` ? `오늘 픽업` : `예약 픽업`}</td>
                                         </tr>
                                     ))}
                                 </tbody>
