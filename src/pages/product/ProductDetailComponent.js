@@ -18,16 +18,32 @@ function ProductDetailComponent() {
   const [orderInfo, setOrderInfo] = useRecoilState(orderState);
   const [reviews, setReviews] = useState([]);
   const [reviewCount, setReviewCount] = useState(0);
+  const [reviewRating, setReviewRating] = useState(0);
 
   useEffect(() => {
     DetailProduct();
   }, [productId]);
 
-  // 탭 클릭 핸들러 함수
-  const handleTabClick = (tab) => {
-    setActiveTab(tab); // 클릭한 탭으로 활성 탭 변경
-    if (tab === 'reviews') {
-      showAllReview(); // 리뷰 탭이 클릭될 때 리뷰 데이터를 가져옴
+  // 제품에 대한 모든 리뷰 보기
+  const showAllReview = async () => {
+    try{
+    const response = await fetch(`http://localhost:8090/eDrink24/showProductReview/${productId}`,{
+      method:"GET"
+    });
+    const resData = await response.json();
+    console.log(">>>>>>>>>",resData);
+    setReviews(resData);
+    setReviewCount(resData.length);
+    // 리뷰가 있을 때 평균 평점을 계산
+    const totalRating = resData.reduce((sum, review) => sum + review.rating, 0);
+    const averageRating = (totalRating / resData.length).toFixed(1); // 소수점 첫번째 자리까지 계산
+     if (resData.length > 0) {
+      setReviewRating(averageRating);
+      } else {
+        setReviewRating(0); // 리뷰가 없으면 평점을 0으로 설정
+        }
+    }catch(error){
+      console.log("Error fetching reviews:",error);
     }
   };
 
@@ -44,6 +60,9 @@ function ProductDetailComponent() {
 
       const resData = await response.json();
       setProduct(resData);
+
+      // 제품 정보와 함께 리뷰 데이터도 불러오기
+      await showAllReview();
 
     } catch (error) {
       console.error('Error fetching product:', error);
@@ -166,33 +185,6 @@ function ProductDetailComponent() {
     }
   };
 
-  // 제품에 대한 모든 리뷰 보기
-  const showAllReview = async () => {
-    try{
-    const response = await fetch(`http://localhost:8090/eDrink24/showProductReview/${productId}`,{
-      method:"GET"
-    });
-    const resData = await response.json();
-    setReviews(resData);
-    setReviewCount(resData.length);
-    }catch(error){
-      console.log("Error fetching reviews:",error);
-    }
-  };
-
-  // 제품에 대한 리뷰 갯수 설정
-  const countReview = async () => {
-    try{
-    const response = await fetch(`http://localhost:8090/eDrink24/showProductReview/${productId}`,{
-      method:"GET"
-    });
-    const resData = await response.json();
-    setReviewCount(resData.length);
-    }catch(error){
-      console.log("Error fetching reviews:",error);
-    }
-  };
-
   const total = product.price * quantity;
   const formattedTotal = total.toLocaleString();
 
@@ -243,7 +235,7 @@ function ProductDetailComponent() {
           <div className="productDetailComponent-product-review">
             <img className="productDetailComponent-reivew-star"
               src="assets/common/star.png" alt="star" />
-            <h2>4.9 리뷰 ({reviewCount})</h2>
+            <h2>{reviewRating} 리뷰 ({reviewCount})</h2>
           </div>
           <div className="productDetailComponent-product-option">
             <button className="productDetailComponent-heart-icon-button">
@@ -269,19 +261,9 @@ function ProductDetailComponent() {
         <img className="productDetailComponent-today-pickup-img"
           src="assets/common/today-pickup.png" alt="today-pickup" />
 
-        {/* 네비게이션 바 */}
-        <div className="productDetailComponent-nav-bar">
-          <div
-            className={`productDetailComponent-nav-item ${activeTab === 'reviews' ? 'active' : ''}`}
-            onClick={() => handleTabClick('reviews')}
-          >
-            리뷰
-          </div>
-        </div>
-
         {/* 콘텐츠 영역 */}
         <div className="productDetailComponent-content">
-        {activeTab === 'reviews' && (
+        
           <div className='productDetailComponent-content-item active'>
             {reviews.length > 0 ? (
               <div className='productReviewContainer'>
@@ -318,7 +300,7 @@ function ProductDetailComponent() {
               <p>아직 리뷰가 없습니다.</p>
             )}
           </div>
-        )}
+        
       </div>
         
       </div>

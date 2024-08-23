@@ -36,7 +36,7 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
         const clickedProduct = products.find(product => product.productId === productId);
         if (clickedProduct) {
             const category2 = clickedProduct.category2;
-            navigate(`/eDrink24/allproduct/${clickedProduct.category1}/${category2}/${productId}`);
+            navigate(`/allproduct/${clickedProduct.category1}/${category2}/${productId}`);
         } else {
             console.error('제품을 찾지 못했습니다.');
         }
@@ -112,8 +112,6 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
 
         <div className="ProductCardSet" key={index}> {/* 세로로 3개씩 묶는 컨테이너 */}
             {group.map(product => {
-                const rating = 4.6; // 별점
-                const reviewCount = 123; // 리뷰 수
 
                 return (
                     <div className="productCard-box2" key={product.productId} onClick={() => handleProductClickEvent(product.productId)} >
@@ -125,13 +123,6 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
                                 <div className="productInfo-name2">{product.productName}</div>
                                 <div className="productInfo-price2">{Number(product.price).toLocaleString()} 원</div>
                             </div>
-
-                            <div className="productInfo-review2" onClick={(e) => handleClick2(e, product.productId)}>
-                                <img className="productInfo-reviewIcon2" src="assets/common/star.png" alt=" " />
-                                <span className="productInfo-reviewRating2">{rating}</span>
-                                <span className="productInfo-reviewCount2">({reviewCount})</span>
-                            </div>
-
                             <div className="productInfo-button2">
                                 <div className="productInfo-tag2">
                                     {invToStore.some(inv =>

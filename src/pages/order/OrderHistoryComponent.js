@@ -93,7 +93,7 @@ function OrderHistoryComponent() {
                 {Object.keys(orderHistory).length > 0 ? (
                     Object.keys(orderHistory).map((date, index) => (
                         <div key={index} className="order-group">
-                            <h3>{new Date(date).getFullYear() + ". "+ new Date(date).getMonth()+ ". " + new Date(date).getDate()}</h3>
+                            <h3>{new Date(date).getFullYear() + ". "+ (new Date(date).getMonth()+1)+ ". " + new Date(date).getDate()}</h3>
                             <table>
                                 <thead>
                                     <tr>
