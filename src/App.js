@@ -30,6 +30,8 @@ import AdminComponent from './pages/admin/AdminComponent';
 import ShowTodayPickupPageComponent from './pages/admin/ShowTodayPickupPageComponent';
 import TodayPickupCompletedPageComponent from './pages/admin/TodayPickupCompletedPageComponent';
 import OrderHistoryComponent from './pages/order/OrderHistoryComponent';
+import ReviewComponent from './pages/review/ReviewComponent';
+import CheckMyReviewComponent from './pages/review/CheckMyReviewComponent';
 
 
 
@@ -68,6 +70,12 @@ const router = createBrowserRouter([
       },
       {
         path: '/eDrink24/admin', element: <AdminComponent />
+      },
+      {
+        path: '/eDrink24/review', element: <ReviewComponent />
+      },
+      {
+        path: '/eDrink24/checkMyReview', element: <CheckMyReviewComponent />
       },
       {
         path: '/eDrink24/todayPickup', element: <ShowTodayPickupPageComponent />

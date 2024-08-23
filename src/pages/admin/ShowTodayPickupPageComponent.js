@@ -84,7 +84,7 @@ const ShowTodayPickupPageComponent = () => {
     };
 
     const showPickupCompletedPage = () => {
-        navigate(`/eDrink24/admin/pickupCompleted`);
+        navigate(`/eDrink24/admin/todayPickupCompleted`);
     };
 
     return (
