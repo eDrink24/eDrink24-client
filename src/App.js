@@ -70,6 +70,9 @@ const router = createBrowserRouter([
         path: '/orderHistory', element: <OrderHistoryComponent />
       },
       {
+        path: '/orderHistoryDetails', element: <OrderHistoryDetailsComponent />
+      },
+      {
         path: '/admin', element: <AdminComponent />
       },
       {

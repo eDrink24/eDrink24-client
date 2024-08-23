@@ -1,8 +1,7 @@
-import { set } from 'date-fns';
+
 import './OrderHistoryComponent.css';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { da } from 'date-fns/locale';
 
 function OrderHistoryComponent() {
 
@@ -15,9 +14,12 @@ function OrderHistoryComponent() {
     const fetchOrderHistory = async () => {
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showOrderHistory/${userId}`);
+            const response = await fetch(`http://localhost:8090/eDrink24/showOrderHistory/${userId}`,{
+                method:"GET"
+            });
             if (response.status === 200) {
                 const data = await response.json();
+                console.log(">>>>>>>>",data);
                 setOrderHistory(groupByOrderDate(data));
             } else {
                 console.error('Failed to fetch basket items. Status:', response.status);
@@ -46,7 +48,7 @@ function OrderHistoryComponent() {
 
         localStorage.setItem("orderHistory", JSON.stringify(orderHistory[date][idx])); // Object.keys(orderHistory) 제이슨의 키값을 가져오는 코드
         console.log("orderHistory[date]",orderHistory[date][idx]);
-        navigate(`/eDrink24/review`);
+        navigate(`/review`);
     };
 
 
@@ -60,7 +62,7 @@ function OrderHistoryComponent() {
             const data = await response.json();        
             localStorage.setItem("reviewData",JSON.stringify(data));
 
-            navigate('/eDrink24/checkMyReview');
+            navigate('/checkMyReview');
         }
         
         }catch(error){
@@ -79,7 +81,7 @@ function OrderHistoryComponent() {
 
     // clickOrderHistoryDetails 실행하면 orderDate값 넘겨줌
     const clickOrderHistoryDetails = async (date) => {
-        navigate("/eDrink24/orderHistoryDetails", { state: { orderDate: date }});
+        navigate("/orderHistoryDetails", { state: { orderDate: date }});
     }
   
     return (
