@@ -10,7 +10,7 @@ import "./HomeComponent.css";
 function HomeComponent() {
     const { category1 } = useParams();
     const navigate = useNavigate();
-    
+
     const [products, setProducts] = useState([]);
     const [invToStore, setInvToStore] = useState([]);  // 재고 데이터 상태 정의
 
@@ -72,7 +72,7 @@ function HomeComponent() {
                         <img className="homePage-bell-icon" src="assets/common/bell.png" alt=" " />
                     </button>
                     <button className="homePage-basket-button" aria-label="Notifications">
-                        <img className="homePage-basket-icon" src="assets/common/bag.png" alt=" " onClick={() => navigate("/eDrink24/basket")} />
+                        <img className="homePage-basket-icon" src="assets/common/bag.png" alt=" " onClick={() => navigate("/basket")} />
                     </button>
                 </div>
             </div>
