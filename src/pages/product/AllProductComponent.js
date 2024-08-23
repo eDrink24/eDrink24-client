@@ -4,23 +4,30 @@ import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfCl
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import './AllProductComponent.css';
 
+// 카테고리 목록 상수
 const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
 
-// LikeButton 컴포넌트 정의
-const LikeButton = ({ onClick }) => {
+// 좋아요 버튼 컴포넌트
+const LikeButton = () => {
+    const [liked, setLiked] = useState(false); // 좋아요 상태 관리
+
     const handleClick = (event) => {
         event.stopPropagation();
-        onClick();
+        setLiked(!liked); // 클릭할 때마다 상태를 토글
     };
 
     return (
         <button className="allproduct-like-button" onClick={handleClick}>
-            ♥
+            <img
+                className="allproduct-like-icon"
+                src={liked ? "assets/common/fill-heart.png" : "assets/common/empty-heart.png"}
+                alt="Like Icon"
+            />
         </button>
     );
 };
 
-// ReviewButton 컴포넌트 정의
+// 리뷰 버튼 컴포넌트
 const ReviewButton = ({ onClick }) => {
     const handleClick = (event) => {
         event.stopPropagation();
@@ -29,25 +36,41 @@ const ReviewButton = ({ onClick }) => {
 
     return (
         <button className="allproduct-review-button" onClick={handleClick}>
-            ★
+            <img className="allproduct-review-icon" src="assets/common/star.png" alt=" " />
+            <span className="allproduct-review-rating">4.6</span> {/* 평점 표시 */}
+            <span className="allproduct-review-count">123</span> {/* 리뷰 갯수 표시 */}
         </button>
     );
 };
 
-// handleLikeClick 함수 정의
+// 장바구니 버튼 컴포넌트
+const CartButton = ({ onClick, productId }) => {
+    const handleClick = (event) => {
+        event.stopPropagation();
+        onClick(productId);
+    };
+
+    return (
+        <button onClick={handleClick} className="allproduct-bag-button">
+            <img className="allproduct-bag-icon" src="assets/common/bag.png" alt=" " />
+        </button>
+    );
+};
+
+// 좋아요 클릭 함수
 const handleLikeClick = (productId) => {
-    // 좋아요 클릭 시 발생할 동작을 처리합니다.
     console.log(`Liked product with ID: ${productId}`);
 };
 
+// 메인 컴포넌트
 const AllProductComponent = () => {
-    const { category1, productId } = useParams();  // productId도 useParams로 가져옴
-    const [products, setProducts] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('와인');
-    const navigate = useNavigate();
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [quantity] = useState(1);
-    const [product, setProduct] = useState(null);  // 선택된 product를 저장
+    const { category1, productId } = useParams(); // URL 파라미터 가져오기
+    const [products, setProducts] = useState([]); // 제품 목록 상태
+    const [selectedCategory, setSelectedCategory] = useState('와인'); // 선택된 카테고리 상태
+    const navigate = useNavigate(); // 페이지 이동 함수
+    const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 상태
+    const [quantity] = useState(1); // 장바구니에 추가할 수량
+    const [product, setProduct] = useState(null); // 선택된 제품 상태
 
     useEffect(() => {
         if (category1) {
@@ -55,6 +78,7 @@ const AllProductComponent = () => {
         }
     }, [selectedCategory, category1]);
 
+    // 카테고리에 따른 제품 목록 가져오기
     const selectCategory1 = async (category1) => {
         try {
             const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory1/${category1}`, {
@@ -68,7 +92,6 @@ const AllProductComponent = () => {
             const resData = await response.json();
             setProducts(resData);
 
-            // productId가 있는 경우 해당 제품을 product 상태로 설정
             if (productId) {
                 const foundProduct = resData.find(prod => prod.productId === parseInt(productId));
                 setProduct(foundProduct || null);
@@ -78,42 +101,45 @@ const AllProductComponent = () => {
         }
     };
 
+    // 정렬 옵션에 따른 제품 목록 정렬
     const handleSortEvent = (e) => {
         const sortOption = e.target.value;
         let sortedProduct = [...products];
 
         if (sortOption === '낮은가격순') {
             sortedProduct.sort((a, b) => a.price - b.price);
-        }
-        else if (sortOption === '높은가격순') {
+        } else if (sortOption === '높은가격순') {
             sortedProduct.sort((a, b) => b.price - a.price);
-        }
-        else if (sortOption === '신상품순') {
+        } else if (sortOption === '신상품순') {
             sortedProduct.sort((a, b) => new Date(b.enrollDate) - new Date(a.enrollDate));
         }
         setProducts(sortedProduct);
     };
 
+    // 카테고리 버튼 클릭 처리
     const handleCategory1Click = (category1) => {
         setSelectedCategory(category1);
-        navigate(`/eDrink24/allproduct/${category1}`);
-    }
+        navigate(`/allproduct/${category1}`);
+    };
 
+    // 홈으로 이동
     const returnHome = () => {
-        navigate(`/eDrink24`);
-    }
+        navigate(`/`);
+    };
 
+    // 제품 클릭 시 상세 페이지로 이동
     const handleProductClickEvent = (productId) => {
         const clickedProduct = products.find(product => product.productId === productId);
         if (clickedProduct) {
-            setProduct(clickedProduct);  // 클릭된 제품을 product 상태로 설정
+            setProduct(clickedProduct);
             const category2 = clickedProduct.category2;
-            navigate(`/eDrink24/allproduct/${selectedCategory}/${category2}/${productId}`);
+            navigate(`/allproduct/${selectedCategory}/${category2}/${productId}`);
         } else {
             console.error('제품을 찾지 못했습니다.');
         }
     };
 
+    // 현재 스토어의 재고를 가져오는 함수
     const [invToStore, setInvToStore] = useState([]);
     const [showTodayPu, setShowTodayPu] = useState(false);
     const currentStoreId = localStorage.getItem("currentStoreId");
@@ -143,26 +169,13 @@ const AllProductComponent = () => {
         fetchInvByStoreId();
     }, [currentStoreId]);
 
+    // 오늘 픽업 가능한 제품 필터링
     const filterTodayPu = showTodayPu
         ? products.filter(product =>
             invToStore.some(inv => inv.productId === product.productId && inv.quantity > 0))
         : products;
 
-    // CartButton 컴포넌트 수정
-    const CartButton = ({ onClick, productId }) => {
-        const handleClick = (event) => {
-            event.stopPropagation();
-            onClick(productId);  // 클릭된 제품의 productId를 넘김
-        };
-
-        return (
-            <button onClick={handleClick} className="productDetailComponent-go-cart">
-                장바구니
-            </button>
-        );
-    };
-
-    // saveInBasket 함수 수정
+    // 장바구니에 제품을 저장하는 함수
     const saveInBasket = async (productId) => {
         const productToSave = products.find(prod => prod.productId === productId);
 
@@ -202,19 +215,61 @@ const AllProductComponent = () => {
         }
     };
 
+    // 장바구니 페이지로 이동
     const goToBasketPage = () => {
         setModalIsOpen(false);
-        navigate('/eDrink24/basket');
+        navigate('/basket');
     };
 
+    // 현재 페이지에 머무름
     const stayOnPage = () => {
         setModalIsOpen(false);
-        navigate(`/eDrink24/allproduct/${category1}`);
+        navigate(`/allproduct/${category1}`);
     };
+
+    // 카테고리-필터 바 가로 스크롤(=드래그) 기능
+    useEffect(() => {
+        const slider = document.querySelector('.allproduct-filter-bar');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        const handleMouseDown = (e) => {
+            isDown = true;
+            slider.classList.add('active');
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        };
+
+        const handleMouseLeaveOrUp = () => {
+            isDown = false;
+            slider.classList.remove('active');
+        };
+
+        const handleMouseMove = (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2; // 드래그 속도 조절
+            slider.scrollLeft = scrollLeft - walk;
+        };
+
+        slider.addEventListener('mousedown', handleMouseDown);
+        slider.addEventListener('mouseleave', handleMouseLeaveOrUp);
+        slider.addEventListener('mouseup', handleMouseLeaveOrUp);
+        slider.addEventListener('mousemove', handleMouseMove);
+
+        // 클린업 함수
+        return () => {
+            slider.removeEventListener('mousedown', handleMouseDown);
+            slider.removeEventListener('mouseleave', handleMouseLeaveOrUp);
+            slider.removeEventListener('mouseup', handleMouseLeaveOrUp);
+            slider.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, []);
 
     return (
         <div className="allproduct-container">
-
             {/* 상단 네비게이션 바 */}
             <div className="allproduct-nav-bar">
                 {/* 뒤로가기 아이콘 */}
@@ -226,32 +281,31 @@ const AllProductComponent = () => {
                 <img className="allproduct-logo" src="assets/common/eDrinkLogo.png" alt=" " />
 
                 {/* 장바구니 아이콘 */}
-                <button className="allproduct-bag-button"  onClick={() => { navigate('/eDrink24/basket') }}>
+                <button className="allproduct-bag-button" onClick={() => { navigate('/basket') }}>
                     <img className="allproduct-bag-icon" src="assets/common/bag.png" alt=" " />
                 </button>
             </div>
-
 
             {/* 서브 네비게이션 바 */}
             <div className="allproduct-sub-nav">
                 {/* 카테고리 필터 */}
                 <div className="cc">
-                <div className="allproduct-filter-bar">
-                    {categoryList.map((category1, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => handleCategory1Click(category1)}
-                            className={`allproduct-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
-                        >
-                            {category1}
-                        </button>
-                    ))}
-                </div>
-                    
-                {/* 필터 아이콘 */}
-                <button className="allproduct-filter-button2">
-                    <img className="allproduct-filter-icon" src="assets/common/filter.png" alt=" " />
-                </button>
+                    <div className="allproduct-filter-bar">
+                        {categoryList.map((category1, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => handleCategory1Click(category1)}
+                                className={`allproduct-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
+                            >
+                                {category1}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* 필터 아이콘 */}
+                    <button className="allproduct-filter-button2">
+                        <img className="allproduct-filter-icon" src="assets/common/filter.png" alt=" " />
+                    </button>
                 </div>
 
                 <div className='line2'></div>
@@ -270,10 +324,10 @@ const AllProductComponent = () => {
 
                     <div className="allproduct-dropdown-box">
                         <select onChange={handleSortEvent}>
-                            <option value="신상품순">신상품순</option>
+                            {/*                           <option value="신상품순">신상품순</option>
                             <option value="판매량순">판매량순</option>
                             <option value="평점순">평점순</option>
-                            <option value="리뷰순">리뷰순</option>
+                            <option value="리뷰순">리뷰순</option> */}
                             <option value="낮은가격순">낮은가격순</option>
                             <option value="높은가격순">높은가격순</option>
                         </select>
@@ -281,40 +335,48 @@ const AllProductComponent = () => {
                 </div>
             </div>
 
+            <div className="aa">
+                {filterTodayPu.map(product => (
+                    <div
+                        className="allproduct-product-card"
+                        key={product.productId}
+                        onClick={() => handleProductClickEvent(product.productId)}
+                    >
+                        <div className="allproduct-product-card-img">
+                            <img src={product.defaultImage} alt={product.productName} className="allproduct-product-defaultImage" />
+                        </div>
 
-<div className="aa">
-            {filterTodayPu.map(product => (
-                <div
-                    className="allproduct-product-card"
-                    key={product.productId}
-                    onClick={() => handleProductClickEvent(product.productId)}
-                >
-                <div className="allproduct-product-card-img">
-                    <img src={product.defaultImage} alt={product.productName} className="allproduct-product-defaultImage" />
-                </div>
+                        <div className="allproduct-product-info">
+                            <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
+                            <div className="allproduct-product-name">{product.productName}</div>
+                            <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
+                        </div>
 
-                    <div className="allproduct-product-info">
-                        <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
-                        <div className="allproduct-product-name">{product.productName}</div>
-                        <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
+                        <div className="allproduct-icon-button">
+                            <div className="allproduct-review">
+                                {/* 장바구니 버튼을 CartButton 컴포넌트로 변경 */}
+                                <ReviewButton
+                                    onClick={() => console.log(`Reviewed product with ID: ${product.productId}`)}
+                                />
+                            </div>
 
-                        {/* 장바구니 버튼을 CartButton 컴포넌트로 변경 */}
-                        <CartButton onClick={saveInBasket} productId={product.productId} />
-                        <LikeButton onClick={() => handleLikeClick(product.productId)} />
-                        <ReviewButton
-                            onClick={() => console.log(`Reviewed product with ID: ${product.productId}`)}
-                        />
-
-                        {/* 오늘픽업 아이콘 ==> 오늘픽업 체크박스 클릭하면 뜬다. */}
-                        {invToStore.some(inv =>
-                            inv.productId === product.productId && inv.quantity > 0) && (
-                                <div className="allproduct-product-tag">오늘픽업</div>
-                            )}
+                            <div className="allproduct-button">
+                                {/* 오늘픽업 아이콘 */}
+                                <div className="allproduct-product-tag-container">
+                                    {invToStore.some(inv =>
+                                        inv.productId === product.productId && inv.quantity > 0) ? (
+                                        <div className="allproduct-product-tag">오늘픽업</div>
+                                    ) : (
+                                        <div className="allproduct-product-tag-placeholder"></div> // 빈 공간을 위한 placeholder
+                                    )}
+                                </div>
+                                <LikeButton onClick={() => handleLikeClick(product.productId)} />
+                                <CartButton onClick={saveInBasket} productId={product.productId} />
+                            </div>
+                        </div>
                     </div>
-                </div>
-            ))}
-
-</div>
+                ))}
+            </div>
 
             <AlertModalOfClickBasketButton
                 isOpen={modalIsOpen}
@@ -327,6 +389,6 @@ const AllProductComponent = () => {
             <FooterComponent />
         </div>
     );
-}
+};
 
 export default AllProductComponent;

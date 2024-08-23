@@ -7,19 +7,19 @@ const Footer = () => {
 
     // 버튼 클릭 핸들러 함수
     const handleDirectHome = () => {
-        navigate("/eDrink24");
+        navigate("/");
     };
 
     const handleDirectMyPage = () => {
-        navigate("/eDrink24/mypage");
+        navigate("/mypage");
     };
 
     const handleDirectSearch = () => {
-        navigate("/eDrink24/search");
+        navigate("/search");
     };
 
     const handleDirectHistory = () => {
-        navigate("/eDrink24/history");
+        navigate("/history");
     };
 
     return (

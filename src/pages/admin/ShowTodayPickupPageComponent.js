@@ -5,12 +5,12 @@ import { format, parseISO } from 'date-fns';
 
 const ShowTodayPickupPageComponent = () => {
     const [orders, setOrders] = useState([]);
-    console.log("orders",orders);
+    console.log("orders", orders);
     const [selectedOrdersId, setSelectedOrdersId] = useState([]);
     const navigate = useNavigate();
 
-     // 컴포넌트가 처음 렌더링될 때만 주문 목록을 가져옵니다.
-     useEffect(() => {
+    // 컴포넌트가 처음 렌더링될 때만 주문 목록을 가져옵니다.
+    useEffect(() => {
         showOrdersToAdminPageOrders();
     }, [orders]);
 
@@ -47,7 +47,7 @@ const ShowTodayPickupPageComponent = () => {
             }
             const resData = await response.json();
             console.log("resData:", resData);
-            
+
             // 데이터가 변경된 경우에만 상태를 업데이트합니다.
             if (JSON.stringify(resData) !== JSON.stringify(orders)) {
                 setOrders(resData);
@@ -58,7 +58,7 @@ const ShowTodayPickupPageComponent = () => {
         }
 
     };
-    
+
     // 픽업완료 버튼 클릭 시 상태변화 업데이트
     const handlePickupComplete = async () => {
         try {
@@ -84,7 +84,7 @@ const ShowTodayPickupPageComponent = () => {
     };
 
     const showPickupCompletedPage = () => {
-        navigate(`/eDrink24/admin/todayPickupCompleted`);
+        navigate(`/admin/todayPickupCompleted`);
     };
 
     return (

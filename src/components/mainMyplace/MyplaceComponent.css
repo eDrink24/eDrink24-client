@@ -46,7 +46,7 @@
 }
 
 .login-pickup-address-info .home-place-text1,
-.logout-pickup-address-info .home-place-text1span {
+.logout-pickup-address-info .home-place-text1 {
     background-color: #2e2e2e;
     color: white;
     padding: 8px 10px;

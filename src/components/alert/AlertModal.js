@@ -48,7 +48,7 @@ const AlertModal = ({ isOpen, onRequestClose, message, navigateOnClose, navigate
         >
             <h2 className='alert-h2'>알림</h2>
             <p className='alert-p'>{message}</p>
-            <button onClick={closeAlert} className="btn-alert-close">닫기</button>
+            <button onClick={closeAlert} className="alert-btn-close">닫기</button>
         </Modal>
     );
 };

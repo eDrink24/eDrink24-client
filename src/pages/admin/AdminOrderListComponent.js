@@ -32,7 +32,7 @@ const AdminOrderListComponent = () => {
 
     // 홈으로 돌아가기 버튼 핸들러
     const returnHome = () => {
-        navigate(`/eDrink24`);
+        navigate(`/`);
     };
 
     return (

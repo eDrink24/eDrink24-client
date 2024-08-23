@@ -32,6 +32,8 @@ const AlertModalOfClickBasketButton = ({ isOpen, message, navigateOnYes, navigat
             isOpen={isOpen}
             onRequestClose={navigateOnNo}
             style={alertStyles}
+            className="modal-container"    // 모달 컨텐츠에 적용
+            overlayClassName="modal-overlay" // 오버레이에 적용
             contentLabel="알림"
         >
             <h2 className='alert-h2'>알림</h2>

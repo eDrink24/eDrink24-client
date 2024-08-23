@@ -47,11 +47,11 @@ const KakaoLoginHandler = (props) => {
                 localStorage.setItem('currentLocation', currentLocation);
                 localStorage.setItem('currentStoreId', currentStoreId)
 
-                openAlert("로그인에 성공하였습니다!", true, "/eDrink24");
+                openAlert("로그인에 성공하였습니다!", true, "/");
 
             } else if (response.status === 401) {
                 const resData = await response.json();
-                navigate("/eDrink24/kakao/signup", { state: { cusData: resData.customerDTO } });
+                navigate("/kakao/signup", { state: { cusData: resData.customerDTO } });
             }
         } catch (error) {
             console.error('로그인 중 오류 발생', error);

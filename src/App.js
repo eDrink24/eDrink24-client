@@ -29,81 +29,85 @@ import ShowReservationPickupComponent from './pages/admin/ShowReservationPickupC
 import AdminComponent from './pages/admin/AdminComponent';
 import ShowTodayPickupPageComponent from './pages/admin/ShowTodayPickupPageComponent';
 import TodayPickupCompletedPageComponent from './pages/admin/TodayPickupCompletedPageComponent';
+import PaymentApproval from './components/payment/PaymentApproval';
+import PaymentCancelOrFail from './components/payment/PaymentCancelOrFail';
 import OrderHistoryComponent from './pages/order/OrderHistoryComponent';
 import ReviewComponent from './pages/review/ReviewComponent';
 import CheckMyReviewComponent from './pages/review/CheckMyReviewComponent';
-
-
+import OrderHistoryDetailsComponent from './pages/order/OrderHistoryDetailsComponent';
 
 // test yoon
 const router = createBrowserRouter([
   {
-    path: "/eDrink24",
+    path: "/",
     element: <RootLayout />,
     loader: tokenLoader,
     children: [
-      { path: '/eDrink24', element: <HomeComponent /> },
-      { path: '/eDrink24/allproduct/:category1', element: <AllProductComponent /> },
-      { path: '/eDrink24/allproduct/:category1/:category2', element: <CategoriesProductComponent /> },
-      { path: '/eDrink24/allproduct/:category1/:category2/:productId', element: <ProductDetailComponent /> },
-      { path: '/eDrink24/category', element: <CategoryComponent /> },
-      { path: '/eDrink24/search', element: <SearchComponent /> },
-      { path: '/eDrink24/history', element: <HistoryComponent /> },
+      { path: '', element: <HomeComponent /> },
+      { path: '/allproduct/:category1', element: <AllProductComponent /> },
+      { path: '/allproduct/:category1/:category2', element: <CategoriesProductComponent /> },
+      { path: '/allproduct/:category1/:category2/:productId', element: <ProductDetailComponent /> },
+      { path: '/category', element: <CategoryComponent /> },
+      { path: '/search', element: <SearchComponent /> },
+      { path: '/history', element: <HistoryComponent /> },
       {
-        path: '/eDrink24/login', element: <LoginComponent />,
+        path: '/login', element: <LoginComponent />,
         action: loginAction
       },
       {
-        path: '/eDrink24/signup', element: <SignupComponent />,
+        path: '/signup', element: <SignupComponent />,
         action: signUpAction
       },
-      { path: "/eDrink24/mypage", element: <MypageComponent /> },
+      { path: "/mypage", element: <MypageComponent /> },
       {
-        path: '/eDrink24/basket', element: <ListToBasketComponent />,
+        path: '/basket', element: <ListToBasketComponent />,
         loader: basketLoader
       },
       {
-        path: '/eDrink24/order', element: <OrderComponent />
+        path: '/order', element: <OrderComponent />
       },
       {
-        path: '/eDrink24/orderHistory', element: <OrderHistoryComponent />
+        path: '/orderHistory', element: <OrderHistoryComponent />
       },
       {
-        path: '/eDrink24/admin', element: <AdminComponent />
+        path: '/admin', element: <AdminComponent />
       },
       {
-        path: '/eDrink24/review', element: <ReviewComponent />
+        path: '/review', element: <ReviewComponent />
       },
       {
-        path: '/eDrink24/checkMyReview', element: <CheckMyReviewComponent />
+        path: '/checkMyReview', element: <CheckMyReviewComponent />
       },
       {
-        path: '/eDrink24/todayPickup', element: <ShowTodayPickupPageComponent />
+        path: '/todayPickup', element: <ShowTodayPickupPageComponent />
       },
       {
-        path: '/eDrink24/admin/todayPickupCompleted', element: <TodayPickupCompletedPageComponent />
+        path: '/admin/todayPickupCompleted', element: <TodayPickupCompletedPageComponent />
       },
       {
-        path: '/eDrink24/admin/adminOrder', element: <AdminOrderComponent />
+        path: '/admin/adminOrder', element: <AdminOrderComponent />
       },
       {
-        path: '/eDrink24/admin/ShowReservationPickup', element: <ShowReservationPickupComponent />
+        path: '/admin/ShowReservationPickup', element: <ShowReservationPickupComponent />
       },
       {
-        path: '/eDrink24/admin/adminOrderList', element: <AdminOrderListComponent />
+        path: '/admin/adminOrderList', element: <AdminOrderListComponent />
       },
       { // 카카오 로그인 대기창
-        path: '/eDrink24/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
+        path: '/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
       },
       { // 카카오 회원가입시, 추가정보 입력창
-        path: '/eDrink24/kakao/signup', element: <KakaoSignupHandler />
+        path: '/kakao/signup', element: <KakaoSignupHandler />
       },
 
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "/eDrink24/mypage/updateCustomer", element: <UpdateCustomerComponent /> },
-          { path: "/eDrink24/myplace_store", element: <SetPlaceComponent /> }
+          { path: "/mypage/updateCustomer", element: <UpdateCustomerComponent /> },
+          { path: "/myplace_store", element: <SetPlaceComponent /> },
+          { path: "/order/approval", element: <PaymentApproval /> }, // 결제완료처리페이지
+          { path: "/order/cancelOrFail", element: <PaymentCancelOrFail /> } // 결제취소or오류
+
         ]
       }
     ]
