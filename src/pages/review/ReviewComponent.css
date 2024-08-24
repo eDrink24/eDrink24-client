@@ -1,4 +1,4 @@
-/* /* ReviewComponent.css */
+/* ReviewComponent.css */
 .review-form {
     min-width: 344px;
     max-width: 450px;
@@ -85,7 +85,7 @@ textarea {
 .review-submit-button:hover {
     background-color: #0056b3;
 }
-.css */
+
 .review-form {
     width: 300px;
     padding: 20px;
@@ -133,7 +133,7 @@ textarea {
 }
 
 .review-star.filled {
-    color: #FFD700; /* 금색 */
+    color: #FFD700; 
 }
 
 .review-score {
