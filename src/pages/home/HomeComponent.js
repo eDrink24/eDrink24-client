@@ -10,14 +10,14 @@ import "./HomeComponent.css";
 function HomeComponent() {
     const { category1 } = useParams();
     const navigate = useNavigate();
-    
+
     const [products, setProducts] = useState([]);
     const [invToStore, setInvToStore] = useState([]);  // 재고 데이터 상태 정의
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:8090/eDrink24/showProductByCategory1/와인');
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductByCategory1/와인`);
                 const data = await response.json();
                 setProducts(data);
             } catch (error) {
@@ -32,7 +32,7 @@ function HomeComponent() {
             const currentStoreId = localStorage.getItem("currentStoreId");
             if (currentStoreId) {
                 try {
-                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`);
+                    const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findInventoryByStoreId/${parseInt(currentStoreId)}`);
                     const invData = await response.json();
                     setInvToStore(invData);
                 } catch (error) {
@@ -72,7 +72,7 @@ function HomeComponent() {
                         <img className="homePage-bell-icon" src="assets/common/bell.png" alt=" " />
                     </button>
                     <button className="homePage-basket-button" aria-label="Notifications">
-                        <img className="homePage-basket-icon" src="assets/common/bag.png" alt=" " onClick={() => navigate("/eDrink24/basket")} />
+                        <img className="homePage-basket-icon" src="assets/common/bag.png" alt=" " onClick={() => navigate("/basket")} />
                     </button>
                 </div>
             </div>

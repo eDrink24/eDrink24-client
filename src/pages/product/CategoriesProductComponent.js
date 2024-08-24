@@ -43,7 +43,7 @@ const CategoriesProductComponent = () => {
         // 카테고리2가 올바르게 전달되는지 확인
         console.log("Selected Category2:", category2);
 
-        const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory2/${category2}`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductByCategory2/${category2}`, {
             method: "GET"
         });
 
@@ -106,7 +106,7 @@ const CategoriesProductComponent = () => {
             if (currentStoreId) {
 
                 try {
-                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`,
+                    const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findInventoryByStoreId/${parseInt(currentStoreId)}`,
                         { method: 'GET' }
                     );
                     if (response.ok) {

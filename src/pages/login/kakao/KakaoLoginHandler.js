@@ -24,7 +24,7 @@ const KakaoLoginHandler = (props) => {
 
     const sendCodeToBackend = useCallback(async () => {
         try {
-            const response = await fetch('http://localhost:8090/eDrink24/login/oauth2/kakao', {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/login/oauth2/kakao`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

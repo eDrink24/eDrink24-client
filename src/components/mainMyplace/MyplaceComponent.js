@@ -24,7 +24,7 @@ function MyPlaceComponent() {
 
     useEffect(() => {
         const fetchStore = async () => {
-            const response = await fetch(`http://localhost:8090/eDrink24/api/findStore/${currentStoreId}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findStore/${currentStoreId}`, {
                 method: "GET"
             });
             if (response.ok) {
@@ -46,7 +46,7 @@ function MyPlaceComponent() {
 
 
     const fetchCustomerData = async (loginId) => { // 회원정보도 맨날 불러와야하나..?
-        const response = await fetch(`http://localhost:8090/eDrink24/selectCustomerMyPage/${loginId}`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/selectCustomerMyPage/${loginId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

@@ -45,7 +45,7 @@ const ShowReservationPickupComponent = () => {
 
     const showReservationPickupPage = async () => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showReservationPickupPage`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showReservationPickupPage`, {
                 method: "GET"
             });
 
@@ -71,7 +71,7 @@ const ShowReservationPickupComponent = () => {
             const productNamesMap = {};
 
             for (const category of categoryList) {
-                const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory1/${category}`, {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductByCategory1/${category}`, {
                     method: "GET"
                 });
 
@@ -122,7 +122,7 @@ const ShowReservationPickupComponent = () => {
             };
 
             try {
-                const response = await fetch(`http://localhost:8090/eDrink24/updateOrInsertInventory/${storeId}/${order.productId}`, {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/updateOrInsertInventory/${storeId}/${order.productId}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

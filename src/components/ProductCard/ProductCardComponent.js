@@ -6,7 +6,7 @@ import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfCl
 
 const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 배열을 설정
     const [invToStore, setinvToStore] = useState([]);
-//    const [showTodayPu, setShowTodayPu] = useState(false);
+    //    const [showTodayPu, setShowTodayPu] = useState(false);
     const currentStoreId = localStorage.getItem("currentStoreId");
     const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
         const fetchInvByStoreId = async () => {
             if (currentStoreId) {
                 try {
-                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`);
+                    const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findInventoryByStoreId/${parseInt(currentStoreId)}`);
                     const invData = await response.json();
                     setinvToStore(invData);
                 } catch (error) {
@@ -50,7 +50,7 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
             ...prevState,
             [productId]: !prevState[productId]
         }));
-    };    
+    };
 
     // Review 기능
     const handleClick2 = (event, productId) => {
@@ -73,7 +73,7 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
         }
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/saveProductToBasket`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/saveProductToBasket`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -103,7 +103,7 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
     return (
         <div className="ProductCard">
             {products.length > 0 ? (  // products가 있을 때만 렌더링
-                products.map(product => {  
+                products.map(product => {
                     const rating = 4.6; // 별점
                     const reviewCount = 123; // 리뷰 수
 
@@ -135,7 +135,7 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                                     </div>
 
                                     <button className="productInfo-like" onClick={(e) => handleClick1(e, product.productId)}>
-                                        <img className="productInfo-likeIcon" src={likedProducts[product.productId] ? "assets/common/fill-heart.png" : "assets/common/empty-heart.png"} alt=" "/>
+                                        <img className="productInfo-likeIcon" src={likedProducts[product.productId] ? "assets/common/fill-heart.png" : "assets/common/empty-heart.png"} alt=" " />
                                     </button>
 
                                     <button className="productInfo-bag" onClick={(e) => handleClick3(e, product.productId)}>
