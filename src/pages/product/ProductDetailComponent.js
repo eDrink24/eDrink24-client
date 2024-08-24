@@ -34,7 +34,7 @@ function ProductDetailComponent() {
   //제품 사진 클릭 시 제품 상세페이지로 이동
   const DetailProduct = async () => {
     try {
-      const response = await fetch(`http://localhost:8090/eDrink24/showDetailProduct/${category1}/${category2}/${productId}`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showDetailProduct/${category1}/${category2}/${productId}`, {
         method: "GET"
       });
 
@@ -75,7 +75,7 @@ function ProductDetailComponent() {
   //클릭 시 장바구니로 이동
   const saveInBasket = async () => {
     try {
-      const response = await fetch(`http://localhost:8090/eDrink24/saveProductToBasket`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/saveProductToBasket`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
@@ -134,8 +134,8 @@ function ProductDetailComponent() {
         defaultImage: product.defaultImage,
       };
 
-        // checkInventory함수 이용해서 productId 존재 시 픽업 유형 TODAY로 설정 - giuk-kim2
-        const pickupType = (await checkInventory(productId)) ? 'TODAY' : 'RESERVATION';
+      // checkInventory함수 이용해서 productId 존재 시 픽업 유형 TODAY로 설정 - giuk-kim2
+      const pickupType = (await checkInventory(productId)) ? 'TODAY' : 'RESERVATION';
 
       //선택한 제품 정보를 orderState에 저장
       setOrderInfo((prev) => ({ // prev는 현재 상태에서 일부분만 수정하고 나머지는 유지하고 싶을 때 사용
@@ -156,7 +156,7 @@ function ProductDetailComponent() {
   const checkInventory = async (productId) => {
     const storeId = localStorage.getItem("currentStoreId");
     try {
-      const response = await fetch(`http://localhost:8090/eDrink24/checkInventory/${storeId}/${productId}`);
+      const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/checkInventory/${storeId}/${productId}`);
       if (!response.ok) throw new Error('Failed to check inventory');
       const result = await response.json();
       return result;
@@ -168,28 +168,28 @@ function ProductDetailComponent() {
 
   // 제품에 대한 모든 리뷰 보기
   const showAllReview = async () => {
-    try{
-    const response = await fetch(`http://localhost:8090/eDrink24/showProductReview/${productId}`,{
-      method:"GET"
-    });
-    const resData = await response.json();
-    setReviews(resData);
-    setReviewCount(resData.length);
-    }catch(error){
-      console.log("Error fetching reviews:",error);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductReview/${productId}`, {
+        method: "GET"
+      });
+      const resData = await response.json();
+      setReviews(resData);
+      setReviewCount(resData.length);
+    } catch (error) {
+      console.log("Error fetching reviews:", error);
     }
   };
 
   // 제품에 대한 리뷰 갯수 설정
   const countReview = async () => {
-    try{
-    const response = await fetch(`http://localhost:8090/eDrink24/showProductReview/${productId}`,{
-      method:"GET"
-    });
-    const resData = await response.json();
-    setReviewCount(resData.length);
-    }catch(error){
-      console.log("Error fetching reviews:",error);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductReview/${productId}`, {
+        method: "GET"
+      });
+      const resData = await response.json();
+      setReviewCount(resData.length);
+    } catch (error) {
+      console.log("Error fetching reviews:", error);
     }
   };
 
@@ -281,46 +281,46 @@ function ProductDetailComponent() {
 
         {/* 콘텐츠 영역 */}
         <div className="productDetailComponent-content">
-        {activeTab === 'reviews' && (
-          <div className='productDetailComponent-content-item active'>
-            {reviews.length > 0 ? (
-              <div className='productReviewContainer'>
-                {reviews.map((review) => (
-                  <div key={review.reviewsId} className='reviewCard'>
-                    <div className='reviewHeader'>
-                      <div className='reviewProfile'>
-                        <div className='reviewUserInfo'>
-                        <strong className='userName'>{review.userName}</strong>
-                          <div className='reviewDate'>
-                            {review.enrolledDate ? review.enrolledDate.split('T')[0] : '리뷰 등록하지 않음'}
+          {activeTab === 'reviews' && (
+            <div className='productDetailComponent-content-item active'>
+              {reviews.length > 0 ? (
+                <div className='productReviewContainer'>
+                  {reviews.map((review) => (
+                    <div key={review.reviewsId} className='reviewCard'>
+                      <div className='reviewHeader'>
+                        <div className='reviewProfile'>
+                          <div className='reviewUserInfo'>
+                            <strong className='userName'>{review.userName}</strong>
+                            <div className='reviewDate'>
+                              {review.enrolledDate ? review.enrolledDate.split('T')[0] : '리뷰 등록하지 않음'}
+                            </div>
                           </div>
-                        </div>                          
+                        </div>
+                        <div className='reviewRating'>
+                          <span className='reting'>평점: {review.rating}점</span>
+                        </div>
                       </div>
-                      <div className='reviewRating'>
-                        <span className='reting'>평점: {review.rating}점</span>
+                      <div className='reviewDetails'>
+                        <div className="reviewItem">당도: {review.sugarRating}점</div>
+                        <div className="reviewItem">산미: {review.acidityRating}점</div>
+                        <div className="reviewItem">목넘김: {review.throatRating}점</div>
+                        <div className="reviewContent">리뷰 내용: {review.content}</div>
                       </div>
+                      {review.modifiedDate && (
+                        <div className='reviewModifiedDate'>
+                          수정날짜: {review.modifiedDate ? review.modifiedDate.split('T')[0] : '수정되지 않음'}
+                        </div>
+                      )}
                     </div>
-                    <div className='reviewDetails'>
-                      <div className="reviewItem">당도: {review.sugarRating}점</div>
-                      <div className="reviewItem">산미: {review.acidityRating}점</div>
-                      <div className="reviewItem">목넘김: {review.throatRating}점</div>
-                      <div className="reviewContent">리뷰 내용: {review.content}</div>
-                    </div>
-                    {review.modifiedDate && (
-                      <div className='reviewModifiedDate'>
-                        수정날짜: {review.modifiedDate ? review.modifiedDate.split('T')[0] : '수정되지 않음'}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>아직 리뷰가 없습니다.</p>
-            )}
-          </div>
-        )}
-      </div>
-        
+                  ))}
+                </div>
+              ) : (
+                <p>아직 리뷰가 없습니다.</p>
+              )}
+            </div>
+          )}
+        </div>
+
       </div>
 
       {/* 하단고정 장바구니/바로구매 버튼 */}

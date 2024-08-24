@@ -17,7 +17,7 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
         const fetchInvByStoreId = async () => {
             if (currentStoreId) {
                 try {
-                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`);
+                    const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findInventoryByStoreId/${parseInt(currentStoreId)}`);
                     const invData = await response.json();
                     setinvToStore(invData);
                 } catch (error) {
@@ -49,7 +49,7 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
             ...prevState,
             [productId]: !prevState[productId]
         }));
-    };    
+    };
 
     // Review 기능
     const handleClick2 = (event, productId) => {
@@ -72,7 +72,7 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
         }
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/saveProductToBasket`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/saveProductToBasket`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -110,54 +110,54 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
             {groupedProducts.length > 0 ? (  // products가 있을 때만 렌더링
                 groupedProducts.map((group, index) => (
 
-        <div className="ProductCardSet" key={index}> {/* 세로로 3개씩 묶는 컨테이너 */}
-            {group.map(product => {
-                const rating = 4.6; // 별점
-                const reviewCount = 123; // 리뷰 수
+                    <div className="ProductCardSet" key={index}> {/* 세로로 3개씩 묶는 컨테이너 */}
+                        {group.map(product => {
+                            const rating = 4.6; // 별점
+                            const reviewCount = 123; // 리뷰 수
 
-                return (
-                    <div className="productCard-box2" key={product.productId} onClick={() => handleProductClickEvent(product.productId)} >
-                        <div className="productImage-box2">
-                            <img className="productImage2" src={product.defaultImage} alt={product.productName} />
-                        </div>
-                        <div className="productInfo-box2">
-                            <div className="productInfo-info2">
-                                <div className="productInfo-name2">{product.productName}</div>
-                                <div className="productInfo-price2">{Number(product.price).toLocaleString()} 원</div>
-                            </div>
+                            return (
+                                <div className="productCard-box2" key={product.productId} onClick={() => handleProductClickEvent(product.productId)} >
+                                    <div className="productImage-box2">
+                                        <img className="productImage2" src={product.defaultImage} alt={product.productName} />
+                                    </div>
+                                    <div className="productInfo-box2">
+                                        <div className="productInfo-info2">
+                                            <div className="productInfo-name2">{product.productName}</div>
+                                            <div className="productInfo-price2">{Number(product.price).toLocaleString()} 원</div>
+                                        </div>
 
-                            <div className="productInfo-review2" onClick={(e) => handleClick2(e, product.productId)}>
-                                <img className="productInfo-reviewIcon2" src="assets/common/star.png" alt=" " />
-                                <span className="productInfo-reviewRating2">{rating}</span>
-                                <span className="productInfo-reviewCount2">({reviewCount})</span>
-                            </div>
+                                        <div className="productInfo-review2" onClick={(e) => handleClick2(e, product.productId)}>
+                                            <img className="productInfo-reviewIcon2" src="assets/common/star.png" alt=" " />
+                                            <span className="productInfo-reviewRating2">{rating}</span>
+                                            <span className="productInfo-reviewCount2">({reviewCount})</span>
+                                        </div>
 
-                            <div className="productInfo-button2">
-                                <div className="productInfo-tag2">
-                                    {invToStore.some(inv =>
-                                        inv.productId === product.productId && inv.quantity > 0) ? (
-                                        <div className="today-product-tag2">오늘픽업</div>
-                                    ) : (
-                                        <div className="today-product-tag-placeholder2"></div>
-                                    )}
+                                        <div className="productInfo-button2">
+                                            <div className="productInfo-tag2">
+                                                {invToStore.some(inv =>
+                                                    inv.productId === product.productId && inv.quantity > 0) ? (
+                                                    <div className="today-product-tag2">오늘픽업</div>
+                                                ) : (
+                                                    <div className="today-product-tag-placeholder2"></div>
+                                                )}
+                                            </div>
+
+                                            <button className="productInfo-like2" onClick={(e) => handleClick1(e, product.productId)}>
+                                                <img className="productInfo-likeIcon2" src={likedProducts[product.productId] ? "assets/common/fill-heart.png" : "assets/common/empty-heart.png"} alt=" " />
+                                            </button>
+
+                                            <button className="productInfo-bag2" onClick={(e) => handleClick3(e, product.productId)}>
+                                                <img className="productInfo-bagIcon2" src="assets/common/bag.png" alt=" " />
+                                            </button>
+                                        </div>
+
+                                    </div>
                                 </div>
-
-                                <button className="productInfo-like2" onClick={(e) => handleClick1(e, product.productId)}>
-                                    <img className="productInfo-likeIcon2" src={likedProducts[product.productId] ? "assets/common/fill-heart.png" : "assets/common/empty-heart.png"} alt=" "/>
-                                </button>
-
-                                <button className="productInfo-bag2" onClick={(e) => handleClick3(e, product.productId)}>
-                                    <img className="productInfo-bagIcon2" src="assets/common/bag.png" alt=" " />
-                                </button>
-                            </div>
-
-                        </div>
+                            );
+                        })}
                     </div>
-                );
-            })}
-        </div>
 
-        ))
+                ))
             ) : (
                 <p>No products available.</p>  // products가 없을 때 표시할 내용
             )}

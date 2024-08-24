@@ -14,12 +14,12 @@ function OrderHistoryComponent() {
     const fetchOrderHistory = async () => {
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showOrderHistory/${userId}`,{
-                method:"GET"
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showOrderHistory/${userId}`, {
+                method: "GET"
             });
             if (response.status === 200) {
                 const data = await response.json();
-                console.log(">>>>>>>>",data);
+                console.log(">>>>>>>>", data);
                 setOrderHistory(groupByOrderDate(data));
             } else {
                 console.error('Failed to fetch basket items. Status:', response.status);
@@ -47,28 +47,28 @@ function OrderHistoryComponent() {
     const moveToReviewPage = (date, idx) => {
 
         localStorage.setItem("orderHistory", JSON.stringify(orderHistory[date][idx])); // Object.keys(orderHistory) 제이슨의 키값을 가져오는 코드
-        console.log("orderHistory[date]",orderHistory[date][idx]);
+        console.log("orderHistory[date]", orderHistory[date][idx]);
         navigate(`/review`);
     };
 
 
     // 리뷰 확인하기 누르면 리뷰확인페이지로 이동 - giuk-kim2
     const moveToMyReviewPage = async (reviewsId) => {
-        try{
-        const response = await fetch(`http://localhost:8090/eDrink24/checkMyReview/${userId}/${reviewsId}`,{
-            method:"GET"
-        });
-        if(response.ok){
-            const data = await response.json();        
-            localStorage.setItem("reviewData",JSON.stringify(data));
+        try {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/checkMyReview/${userId}/${reviewsId}`, {
+                method: "GET"
+            });
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem("reviewData", JSON.stringify(data));
 
-            navigate('/checkMyReview');
+                navigate('/checkMyReview');
+            }
+
+        } catch (error) {
+            console.error('에러가 발생했습니다.', error);
         }
-        
-        }catch(error){
-            console.error('에러가 발생했습니다.',error);
-        }
-        
+
     };
 
     const fetchData = async () => {
@@ -81,9 +81,9 @@ function OrderHistoryComponent() {
 
     // clickOrderHistoryDetails 실행하면 orderDate값 넘겨줌
     const clickOrderHistoryDetails = async (date) => {
-        navigate("/orderHistoryDetails", { state: { orderDate: date }});
+        navigate("/orderHistoryDetails", { state: { orderDate: date } });
     }
-  
+
     return (
         <div className="order-container">
             <h2>주문 내역</h2>
@@ -93,7 +93,7 @@ function OrderHistoryComponent() {
                 {Object.keys(orderHistory).length > 0 ? (
                     Object.keys(orderHistory).map((date, index) => (
                         <div key={index} className="order-group">
-                            <h3>{new Date(date).getFullYear() + ". "+ new Date(date).getMonth()+ ". " + new Date(date).getDate()}</h3>
+                            <h3>{new Date(date).getFullYear() + ". " + new Date(date).getMonth() + ". " + new Date(date).getDate()}</h3>
                             <table>
                                 <thead>
                                     <tr>

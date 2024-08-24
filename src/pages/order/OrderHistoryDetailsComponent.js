@@ -1,9 +1,9 @@
 import './OrderHistoryDetailsComponent.css'
-import { useState, useEffect} from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; 
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function OrderHistoryDetailsComponent() {
-    
+
     const [orderHistoryDetails, setOrderHistoryDetails] = useState([]);
     const location = useLocation();
     const { orderDate } = location.state // OrderHistoryComponent에서 넘겨준 orderDate 가져오기
@@ -12,7 +12,7 @@ function OrderHistoryDetailsComponent() {
 
     const navigate = useNavigate();
 
-    console.log("AAAAAAAA",orderDate);
+    console.log("AAAAAAAA", orderDate);
 
     // Date 객체를 문자열로 포맷
     const formatDate = (date) => {
@@ -31,7 +31,7 @@ function OrderHistoryDetailsComponent() {
         try {
             const dateObject = new Date(orderDate);
             const formattedOrderDate = formatDate(dateObject);
-            const response = await fetch(`http://localhost:8090/eDrink24/showOrderHistoryDetails/${userId}/${formattedOrderDate}`);
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showOrderHistoryDetails/${userId}/${formattedOrderDate}`);
             if (response.status === 200) {
                 const data = await response.json();
                 setOrderHistoryDetails(data);
@@ -63,12 +63,12 @@ function OrderHistoryDetailsComponent() {
 
     // 총 상품금액, 총 할인금액, 총 결제금액, 예상 적립금액 계산
     const totalAmount = orderHistoryDetails.reduce((total, item) => total + (item.price * item.orderQuantity), 0);
-    console.log("CCCCCCCCCCC1",totalAmount);
-    console.log("CCCCCCCCCCC2",orderHistoryDetails);
+    console.log("CCCCCCCCCCC1", totalAmount);
+    console.log("CCCCCCCCCCC2", orderHistoryDetails);
     let totalPaid = 0;
-    if(orderHistoryDetails.length > 0){
+    if (orderHistoryDetails.length > 0) {
         totalPaid = orderHistoryDetails[0].orderAmount;
-        console.log("DDDDDDDDDDDD1",  totalPaid);
+        console.log("DDDDDDDDDDDD1", totalPaid);
     }
     const totalDiscount = totalAmount - totalPaid;
     const points = totalPaid * 0.01;
@@ -111,7 +111,7 @@ function OrderHistoryDetailsComponent() {
                                         <td>{item.pickupType === 'TODAY' ? '오늘 픽업' : '예약 픽업'}</td>
                                         <td>{item.isCompleted == 1 ? '완료' : '미완료'}</td>
                                         <td>{item.storeName}</td>
-                                        <td>{item.isCompleted == 0 ? countPickupTime(item.pickupDate, item.orderDate):'픽업완료'}</td>
+                                        <td>{item.isCompleted == 0 ? countPickupTime(item.pickupDate, item.orderDate) : '픽업완료'}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -131,7 +131,7 @@ function OrderHistoryDetailsComponent() {
             </div>
         </div>
     );
-    
+
 }
 
 export default OrderHistoryDetailsComponent;

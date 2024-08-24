@@ -12,7 +12,7 @@ const TodayPickupCompletedPageComponent = () => {
     // 즉시픽업 완료된 것만 보여줌.
     const PickupCompletedPage = async () => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showPickupCompletedPage`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showPickupCompletedPage`, {
                 method: "GET"
             });
 

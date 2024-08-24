@@ -29,17 +29,18 @@ const CheckMyReviewComponent = () => {
 
             //Rating 계산
             const rating = (
-                (parseFloat(editedReview.sugarRating || 0))+
-                (parseFloat(editedReview.acidityRating || 0))+
+                (parseFloat(editedReview.sugarRating || 0)) +
+                (parseFloat(editedReview.acidityRating || 0)) +
                 (parseFloat(editedReview.throatRating || 0))
             ) / 3.0;
 
-            const updatedReview = { ...editedReview, 
+            const updatedReview = {
+                ...editedReview,
                 reviewsId: JSON.parse(savedReview)[0].reviewsId,
                 rating: rating.toFixed(1) // 소수점 첫째 자리까지
-            }; 
-            
-            const response = await fetch(`http://localhost:8090/eDrink24/fixReviewContent`, {
+            };
+
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/fixReviewContent`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -47,7 +48,7 @@ const CheckMyReviewComponent = () => {
                 body: JSON.stringify(updatedReview)
             });
 
-            console.log(">>>>>>>>>",rating);
+            console.log(">>>>>>>>>", rating);
             alert("리뷰가 수정되었습니다!!");
             // 수정 모드 종료
             setIsEditing(false);

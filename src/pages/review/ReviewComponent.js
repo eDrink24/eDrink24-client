@@ -20,21 +20,21 @@ const ReviewComponent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // 저장하기 버튼 누른 후 새로고침 방지
 
-        const averageRating = parseFloat(((sugarRating + acidityRating + throatRating)/ 3.0).toFixed(1));
+        const averageRating = parseFloat(((sugarRating + acidityRating + throatRating) / 3.0).toFixed(1));
 
         const reviewData = {
-            ordersId: orderHistory .ordersId,
-            productId: orderHistory .productId,
-            rating:averageRating,
+            ordersId: orderHistory.ordersId,
+            productId: orderHistory.productId,
+            rating: averageRating,
             sugarRating,
             acidityRating,
             throatRating,
             content
         };
-        
+
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/addReview`,{
-                method:"POST",
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/addReview`, {
+                method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -43,8 +43,8 @@ const ReviewComponent = () => {
             if (response.ok) {
                 alert('리뷰가 성공적으로 저장되었습니다.');
                 navigate('/orderHistory');
-                
-            }else{
+
+            } else {
                 alert('물건 픽업 후 다시 시도해주세요.');
             }
         } catch (error) {
@@ -56,8 +56,8 @@ const ReviewComponent = () => {
     return (
         <div className="review-form">
             <div className="review-product-info">
-                <img src={orderHistory .defaultImage} alt={orderHistory .productName} className="review-product-image" />
-                <div className="review-product-name">{orderHistory .productName}</div> 
+                <img src={orderHistory.defaultImage} alt={orderHistory.productName} className="review-product-image" />
+                <div className="review-product-name">{orderHistory.productName}</div>
             </div>
             <form onSubmit={handleSubmit}>
 

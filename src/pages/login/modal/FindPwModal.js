@@ -28,7 +28,7 @@ const FindPwModal = ({ isOpen, onRequestClose }) => {
     const handleFindPwSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch('http://localhost:8090/eDrink24/findPw', {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/findPw`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ const FindPwModal = ({ isOpen, onRequestClose }) => {
             return;
         }
 
-        const response = await fetch('http://localhost:8090/eDrink24/findPw/updatePw', {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/findPw/updatePw`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

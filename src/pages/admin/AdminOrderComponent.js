@@ -26,7 +26,7 @@ const AdminOrderComponent = () => {
     // 선택된 카테고리의 제품을 서버에서 가져오는 함수
     const selectCategory1 = async (category1) => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory1/${category1}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductByCategory1/${category1}`, {
                 method: "GET"
             });
 
@@ -90,7 +90,7 @@ const AdminOrderComponent = () => {
                 adminOrderQuantity: quantity
             };
             try {
-                const response = await fetch(`http://localhost:8090/eDrink24/updateOrInsertInventory/${storeId}/${selectedProductId}`, {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/updateOrInsertInventory/${storeId}/${selectedProductId}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -142,7 +142,7 @@ const AdminOrderComponent = () => {
     // 카테고리 클릭 시 호출되는 함수
     const handleCategory1Click = async (category1) => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory1/${category1}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductByCategory1/${category1}`, {
                 method: "GET"
             });
 
