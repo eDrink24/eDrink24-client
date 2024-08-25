@@ -412,7 +412,9 @@ export async function action({ request }) {
         email: data.get("email"),
         postalCode: data.get("postalCode"),
         address1: data.get("address1"),
-        address2: data.get("address2")
+        address2: data.get("address2"),
+        currentLocation: data.get("address1"),
+        currentStoreId: 1
     };
 
     console.log(authData);
