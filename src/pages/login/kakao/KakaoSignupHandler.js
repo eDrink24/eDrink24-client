@@ -213,6 +213,7 @@ function KakaoSignupHandler() {
                 postalCode: dataForm[4].value,
                 address1: dataForm[5].value,
                 address2: dataForm[6].value,
+                currentLocation: dataForm[5].value,
                 gender: gender,
                 linkedId: cusData.linkedId
             };

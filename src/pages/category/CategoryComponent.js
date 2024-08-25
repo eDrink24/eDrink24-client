@@ -37,7 +37,7 @@ const CategoryComponent = () => {
 
         {/* 뒤로가기 아이콘 */}
         <button className="category-back" onClick={handleDirectB1}>
-          <img className="back-icon" src="assets/common/backicon.png" alt="back" />
+          <img className="back-icon" src="/assets/common/backicon.png" alt="back" onClick={handleDirectB1} />
         </button>
 
         {/* 메인 타이틀 */}
@@ -45,7 +45,7 @@ const CategoryComponent = () => {
 
         {/* 장바구니 아이콘 */}
         <button className="category-bag" onClick={() => { navigate('/basket') }}>
-          <img className="bag-cicon" src="assets/common/bag.png" alt="bag" />
+          <img className="bag-cicon" src="/assets/common/bag.png" alt="bag" />
         </button>
 
       </div>
