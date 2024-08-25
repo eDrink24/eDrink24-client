@@ -4,6 +4,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
 import { useRecoilState } from 'recoil';
 import { orderState } from '../order/OrderAtom';
+import back from '../../assets/common/backIcon.png'
+import search from '../../assets/common/search.png'
+import home from '../../assets/common/home.png'
+import bag from '../../assets/common/bag.png'
+import star from '../../assets/common/star.png'
+import emptyHeart from '../../assets/common/empty-heart.png'
+import share from '../../assets/common/share.png'
+import todayPickup from '../../assets/common/today-pickup.png'
+import uparrow from '../../assets/common/uparrow.png'
 
 function ProductDetailComponent() {
   // 상태 변수 선언
@@ -198,7 +207,7 @@ function ProductDetailComponent() {
           {/* 뒤로가기 아이콘 */}
           <button className="productDetailComponent-back-icon-button" onClick={() => { navigate(-1) }}>
             <img className="productDetailComponent-nav-back-icon"
-              src="assets/common/backIcon.png" alt="Back" />
+              src={back} alt="Back" />
           </button>
 
           <div className="productDetailComponent-nav-empty-box"></div>
@@ -206,19 +215,19 @@ function ProductDetailComponent() {
           {/* 검색하기 아이콘 */}
           <button className="productDetailComponent-search-icon-button">
             <img className="productDetailComponent-nav-search-icon"
-              src="assets/common/search.png" alt="search" />
+              src={search} alt="search" />
           </button>
 
           {/* 홈으로가기 아이콘 */}
           <button className="productDetailComponent-home-icon-button" onClick={() => { navigate("/") }}>
             <img className="productDetailComponent-nav-home-icon"
-              src="assets/common/home.png" alt="home" />
+              src={home} alt="home" />
           </button>
 
           {/* 장바구니담기 아이콘 */}
           <button className="productDetailComponent-bag-icon-button" onClick={() => { navigate("/basket") }}>
             <img className="productDetailComponent-nav-bag-icon"
-              src="assets/common/bag.png" alt="bag" />
+              src={bag} alt="bag" />
           </button>
 
         </div>
@@ -234,17 +243,17 @@ function ProductDetailComponent() {
         <div className="productDetailComponent-product-other">
           <div className="productDetailComponent-product-review">
             <img className="productDetailComponent-reivew-star"
-              src="assets/common/star.png" alt="star" />
+              src={star} alt="star" />
             <h2>{reviewRating} 리뷰 ({reviewCount})</h2>
           </div>
           <div className="productDetailComponent-product-option">
             <button className="productDetailComponent-heart-icon-button">
               <img className="productDetailComponent-heart-icon"
-                src="assets/common/empty-heart.png" alt="emptyheart" />
+                src={emptyHeart} alt="emptyheart" />
             </button >
             <button className="productDetailComponent-share-icon-button">
               <img className="productDetailComponent-share-icon"
-                src="assets/common/share.png" alt="share" />
+                src={share} alt="share" />
             </button>
           </div>
         </div>
@@ -259,7 +268,7 @@ function ProductDetailComponent() {
         </div>
 
         <img className="productDetailComponent-today-pickup-img"
-          src="assets/common/today-pickup.png" alt="today-pickup" />
+          src={todayPickup} alt="today-pickup" />
 
         {/* 콘텐츠 영역 */}
         <div className="productDetailComponent-content">
@@ -310,7 +319,7 @@ function ProductDetailComponent() {
         <div className="productDetailComponent-select-more-items">
           <button className="productDetailComponent-more-items" onClick={toggleExpand}>
             <img className="productDetailComponent-up-arrow"
-              src="assets/common/uparrow.png" alt="uparrow" />
+              src={uparrow} alt="uparrow" />
           </button>
         </div>
 

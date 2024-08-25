@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'; // useState 임포트 추가
 import { useNavigate } from 'react-router-dom'; // useNavigate 임포트 추가
 import './CategoryComponent.css';
 import FooterComponent from '../../components/footer/FooterComponent.js';
+import back from '../../assets/common/backIcon.png'
+import bag from '../../assets/common/bag.png'
 const categories = ['와인', '양주', '전통주', '논알콜', '안주'];
 const subcategories = {
   '와인': ['레드와인', '화이트와인', '스파클링와인', '로제와인'],
@@ -37,7 +39,7 @@ const CategoryComponent = () => {
 
         {/* 뒤로가기 아이콘 */}
         <button className="category-back" onClick={handleDirectB1}>
-          <img className="back-icon" src="assets/common/backicon.png" alt="back" />
+          <img className="back-icon" src={back} alt="back" />
         </button>
 
         {/* 메인 타이틀 */}
@@ -45,7 +47,7 @@ const CategoryComponent = () => {
 
         {/* 장바구니 아이콘 */}
         <button className="category-bag" onClick={() => { navigate('/basket') }}>
-          <img className="bag-cicon" src="assets/common/bag.png" alt="bag" />
+          <img className="bag-cicon" src={bag} alt="bag" />
         </button>
 
       </div>
