@@ -87,6 +87,8 @@ const AllProductComponent = () => {
     const [quantity] = useState(1); // 장바구니에 추가할 수량
     const [product, setProduct] = useState(null); // 선택된 제품 상태
     const userId = localStorage.getItem('userId');
+    const [reviewCount, setReviewCount] = useState(0);
+    const [reviewRating, setReviewRating] = useState(0);
 
     useEffect(() => {
         if (category1) {
@@ -404,7 +406,7 @@ const AllProductComponent = () => {
 
                     <div className="allproduct-dropdown-box">
                         <select onChange={handleSortEvent}>
-                            {/*                           <option value="신상품순">신상품순</option>
+                        {/*<option value="신상품순">신상품순</option>
                             <option value="판매량순">판매량순</option>
                             <option value="평점순">평점순</option>
                             <option value="리뷰순">리뷰순</option> */}
@@ -430,6 +432,7 @@ const AllProductComponent = () => {
                             <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
                             <div className="allproduct-product-name">{product.productName}</div>
                             <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
+                            <div className="allproduct-product-rating">{product.rating}</div>
                         </div>
 
                         <div className="allproduct-icon-button">
