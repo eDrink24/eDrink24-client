@@ -214,7 +214,6 @@ function KakaoSignupHandler() {
                 address1: dataForm[5].value,
                 address2: dataForm[6].value,
                 currentLocation: dataForm[5].value,
-                currentStoreId: 1,
                 gender: gender,
                 linkedId: cusData.linkedId
             };

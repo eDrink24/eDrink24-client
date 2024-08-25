@@ -54,7 +54,7 @@ const KakaoLoginHandler = (props) => {
                 navigate("/kakao/signup", { state: { cusData: resData.customerDTO } });
             }
         } catch (error) {
-            console.error('로그인 중 오류 발생', error);
+            openAlert("로그인 도중 오류가 발생하였습니다.")
         }
     }, [code, navigate]);
 

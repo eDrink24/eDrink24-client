@@ -223,7 +223,7 @@ function SignupComponent() {
                 openAlert('인증 실패');
             }
         } catch (error) {
-            openAlert('Server Error');
+            openAlert('서버 에러');
         }
     };
 
@@ -414,7 +414,6 @@ export async function action({ request }) {
         address1: data.get("address1"),
         address2: data.get("address2"),
         currentLocation: data.get("address1"),
-        currentStoreId: 1
     };
 
     console.log(authData);
@@ -426,8 +425,6 @@ export async function action({ request }) {
         },
         body: JSON.stringify(authData)
     });
-
-    console.log("회원가입 요청결과: ", response);
 
     if (response.ok) {
         return {
