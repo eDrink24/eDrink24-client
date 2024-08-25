@@ -33,6 +33,7 @@ import PaymentApproval from './components/payment/PaymentApproval';
 import PaymentCancelOrFail from './components/payment/PaymentCancelOrFail';
 import OrderHistoryComponent from './pages/order/OrderHistoryComponent';
 import OrderHistoryDetailsComponent from './pages/order/OrderHistoryDetailsComponent';
+import DibsComponent from './pages/dibs/DibsComponent';
 
 
 
@@ -68,6 +69,12 @@ const router = createBrowserRouter([
       },
       {
         path: '/orderHistory', element: <OrderHistoryComponent />
+      },
+      {
+        path: '/orderHistoryDetails', element: <OrderHistoryDetailsComponent />
+      },
+      {
+        path: '/dibs', element: <DibsComponent />
       },
       {
         path: '/admin', element: <AdminComponent />

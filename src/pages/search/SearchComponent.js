@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import "./SearchComponent.css";
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import AlertModal from '../../components/alert/AlertModal.js';
+import back from '../../assets/common/backIcon.png'
 
 function SearchComponent() {
     const navigate = useNavigate();
@@ -104,7 +105,7 @@ function SearchComponent() {
             <div className="search-header">
                 <div className="search-navigation-bar">
                     <button className="search-back-button" onClick={() => { navigate(-1) }}>
-                        <img src="assets/common/backIcon.png" alt="Back" className="search-nav-bicon" />
+                        <img src={back} alt="Back" className="search-nav-bicon" />
                     </button>
 
                     <input type="text" className="search-input"

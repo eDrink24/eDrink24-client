@@ -6,6 +6,13 @@ import MyplaceComponent from '../../components/mainMyplace/MyplaceComponent.js';
 import OtherProductCardComponent from '../../components/ProductCard/OtherProductCardComponent.js';
 import ProductCardComponent from '../../components/ProductCard/ProductCardComponent.js';
 import "./HomeComponent.css";
+import menu from '../../assets/common/menu.png'
+import search from '../../assets/common/search.png'
+import gift from '../../assets/common/gift.png'
+import chatbot from '../../assets/common/chatbot.png'
+import eDrinkLogo from '../../assets/common/eDrinkLogo.png'
+import bell from '../../assets/common/bell.png'
+import bag from '../../assets/common/bag.png'
 
 function HomeComponent() {
     const { category1 } = useParams();
@@ -66,13 +73,13 @@ function HomeComponent() {
     return (
         <div className="homePage-container">
             <div className="homePage-nav-bar">
-                <img className="homePage-logo" src="assets/common/eDrinkLogo.png" alt=" " />
+                <img className="homePage-logo" src={eDrinkLogo}alt=" " />
                 <div className="homePage-icon-content">
                     <button className="homePage-bell-button">
-                        <img className="homePage-bell-icon" src="assets/common/bell.png" alt=" " />
+                        <img className="homePage-bell-icon" src={bell} alt=" " />
                     </button>
                     <button className="homePage-basket-button" aria-label="Notifications">
-                        <img className="homePage-basket-icon" src="assets/common/bag.png" alt=" " onClick={() => navigate("/basket")} />
+                        <img className="homePage-basket-icon" src={bag} alt=" " onClick={() => navigate("/basket")} />
                     </button>
                 </div>
             </div>
@@ -82,19 +89,19 @@ function HomeComponent() {
 
             <div className="category-button-container">
                 <button type="button" className="b1" onClick={handleDirectCategory}>
-                    <img src="assets/common/menu.png" className="menuButton" alt="Menu Button" />
+                    <img src={menu} className="menuButton" alt="Menu Button" />
                     <p className="home-category">카테고리</p>
                 </button>
                 <button type="button" className="b2" onClick={handleDirectAllproduct}>
-                    <img src="assets/common/search.png" className="searchButton" alt="Search Button" />
+                    <img src={search} className="searchButton" alt="Search Button" />
                     <p className="home-category">전체상품</p>
                 </button>
                 <button type="button" className="b3" onClick={handleDirectHome}>
-                    <img src="assets/common/gift.png" className="giftButton" alt="Gift Button" />
+                    <img src={gift} className="giftButton" alt="Gift Button" />
                     <p className="home-category">이벤트</p>
                 </button>
                 <button type="button" className="b4" onClick={handleDirectHome}>
-                    <img src="assets/common/chatbot.png" className="chatbotButton" alt="Chatbot Button" />
+                    <img src={chatbot} className="chatbotButton" alt="Chatbot Button" />
                     <p className="home-category">챗봇</p>
                 </button>
             </div>
