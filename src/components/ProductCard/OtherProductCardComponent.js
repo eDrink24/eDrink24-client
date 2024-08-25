@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import './OtherProductCardComponent.css';
+import star from '../../assets/common/star.png';
+import filledHeart from '../../assets/common/fill-heart.png';
+import emptyHeart from '../../assets/common/empty-heart.png';
+import bag from '../../assets/common/bag.png';
 
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton.js';
 
@@ -123,6 +127,13 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
                                 <div className="productInfo-name2">{product.productName}</div>
                                 <div className="productInfo-price2">{Number(product.price).toLocaleString()} 원</div>
                             </div>
+
+                            <div className="productInfo-review2" onClick={(e) => handleClick2(e, product.productId)}>
+                                <img className="productInfo-reviewIcon2" src={star} alt=" " />
+                                <span className="productInfo-reviewRating2">{rating}</span>
+                                <span className="productInfo-reviewCount2">({reviewCount})</span>
+                            </div>
+
                             <div className="productInfo-button2">
                                 <div className="productInfo-tag2">
                                     {invToStore.some(inv =>
@@ -134,11 +145,11 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
                                 </div>
 
                                 <button className="productInfo-like2" onClick={(e) => handleClick1(e, product.productId)}>
-                                    <img className="productInfo-likeIcon2" src={likedProducts[product.productId] ? "assets/common/fill-heart.png" : "assets/common/empty-heart.png"} alt=" "/>
+                                    <img className="productInfo-likeIcon2" src={likedProducts[product.productId] ? {filledHeart} : {emptyHeart}} alt=" "/>
                                 </button>
 
                                 <button className="productInfo-bag2" onClick={(e) => handleClick3(e, product.productId)}>
-                                    <img className="productInfo-bagIcon2" src="assets/common/bag.png" alt=" " />
+                                    <img className="productInfo-bagIcon2" src={bag} alt=" " />
                                 </button>
                             </div>
 
