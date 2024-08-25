@@ -36,11 +36,11 @@ function ProductDetailComponent() {
   // 제품에 대한 모든 리뷰 보기
   const showAllReview = async () => {
     try {
-      const response = await fetch(`http://localhost:8090/eDrink24/showProductReview/${productId}`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductReview/${productId}`, {
         method: "GET"
       });
       const resData = await response.json();
-      console.log(">>>>>>>>>", resData);
+
       setReviews(resData);
       setReviewCount(resData.length);
       // 리뷰가 있을 때 평균 평점을 계산

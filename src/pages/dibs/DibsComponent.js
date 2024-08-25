@@ -1,9 +1,9 @@
 import './DibsComponent.css'
-import { useState, useEffect} from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; 
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function DibsComponent() {
-    
+
     const [dibs, setDibs] = useState([]);
     const userId = localStorage.getItem('userId');
 
@@ -13,7 +13,7 @@ function DibsComponent() {
     const fetchDibs = async () => {
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showAllDibs/${userId}`);
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showAllDibs/${userId}`);
             if (response.status === 200) {
                 const data = await response.json();
                 setDibs(data);
@@ -37,7 +37,7 @@ function DibsComponent() {
     const deleteDibs = async (productId, event) => {
         event.stopPropagation(); // 삭제 버튼 클릭했을때 제품 상세페이지로 넘어가는거 방지
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/cancelDIb/${userId}/${productId}`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
@@ -46,9 +46,6 @@ function DibsComponent() {
 
             if (response.ok) {
                 setDibs(dibs.filter(item => item.productId !== productId));
-                console.log("removed from dibs", dibs);
-            } else {
-                throw new Error("Failed to remove product from dibs");
             }
 
         } catch (error) {
@@ -72,7 +69,7 @@ function DibsComponent() {
     return (
         <div className="dibs-container">
             <h2>찜 목록</h2>
-    
+
             <div className="dibs-section">
                 {dibs.length > 0 ? (
                     <div className="dibs-group">
@@ -86,9 +83,9 @@ function DibsComponent() {
                             </thead>
                             <tbody>
                                 {dibs.map((item, index) => (
-                                    <tr key={index} 
-                                    onClick={() => handleProductClickEvent(item.productId)}
-                                    style={{ cursor: 'pointer' }}>
+                                    <tr key={index}
+                                        onClick={() => handleProductClickEvent(item.productId)}
+                                        style={{ cursor: 'pointer' }}>
                                         <td>
                                             <img
                                                 src={item.defaultImage}
@@ -100,8 +97,8 @@ function DibsComponent() {
                                         <td>{item.productName}</td>
                                         <td>{item.price.toLocaleString()} 원</td>
                                         <td>
-                                            <button 
-                                                onClick={(e) => deleteDibs(item.productId, e)} 
+                                            <button
+                                                onClick={(e) => deleteDibs(item.productId, e)}
                                                 className="delete-button">
                                                 삭제
                                             </button>
@@ -117,7 +114,7 @@ function DibsComponent() {
             </div>
         </div>
     );
-    
+
 }
 
 export default DibsComponent;

@@ -109,7 +109,7 @@ const AllProductComponent = () => {
 
             const resData = await response.json();
             // 찜 목록 가져오기
-            const likedResponse = await fetch(`http://localhost:8090/eDrink24/showAllDibs/${userId}`, {
+            const likedResponse = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showAllDibs/${userId}`, {
                 method: "GET"
             });
 
@@ -315,8 +315,8 @@ const AllProductComponent = () => {
         }
 
         const url = liked
-            ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
-            : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
+            ? `${process.env.REACT_APP_SERVER_API_URL}/addDibs/${userId}` // liked가 true면 찜 추가
+            : `${process.env.REACT_APP_SERVER_API_URL}/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
 
         try {
             const response = await fetch(url, {
