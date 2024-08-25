@@ -34,8 +34,8 @@ function DibsComponent() {
     }, [userId]);
 
     // 찜목록 삭제
-    const deleteDibs = async (productId) => {
-
+    const deleteDibs = async (productId, event) => {
+        event.stopPropagation(); // 삭제 버튼 클릭했을때 제품 상세페이지로 넘어가는거 방지
         try {
             const response = await fetch(`http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`, {
                 method: "DELETE",
@@ -101,7 +101,7 @@ function DibsComponent() {
                                         <td>{item.price.toLocaleString()} 원</td>
                                         <td>
                                             <button 
-                                                onClick={() => deleteDibs(item.productId)} 
+                                                onClick={(e) => deleteDibs(item.productId, e)} 
                                                 className="delete-button">
                                                 삭제
                                             </button>
