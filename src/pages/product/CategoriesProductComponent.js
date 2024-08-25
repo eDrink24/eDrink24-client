@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './CategoriesProductComponent.css';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import { useNavigate, useParams } from 'react-router-dom';
-import back from '../../assets/common/backIcon.png'
-import logo from '../../assets/common/eDrinkLogo.png'
-import bag from '../../assets/common/bag.png'
 
 const subcategories = {
     '와인': ['레드와인', '화이트와인', '스파클링와인', '로제와인'],
@@ -140,13 +137,13 @@ const CategoriesProductComponent = () => {
             <div className="categoriesproduct-home-header"> {/* 상단 네비게이션 바 */}
                 <div className="categoriesproduct-navigation-bar">
                     <button className="categoriesproduct-back-button" onClick={backCategoryPage}>
-                        <img src={back} alt="Back" className="categoriesproduct-nav-bicon" /> {/* 뒤로 가기 아이콘 */}
+                        <img src="assets/common/backIcon.png" alt="Back" className="categoriesproduct-nav-bicon" /> {/* 뒤로 가기 아이콘 */}
                     </button>
                     <div className="categoriesproduct-logo-box" onClick={backMainPage}>
-                        <img src={logo} alt="eMart24" className="categoriesproduct-nav-logo" /> {/* 로고 이미지 */}
+                        <img src="assets/common/emart24_logo.png" alt="eMart24" className="categoriesproduct-nav-logo" /> {/* 로고 이미지 */}
                     </div>
                     <button className="categoriesproduct-cart-button">
-                        <img src={bag} alt="Cart" className="categoriesproduct-nav-cicon" onClick={() => { navigate('/basket') }} /> {/* 장바구니로 가기 아이콘 */}
+                        <img src="assets/common/cartIcon.png" alt="Cart" className="categoriesproduct-nav-cicon" onClick={() => { navigate('/basket') }} /> {/* 장바구니로 가기 아이콘 */}
                     </button>
                 </div>
             </div>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MyplaceComponent.css';
-import place from '../../assets/common/place.png'
 
 function MyPlaceComponent() {
     const navigate = useNavigate();
@@ -73,12 +72,12 @@ function MyPlaceComponent() {
             <div className="my-home-address">
                 {isLoggedIn && customerData ? (
                     <div className="login-myhome-address-info" onClick={navigateSetLocation}>
-                        <img className="placeIcon" src={place} alt="place-icon" />
+                        <img className="placeIcon" src="assets/common/place.png" alt="place-icon" />
                         <p className="home-place-text">{customerData.currentLocation}</p>
                     </div>
                 ) : (
                     <div className="logout-myhome-address-info" onClick={() => navigate("/login")}>
-                        <img className="placeIcon" src={place} alt="place-icon" />
+                        <img className="placeIcon" src="assets/common/place.png" alt="place-icon" />
                         <p className="home-place-text">로그인이 필요합니다.</p>
                     </div>
                 )}

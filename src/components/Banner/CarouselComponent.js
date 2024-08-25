@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './CarouselComponent.css';
-import banner1 from '../../assets/common/banner1.png'
-import banner2 from '../../assets/common/banner2.png'
-import banner3 from '../../assets/common/banner3.png'
-import banner4 from '../../assets/common/banner4.png'
-
 
 // 파일에서 이미지 불러오기
 const imageList = [
-  banner1,
-  banner2,
-  banner3,
-  banner4,
+  './assets/common/banner1.png?text=Slide+1',
+  './assets/common/banner2.png?text=Slide+2',
+  './assets/common/banner3.png?text=Slide+3',
+  './assets/common/banner4.png?text=Slide+4',
   // ==> 여기에 이미지 URL 추가하기
   //     지금은 색상이미지 4개 넣어둠 
 ];
