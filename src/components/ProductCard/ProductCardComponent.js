@@ -121,11 +121,11 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                                     <div className="productInfo-price">{Number(product.price).toLocaleString()} 원</div>
                                 </div>
 
-                                <div className="productInfo-review" onClick={(e) => handleClick2(e, product.productId)}>
+                                {/* <div className="productInfo-review" onClick={(e) => handleClick2(e, product.productId)}>
                                     <img className="productInfo-reviewIcon" src={star} alt=" " />
                                     <span className="productInfo-reviewRating">{rating}</span>
                                     <span className="productInfo-reviewCount">({reviewCount})</span>
-                                </div>
+                                </div> */}
 
                                 <div className="productInfo-button">
                                     <div className="productInfo-tag">
