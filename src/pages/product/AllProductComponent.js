@@ -3,24 +3,39 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import './AllProductComponent.css';
+import emptyHeart from '../../assets/common/empty-heart.png'
+import filledHeart from '../../assets/common/fill-heart.png'
+import star from '../../assets/common/star.png'
+import bag from '../../assets/common/bag.png'
+import back from '../../assets/common/backIcon.png'
+import logo from '../../assets/common/eDrinkLogo.png'
+import filter from '../../assets/common/filter.png'
+//import daum from './assets/daum.png';
+
 
 // 카테고리 목록 상수
 const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
 
 // 좋아요 버튼 컴포넌트
-const LikeButton = () => {
-    const [liked, setLiked] = useState(false); // 좋아요 상태 관리
+const LikeButton = ({onClick, productId, liked}) => {
+    const [isLiked, setIsLiked] = useState(liked); // 좋아요 상태 관리
 
     const handleClick = (event) => {
         event.stopPropagation();
-        setLiked(!liked); // 클릭할 때마다 상태를 토글
+        const likeState = !isLiked;
+        setIsLiked(likeState); // 클릭할 때마다 상태를 토글
+        onClick(productId, likeState);
     };
+
+    useEffect(() => {
+        setIsLiked(liked); // liked prop이 변경될 때 상태 업데이트
+    }, [liked]);
 
     return (
         <button className="allproduct-like-button" onClick={handleClick}>
             <img
                 className="allproduct-like-icon"
-                src={liked ? "assets/common/fill-heart.png" : "assets/common/empty-heart.png"}
+                src={isLiked ? filledHeart : emptyHeart}
                 alt="Like Icon"
             />
         </button>
@@ -36,7 +51,7 @@ const ReviewButton = ({ onClick }) => {
 
     return (
         <button className="allproduct-review-button" onClick={handleClick}>
-            <img className="allproduct-review-icon" src="assets/common/star.png" alt=" " />
+            <img className="allproduct-review-icon" src={star} alt=" " />
             <span className="allproduct-review-rating">4.6</span> {/* 평점 표시 */}
             <span className="allproduct-review-count">123</span> {/* 리뷰 갯수 표시 */}
         </button>
@@ -52,15 +67,15 @@ const CartButton = ({ onClick, productId }) => {
 
     return (
         <button onClick={handleClick} className="allproduct-bag-button">
-            <img className="allproduct-bag-icon" src="assets/common/bag.png" alt=" " />
+            <img className="allproduct-bag-icon" src={bag} alt=" " />
         </button>
     );
 };
 
 // 좋아요 클릭 함수
-const handleLikeClick = (productId) => {
-    console.log(`Liked product with ID: ${productId}`);
-};
+// const handleLikeClick = (productId) => {
+//     console.log(`Liked product with ID: ${productId}`);
+// };
 
 // 메인 컴포넌트
 const AllProductComponent = () => {
@@ -71,6 +86,7 @@ const AllProductComponent = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 상태
     const [quantity] = useState(1); // 장바구니에 추가할 수량
     const [product, setProduct] = useState(null); // 선택된 제품 상태
+    const userId = localStorage.getItem('userId');
 
     useEffect(() => {
         if (category1) {
@@ -90,7 +106,27 @@ const AllProductComponent = () => {
             }
 
             const resData = await response.json();
-            setProducts(resData);
+            // 찜 목록 가져오기
+            const likedResponse = await fetch(`http://localhost:8090/eDrink24/showAllDibs/${userId}`, {
+                method: "GET"
+            });
+
+            if (!likedResponse.ok) {
+                throw new Error('Failed to fetch liked products');
+            }
+
+            const likedData = await likedResponse.json();
+            const likedProductIds = new Set(likedData.map(dib => dib.productId));
+
+            // 제품 목록에 찜 상태 추가
+            const updatedProducts = resData.map(product => ({
+                ...product,
+                liked: likedProductIds.has(product.productId)
+            }));
+
+            setProducts(updatedProducts);
+
+            console.log("AAAAAAAAAA", resData);
 
             if (productId) {
                 const foundProduct = resData.find(prod => prod.productId === parseInt(productId));
@@ -178,7 +214,6 @@ const AllProductComponent = () => {
     // 장바구니에 제품을 저장하는 함수
     const saveInBasket = async (productId) => {
         const productToSave = products.find(prod => prod.productId === productId);
-
         if (!productToSave) {
             console.error('No product found');
             return;
@@ -268,21 +303,66 @@ const AllProductComponent = () => {
         };
     }, []);
 
+    // 찜목록 저장
+    const addDibs = async (productId, liked) => {
+        const dibProducts = products.find(prod => prod.productId === productId);
+        console.log("찜",dibProducts);
+        if (!dibProducts) {
+            console.error('No dibProducts found');
+            return;
+        }
+
+        const url = liked
+        ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
+        : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
+
+        try {
+            const response = await fetch(url, {
+                method: liked? "POST" : "DELETE",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: localStorage.getItem("userId"),
+                    productId: dibProducts.productId
+                })
+            });
+
+            if (response.ok) {
+                // 위 api 실행되면 products에 liked 상태 변경
+                // setProducts(prevProducts =>
+                //     prevProducts.map(product =>
+                //         product.productId === productId
+                //             ? { ...product, liked: liked }
+                //             : product
+                //     )
+                // );
+                console.log(`Product ${liked ? 'added to' : 'removed from'} dibs:`, dibProducts);
+            } else {
+                throw new Error(`Failed to ${liked ? 'add' : 'remove'} product to dibs`);
+            }
+
+        } catch (error) {
+            console.error(`Error ${liked ? 'adding' : 'removing'} product to dibs:`, error);
+        }
+    };
+
+
     return (
         <div className="allproduct-container">
             {/* 상단 네비게이션 바 */}
             <div className="allproduct-nav-bar">
                 {/* 뒤로가기 아이콘 */}
                 <button className="allproduct-back-button" onClick={() => { navigate(-1) }}>
-                    <img className="allproduct-back-icon" src="assets/common/backIcon.png" alt=" " />
+                    <img className="allproduct-back-icon" src={back} alt=" " />
                 </button>
 
                 {/* 로고 이미지 */}
-                <img className="allproduct-logo" src="assets/common/eDrinkLogo.png" alt=" " />
+                <img className="allproduct-logo" src={logo} alt=" " />
 
                 {/* 장바구니 아이콘 */}
                 <button className="allproduct-bag-button" onClick={() => { navigate('/basket') }}>
-                    <img className="allproduct-bag-icon" src="assets/common/bag.png" alt=" " />
+                    <img className="allproduct-bag-icon" src={bag} alt=" " />
                 </button>
             </div>
 
@@ -304,7 +384,7 @@ const AllProductComponent = () => {
 
                     {/* 필터 아이콘 */}
                     <button className="allproduct-filter-button2">
-                        <img className="allproduct-filter-icon" src="assets/common/filter.png" alt=" " />
+                        <img className="allproduct-filter-icon" src={filter} alt=" " />
                     </button>
                 </div>
 
@@ -370,7 +450,11 @@ const AllProductComponent = () => {
                                         <div className="allproduct-product-tag-placeholder"></div> // 빈 공간을 위한 placeholder
                                     )}
                                 </div>
-                                <LikeButton onClick={() => handleLikeClick(product.productId)} />
+                                <LikeButton
+                                    onClick={addDibs}
+                                    productId={product.productId}
+                                    liked={product.liked} // 제품의 현재 좋아요 상태를 전달
+                                />
                                 <CartButton onClick={saveInBasket} productId={product.productId} />
                             </div>
                         </div>
