@@ -3,7 +3,7 @@
     padding: 10px 20px 34px 20px; /* 34px는 모바일 화면시 필요함 */
     width: 100%;
     min-width: 344px;
-    max-width: 450px;
+    max-width: 430px;
     box-sizing: border-box; /* 패딩과 보더를 포함한 박스 크기 계산 */
     margin: 0 auto;
     display: flex;
