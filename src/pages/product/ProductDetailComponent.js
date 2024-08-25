@@ -4,6 +4,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
 import { useRecoilState } from 'recoil';
 import { orderState } from '../order/OrderAtom';
+import back from '../../assets/common/backIcon.png'
+import search from '../../assets/common/search.png'
+import home from '../../assets/common/home.png'
+import bag from '../../assets/common/bag.png'
+import star from '../../assets/common/star.png'
+import emptyHeart from '../../assets/common/empty-heart.png'
+import share from '../../assets/common/share.png'
+import todayPickup from '../../assets/common/today-pickup.png'
+import uparrow from '../../assets/common/uparrow.png'
 
 function ProductDetailComponent() {
   // 상태 변수 선언
@@ -18,16 +27,32 @@ function ProductDetailComponent() {
   const [orderInfo, setOrderInfo] = useRecoilState(orderState);
   const [reviews, setReviews] = useState([]);
   const [reviewCount, setReviewCount] = useState(0);
+  const [reviewRating, setReviewRating] = useState(0);
 
   useEffect(() => {
     DetailProduct();
   }, [productId]);
 
-  // 탭 클릭 핸들러 함수
-  const handleTabClick = (tab) => {
-    setActiveTab(tab); // 클릭한 탭으로 활성 탭 변경
-    if (tab === 'reviews') {
-      showAllReview(); // 리뷰 탭이 클릭될 때 리뷰 데이터를 가져옴
+  // 제품에 대한 모든 리뷰 보기
+  const showAllReview = async () => {
+    try {
+      const response = await fetch(`http://localhost:8090/eDrink24/showProductReview/${productId}`, {
+        method: "GET"
+      });
+      const resData = await response.json();
+      console.log(">>>>>>>>>", resData);
+      setReviews(resData);
+      setReviewCount(resData.length);
+      // 리뷰가 있을 때 평균 평점을 계산
+      const totalRating = resData.reduce((sum, review) => sum + review.rating, 0);
+      const averageRating = (totalRating / resData.length).toFixed(1); // 소수점 첫번째 자리까지 계산
+      if (resData.length > 0) {
+        setReviewRating(averageRating);
+      } else {
+        setReviewRating(0); // 리뷰가 없으면 평점을 0으로 설정
+      }
+    } catch (error) {
+      console.log("Error fetching reviews:", error);
     }
   };
 
@@ -44,6 +69,9 @@ function ProductDetailComponent() {
 
       const resData = await response.json();
       setProduct(resData);
+
+      // 제품 정보와 함께 리뷰 데이터도 불러오기
+      await showAllReview();
 
     } catch (error) {
       console.error('Error fetching product:', error);
@@ -166,33 +194,6 @@ function ProductDetailComponent() {
     }
   };
 
-  // 제품에 대한 모든 리뷰 보기
-  const showAllReview = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductReview/${productId}`, {
-        method: "GET"
-      });
-      const resData = await response.json();
-      setReviews(resData);
-      setReviewCount(resData.length);
-    } catch (error) {
-      console.log("Error fetching reviews:", error);
-    }
-  };
-
-  // 제품에 대한 리뷰 갯수 설정
-  const countReview = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductReview/${productId}`, {
-        method: "GET"
-      });
-      const resData = await response.json();
-      setReviewCount(resData.length);
-    } catch (error) {
-      console.log("Error fetching reviews:", error);
-    }
-  };
-
   const total = product.price * quantity;
   const formattedTotal = total.toLocaleString();
 
@@ -206,7 +207,7 @@ function ProductDetailComponent() {
           {/* 뒤로가기 아이콘 */}
           <button className="productDetailComponent-back-icon-button" onClick={() => { navigate(-1) }}>
             <img className="productDetailComponent-nav-back-icon"
-              src="/assets/common/backIcon.png" alt="Back" />
+              src={back} alt="Back" />
           </button>
 
           <div className="productDetailComponent-nav-empty-box"></div>
@@ -214,19 +215,19 @@ function ProductDetailComponent() {
           {/* 검색하기 아이콘 */}
           <button className="productDetailComponent-search-icon-button">
             <img className="productDetailComponent-nav-search-icon"
-              src="/assets/common/search.png" alt="search" />
+              src={search} alt="search" />
           </button>
 
           {/* 홈으로가기 아이콘 */}
           <button className="productDetailComponent-home-icon-button" onClick={() => { navigate("/") }}>
             <img className="productDetailComponent-nav-home-icon"
-              src="/assets/common/home.png" alt="home" />
+              src={home} alt="home" />
           </button>
 
           {/* 장바구니담기 아이콘 */}
           <button className="productDetailComponent-bag-icon-button" onClick={() => { navigate("/basket") }}>
             <img className="productDetailComponent-nav-bag-icon"
-              src="/assets/common/bag.png" alt="bag" />
+              src={bag} alt="bag" />
           </button>
 
         </div>
@@ -242,17 +243,17 @@ function ProductDetailComponent() {
         <div className="productDetailComponent-product-other">
           <div className="productDetailComponent-product-review">
             <img className="productDetailComponent-reivew-star"
-              src="/assets/common/star.png" alt="star" />
-            <h2>4.9 리뷰 ({reviewCount})</h2>
+              src={star} alt="star" />
+            <h2>{reviewRating} 리뷰 ({reviewCount})</h2>
           </div>
           <div className="productDetailComponent-product-option">
             <button className="productDetailComponent-heart-icon-button">
               <img className="productDetailComponent-heart-icon"
-                src="/assets/common/empty-heart.png" alt="emptyheart" />
+                src={emptyHeart} alt="emptyheart" />
             </button >
             <button className="productDetailComponent-share-icon-button">
               <img className="productDetailComponent-share-icon"
-                src="/assets/common/share.png" alt="share" />
+                src={share} alt="share" />
             </button>
           </div>
         </div>
@@ -267,58 +268,48 @@ function ProductDetailComponent() {
         </div>
 
         <img className="productDetailComponent-today-pickup-img"
-          src="/assets/common/today-pickup.png" alt="today-pickup" />
-
-        {/* 네비게이션 바 */}
-        <div className="productDetailComponent-nav-bar">
-          <div
-            className={`productDetailComponent-nav-item ${activeTab === 'reviews' ? 'active' : ''}`}
-            onClick={() => handleTabClick('reviews')}
-          >
-            리뷰
-          </div>
-        </div>
+          src={todayPickup} alt="today-pickup" />
 
         {/* 콘텐츠 영역 */}
         <div className="productDetailComponent-content">
-          {activeTab === 'reviews' && (
-            <div className='productDetailComponent-content-item active'>
-              {reviews.length > 0 ? (
-                <div className='productReviewContainer'>
-                  {reviews.map((review) => (
-                    <div key={review.reviewsId} className='reviewCard'>
-                      <div className='reviewHeader'>
-                        <div className='reviewProfile'>
-                          <div className='reviewUserInfo'>
-                            <strong className='userName'>{review.userName}</strong>
-                            <div className='reviewDate'>
-                              {review.enrolledDate ? review.enrolledDate.split('T')[0] : '리뷰 등록하지 않음'}
-                            </div>
+
+          <div className='productDetailComponent-content-item active'>
+            {reviews.length > 0 ? (
+              <div className='productReviewContainer'>
+                {reviews.map((review) => (
+                  <div key={review.reviewsId} className='reviewCard'>
+                    <div className='reviewHeader'>
+                      <div className='reviewProfile'>
+                        <div className='reviewUserInfo'>
+                          <strong className='userName'>{review.userName}</strong>
+                          <div className='reviewDate'>
+                            {review.enrolledDate ? review.enrolledDate.split('T')[0] : '리뷰 등록하지 않음'}
                           </div>
                         </div>
-                        <div className='reviewRating'>
-                          <span className='reting'>평점: {review.rating}점</span>
-                        </div>
                       </div>
-                      <div className='reviewDetails'>
-                        <div className="reviewItem">당도: {review.sugarRating}점</div>
-                        <div className="reviewItem">산미: {review.acidityRating}점</div>
-                        <div className="reviewItem">목넘김: {review.throatRating}점</div>
-                        <div className="reviewContent">리뷰 내용: {review.content}</div>
+                      <div className='reviewRating'>
+                        <span className='reting'>평점: {review.rating}점</span>
                       </div>
-                      {review.modifiedDate && (
-                        <div className='reviewModifiedDate'>
-                          수정날짜: {review.modifiedDate ? review.modifiedDate.split('T')[0] : '수정되지 않음'}
-                        </div>
-                      )}
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p>아직 리뷰가 없습니다.</p>
-              )}
-            </div>
-          )}
+                    <div className='reviewDetails'>
+                      <div className="reviewItem">당도: {review.sugarRating}점</div>
+                      <div className="reviewItem">산미: {review.acidityRating}점</div>
+                      <div className="reviewItem">목넘김: {review.throatRating}점</div>
+                      <div className="reviewContent">리뷰 내용: {review.content}</div>
+                    </div>
+                    {review.modifiedDate && (
+                      <div className='reviewModifiedDate'>
+                        수정날짜: {review.modifiedDate ? review.modifiedDate.split('T')[0] : '수정되지 않음'}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>아직 리뷰가 없습니다.</p>
+            )}
+          </div>
+
         </div>
 
       </div>
@@ -328,7 +319,7 @@ function ProductDetailComponent() {
         <div className="productDetailComponent-select-more-items">
           <button className="productDetailComponent-more-items" onClick={toggleExpand}>
             <img className="productDetailComponent-up-arrow"
-              src="/assets/common/uparrow.png" alt="uparrow" />
+              src={uparrow} alt="uparrow" />
           </button>
         </div>
 

@@ -35,6 +35,7 @@ import OrderHistoryComponent from './pages/order/OrderHistoryComponent';
 import ReviewComponent from './pages/review/ReviewComponent';
 import CheckMyReviewComponent from './pages/review/CheckMyReviewComponent';
 import OrderHistoryDetailsComponent from './pages/order/OrderHistoryDetailsComponent';
+import DibsComponent from './pages/dibs/DibsComponent';
 
 // test yoon
 const router = createBrowserRouter([
@@ -71,6 +72,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/orderHistoryDetails', element: <OrderHistoryDetailsComponent />
+      },
+      {
+        path: '/dibs', element: <DibsComponent />
       },
       {
         path: '/admin', element: <AdminComponent />
