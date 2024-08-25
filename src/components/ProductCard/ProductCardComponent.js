@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import './ProductCardComponent.css';
+import star from '../../assets/common/star.png';
+import filledHeart from '../../assets/common/fill-heart.png';
+import emptyHeart from '../../assets/common/empty-heart.png';
+import bag from '../../assets/common/bag.png';
 
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton.js';
 
@@ -119,7 +123,7 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                                 </div>
 
                                 <div className="productInfo-review" onClick={(e) => handleClick2(e, product.productId)}>
-                                    <img className="productInfo-reviewIcon" src="assets/common/star.png" alt=" " />
+                                    <img className="productInfo-reviewIcon" src={star} alt=" " />
                                     <span className="productInfo-reviewRating">{rating}</span>
                                     <span className="productInfo-reviewCount">({reviewCount})</span>
                                 </div>
@@ -135,11 +139,11 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                                     </div>
 
                                     <button className="productInfo-like" onClick={(e) => handleClick1(e, product.productId)}>
-                                        <img className="productInfo-likeIcon" src={likedProducts[product.productId] ? "assets/common/fill-heart.png" : "assets/common/empty-heart.png"} alt=" "/>
+                                        <img className="productInfo-likeIcon" src={likedProducts[product.productId] ? {filledHeart} : {emptyHeart}} alt=" "/>
                                     </button>
 
                                     <button className="productInfo-bag" onClick={(e) => handleClick3(e, product.productId)}>
-                                        <img className="productInfo-bagIcon" src="assets/common/bag.png" alt=" " />
+                                        <img className="productInfo-bagIcon" src={bag} alt=" " />
                                     </button>
                                 </div>
 
