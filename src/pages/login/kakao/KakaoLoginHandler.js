@@ -52,6 +52,8 @@ const KakaoLoginHandler = (props) => {
             } else if (response.status === 401) {
                 const resData = await response.json();
                 navigate("/kakao/signup", { state: { cusData: resData.customerDTO } });
+            } else {
+                openAlert("서버 오류");
             }
         } catch (error) {
             openAlert("로그인 도중 오류가 발생하였습니다.")

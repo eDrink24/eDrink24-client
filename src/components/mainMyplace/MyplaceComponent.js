@@ -30,8 +30,6 @@ function MyPlaceComponent() {
             if (response.ok) {
                 const data = await response.json();
                 setStore(data)
-            } else {
-                console.log("NOT FOUND");
             }
         }
         fetchStore();
@@ -56,8 +54,6 @@ function MyPlaceComponent() {
         if (response) {
             const data = await response.json();
             setCustomerData(data);
-        } else {
-            console.error('error:', response.errorStatus());
         }
     };
 

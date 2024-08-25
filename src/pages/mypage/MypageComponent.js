@@ -11,7 +11,6 @@ function MypageComponent() {
     const [customerData, setCustomerData] = useState(null);
 
     useEffect(() => {
-        // 로그인 상태 확인
         const token = localStorage.getItem("jwtAuthToken");
         const loginId = localStorage.getItem("loginId");
 
@@ -33,8 +32,6 @@ function MypageComponent() {
         if (response) {
             const data = await response.json();
             setCustomerData(data);
-        } else {
-            console.error('error:', response.errorStatus());
         }
     }
 
