@@ -274,15 +274,15 @@ const AllProductComponent = () => {
             <div className="allproduct-nav-bar">
                 {/* 뒤로가기 아이콘 */}
                 <button className="allproduct-back-button" onClick={() => { navigate(-1) }}>
-                    <img className="allproduct-back-icon" src="assets/common/backIcon.png" alt=" " />
+                    <img className="allproduct-back-icon" src="/assets/common/backIcon.png" alt=" " />
                 </button>
 
                 {/* 로고 이미지 */}
-                <img className="allproduct-logo" src="assets/common/eDrinkLogo.png" alt=" " />
+                <img className="allproduct-logo" src="/assets/common/eDrinkLogo.png" alt=" " />
 
                 {/* 장바구니 아이콘 */}
                 <button className="allproduct-bag-button" onClick={() => { navigate('/basket') }}>
-                    <img className="allproduct-bag-icon" src="assets/common/bag.png" alt=" " />
+                    <img className="allproduct-bag-icon" src="/assets/common/bag.png" alt=" " />
                 </button>
             </div>
 
@@ -304,7 +304,7 @@ const AllProductComponent = () => {
 
                     {/* 필터 아이콘 */}
                     <button className="allproduct-filter-button2">
-                        <img className="allproduct-filter-icon" src="assets/common/filter.png" alt=" " />
+                        <img className="allproduct-filter-icon" src="/assets/common/filter.png" alt=" " />
                     </button>
                 </div>
 
