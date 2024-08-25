@@ -200,6 +200,7 @@ const CategoriesProductComponent = () => {
                         <div className="categoriesproduct-product-enrollDate">{product.enrollDate}</div>
                         <div className="categoriesproduct-product-name">{product.productName}</div>
                         <div className="categoriesproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
+                        <div className="categoriesproduct-product-rating">{product.rating}</div>
 
                         {/* invMyStore에 productId가 있고 0보다 크면 '오늘픽업' */}
                         {invToStore.some(inv =>

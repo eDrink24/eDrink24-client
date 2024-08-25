@@ -40,7 +40,7 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
         const clickedProduct = products.find(product => product.productId === productId);
         if (clickedProduct) {
             const category2 = clickedProduct.category2;
-            navigate(`/eDrink24/allproduct/${clickedProduct.category1}/${category2}/${productId}`);
+            navigate(`/allproduct/${clickedProduct.category1}/${category2}/${productId}`);
         } else {
             console.error('제품을 찾지 못했습니다.');
         }
@@ -116,8 +116,6 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
 
         <div className="ProductCardSet" key={index}> {/* 세로로 3개씩 묶는 컨테이너 */}
             {group.map(product => {
-                const rating = 4.6; // 별점
-                const reviewCount = 123; // 리뷰 수
 
                 return (
                     <div className="productCard-box2" key={product.productId} onClick={() => handleProductClickEvent(product.productId)} >

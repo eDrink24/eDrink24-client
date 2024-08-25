@@ -84,7 +84,7 @@ const ShowTodayPickupPageComponent = () => {
     };
 
     const showPickupCompletedPage = () => {
-        navigate(`/admin/pickupCompleted`);
+        navigate(`/admin/todayPickupCompleted`);
     };
 
     return (

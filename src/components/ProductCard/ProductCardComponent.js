@@ -41,11 +41,13 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
         const clickedProduct = products.find(product => product.productId === productId);
         if (clickedProduct) {
             const category2 = clickedProduct.category2;
-            navigate(`/eDrink24/allproduct/${clickedProduct.category1}/${category2}/${productId}`);
+            navigate(`/allproduct/${clickedProduct.category1}/${category2}/${productId}`);
         } else {
             console.error('제품을 찾지 못했습니다.');
         }
     };
+
+
 
     // Like 기능
     const handleClick1 = (event, productId) => {
@@ -59,7 +61,6 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
     // Review 기능
     const handleClick2 = (event, productId) => {
         event.stopPropagation();
-        console.log(`Reviewed product with ID: ${productId}`);
     };
 
     // CartBag 기능
@@ -108,8 +109,6 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
         <div className="ProductCard">
             {products.length > 0 ? (  // products가 있을 때만 렌더링
                 products.map(product => {  
-                    const rating = 4.6; // 별점
-                    const reviewCount = 123; // 리뷰 수
 
                     return (
                         <div className="productCard-box" key={product.productId} onClick={() => handleProductClickEvent(product.productId)} >
@@ -146,7 +145,6 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                                         <img className="productInfo-bagIcon" src={bag} alt=" " />
                                     </button>
                                 </div>
-
                             </div>
                         </div>
                     );

@@ -21,6 +21,7 @@ function MypageComponent() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [customerData, setCustomerData] = useState(null);
+    const [isOpen, setIsOpen] = useState(false); // 아코디언 상태 관리
 
     useEffect(() => {
         // 로그인 상태 확인
@@ -42,11 +43,11 @@ function MypageComponent() {
             }
         });
 
-        if (response) {
+        if (response.ok) {
             const data = await response.json();
             setCustomerData(data);
         } else {
-            console.error('error:', response.errorStatus());
+            console.error('error:', response.statusText);
         }
     }
 
@@ -54,21 +55,31 @@ function MypageComponent() {
         navigate("/mypage/updateCustomer", { state: { customerData } })
     }
 
-    return (
-        <div className="mypage-wrapper">
-            <div className="mypage-container">
+    const toggleAccordion = () => {
+        setIsOpen(!isOpen); // 아코디언 열림/닫힘 상태 전환
+    };
 
-                <div className='mypage-header'>
-                    <button className="back-button" onClick={() => { navigate(-1) }}>{'<'}</button>
+    return (
+        <div className="myPage-wrapper">
+            <div className="myPage-container">
+
+                <div className='myPage-header'>
+                    <button className="back-button" onClick={() => { navigate(-1) }}>
+                        <img src="assets/common/backIcon.png" alt="뒤로가기" />
+                    </button>
                     <h1>마이페이지</h1>
                     <div>
-                        <button className="settings-button"><img src={bell} alt="알람" /></button>
+                        <button className="bell-button"><img src={bell} alt="알람" /></button>
+                    {/*뭔지 모르겠음 assets/common/set.png가 없음*/}
+                        <button className="settings-button" onClick={() => { navigateUpdateCustomer() }}>
+                            <img src="assets/common/set.png" alt="셋팅" />
+                        </button>
                     </div>
                 </div>
 
                 {/* 로그인 상태 따라 변동되는 정보창 */}
                 {isLoggedIn && customerData ? (
-                    <div className="user-info-prompt" onClick={() => { navigateUpdateCustomer() }} >
+                    <div className="user-info-prompt">
                         <div className="info-text">
                             <p><strong>{customerData.userName}님, 환영합니다!</strong></p>
                             <p className="info-role">{customerData.role}</p>
@@ -78,38 +89,36 @@ function MypageComponent() {
                         </div>
                     </div>
                 ) : (
-                    <div className="login-signup-prompt" onClick={() => navigate("/login")} >
+                    <div className="login-signUp-prompt" onClick={() => navigate("/login")} >
                         <div className="prompt-text">
-                            <p><strong>로그인, 회원가입 하러가기!</strong></p>
-                            <p>3초면돼요, 더 편리한 서비스를 이용하세요</p>
-                        </div>
-                        <div className="prompt-arrow">
-                            <img src="assets/common/right-arrow.png" alt="arrow icon" />
+                            <p><strong>로그인/회원가입<br />하신 후 이용해주세요.</strong></p>
+                            <p>간편로그인으로 편리하게 이용하기!</p>
                         </div>
                     </div>
                 )}
 
 
-                <div className="icons">
-                    <div className="icon-item">
+
+                <div className="myPage-icon">
+                    <div className="myPage-icon-item">
                         <img src={point} alt="포인트" />
-                        <span>포인트 <span className="additionalInfo">{isLoggedIn && customerData ? customerData.totalPoint : undefined}</span></span>
+                        <span>포인트 <span className="myPage-additionalInfo">{isLoggedIn && customerData ? customerData.totalPoint : undefined}</span></span>
                     </div>
-                    <div className="icon-item">
+                    <div className="myPage-icon-item">
                         <img src={coupon} alt="쿠폰" />
                         <span>쿠폰</span>
                     </div>
-                    <div className="icon-item">
+                    <div className="myPage-icon-item">
                         <img src={dibs} alt="찜" onClick={() => { navigate('/dibs')}}/>
                         <span>찜</span>
                     </div>
-                    <div className="icon-item">
+                    <div className="myPage-icon-item">
                         <img src={basket} alt="장바구니" onClick={() => { navigate('/basket') }} />
                         <span>장바구니</span>
                     </div>
                 </div>
 
-                <hr />
+                <div className='line'></div>
 
                 <div className="sections">
                     <div className="section">
@@ -130,7 +139,9 @@ function MypageComponent() {
                         </div>
                     </div>
                 </div>
-                <hr />
+
+{/*                <div className='line3'></div> */}
+
                 <div className="sections">
                     <div className="section">
                         <h3>내 정보 관리</h3>
@@ -159,6 +170,28 @@ function MypageComponent() {
                         </div>
                     </div>
                 </div>
+
+                {/* 아코디언 컴포넌트 추가 */}
+                <div className="accordion-container">
+                    <div 
+                        onClick={toggleAccordion} 
+                        className="accordion-header"
+                    >
+                        <p>고객센터 ( 평일 09:00~18:00 )
+                        <br /><strong>1577-8007</strong>
+                        </p>
+                        <span>{isOpen ? '▲' : '▼'}</span>
+                    </div>
+                    {isOpen && (
+                        <div className="accordion-content">
+                            <p>(주) 이드링크24</p>
+                            <p>대표자 홍삼주</p>
+                            <p>사업자등록번호 123-45-67891</p>
+                            <p>해운대 스파로스 아카데미</p>
+                        </div>
+                    )}
+                </div>
+
             </div>
             <FooterComponent />
         </div>
