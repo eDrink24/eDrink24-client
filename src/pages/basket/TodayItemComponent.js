@@ -64,7 +64,7 @@ function TodayItem({
                         </div>
 
                         <div className="basket-original-price">
-                            <div className="price">{basket.items[0].price.toLocaleString()}원</div>
+                            <div className="basket-price">{basket.items[0].price.toLocaleString()}원</div>
                         </div>
                     </div>
                     </div>
