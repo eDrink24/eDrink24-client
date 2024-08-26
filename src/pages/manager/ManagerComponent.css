@@ -1,0 +1,67 @@
+/* 전체 화면을 Flexbox로 중앙 정렬 */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 전체 화면 높이 */
+  margin: 0; /* 기본 마진 제거 */
+  background-color: #f0f0f0; /* 배경 색상 설정 */
+}
+
+.manager-container {
+  max-width: 280px; /* 컨테이너의 최대 너비 조정 */
+  padding: 20px;
+  border: 1px solid #e0e0e0; /* 부드러운 테두리 */
+  border-radius: 10px; /* 둥근 모서리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 살짝의 그림자 효과 */
+  background-color: #f9f9f9; /* 밝은 배경 색상 */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 중앙 정렬 */
+  box-sizing: border-box; /* 패딩과 테두리를 너비에 포함 */
+}
+
+/* 폼 스타일 수정 */
+.manager-business-form {
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  min-width: 100%; /* 폼 너비를 컨테이너에 맞춤 */
+  max-width: 100%; /* 폼 너비를 컨테이너에 맞춤 */
+  width: 100%;
+  height: auto;
+  margin: 0 auto; /* 화면 중앙에 배치 */
+  box-sizing: border-box; /* 패딩과 테두리를 너비에 포함 */
+}
+
+/* 기타 스타일 유지 */
+.manager-business-form label {
+  font-weight: bold; /* 라벨을 강조 */
+  display: block;
+  margin-bottom: 10px; /* 입력 필드와 라벨 사이에 간격 */
+  color: #333; /* 진한 색상으로 텍스트 강조 */
+}
+
+.manager-input-field {
+  width: 100%; /* 입력 필드 너비를 컨테이너에 맞춤 */
+  padding: 10px; /* 여유 공간 추가 */
+  border: 1px solid #ccc; /* 기본 테두리 */
+  border-radius: 5px; /* 필드 모서리를 둥글게 */
+  box-sizing: border-box; /* 패딩과 테두리를 너비에 포함 */
+  font-size: 16px; /* 텍스트 크기 조정 */
+  margin-bottom: 20px; /* 버튼과의 간격 추가 */
+}
+
+.manager-confirm-button {
+  width: 100%; /* 버튼의 너비를 100%로 설정 */
+  padding: 10px 15px;
+  background-color: #007bff; /* 기본 버튼 색상 */
+  color: white; /* 버튼 텍스트 색상 */
+  border: none;
+  border-radius: 5px; /* 버튼 모서리 둥글게 */
+  cursor: pointer;
+  font-size: 16px; /* 텍스트 크기 조정 */
+}
+
+.manager-confirm-button:hover {
+  background-color: #0056b3; /* 버튼 호버 시 색상 변경 */
+}

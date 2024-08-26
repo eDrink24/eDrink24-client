@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import CarouselComponent from '../../components/Banner/CarouselComponent.js';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import MyplaceComponent from '../../components/mainMyplace/MyplaceComponent.js';
@@ -114,7 +114,7 @@ function HomeComponent() {
                 <div className="best-product">
                     <div className="bestTitle">
                         <h1>오늘픽업</h1>
-                        <a href="#" className='more-button'>더보기 {">"}</a>
+                        <Link to="/basket" className='more-button'>더보기 {">"}</Link>
                     </div>
                     <div className="ProductCard">
                         <ProductCardComponent products={todayPickupProducts.slice(0, 6)} />
@@ -125,7 +125,7 @@ function HomeComponent() {
                 <div className="best-product">
                     <div className="bestTitle">
                         <h1>전체상품</h1>
-                        <a href="#" className='more-button'>더보기 {">"}</a>
+                        <Link to="/allproduct/:category1" className='more-button'>더보기 {">"}</Link>
                     </div>
                     <div className="ProductCard2">
                         <OtherProductCardComponent products={products.slice(0, 9)} />
