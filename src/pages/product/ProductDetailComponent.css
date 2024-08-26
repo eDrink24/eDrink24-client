@@ -6,12 +6,13 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  min-width: 344px; 
+  min-width: 344px;
   max-width: 450px;
   width: 100%;
-  height: 100%; 
-  overflow-y: auto;  
-  background-color: #ffffff;   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  /* overflow-y: auto; */
+  background-color: #ffffff;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
   margin: 0 auto;
 }
 
@@ -72,14 +73,10 @@
 /**************************************************************************/
 
 .productDetailComponent-product-detail-container {
-  margin: 0 20 0 20;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: left;
   background-color: white;
-
-  overflow-y: scroll;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .productDetailComponent-product-img-container {
@@ -94,6 +91,7 @@
 }
 
 .productDetailComponent-product-other {
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -101,37 +99,29 @@
 
 .productDetailComponent-product-review {
   display: flex;
-  padding-left: 20px;
+  align-items: center;
+  row-gap: 4px;
 }
 
 .productDetailComponent-product-review img {
   width: 18px;
   height: 18px;
+  margin-right: 8px;
 }
 
 .productDetailComponent-product-review h2 {
   font-size: 12px;
   font-weight: 500;
-  margin: 0px 0px 0px 8px;
+  margin: 0;
 }
 
 .productDetailComponent-product-option {
   display: flex;
 }
 
-.productDetailComponent-heart-icon-button {
+.productDetailComponent-product-option button {
   width: 44px;
-  height: 52px;
-  padding: 0px 10px 0px 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.productDetailComponent-share-icon-button {
-  width: 54px;
-  height: 52px;
-  padding: 0px 20px 0px 0px;
+  height: 44px;
   background: none;
   border: none;
   cursor: pointer;
@@ -140,21 +130,20 @@
 .productDetailComponent-product-option img {
   width: 24px;
   height: 24px;
-  margin: 0;
 }
 
 .productDetailComponent-product-title {
-  margin-left: 20px;
+  padding: 0 20px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 4px;
 }
 
 .productDetailComponent-title {
   font-size: 16px;
   font-weight: 700;
   margin: 0;
-  padding-bottom: 4px;
 }
 
 .productDetailComponent-info-mesg {
@@ -169,8 +158,7 @@
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  margin-top: 20px;
-  padding-left: 20px;
+  padding: 0 20px;
 }
 
 .productDetailComponent-price-item {
@@ -185,42 +173,28 @@
   margin-top: 8px;
   margin-bottom: 32px;
 }
-zz
-.productDetailComponent-nav-bar {
-  display: flex; /* 네비게이션 항목들을 가로로 배치 */
-  border-bottom: 2px solid #ccc; /* 하단에 구분선 추가 */
-}
-
-.productDetailComponent-nav-item {
-  flex: 1; /* 모든 항목을 동일한 너비로 설정 */
-  padding: 10px; /* 내부 여백 */
-  text-align: center; /* 텍스트를 가운데 정렬 */
-  cursor: pointer; /* 마우스를 올렸을 때 포인터 커서로 변경 */
-  position: relative; /* 하단 박스를 추가하기 위해 위치 설정 */
-}
-
-.productDetailComponent-nav-item:hover {
-  background-color: #f0f0f0; /* 항목에 마우스를 올렸을 때 배경색 변경 */
-}
-
-.productDetailComponent-nav-item.active::after {
-  content: ''; /* 추가할 내용 없음 */
-  display: block; /* 블록 요소로 표시 */
-  width: 100%; /* 항목의 너비에 맞게 설정 */
-  height: 4px; /* 박스의 높이 */
-  background-color: black; /* 박스 색상 */
-  position: absolute; /* 부모 요소를 기준으로 절대 위치 설정 */
-  bottom: -2px; /* 하단에서 2px */
-}
+/**************************************************************************/
 
 .productDetailComponent-content {
-  height: 500px;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.productDetailComponent-content p {
+  width: 100%;
+  margin: 32px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #191919;
 }
 
 /**************************************************************************/
 
 .productDetailComponent-option-footer {
-  padding: 0px 20px 34px 20px;
+  width: 430px;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -231,11 +205,14 @@ zz
   justify-content: flex-end;
   transition: height 0.3s ease;
   background-color: #ffffff;
+  border-top: 1px solid #ddd; /* 상단에 라인을 추가하는 부분 */
 }
 
-.productDetailComponent-select-more-items,
-.productDetailComponent-select-more-items button {
-  width: 350px;
+.productDetailComponent-footer {
+  padding: 0 20px 34px 20px;
+}
+
+.productDetailComponent-select-more-items {
   height: 32px;
   margin: 0;
   padding: 0;
@@ -256,12 +233,13 @@ zz
 
 .productDetailComponent-option-buy-button {
   display: flex;
-  justify-content: space-between;
   width: 100%;
+  justify-content: center;
+  gap: 8px;
 }
 
 .productDetailComponent-option-buy-button button {
-  width: 170px;
+  width: 100%;
   height: 56px;
   margin: 0;
   padding: 0;

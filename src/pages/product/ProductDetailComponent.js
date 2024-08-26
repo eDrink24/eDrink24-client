@@ -7,9 +7,7 @@ import emptyHeart from '../../assets/common/empty-heart.png';
 import filledHeart from '../../assets/common/fill-heart.png';
 import home from '../../assets/common/home.png';
 import search from '../../assets/common/search.png';
-import share from '../../assets/common/share.png';
 import star from '../../assets/common/star.png';
-import todayPickup from '../../assets/common/today-pickup.png';
 import uparrow from '../../assets/common/uparrow.png';
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
 import { orderState } from '../order/OrderAtom';
@@ -321,26 +319,22 @@ function ProductDetailComponent() {
       <div className="productDetailComponent-product-detail-container">
 
         <div className="productDetailComponent-product-img-container">
-          <img className="productDetailComponent-product-img"
-            src={product.defaultImage} alt={product.productName} />
+          <img className="productDetailComponent-product-img" src={product.defaultImage} alt={product.productName} />
         </div>
 
         <div className="productDetailComponent-product-other">
           <div className="productDetailComponent-product-review">
             <img className="productDetailComponent-reivew-star"
               src={star} alt="star" />
-            <h2>{reviewRating} 리뷰 ({reviewCount})</h2>
+            <h2>{reviewRating} 리뷰 {reviewCount}건</h2>
           </div>
+
           <div className="productDetailComponent-product-option">
-          <LikeButton
-            onClick={addDibs}
-            productId={product.productId}
-            liked={product.liked} // 제품의 현재 좋아요 상태를 전달
-          />
-            <button className="productDetailComponent-share-icon-button">
-              <img className="productDetailComponent-share-icon"
-                src={share} alt="share" />
-            </button>
+            <LikeButton
+              onClick={addDibs}
+              productId={product.productId}
+              liked={product.liked} // 제품의 현재 좋아요 상태를 전달
+            />
           </div>
         </div>
 
@@ -353,12 +347,16 @@ function ProductDetailComponent() {
           <span className="productDetailComponent-price-item">{Number(product.price).toLocaleString()} 원</span>
         </div>
 
-        <img className="productDetailComponent-today-pickup-img"
-          src={todayPickup} alt="today-pickup" />
+        <div className="productDetailComponent-today-pickup"> {/*변경 필요함 */}
+        </div>
+
+        <div>
+        <div className="line"></div>
+        </div>
 
         {/* 콘텐츠 영역 */}
         <div className="productDetailComponent-content">
-        
+
           <div className='productDetailComponent-content-item active'>
             {reviews.length > 0 ? (
               <div className='productReviewContainer'>
@@ -392,7 +390,7 @@ function ProductDetailComponent() {
                 ))}
               </div>
             ) : (
-              <p>아직 리뷰가 없습니다.</p>
+              <p>아직 등록된 리뷰가 없습니다.</p>
             )}
           </div>
         
@@ -402,11 +400,9 @@ function ProductDetailComponent() {
 
       {/* 하단고정 장바구니/바로구매 버튼 */}
       <div className={`productDetailComponent-option-footer ${isExpanded ? 'expanded' : ''}`}>
-        <div className="productDetailComponent-select-more-items">
-          <button className="productDetailComponent-more-items" onClick={toggleExpand}>
-            <img className="productDetailComponent-up-arrow"
-              src={uparrow} alt="uparrow" />
-          </button>
+        <div className="productDetailComponent-footer">
+        <div className="productDetailComponent-select-more-items" onClick={toggleExpand}>
+            <img className="productDetailComponent-up-arrow" src={uparrow} alt="uparrow" />
         </div>
 
         {/* 펼쳐지는 부분을 하단 고정바 위로 나타나게 수정 */}
@@ -447,7 +443,7 @@ function ProductDetailComponent() {
         navigateOnNo={stayOnPage}
       />
 
-
+      </div>
     </div>
   );
 }
