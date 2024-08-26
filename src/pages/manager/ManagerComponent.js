@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './ManagerComponent.css';
-4
+
 const ManagerComponent = () => {
   const [brNum, setBrNum] = useState("");
   const navigate = useNavigate();
@@ -52,8 +52,8 @@ const ManagerComponent = () => {
 
 
   return (
+    <div className="manager-centered-container">
     <div className="manager-container">
-
         <div className="manager-business-form">
           <label>
             사업자 등록번호:
@@ -71,6 +71,7 @@ const ManagerComponent = () => {
             저장
           </button>
         </div>
+    </div>
     </div>
   );
 };

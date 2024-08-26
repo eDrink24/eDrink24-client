@@ -1,5 +1,5 @@
 /* 전체 화면을 Flexbox로 중앙 정렬 */
-body {
+.manager-centered-container {
   display: flex;
   justify-content: center;
   align-items: center;

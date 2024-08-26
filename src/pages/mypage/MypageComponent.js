@@ -74,7 +74,7 @@ function MypageComponent() {
                     <h1>마이페이지</h1>
                     <div>
                         <button className="bell-button"><img src={bell} alt="알람" /></button>
-                    {/*뭔지 모르겠음 assets/common/set.png가 없음*/}
+                        {/*뭔지 모르겠음 assets/common/set.png가 없음*/}
                         <button className="settings-button" onClick={() => { navigateUpdateCustomer() }}>
                             <img src="assets/common/set.png" alt="셋팅" />
                         </button>
@@ -113,7 +113,7 @@ function MypageComponent() {
                         <span>쿠폰</span>
                     </div>
                     <div className="myPage-icon-item">
-                        <img src={dibs} alt="찜" onClick={() => { navigate('/dibs')}}/>
+                        <img src={dibs} alt="찜" onClick={() => { navigate('/dibs') }} />
                         <span>찜</span>
                     </div>
                     <div className="myPage-icon-item">
@@ -144,33 +144,50 @@ function MypageComponent() {
                     </div>
                 </div>
 
-{/*                <div className='line3'></div> */}
+                {/*                <div className='line3'></div> */}
 
                 <div className="sections">
                     <div className="section">
                         <h3>내 정보 관리</h3>
                         <div className="menu2">
-                            {isLoggedIn && customerData ?
-                                <>
-                                    <div className="icon-item2" onClick={() => { navigateManagerComponent() }}>
-                                        <img src={userInfo} alt="회원정보수정" />
-                                        <span>매니저계정으로 전환하기</span>
-                                    </div>
-                                    <div className="icon-item2" onClick={() => { navigateUpdateCustomer() }}>
-                                        <img src={userInfo} alt="회원정보수정" />
-                                        <span>회원정보 수정</span>
-                                    </div>
-                                    <div className="icon-item2" onClick={isLoggedIn ? logout : undefined}>
-                                        <img src={logOut} alt="로그아웃" />
-                                        <span>로그아웃</span>
-                                    </div>
-                                </>
-                                :
+                            {isLoggedIn && customerData ? (
+                                customerData.role === '점주' ? (
+                                    <>
+                                        <div className="icon-item2" onClick={() => navigate("/admin")}>
+                                            <img src={userInfo} alt="관리자 페이지로 이동" />
+                                            <span>관리자 페이지로 이동</span>
+                                        </div>
+                                        <div className="icon-item2" onClick={() => { navigateUpdateCustomer() }}>
+                                            <img src={userInfo} alt="회원정보수정" />
+                                            <span>회원정보 수정</span>
+                                        </div>
+                                        <div className="icon-item2" onClick={isLoggedIn ? logout : undefined}>
+                                            <img src={logOut} alt="로그아웃" />
+                                            <span>로그아웃</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="icon-item2" onClick={() => { navigateManagerComponent() }}>
+                                            <img src={userInfo} alt="관리자계정으로 전환하기" />
+                                            <span>관리자계정으로 전환하기</span>
+                                        </div>
+                                        <div className="icon-item2" onClick={() => { navigateUpdateCustomer() }}>
+                                            <img src={userInfo} alt="회원정보수정" />
+                                            <span>회원정보 수정</span>
+                                        </div>
+                                        <div className="icon-item2" onClick={isLoggedIn ? logout : undefined}>
+                                            <img src={logOut} alt="로그아웃" />
+                                            <span>로그아웃</span>
+                                        </div>
+                                    </>
+                                )
+                            ) : (
                                 <div className="icon-item2" onClick={() => navigate("/login")}>
                                     <img src="assets/mypage/로그아웃.png" alt="로그아웃" />
                                     <span>로그인</span>
                                 </div>
-                            }
+                            )}
                             <div className="icon-item2">
                                 <img src={deleteUser} alt="계정 삭제" />
                                 <span>계정 삭제</span>
@@ -181,12 +198,12 @@ function MypageComponent() {
 
                 {/* 아코디언 컴포넌트 추가 */}
                 <div className="accordion-container">
-                    <div 
-                        onClick={toggleAccordion} 
+                    <div
+                        onClick={toggleAccordion}
                         className="accordion-header"
                     >
                         <p>고객센터 ( 평일 09:00~18:00 )
-                        <br /><strong>1577-8007</strong>
+                            <br /><strong>1577-8007</strong>
                         </p>
                         <span>{isOpen ? '▲' : '▼'}</span>
                     </div>
@@ -202,7 +219,7 @@ function MypageComponent() {
 
             </div>
             <FooterComponent />
-        </div>
+        </div >
 
     );
 }
