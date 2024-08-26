@@ -68,8 +68,6 @@ function SetPlaceComponent() {
                 if (currentStoreId != null) {
                     setChoiceStore(stores.find(store => store.storeId === parseInt(currentStoreId)))
                 }
-            } else {
-                console.log("SERVER ERROR")
             }
         };
         fetchInit();
@@ -92,8 +90,6 @@ function SetPlaceComponent() {
                     longitude: result[0].x,
                     address: address
                 });
-            } else {
-                console.error(status);
             }
         });
     };
@@ -134,7 +130,7 @@ function SetPlaceComponent() {
 
     // 반경 내의 마커 필터링
     const filterMarker = (map) => {
-        const radius = 1000; // 1km 반경
+        const radius = 2000; // 1km 반경
         const center = map.getCenter();
         const filteredMarkers = stores.map((store) => {
             const position = new window.kakao.maps.LatLng(store.latitude, store.longitude);
@@ -176,7 +172,6 @@ function SetPlaceComponent() {
                     openAlert('단골매장 설정에 실패했습니다.');
                 }
             } catch (error) {
-                console.error('Error:', error);
                 openAlert('단골매장 설정에 실패했습니다.');
             }
         } else {
@@ -204,6 +199,7 @@ function SetPlaceComponent() {
                                 level={4}
 
                                 onIdle={filterMarker}
+                                onClick={() => setOpenInfo(null)}
                             >
                                 <MapMarker position={{ lat: locationData.latitude, lng: locationData.longitude }} />
                                 {storeMarkers.map((store) => (
@@ -225,25 +221,26 @@ function SetPlaceComponent() {
                                             onClick={() => setOpenInfo(store.storeId)}
                                         >
                                             {openInfo === store.storeId && (
-                                                <div style={{ minWidth: "150px" }}>
+                                                <div className="info-container">
                                                     <img
                                                         alt="close"
-                                                        width="14"
-                                                        height="13"
+                                                        width="18"
+                                                        height="18"
                                                         src="https://t1.daumcdn.net/localimg/localimages/07/mapjsapi/2x/bt_close.gif"
                                                         style={{
                                                             position: "absolute",
                                                             right: "5px",
                                                             top: "5px",
                                                             cursor: "pointer",
+
                                                         }}
                                                         onClick={() => setOpenInfo(null)}
                                                     />
-                                                    <div style={{ padding: "5px", color: "#000" }}>
-                                                        <h4>{store.storeName}</h4>
-                                                        <p>{store.storeAddress}</p>
-                                                        <p>{store.storePhoneNum}</p>
-                                                        <button onClick={() => setChoiceStore(store)}>매장 선택</button>
+                                                    <div className="marker-info">
+                                                        <h4 className="store-name">{store.storeName}</h4>
+                                                        <p className="store-address">{store.storeAddress}</p>
+                                                        <p className="store-phone">{store.storePhoneNum}</p>
+                                                        <button className="marker-button" onClick={() => setChoiceStore(store)}>매장 선택</button>
                                                     </div>
                                                 </div>
                                             )}
@@ -254,28 +251,30 @@ function SetPlaceComponent() {
                         )}
                     </div>
 
-                    <div className="setPlace-change-button">
-                        <button className='setPlace-address-btn' onClick={fetchAddressLocation}>내 주소</button>
-                        <button className='setPlace-location-btn' onClick={fetchCurrentLocation}>현재위치</button>
+                    <div className="setPlace-context">
+
+                        <div className="setPlace-change-button">
+                            <button className='setPlace-address-btn' onClick={fetchAddressLocation}>내 주소</button>
+                            <button className='setPlace-location-btn' onClick={fetchCurrentLocation}>현재위치</button>
+                        </div>
+
+                        <div className='setPlace-showAddress'>
+                            <p>내 위치 {locationData.address}</p>
+
+                            {choiceStore && (
+                                <div className="setPlace-store">
+                                    <p>매장이름 : {choiceStore.storeName}</p>
+                                    <p>매장주소 : {choiceStore.storeAddress}</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="setPlace-update-button">
+                            <button className='setPlace-set-btn' onClick={handleSetStore}>단골매장 설정하기</button>
+                        </div>
                     </div>
 
-                    <div className='setPlace-showAddress'>
-                        <p>내 위치 : {locationData.address}</p>
-
-                        {choiceStore && (
-                            <div className="setPlace-store">
-                                <p>선택매장id : {choiceStore.storeId} </p>
-                                <p>선택매장이름 : {choiceStore.storeName}</p>
-                                <p>매장주소 : {choiceStore.storeAddress}</p>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="setPlace-update-button">
-                        <button className='setPlace-set-btn' onClick={handleSetStore}>단골매장 설정하기</button>
-                    </div>
                 </div>
-
                 <FooterComponent />
                 <AlertModal
                     isOpen={alertOpen}
