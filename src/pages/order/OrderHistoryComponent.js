@@ -1,7 +1,10 @@
 
-import './OrderHistoryComponent.css';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import back from '../../assets/common/back.png';
+import bag from '../../assets/common/bag.png';
+import FooterComponent from '../../components/footer/FooterComponent.js';
+import './OrderHistoryComponent.css';
 
 function OrderHistoryComponent() {
 
@@ -83,10 +86,19 @@ function OrderHistoryComponent() {
     const clickOrderHistoryDetails = async (date) => {
         navigate("/orderHistoryDetails", { state: { orderDate: date }});
     }
-  
+
     return (
+        <div className="order-wrapper">
         <div className="order-container">
-            <h2>주문 내역</h2>
+            <div className='order-header'>
+            <button className="back-button" onClick={() => { navigate(-1) }}>
+                <img src={back} alt="뒤로가기" />
+            </button>
+            <h1>카테고리</h1>
+            <button className="bag-button" onClick={() => { navigate('/basket') }}>
+                <img src={bag} alt="장바구니" />
+            </button>
+            </div>
 
             <div className="order-history-section">
                 <h1>주문 내역</h1>
@@ -137,6 +149,11 @@ function OrderHistoryComponent() {
                     <p>주문 내역이 없습니다.</p>
                 )}
             </div>
+
+            {/* 하단 네비게이션 바 */}
+            <FooterComponent />
+
+        </div>
         </div>
     );
 

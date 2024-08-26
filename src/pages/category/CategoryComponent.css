@@ -1,54 +1,78 @@
+:root {
+  --font-size-large-body: 18px;   /* 큰 본문 글자 크기 */
+  --font-size-body: 16px;         /* 기본 본문 글자 크기 */
+  --font-size-medium-body: 14px;  /* 중간 본문 글자 크기 */
+  --font-size-small-body: 12px;   /* 작은 본문 글자 크기 */
+  --min-height: 568px;            /* 최소 화면 높이 (iPhone SE 1세대 기준) */
+}
+
 * {
-  font-family: 'Spoqa Han Sans Neo', sans-serif; /* 전체 폰트 스타일 */
-  box-sizing: border-box; /* 패딩과 보더를 포함한 박스 사이징 */
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
 }
 
-/* 전체 컨테이너 스타일 */
+html, body {
+  min-height: var(--min-height);  /* 최소 높이 설정 */
+}
+
+/**************************************************************************************************/
+
+.category-wrapper {
+  min-width: 344px;
+  max-width: 430px;
+  width:100%;
+  height:100%;
+  display: flex;
+  margin: 0 auto;
+  min-height: var(--min-height);  /* 최소 높이 설정 */
+}
+
 .category-container {
   background-color: white;
-  max-width: 430px;
-  min-width: 390px;
-  margin: 0 auto; /* 수평 중앙 정렬 */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
 }
 
-/*****************************************************************************/
-/* 상단 네비게이션 바 */
-
-.category-nav-bar {
-  height: 102px;
-  padding: 44px 20px 0; /* 패딩: 위, 좌우, 아래 */
+/**************************************************************************************************/
+/*상단 네비게이션*/
+.category-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
+  width: 100%;
+  height: 58px;
+  padding: 0 8px;
 }
 
-.category-nav-bar button {
-  width: 58px;
+.category-header h1 {
+  font-size: var(--font-size-large-body); /* 큰 글자 크기 */
+  font-weight: 700;
+  color: #191919;
+  margin: 0 auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.category-header button {
+  width: 44px;
   height: 58px;
   background: none;
   border: none;
   cursor: pointer;
-  display: flex;
-  align-items: center;
 }
 
-.category-nav-bar img {
+.category-header img {
   width: 24px;
   height: 24px;
 }
 
-.category-back {
-  justify-content: flex-start;
-}
-
-.category-bag {
-  justify-content: flex-end;
-}
-
-/*****************************************************************************/
+/**************************************************************************************************/
 /* 구분선 스타일 */
 
 .line2 {
@@ -60,7 +84,7 @@
 /* 메인 콘텐츠 스타일 */
 
 .category-main-content {
-  height: 724px;
+  height: 860px;
 }
 
 .category-container-content {

@@ -1,53 +1,74 @@
+:root {
+    --font-size-large-body: 18px;   /* 큰 본문 글자 크기 */
+    --font-size-body: 16px;         /* 기본 본문 글자 크기 */
+    --font-size-medium-body: 14px;  /* 중간 본문 글자 크기 */
+    --font-size-small-body: 12px;   /* 작은 본문 글자 크기 */
+    --min-height: 568px;            /* 최소 화면 높이 (iPhone SE 1세대 기준) */
+}
+
 * {
-    font-family: 'Spoqa Han Sans Neo', sans-serif; /* 전체 폰트 스타일 */
-    box-sizing: border-box; /* 패딩과 보더를 포함한 콘텐츠 크기를 기준으로 하고자 할 때 */
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+}
+
+html, body {
+    min-height: var(--min-height);  /* 최소 높이 설정 */
+}
+
+/**************************************************************************************************/
+
+.allproduct-wrapper {
+    min-width: 344px;
+    max-width: 430px;
+    width:100%;
+    height:100%;
+    display: flex;
+    margin: 0 auto;
+    min-height: var(--min-height);  /* 최소 높이 설정 */
 }
 
 .allproduct-container {
-    min-width: 344px;
-    max-width: 450px;
-    width: 100%;
-    margin: 0 auto;
     background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
 }
 
-/*****************************************************************************/
-/* 상단 네비게이션 바 */
-
-.allproduct-nav-bar {
-    height: 102px;
-    padding-top: 44px;
+/**************************************************************************************************/
+/*상단 네비게이션*/
+.allproduct-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    background-color: #ffffff;
+    align-items: center;
+    width: 100%;
+    height: 58px;
+    padding: 0 8px;
 }
 
-.allproduct-nav-bar button {
-    width: 58px;
-    height: 58px;
+.logoImg {
+    height: 20px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+}
+
+.allproduct-header button {
+    width: 44px;
+    height: 58px;
     background: none;
     border: none;
     cursor: pointer;
 }
 
-.allproduct-nav-bar button img {
+.back-button img,
+.bag-button img {
     width: 24px;
     height: 24px;
 }
 
-.allproduct-logo {
-    height: 24px;
-    display: flex;
-}
-
-/*****************************************************************************/
+/**************************************************************************************************/
 /* 서브 네비게이션 바 */
 
 .allproduct-sub-nav{

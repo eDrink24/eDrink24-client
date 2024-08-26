@@ -1,12 +1,14 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import './ListToBasketComponent.css';
-import TodayItem from './TodayItemComponent'; // TodayItem 컴포넌트 추가
-import { getAuthToken } from '../../util/auth';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { json, useLoaderData, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { selectedTodayPickupBaskets as recoilTodayPickupBaskets, selectedReservationPickupBaskets as recoilReservationPickupBaskets, basketPickupTypesState } from './BasketAtom';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
-import { getLoadDirection, drawRoute } from "../../service/directionService";
+import back from '../../assets/common/back.png';
+import home from '../../assets/common/home.png';
+import { drawRoute, getLoadDirection } from "../../service/directionService";
+import { getAuthToken } from '../../util/auth';
+import { selectedReservationPickupBaskets as recoilReservationPickupBaskets, selectedTodayPickupBaskets as recoilTodayPickupBaskets } from './BasketAtom';
+import './ListToBasketComponent.css';
+import TodayItem from './TodayItemComponent'; // TodayItem 컴포넌트 추가
 
 
 function ListToBasketComponent() {
@@ -337,19 +339,16 @@ function ListToBasketComponent() {
     };
 
     return (
+        <div className="basket-wrapper">
         <div className="basket-container">
-
-            {/* 상단 네비게이션 바 */}
-            <div className="basket-top-content">
-                <div className="basket-nav-bar">
-                    <button className="basket-back" onClick={() => { navigate(-1) }}>
-                        <img className="back-icon" src="assets/common/backicon.png" alt="back" />
-                    </button>
-                    <h3>장바구니</h3>
-                    <button className="basket-home" onClick={() => { navigate("/") }}>
-                        <img className="history-icon" src="assets/common/home.png" alt="home" />
-                    </button>
-                </div>
+            <div className='basket-header'>
+                <button className="back-button" onClick={() => { navigate(-1) }}>
+                    <img src={back} alt="뒤로가기" />
+                </button>
+                <h1>장바구니</h1>
+                <button className="bag-button" onClick={() => { navigate("/") }}>
+                    <img src={home} alt="홈" />
+                </button>
             </div>
 
             {/* (오늘픽업/예약픽업) 네비게이션 바 */}
@@ -463,6 +462,7 @@ function ListToBasketComponent() {
             </div>
 
         </div >
+        </div>
     );
 }
 

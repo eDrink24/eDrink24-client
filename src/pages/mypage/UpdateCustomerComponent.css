@@ -85,6 +85,7 @@ html, body {
 .updateCustomerForm {
     display: flex;
     flex-direction: column;
+    margin: 0px;
 }
 
 .form-group {

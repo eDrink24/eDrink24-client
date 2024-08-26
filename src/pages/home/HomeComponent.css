@@ -1,71 +1,74 @@
-/* 모든 요소에 기본 폰트 패밀리 설정 */
+:root {
+    --font-size-large-body: 18px;   /* 큰 본문 글자 크기 */
+    --font-size-body: 16px;         /* 기본 본문 글자 크기 */
+    --font-size-medium-body: 14px;  /* 중간 본문 글자 크기 */
+    --font-size-small-body: 12px;   /* 작은 본문 글자 크기 */
+    --min-height: 568px;            /* 최소 화면 높이 (iPhone SE 1세대 기준) */
+}
+
 * {
-    font-family: 'Spoqa Han Sans Neo', sans-serif;
-    box-sizing: border-box; /* 패딩과 보더를 포함한 박스 사이징 */
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
 }
 
-/* 전체 컨테이너 스타일 */
-.homePage-container {
+html, body {
+    min-height: var(--min-height);  /* 최소 높이 설정 */
+}
+
+/**************************************************************************************************/
+
+.homePage-wrapper {
     min-width: 344px;
-    max-width: 450px;
-    width: 100%;
+    max-width: 430px;
+    width:100%;
+    height:100%;
+    display: flex;
     margin: 0 auto;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-height: var(--min-height);  /* 최소 높이 설정 */
 }
 
-/*****************************************************************************/
-/* 상단 네비게이션 바 */
-
-.homePage-nav-bar {
-    height: 102px;
-    padding-top: 44px;
+.homePage-container {
+    background-color: white;
+    width: 100%;
+    height: 100%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+/**************************************************************************************************/
+/*상단 네비게이션*/
+.homePage-header {
+    display: flex;
     justify-content: space-between;
-    background-color: #ffffff;
+    align-items: center;
+    width: 100%;
+    height: 58px;
+    padding: 0 8px 0 20px;
 }
 
 .homePage-logo {
-    height: 24px;
-    padding-left: 20px;
+    height: 20px;
     display: flex;
 }
 
-.homePage-icon-content{
-    display: flex;
-}
-
-.homePage-bell-button {
+.homePage-header button {
     width: 44px;
     height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
     background: none;
     border: none;
     cursor: pointer;
 }
 
-.homePage-basket-button {
-    width: 58px;
-    height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.homePage-nav-bar button img {
+.bell-button img,
+.bag-button img {
     width: 24px;
     height: 24px;
 }
 
-/*****************************************************************************/
+/**************************************************************************************************/
 /* 컨테이너 스타일 */
 .Home-myPlace-container, .banner-container,
 .category-button-container, .best-product {
