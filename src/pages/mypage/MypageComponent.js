@@ -3,18 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import FooterComponent from '../../components/footer/FooterComponent.js'; // Footer 컴포넌트 import
 import { logout } from '../login/LogoutComponent';
 import './MypageComponent.css';
+
+import back from '../../assets/common/back.png';
 import bell from '../../assets/common/bell.png';
-import rightArrow from '../../assets/common/right-arrow.png';
-import point from '../../assets/mypage/point.png';
-import coupon from '../../assets/mypage/coupon.png';
-import dibs from '../../assets/mypage/dibs.png';
-import ask from '../../assets/mypage/문의하기.png';
-import notice from '../../assets/mypage/공지사항.png';
-import ask1 from '../../assets/mypage/문의.png';
-import userInfo from '../../assets/common/setting.png';
-import logOut from '../../assets/mypage/로그아웃.png';
-import deleteUser from '../../assets/mypage/경고.png';
-import basket from '../../assets/mypage/basket.png';
+import set from '../../assets/common/set.png';
+
+import mp_bag from '../../assets/mypage/mp_bag.png';
+import mp_coupon from '../../assets/mypage/mp_coupon.png';
+import mp_heart from '../../assets/mypage/mp_heart.png';
+import mp_point from '../../assets/mypage/mp_point.png';
+import 공지사항 from '../../assets/mypage/공지사항.png';
+import 로그아웃 from '../../assets/mypage/로그아웃.png';
+import 문의하기 from '../../assets/mypage/문의하기.png';
+import 일대일문의 from '../../assets/mypage/일대일문의.png';
+
 
 function MypageComponent() {
     const navigate = useNavigate();
@@ -53,10 +55,6 @@ function MypageComponent() {
 
     const navigateUpdateCustomer = () => {
         navigate("/mypage/updateCustomer", { state: { customerData } })
-    };
-
-    const navigateManagerComponent = () => {
-        navigate("/manager");
     }
 
     const toggleAccordion = () => {
@@ -69,14 +67,15 @@ function MypageComponent() {
 
                 <div className='myPage-header'>
                     <button className="back-button" onClick={() => { navigate(-1) }}>
-                        <img src="assets/common/backIcon.png" alt="뒤로가기" />
+                        <img src={back} alt="뒤로가기" />
                     </button>
                     <h1>마이페이지</h1>
                     <div>
-                        <button className="bell-button"><img src={bell} alt="알람" /></button>
-                        {/*뭔지 모르겠음 assets/common/set.png가 없음*/}
+                        <button className="bell-button">
+                            <img src={bell} alt="알람" />
+                        </button>
                         <button className="settings-button" onClick={() => { navigateUpdateCustomer() }}>
-                            <img src="assets/common/set.png" alt="셋팅" />
+                            <img src={set} alt="셋팅" />
                         </button>
                     </div>
                 </div>
@@ -88,9 +87,6 @@ function MypageComponent() {
                             <p><strong>{customerData.userName}님, 환영합니다!</strong></p>
                             <p className="info-role">{customerData.role}</p>
                         </div>
-                        <div className="info-arrow">
-                            <img src={rightArrow} alt="arrow icon" />
-                        </div>
                     </div>
                 ) : (
                     <div className="login-signUp-prompt" onClick={() => navigate("/login")} >
@@ -101,23 +97,21 @@ function MypageComponent() {
                     </div>
                 )}
 
-
-
                 <div className="myPage-icon">
                     <div className="myPage-icon-item">
-                        <img src={point} alt="포인트" />
+                        <img src={mp_point} alt="포인트" />
                         <span>포인트 <span className="myPage-additionalInfo">{isLoggedIn && customerData ? customerData.totalPoint : undefined}</span></span>
                     </div>
                     <div className="myPage-icon-item">
-                        <img src={coupon} alt="쿠폰" />
+                        <img src={mp_coupon} alt="쿠폰" />
                         <span>쿠폰</span>
                     </div>
                     <div className="myPage-icon-item">
-                        <img src={dibs} alt="찜" onClick={() => { navigate('/dibs') }} />
+                        <img src={mp_heart} alt="찜" />
                         <span>찜</span>
                     </div>
                     <div className="myPage-icon-item">
-                        <img src={basket} alt="장바구니" onClick={() => { navigate('/basket') }} />
+                        <img src={mp_bag} alt="장바구니" onClick={() => { navigate('/basket') }} />
                         <span>장바구니</span>
                     </div>
                 </div>
@@ -129,81 +123,50 @@ function MypageComponent() {
                         <h3>고객센터</h3>
                         <div className="menu1">
                             <div className="icon-item2">
-                                <img src={ask} alt="문의하기" />
+                                <img src={문의하기} alt="문의하기" />
                                 <span>문의하기</span>
                             </div>
                             <div className="icon-item2">
-                                <img src={notice} alt="공지사항" />
+                                <img src={공지사항} alt="공지사항" />
                                 <span>공지사항</span>
                             </div>
                             <div className="icon-item2">
-                                <img src={ask1} alt="1:1 문의" />
+                                <img src={일대일문의} alt="1:1 문의" />
                                 <span>1:1 문의</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/*                <div className='line3'></div> */}
+{/*                <div className='line3'></div> */}
 
                 <div className="sections">
                     <div className="section">
                         <h3>내 정보 관리</h3>
                         <div className="menu2">
-                            {isLoggedIn && customerData ? (
-                                customerData.role === '점주' ? (
-                                    <>
-                                        <div className="icon-item2" onClick={() => navigate("/admin")}>
-                                            <img src={userInfo} alt="관리자 페이지로 이동" />
-                                            <span>관리자 페이지로 이동</span>
-                                        </div>
-                                        <div className="icon-item2" onClick={() => { navigateUpdateCustomer() }}>
-                                            <img src={userInfo} alt="회원정보수정" />
-                                            <span>회원정보 수정</span>
-                                        </div>
-                                        <div className="icon-item2" onClick={isLoggedIn ? logout : undefined}>
-                                            <img src={logOut} alt="로그아웃" />
-                                            <span>로그아웃</span>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="icon-item2" onClick={() => { navigateManagerComponent() }}>
-                                            <img src={userInfo} alt="관리자계정으로 전환하기" />
-                                            <span>관리자계정으로 전환하기</span>
-                                        </div>
-                                        <div className="icon-item2" onClick={() => { navigateUpdateCustomer() }}>
-                                            <img src={userInfo} alt="회원정보수정" />
-                                            <span>회원정보 수정</span>
-                                        </div>
-                                        <div className="icon-item2" onClick={isLoggedIn ? logout : undefined}>
-                                            <img src={logOut} alt="로그아웃" />
-                                            <span>로그아웃</span>
-                                        </div>
-                                    </>
-                                )
-                            ) : (
+                            {isLoggedIn && customerData ?
+                                <div className="icon-item2" onClick={isLoggedIn ? logout : undefined}>
+                                    <img src={로그아웃} alt="로그아웃" />
+                                    <span>로그아웃</span>
+                                </div>
+                                :
                                 <div className="icon-item2" onClick={() => navigate("/login")}>
-                                    <img src="assets/mypage/로그아웃.png" alt="로그아웃" />
+                                    <img src={로그아웃} alt="로그아웃" />
                                     <span>로그인</span>
                                 </div>
-                            )}
-                            <div className="icon-item2">
-                                <img src={deleteUser} alt="계정 삭제" />
-                                <span>계정 삭제</span>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
 
                 {/* 아코디언 컴포넌트 추가 */}
                 <div className="accordion-container">
-                    <div
-                        onClick={toggleAccordion}
+                    <div 
+                        onClick={toggleAccordion} 
                         className="accordion-header"
                     >
                         <p>고객센터 ( 평일 09:00~18:00 )
-                            <br /><strong>1577-8007</strong>
+                        <br /><strong>1577-8007</strong>
                         </p>
                         <span>{isOpen ? '▲' : '▼'}</span>
                     </div>
@@ -219,7 +182,7 @@ function MypageComponent() {
 
             </div>
             <FooterComponent />
-        </div >
+        </div>
 
     );
 }
