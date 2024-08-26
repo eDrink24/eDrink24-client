@@ -4,6 +4,7 @@ import DaumPostcode from 'react-daum-postcode';
 import { useEffect, useState } from 'react';
 import Modal from "react-modal";
 import AlertModal from '../../components/alert/AlertModal';
+import xButton from '../../assets/common/x-button.png'
 
 function UpdateCustomerComponent() {
     const data = useActionData();
@@ -160,7 +161,7 @@ function UpdateCustomerComponent() {
             <div className='updateCustomer-header'>
                 <h1>회원정보수정</h1>
                 <button className="close-button" onClick={() => navigate(-1)}>
-                    <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
+                    <img src={xButton} className="XButton" alt="closeXButton" />
                 </button>
             </div>
 

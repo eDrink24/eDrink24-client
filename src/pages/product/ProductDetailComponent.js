@@ -10,6 +10,7 @@ import home from '../../assets/common/home.png'
 import bag from '../../assets/common/bag.png'
 import star from '../../assets/common/star.png'
 import emptyHeart from '../../assets/common/empty-heart.png'
+import filledHeart from '../../assets/common/fill-heart.png'
 import share from '../../assets/common/share.png'
 import todayPickup from '../../assets/common/today-pickup.png'
 import uparrow from '../../assets/common/uparrow.png'
@@ -28,6 +29,8 @@ function ProductDetailComponent() {
   const [reviews, setReviews] = useState([]);
   const [reviewCount, setReviewCount] = useState(0);
   const [reviewRating, setReviewRating] = useState(0);
+  const [products, setProducts] = useState([]); // 제품 목록 상태
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     DetailProduct();
@@ -56,6 +59,32 @@ function ProductDetailComponent() {
     }
   };
 
+  // 좋아요 버튼 컴포넌트
+  const LikeButton = ({onClick, productId, liked}) => {
+    const [isLiked, setIsLiked] = useState(liked); // 좋아요 상태 관리
+
+    const handleClick = (event) => {
+        event.stopPropagation();
+        const likeState = !isLiked;
+        setIsLiked(likeState); // 클릭할 때마다 상태를 토글
+        onClick(productId, likeState);
+    };
+
+    useEffect(() => {
+        setIsLiked(liked); // liked prop이 변경될 때 상태 업데이트
+    }, [liked]);
+
+    return (
+        <button className="allproduct-like-button" onClick={handleClick}>
+            <img
+                className="allproduct-like-icon"
+                src={isLiked ? filledHeart : emptyHeart}
+                alt="Like Icon"
+            />
+        </button>
+    );
+  };
+
   //제품 사진 클릭 시 제품 상세페이지로 이동
   const DetailProduct = async () => {
     try {
@@ -68,7 +97,36 @@ function ProductDetailComponent() {
       }
 
       const resData = await response.json();
-      setProduct(resData);
+      // 찜 목록 가져오기
+      const likedResponse = await fetch(`http://localhost:8090/eDrink24/showAllDibs/${userId}`, {
+        method: "GET"
+      });
+
+      if (!likedResponse.ok) {
+          throw new Error('Failed to fetch liked products');
+      }
+
+      const likedData = await likedResponse.json();
+      const likedProductIds = new Set(likedData.map(dib => dib.productId));
+
+      // 제품 목록에 찜 상태 추가
+      const updatedProducts = {
+        ...resData,
+        liked: likedProductIds.has(resData.productId)
+      };
+
+      setProducts(updatedProducts);
+
+      console.log("AAAAAAAAAA", resData);
+
+      if (productId) {
+        if (resData.productId === parseInt(productId)) {
+            setProduct(resData);
+        } else {
+            setProduct(null);
+        }
+      }
+    
 
       // 제품 정보와 함께 리뷰 데이터도 불러오기
       await showAllReview();
@@ -81,6 +139,50 @@ function ProductDetailComponent() {
   if (!product) {
     return <div>Loading...</div>;
   }
+
+  // 찜목록 저장
+  const addDibs = async (productId, liked) => {
+    const dibProducts = products
+    console.log("찜",dibProducts);
+    if (!dibProducts || dibProducts.productId !== productId) {
+        console.error('No dibProducts found');
+        return;
+    }
+
+    const url = liked
+    ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
+    : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
+
+    try {
+        const response = await fetch(url, {
+            method: liked? "POST" : "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: localStorage.getItem("userId"),
+                productId: dibProducts.productId
+            })
+        });
+
+        if (response.ok) {
+            // 위 api 실행되면 products에 liked 상태 변경
+            // setProducts(prevProducts =>
+            //     prevProducts.map(product =>
+            //         product.productId === productId
+            //             ? { ...product, liked: liked }
+            //             : product
+            //     )
+            // );
+            console.log(`Product ${liked ? 'added to' : 'removed from'} dibs:`, dibProducts);
+        } else {
+            throw new Error(`Failed to ${liked ? 'add' : 'remove'} product to dibs`);
+        }
+
+      } catch (error) {
+          console.error(`Error ${liked ? 'adding' : 'removing'} product to dibs:`, error);
+      }
+  };
 
   // 펼치기/접기 토글 함수
   const toggleExpand = () => {
@@ -247,10 +349,11 @@ function ProductDetailComponent() {
             <h2>{reviewRating} 리뷰 ({reviewCount})</h2>
           </div>
           <div className="productDetailComponent-product-option">
-            <button className="productDetailComponent-heart-icon-button">
-              <img className="productDetailComponent-heart-icon"
-                src={emptyHeart} alt="emptyheart" />
-            </button >
+          <LikeButton
+            onClick={addDibs}
+            productId={product.productId}
+            liked={product.liked} // 제품의 현재 좋아요 상태를 전달
+          />
             <button className="productDetailComponent-share-icon-button">
               <img className="productDetailComponent-share-icon"
                 src={share} alt="share" />
