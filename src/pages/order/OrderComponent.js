@@ -1,10 +1,13 @@
-import './OrderComponent.css';
-import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { basketState, selectedTodayPickupBaskets, selectedReservationPickupBaskets } from '../basket/BasketAtom.js';
-import { orderState } from './OrderAtom.js';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { basketState, selectedReservationPickupBaskets, selectedTodayPickupBaskets } from '../basket/BasketAtom.js';
+import { orderState } from './OrderAtom.js';
+import './OrderComponent.css';
+
+import back from '../../assets/common/back.png';
+import home from '../../assets/common/home.png';
 
 function OrderComponent() {
     const [basket, setBasket] = useRecoilState(basketState);
@@ -21,7 +24,7 @@ function OrderComponent() {
     const [totalPoint, setTotalPoint] = useState(0); //pkh
     const [discount, setDiscount] = useState(0);
     const [finalAmount, setFinalAmount] = useState(0);
-    const [userPoints, setUserPoints] = useState(0);  // 사용자의 총 포인트
+    const [userPoints, setUserPoints] = useState(null);  // 사용자의 총 포인트
     const [pointsToUse, setPointsToUse] = useState(0);  // 사용자가 입력한 포인트
     const { paymentMethod } = orderResult;
 
@@ -251,79 +254,97 @@ function OrderComponent() {
         }
     };
 
+    // 버튼 클릭 핸들러 함수
+    const handleDirectHome = () => {
+        navigate("/");
+    };
 
 
     return (
 
-        <div className="order-container">
-            <h1>주문 및 결제</h1>
+        <div className="order-wrapper">
+            <div className="order-container">
+                <div className='order-header'>
+                    <button className="back-button" onClick={() => { navigate(-1) }}>
+                        <img src={back} alt="뒤로가기" />
+                    </button>
+                    <h1>주문/결제</h1>
+                    <div>
+                        <button className="settings-button" onClick={handleDirectHome}>
+                            <img src={home} alt="셋팅" />
+                        </button>
+                    </div>
+                </div>
 
-            <div className="basket-section">
-                <h2>주문상품</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>상품 이름</th>
-                            <th>가격</th>
-                            <th>수량</th>
-                            <th>픽업 유형</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {basketItemsList.length > 0 ? (
-                            basketItemsList.map((item, index) => {
-                                const productDetails = productDetailsMap.get(item.productId);
+                <div className="order-item-section">
+                    <div className="order-section-title">
+                        <h2>주문상품</h2>
+                    </div>
 
-                                return (
-                                    <tr key={index}>
-                                        <td>
-                                            <img
-                                                src={productDetails?.defaultImage || 'default-image-url.jpg'}
-                                                alt={productDetails?.productName || '상품 이미지 없음'}
-                                                className="basket-image"
-                                            />
-                                        </td>
-                                        <td>{productDetails?.productName || '상품 이름 없음'}</td>
-                                        <td>
-                                            {productDetails?.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원
-                                        </td>
-                                        <td>{item.basketQuantity || 0}</td>
-                                        {/* //바로구매버튼 클릭 시 제품 정보와 픽업유형 수정 - giuk-kim2 */}
-                                        <td>{
-                                            (orderInfo.pickupType === "TODAY") ? "TODAY" : (todayPickupBaskets.includes(item.basketId) ? 'TODAY' : 'RESERVATION')
-                                        }
-                                        </td>
-                                    </tr>
-                                );
-                            })
-                        ) : (
-                            <tr>
-                                <td colSpan="4">장바구니에 아이템이 없습니다.</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                    {basketItemsList.length > 0 ? (
+                        basketItemsList.map((item, index) => {
+                        const productDetails = productDetailsMap.get(item.productId);
+                        return (
+                            <div key={index} className="order-item-box">
+                                <div className="order-pickUp-state">
+                                    {(orderInfo.pickupType === "오늘픽업 상품") ? "오늘픽업 상품" : (todayPickupBaskets.includes(item.basketId) ? '오늘픽업 상품' : '예약픽업 상품')}
+                                </div>
+                                <div className="order-info">
+                                    <img
+                                        className="order-item-img"
+                                        src={productDetails?.defaultImage || 'default-image-url.jpg'}
+                                        alt={productDetails?.productName || '상품 이미지 없음'}
+                                    />
+                                    <div className="order-item-info">
+                                        <span>{productDetails?.productName || '상품 이름 없음'}</span>
+                                        <a>선택 수량 : {item.basketQuantity || 0}개</a>
+                                        <h6>{productDetails?.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원 </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })
+                    ) : (
+                        <a className="empty">장바구니에 아이템이 없습니다.</a>
+                    )}
+                </div>
 
-            <div className="discount-section">
-                <h2>쿠폰/적립 할인</h2>
-                <button onClick={() => {
-                    setShowCouponList(prev => {
-                        if (!prev) fetchCoupons(); // 목록이 보이지 않을 때만 쿠폰 목록을 새로 불러옴 pkh
-                        return !prev;
-                    });
-                }}>
-                    {coupon ? `쿠폰 선택 완료: ${coupon.name} - 할인: ${coupon.discountAmount.toLocaleString()} 원` : "보유 쿠폰 조회하기"}
-                </button>
+            <div className="line4"></div>
 
-                {/* 쿠폰 목록  pkh */}
-                {loadingCoupons ? (
-                    <p>쿠폰 목록을 불러오는 중입니다...</p>
-                ) : (
-                    showCouponList && (
-                        <div className="coupon-selection">
-                            {couponList.length > 0 ? (
+                <div className="discount-section">
+                    <div className="order-section-title">
+                        <h2>쿠폰/적립할인</h2>
+                    </div>
+
+                    <div className="order-discount">
+                        <div className="order-section-subTitle">
+                            <span>보유쿠폰</span>
+                        </div>
+
+                        <div className="discount-container">
+                            <div className="text-box">
+                                {loadingCoupons ? "쿠폰 목록을 불러오는 중입니다..." : (
+                                    couponList.length > 0 
+                                        ? `쿠폰 선택 완료: ${coupon?.name} - 할인: ${coupon?.discountAmount?.toLocaleString()} 원`
+                                        : showCouponList 
+                                            ? "보유 쿠폰이 없습니다."
+                                            : "조회하기 버튼을 눌러주세요"
+                                )}
+                            </div>
+
+                            <button className="custom-button" onClick={() => {
+                                setShowCouponList(prev => {
+                                    if (!prev) fetchCoupons(); // 목록이 보이지 않을 때만 쿠폰 목록을 새로 불러옴
+                                    return !prev;
+                                });
+                            }}>
+                                조회하기
+                            </button>
+                        </div>
+
+                        {/* 쿠폰 목록 */}
+                        {showCouponList && couponList.length > 0 && (
+                            <div className="coupon-selection">
                                 <ul>
                                     {couponList.map(couponItem => (
                                         <li key={couponItem.couponId}>
@@ -333,56 +354,82 @@ function OrderComponent() {
                                         </li>
                                     ))}
                                 </ul>
-                            ) : (
-                                <p>쿠폰이 없습니다.</p>
-                            )}
-                        </div>
-                    )
-                )}
+                            </div>
+                        )}
 
-                {/* 포인트 사용 여부  pkh */}
-                <div className="point-use">
-                    <h2>포인트 사용</h2>
-                    <button onClick={fetchUserPoints}>포인트 조회</button>
-                    {userPoints > 0 && (
-                        <div>
-                            <p>보유 포인트: {userPoints} P</p>
-                            <input
-                                type="number"
-                                value={pointsToUse}
-                                onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
-                            />
-                            <button onClick={applyPoints}>포인트 적용</button>
+                        <div className="order-section-subTitle">
+                            <span>포인트</span>
                         </div>
-                    )}
+
+                        <div className="discount-container">
+                            <div className="text-box">
+                                {userPoints === null 
+                                    ? "포인트 조회 버튼을 눌러주세요" 
+                                    : `보유 포인트: ${userPoints} P`}
+                            </div>
+
+                            <button className="custom-button" onClick={fetchUserPoints}>
+                                전액사용
+                            </button>
+                        </div>
+
+                        {userPoints > 0 && (
+                            <div className="point-selection">
+                                <input
+                                    type="number"
+                                    value={pointsToUse}
+                                    onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
+                                    placeholder="사용할 포인트 입력"
+                                />
+                                <button className="custom-button" onClick={applyPoints}>
+                                    포인트 적용
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
                 </div>
-            </div>
 
-            {/* 결제 방법 선택 */}
-            <div className="payment-section">
-                <h2>결제 방법 선택</h2>
-                <select
-                    value={paymentMethod}
-                    onChange={(e) => setOrderResult(prev => ({ ...prev, paymentMethod: e.target.value }))}>
-                    <option value="">결제 방법을 선택하세요</option>
-                    <option value="creditCard">신용카드</option>
-                    <option value="paypal">페이팔</option>
-                    <option value="bankTransfer">계좌이체</option>
-                </select>
-            </div>
+            <div className="line4"></div>
 
-            {/* 주문 총액 */}
-            <div className="total-section">
-                <h2>주문 총액</h2>
-                <div>총 상품금액: {totalPrice.toLocaleString()} 원</div>
-                <div>총 할인금액: {discount.toLocaleString()} 원</div>
-                <div>총 결제금액: {finalAmount.toLocaleString()} 원</div>
-            </div>
+                {/* 결제 방법 선택 */}
+                <div className="payment-section">
+                    <div className="order-section-title">
+                        <h2>결제 방법 선택</h2>
+                    </div>
+                    <div className="payment-section-container">
+                    <select
+                        value={paymentMethod}
+                        onChange={(e) => setOrderResult(prev => ({ ...prev, paymentMethod: e.target.value }))}>
+                        <option value="">결제 방법을 선택하세요</option>
+                        <option value="creditCard">신용카드</option>
+                        <option value="paypal">페이팔</option>
+                        <option value="bankTransfer">계좌이체</option>
+                    </select>
+                    </div>
+                </div>
 
-            {/* 결제 버튼 */}
-            <button className="checkout-button" onClick={handleCheckout}>
-                결제하기
-            </button>
+                <div className="order-total-price">
+                    {/* 주문 총액 */}
+                    <div className="total-section">
+                        <div className="order-final-title">
+                            <h2>결제정보</h2>
+                            <span>총 상품금액 : {totalPrice.toLocaleString()} 원</span>
+                            <span>총 할인금액 : {discount.toLocaleString()} 원</span>
+                        </div>
+                        <div className="line2"></div>
+                        <div className="order-totalPrice">
+                            <span><strong>총 결제금액 : {finalAmount.toLocaleString()} 원</strong></span>
+                        </div>
+                    </div>
+
+                    {/* 결제 버튼 */}
+                    <button className="order-final-button" onClick={handleCheckout}>
+                        결제하기
+                    </button>
+                </div>
+
+            </div>
         </div>
     );
 }

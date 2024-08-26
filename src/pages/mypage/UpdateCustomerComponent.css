@@ -1,43 +1,86 @@
+:root {
+    --font-size-large-body: 18px;   /* 큰 본문 글자 크기 */
+    --font-size-body: 16px;         /* 기본 본문 글자 크기 */
+    --font-size-medium-body: 14px;  /* 중간 본문 글자 크기 */
+    --font-size-small-body: 12px;   /* 작은 본문 글자 크기 */
+    --min-height: 568px;            /* 최소 화면 높이 (iPhone SE 1세대 기준) */
+}
+
 * {
-    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+}
+
+html, body {
+    min-height: var(--min-height);  /* 최소 높이 설정 */
+}
+
+/**************************************************************************************************/
+
+.updateCustomer-wrapper {
+    min-width: 344px;
+    max-width: 430px;
+    width:100%;
+    height:100%;
+    display: flex;
+    margin: 0 auto;
+    min-height: var(--min-height);  /* 최소 높이 설정 */
 }
 
 .updateCustomer-container {
     background-color: white;
-    padding: 44px 20px 90px 20px;
-    min-width: 344px;
-    max-width: 450px;
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    text-align: left;
-    margin: 0 auto;
-    height: 100%;
+    flex-wrap: nowrap;
 }
 
+/**************************************************************************************************/
+/*상단 네비게이션*/
 .updateCustomer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 70px;
+    width: 100%;
+    height: 58px;
+    padding: 0 8px;
 }
 
 .updateCustomer-header h1 {
-    font-size: 20px;
-    font-weight: 500;
-    margin-left: 140px;
+    font-size: var(--font-size-large-body); /* 큰 글자 크기 */
+    font-weight: 700;
+    color: #191919;
+    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.updateCustomer-header .close-button {
+.updateCustomer-header button {
+    width: 44px;
+    height: 58px;
     background: none;
     border: none;
     cursor: pointer;
 }
 
-.updateCustomer-header .close-button img {
+.updateCustomer-header img {
     width: 24px;
+    height: 24px;
 }
+
+/**************************************************************************************************/
+/* 회원정보수정 form*/
+.updateCustomer-form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 16px 20px 0;
+}
+
 
 .updateCustomerForm {
     display: flex;
@@ -45,13 +88,13 @@
 }
 
 .form-group {
-    margin-bottom: 15px;
+
 }
 
 label {
     display: block;
-    margin-bottom: 10px;
-    margin-left: 4px;
+
+
     font-weight: medium;
     font-size: 14px;
 }
@@ -59,8 +102,7 @@ label {
 .form-control {
     width: 100%;
     height: 45px;
-    padding: 10px;
-    margin-bottom: 10px;
+
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
@@ -79,7 +121,6 @@ label {
 .tel-select {
     width: 100px;
     height: 45px;
-    margin-right: 10px;
     text-align: center;
 }
 
@@ -90,8 +131,6 @@ label {
 .form-control-postal {
     width: 300px;
     height: 45px;
-    padding: 10px;
-    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
@@ -100,13 +139,11 @@ label {
 .form-group-submit {
     display: flex;
     gap: 10px;
-    margin-bottom: 10px;
 }
 
 .btn-submit-complete {
     width: 100%;
     height: 60px;
-    padding: 10px;
     background-color: #f0c040;
     border: none;
     border-radius: 20px;
@@ -119,7 +156,6 @@ label {
 .btn-submit-cancel {
     width: 100%;
     height: 60px;
-    padding: 10px;
     background-color: #e32f1e;
     border: none;
     border-radius: 20px;
@@ -140,10 +176,8 @@ label {
     height: 45px;
     border: none;
     border-radius: 5px;
-    padding: 10px;
     color: white;
     cursor: pointer;
-    margin-left: 10px;
 }
 
 .search-button:hover {
@@ -158,11 +192,9 @@ label {
 .pw-match {
     color: green;
     font-size: 13px;
-    margin-top: 0;
 }
 
 .pw-mismatch {
     color: red;
     font-size: 12px;
-    margin-top: 5px;
 }
