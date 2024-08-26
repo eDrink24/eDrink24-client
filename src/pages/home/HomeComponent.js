@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import bag from '../../assets/common/bag.png';
+import bell from '../../assets/common/bell.png';
+import chatbot from '../../assets/common/chatbot.png';
+import eDrinkLogo from '../../assets/common/eDrinkLogo.png';
+import gift from '../../assets/common/gift.png';
+import menu from '../../assets/common/menu.png';
+import search from '../../assets/common/search.png';
 import CarouselComponent from '../../components/Banner/CarouselComponent.js';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import MyplaceComponent from '../../components/mainMyplace/MyplaceComponent.js';
 import OtherProductCardComponent from '../../components/ProductCard/OtherProductCardComponent.js';
 import ProductCardComponent from '../../components/ProductCard/ProductCardComponent.js';
 import "./HomeComponent.css";
-import menu from '../../assets/common/menu.png'
-import search from '../../assets/common/search.png'
-import gift from '../../assets/common/gift.png'
-import chatbot from '../../assets/common/chatbot.png'
-import eDrinkLogo from '../../assets/common/eDrinkLogo.png'
-import bell from '../../assets/common/bell.png'
-import bag from '../../assets/common/bag.png'
 
 function HomeComponent() {
     const { category1 } = useParams();
@@ -74,15 +74,16 @@ function HomeComponent() {
     };
 
     return (
+        <div className="homePage-wrapper">
         <div className="homePage-container">
-            <div className="homePage-nav-bar">
+            <div className="homePage-header">
                 <img className="homePage-logo" src={eDrinkLogo}alt=" " />
-                <div className="homePage-icon-content">
-                    <button className="homePage-bell-button">
-                        <img className="homePage-bell-icon" src={bell} alt=" " />
+                <div>
+                    <button className="bell-button">
+                        <img src={bell} alt="알람" />
                     </button>
-                    <button className="homePage-basket-button" aria-label="Notifications">
-                        <img className="homePage-basket-icon" src={bag} alt=" " onClick={() => navigate("/basket")} />
+                    <button className="bag-button" onClick={() => navigate("/basket")}>
+                        <img src={bag} alt="장바구니" />
                     </button>
                 </div>
             </div>
@@ -134,6 +135,7 @@ function HomeComponent() {
             </div>
 
             <FooterComponent />
+        </div>
         </div>
     );
 }

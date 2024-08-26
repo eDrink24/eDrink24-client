@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import back from '../../assets/common/back.png';
+import bag from '../../assets/common/bag.png';
+import eDrinkLogo from '../../assets/common/eDrinkLogo.png';
+import emptyHeart from '../../assets/common/empty-heart.png';
+import filledHeart from '../../assets/common/fill-heart.png';
+import filter from '../../assets/common/filter.png';
+import star from '../../assets/common/star.png';
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import './AllProductComponent.css';
-import emptyHeart from '../../assets/common/empty-heart.png'
-import filledHeart from '../../assets/common/fill-heart.png'
-import star from '../../assets/common/star.png'
-import bag from '../../assets/common/bag.png'
-import back from '../../assets/common/backIcon.png'
-import logo from '../../assets/common/eDrinkLogo.png'
-import filter from '../../assets/common/filter.png'
 //import daum from './assets/daum.png';
 
 
@@ -351,20 +351,15 @@ const AllProductComponent = () => {
 
 
     return (
+        <div className="allproduct-wrapper">
         <div className="allproduct-container">
-            {/* 상단 네비게이션 바 */}
-            <div className="allproduct-nav-bar">
-                {/* 뒤로가기 아이콘 */}
-                <button className="allproduct-back-button" onClick={() => { navigate(-1) }}>
-                    <img className="allproduct-back-icon" src={back} alt=" " />
+            <div className='allproduct-header'>
+                <button className="back-button" onClick={() => { navigate(-1) }}>
+                    <img src={back} alt="뒤로가기" />
                 </button>
-
-                {/* 로고 이미지 */}
-                <img className="allproduct-logo" src={logo} alt=" " />
-
-                {/* 장바구니 아이콘 */}
-                <button className="allproduct-bag-button" onClick={() => { navigate('/basket') }}>
-                    <img className="allproduct-bag-icon" src={bag} alt=" " />
+                <img className="logoImg" src={eDrinkLogo}alt=" " />
+                <button className="bag-button" onClick={() => { navigate('/basket') }}>
+                    <img src={bag} alt="장바구니" />
                 </button>
             </div>
 
@@ -474,6 +469,7 @@ const AllProductComponent = () => {
             />
 
             <FooterComponent />
+        </div>
         </div>
     );
 };

@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import './ProductDetailComponent.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
 import { useRecoilState } from 'recoil';
+import back from '../../assets/common/back.png';
+import bag from '../../assets/common/bag.png';
+import emptyHeart from '../../assets/common/empty-heart.png';
+import filledHeart from '../../assets/common/fill-heart.png';
+import home from '../../assets/common/home.png';
+import search from '../../assets/common/search.png';
+import share from '../../assets/common/share.png';
+import star from '../../assets/common/star.png';
+import todayPickup from '../../assets/common/today-pickup.png';
+import uparrow from '../../assets/common/uparrow.png';
+import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton';
 import { orderState } from '../order/OrderAtom';
-import back from '../../assets/common/backIcon.png'
-import search from '../../assets/common/search.png'
-import home from '../../assets/common/home.png'
-import bag from '../../assets/common/bag.png'
-import star from '../../assets/common/star.png'
-import emptyHeart from '../../assets/common/empty-heart.png'
-import filledHeart from '../../assets/common/fill-heart.png'
-import share from '../../assets/common/share.png'
-import todayPickup from '../../assets/common/today-pickup.png'
-import uparrow from '../../assets/common/uparrow.png'
+import './ProductDetailComponent.css';
 
 function ProductDetailComponent() {
   // 상태 변수 선언
@@ -301,37 +301,20 @@ function ProductDetailComponent() {
 
   return (
     <div className="productDetailComponent-container">
-
-      {/* 상단 네비게이션 바 */}
-      <div className="productDetailComponent-header">
-        <div className="productDetailComponent-navigation-bar">
-
-          {/* 뒤로가기 아이콘 */}
-          <button className="productDetailComponent-back-icon-button" onClick={() => { navigate(-1) }}>
-            <img className="productDetailComponent-nav-back-icon"
-              src={back} alt="Back" />
-          </button>
-
-          <div className="productDetailComponent-nav-empty-box"></div>
-
-          {/* 검색하기 아이콘 */}
-          <button className="productDetailComponent-search-icon-button">
-            <img className="productDetailComponent-nav-search-icon"
-              src={search} alt="search" />
-          </button>
-
-          {/* 홈으로가기 아이콘 */}
-          <button className="productDetailComponent-home-icon-button" onClick={() => { navigate("/") }}>
-            <img className="productDetailComponent-nav-home-icon"
-              src={home} alt="home" />
-          </button>
-
-          {/* 장바구니담기 아이콘 */}
-          <button className="productDetailComponent-bag-icon-button" onClick={() => { navigate("/basket") }}>
-            <img className="productDetailComponent-nav-bag-icon"
-              src={bag} alt="bag" />
-          </button>
-
+      <div className='myPage-header'>
+        <button className="back-button" onClick={() => { navigate(-1) }}>
+            <img src={back} alt="뒤로가기" />
+        </button>
+        <div>
+            <button className="search-button" onClick={() => { navigate("/search") }}>
+              <img src={search} alt="검색" />
+            </button>
+            <button className="home-button" onClick={() => { navigate("/") }}>
+              <img src={home} alt="홈" />
+            </button>
+            <button className="bag-button" onClick={() => { navigate("/basket") }}>
+                <img src={bag} alt="장바구니" />
+            </button>
         </div>
       </div>
 
@@ -388,7 +371,7 @@ function ProductDetailComponent() {
                           <div className='reviewDate'>
                             {review.enrolledDate ? review.enrolledDate.split('T')[0] : '리뷰 등록하지 않음'}
                           </div>
-                        </div>                          
+                        </div>
                       </div>
                       <div className='reviewRating'>
                         <span className='reting'>평점: {review.rating}점</span>

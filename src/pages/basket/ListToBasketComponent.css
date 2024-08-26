@@ -1,69 +1,78 @@
-/* 모든 요소에 기본 폰트 패밀리와 박스 사이징, 여백 설정 */
+:root {
+    --font-size-large-body: 18px;   /* 큰 본문 글자 크기 */
+    --font-size-body: 16px;         /* 기본 본문 글자 크기 */
+    --font-size-medium-body: 14px;  /* 중간 본문 글자 크기 */
+    --font-size-small-body: 12px;   /* 작은 본문 글자 크기 */
+    --min-height: 568px;            /* 최소 화면 높이 (iPhone SE 1세대 기준) */
+}
+
 * {
-    font-family: 'Spoqa Han Sans Neo', sans-serif;
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
 }
 
-/* 전체 컨테이너 */
+html, body {
+    min-height: var(--min-height);  /* 최소 높이 설정 */
+}
+
+/**************************************************************************************************/
+
+.basket-wrapper {
+    min-width: 344px;
+    max-width: 430px;
+    width:100%;
+    height:100%;
+    display: flex;
+    margin: 0 auto;
+    min-height: var(--min-height);  /* 최소 높이 설정 */
+}
+
 .basket-container {
     background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    min-width: 344px; /* 최소 가로 크기 */
-    max-width: 450px; /* 최대 가로 크기 */
     width: 100%;
-    height: auto;
-    margin: 0 auto; /* 화면 중앙에 배치 */
-}
-
-/*****************************************************************************/
-
-/* 상단 네비게이션 바 및 픽업 네비게이션 바를 포함한 상단 컨텐츠 */
-.basket-top-content {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
-    width: 100%;
+    flex-wrap: nowrap;
 }
 
-/*****************************************************************************/
-/* 상단 네비게이션 바 */
-
-.basket-nav-bar {
-    height: 102px;
-    padding: 44px 20px 0; /* 위의 패딩값 / 좌,우의 패딩값 / 아래의 패딩값 */
+/**************************************************************************************************/
+/*상단 네비게이션*/
+.basket-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    height: 58px;
+    padding: 0 8px;
 }
 
-.basket-nav-bar img {
-    width: 24px;
-    height: 24px;
+.basket-header h1 {
+    font-size: var(--font-size-large-body); /* 큰 글자 크기 */
+    font-weight: 700;
+    color: #191919;
+    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.basket-nav-bar button {
-    width: 58px;
+.basket-header button {
+    width: 44px;
     height: 58px;
     background: none;
     border: none;
     cursor: pointer;
 }
 
-.basket-back {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+.basket-header img {
+    width: 24px;
+    height: 24px;
 }
 
-.basket-home {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-/*****************************************************************************/
+/**************************************************************************************************/
 /* (오늘픽업/예약픽업) 네비게이션 바 */
 
 .basket-pickup-bar {
@@ -71,22 +80,23 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid #ddd;
     position: sticky;
     top: 0;
     z-index: 1000;
     background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .basket-nav-pickup {
     font-size: 16px;
+    display: flex;
+    width: 100%;
     font-weight: bold;
     cursor: pointer;
     margin-top: 20px;
     padding: 10px 20px;
-    border-bottom: 4px solid transparent;
     transition: border-bottom 0.3s ease;
+    justify-content: center;
 }
 
 /* 현재 활성화된 섹션이나 hover 시에 파란색 하단 테두리 */
