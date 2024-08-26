@@ -1,10 +1,12 @@
-import "./UpdateCustomerComponent.css";
-import { Form, useActionData, useLocation, useNavigate } from 'react-router-dom';
-import DaumPostcode from 'react-daum-postcode';
 import { useEffect, useState } from 'react';
+import DaumPostcode from 'react-daum-postcode';
 import Modal from "react-modal";
+import { Form, useActionData, useLocation, useNavigate } from 'react-router-dom';
 import AlertModal from '../../components/alert/AlertModal';
-import xButton from '../../assets/common/x-button.png'
+import "./UpdateCustomerComponent.css";
+
+import back from '../../assets/common/back.png';
+import home from '../../assets/common/home.png';
 
 function UpdateCustomerComponent() {
     const data = useActionData();
@@ -149,8 +151,108 @@ function UpdateCustomerComponent() {
         }
     }
 
+    // 버튼 클릭 핸들러 함수
+    const handleDirectHome = () => {
+        navigate("/");
+    };
+
     return (
-        <div className="updateCustomer-container">
+        <div className="updateCustomer-wrapper">
+            <div className="updateCustomer-container">
+
+                <div className='updateCustomer-header'>
+                    <button className="back-button" onClick={() => { navigate(-1) }}>
+                        <img src={back} alt="뒤로가기" />
+                    </button>
+                    <h1>회원 정보 수정</h1>
+                    <div>
+                        <button className="settings-button" onClick={handleDirectHome}>
+                            <img src={home} alt="셋팅" />
+                        </button>
+                    </div>
+                </div>
+
+                <div className="updateCustomer-form">
+                <Form method="post" className="updateCustomerForm" onSubmit={handleUpdateSubmit}>
+                    {data && data.message && <p>{data.message}</p>}
+                    <div className="form-group">
+                        <label htmlFor="loginId">아이디</label>
+                        <input type="text" name="loginId" id="loginId" className="form-control"
+                            placeholder={customerData.loginId} disabled />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="pw">비밀번호</label>
+                        <input type="password" name="pw" id="pw" className="form-control" placeholder="변경 시에만 입력해 주세요."
+                            value={pw} onChange={(e) => { setPw(e.target.value) }} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="pwConfirm">비밀번호 확인</label>
+                        <input type="password" name="pwConfirm" id="pwConfirm" className="form-control" placeholder="입력한 비밀번호를 다시 입력해 주세요."
+                            value={pwConfirm} onChange={(e) => { setPwConfirm(e.target.value) }} />
+                        {pw && pwConfirm && (
+                            <p className={pwMatch ? "pw-match" : "pw-mismatch"}>
+                                {pwMatch ? "비밀번호가 일치합니다" : "비밀번호가 일치하지 않습니다."}
+                            </p>
+                        )}
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="userName">이름</label>
+                        <div className="name-genderGroup">
+                            <input type="text" name="userName" id="userName" className="form-control" placeholder={customerData.userName} disabled />
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="phoneNum">전화번호
+                            <span className="requiredCheck"> *</span>
+                        </label>
+                        <div className="tel-num">
+                            <select className="tel-select">
+                                <option value="SKT">SKT</option>
+                                <option value="KT">KT</option>
+                                <option value="LG">LG</option>
+                            </select>
+                            <input type="text" name="phoneNum" id="phoneNum" className="form-control" placeholder={customerData.phoneNum} />
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="email">이메일
+                            <span className="requiredCheck"> *</span>
+                        </label>
+                        <input type="text" name="email" id="email" className="form-control" placeholder={customerData.email} />
+                    </div>
+
+                    <div className="form-group">
+                        <label>주소
+                            <span className="requiredCheck"> *</span>
+                        </label>
+                        <div className='postal-search'>
+                            <input name='postalCode' id="postalCode" value={postalCode} readOnly placeholder={customerData.postalCode} className="form-control-postal" />
+                            <button className="search-button" onClick={toggle}>주소 검색</button>
+                        </div>
+                        <input name='address1' id="address1" value={roadAddress} readOnly placeholder={customerData.address1} className="form-control" />
+                        <br />
+                        <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}
+                            onRequestClose={() => setIsOpen(false)}>
+                            <DaumPostcode onComplete={completeHandler} height="100%" />
+                        </Modal>
+                        <input type="text" name='address2' id="address2" onChange={changeHandler}
+                            value={detailAddress} placeholder={customerData.address2} className="form-control" />
+                        <br />
+                    </div>
+
+                    <div className="form-group-submit">
+                        <button type="submit" name="updateCustomer" className="btn-submit-complete" >수정완료</button>
+                    </div>
+                    <div className="form-group-submit">
+                        <button onClick={() => navigate(-1)} className="btn-submit-cancel" >수정취소</button>
+                    </div>
+                </Form>
+
+
             <AlertModal
                 isOpen={alertOpen}
                 onRequestClose={closeAlert}
@@ -158,91 +260,8 @@ function UpdateCustomerComponent() {
                 navigateOnClose={navigationClose}
                 navigateOnClosePath="/mypage" // 경로를 지정합니다.
             />
-            <div className='updateCustomer-header'>
-                <h1>회원정보수정</h1>
-                <button className="close-button" onClick={() => navigate(-1)}>
-                    <img src={xButton} className="XButton" alt="closeXButton" />
-                </button>
+
             </div>
-
-            <Form method="post" className="updateCustomerForm" onSubmit={handleUpdateSubmit}>
-                {data && data.message && <p>{data.message}</p>}
-                <div className="form-group">
-                    <label htmlFor="loginId">아이디</label>
-                    <input type="text" name="loginId" id="loginId" className="form-control"
-                        placeholder={customerData.loginId} disabled />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="pw">비밀번호</label>
-                    <input type="password" name="pw" id="pw" className="form-control" placeholder="변경 시에만 입력해 주세요."
-                        value={pw} onChange={(e) => { setPw(e.target.value) }} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="pwConfirm">비밀번호 확인</label>
-                    <input type="password" name="pwConfirm" id="pwConfirm" className="form-control" placeholder="입력한 비밀번호를 다시 입력해 주세요."
-                        value={pwConfirm} onChange={(e) => { setPwConfirm(e.target.value) }} />
-                    {pw && pwConfirm && (
-                        <p className={pwMatch ? "pw-match" : "pw-mismatch"}>
-                            {pwMatch ? "비밀번호가 일치합니다" : "비밀번호가 일치하지 않습니다."}
-                        </p>
-                    )}
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="userName">이름</label>
-                    <div className="name-genderGroup">
-                        <input type="text" name="userName" id="userName" className="form-control" placeholder={customerData.userName} disabled />
-                    </div>
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="phoneNum">전화번호
-                        <span className="requiredCheck"> *</span>
-                    </label>
-                    <div className="tel-num">
-                        <select className="tel-select">
-                            <option value="SKT">SKT</option>
-                            <option value="KT">KT</option>
-                            <option value="LG">LG</option>
-                        </select>
-                        <input type="text" name="phoneNum" id="phoneNum" className="form-control" placeholder={customerData.phoneNum} />
-                    </div>
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="email">이메일
-                        <span className="requiredCheck"> *</span>
-                    </label>
-                    <input type="text" name="email" id="email" className="form-control" placeholder={customerData.email} />
-                </div>
-
-                <div className="form-group">
-                    <label>주소
-                        <span className="requiredCheck"> *</span>
-                    </label>
-                    <div className='postal-search'>
-                        <input name='postalCode' id="postalCode" value={postalCode} readOnly placeholder={customerData.postalCode} className="form-control-postal" />
-                        <button className="search-button" onClick={toggle}>주소 검색</button>
-                    </div>
-                    <input name='address1' id="address1" value={roadAddress} readOnly placeholder={customerData.address1} className="form-control" />
-                    <br />
-                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}
-                        onRequestClose={() => setIsOpen(false)}>
-                        <DaumPostcode onComplete={completeHandler} height="100%" />
-                    </Modal>
-                    <input type="text" name='address2' id="address2" onChange={changeHandler}
-                        value={detailAddress} placeholder={customerData.address2} className="form-control" />
-                    <br />
-                </div>
-
-                <div className="form-group-submit">
-                    <button type="submit" name="updateCustomer" className="btn-submit-complete" >수정완료</button>
-                </div>
-            </Form>
-
-            <div className="form-group-submit">
-                <button onClick={() => navigate(-1)} className="btn-submit-cancel" >수정취소</button>
             </div>
         </div>
     );
