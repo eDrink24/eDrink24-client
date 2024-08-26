@@ -3,18 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import FooterComponent from '../../components/footer/FooterComponent.js'; // Footer 컴포넌트 import
 import { logout } from '../login/LogoutComponent';
 import './MypageComponent.css';
+
 import bell from '../../assets/common/bell.png';
-import rightArrow from '../../assets/common/right-arrow.png';
-import point from '../../assets/mypage/point.png';
-import coupon from '../../assets/mypage/coupon.png';
-import dibs from '../../assets/mypage/dibs.png';
-import ask from '../../assets/mypage/문의하기.png';
-import notice from '../../assets/mypage/공지사항.png';
-import ask1 from '../../assets/mypage/문의.png';
-import userInfo from '../../assets/common/setting.png';
-import logOut from '../../assets/mypage/로그아웃.png';
+import userInfo from '../../assets/common/set.png';
+
+import basket from '../../assets/mypage/mp_bag.png';
+import coupon from '../../assets/mypage/mp_coupon.png';
+import dibs from '../../assets/mypage/mp_heart.png';
+import point from '../../assets/mypage/mp_point.png';
+
 import deleteUser from '../../assets/mypage/경고.png';
-import basket from '../../assets/mypage/basket.png';
+import notice from '../../assets/mypage/공지사항.png';
+import manager from '../../assets/mypage/관리자.png';
+import logOut from '../../assets/mypage/로그아웃.png';
+import ask1 from '../../assets/mypage/문의하기.png';
+import ask from '../../assets/mypage/일대일문의.png';
 
 function MypageComponent() {
     const navigate = useNavigate();
@@ -74,9 +77,8 @@ function MypageComponent() {
                     <h1>마이페이지</h1>
                     <div>
                         <button className="bell-button"><img src={bell} alt="알람" /></button>
-                        {/*뭔지 모르겠음 assets/common/set.png가 없음*/}
                         <button className="settings-button" onClick={() => { navigateUpdateCustomer() }}>
-                            <img src="assets/common/set.png" alt="셋팅" />
+                            <img src={userInfo} alt="셋팅" />
                         </button>
                     </div>
                 </div>
@@ -87,9 +89,6 @@ function MypageComponent() {
                         <div className="info-text">
                             <p><strong>{customerData.userName}님, 환영합니다!</strong></p>
                             <p className="info-role">{customerData.role}</p>
-                        </div>
-                        <div className="info-arrow">
-                            <img src={rightArrow} alt="arrow icon" />
                         </div>
                     </div>
                 ) : (
@@ -154,7 +153,7 @@ function MypageComponent() {
                                 customerData.role === '점주' ? (
                                     <>
                                         <div className="icon-item2" onClick={() => navigate("/admin")}>
-                                            <img src={userInfo} alt="관리자 페이지로 이동" />
+                                            <img src={manager} alt="관리자 페이지로 이동" />
                                             <span>관리자 페이지로 이동</span>
                                         </div>
                                         <div className="icon-item2" onClick={() => { navigateUpdateCustomer() }}>
@@ -169,7 +168,7 @@ function MypageComponent() {
                                 ) : (
                                     <>
                                         <div className="icon-item2" onClick={() => { navigateManagerComponent() }}>
-                                            <img src={userInfo} alt="관리자계정으로 전환하기" />
+                                            <img src={manager} alt="관리자계정으로 전환하기" />
                                             <span>관리자계정으로 전환하기</span>
                                         </div>
                                         <div className="icon-item2" onClick={() => { navigateUpdateCustomer() }}>
