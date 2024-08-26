@@ -47,7 +47,6 @@ const CategoryComponent = () => {
 
         {/* 장바구니 아이콘 */}
         <button className="category-bag" onClick={() => { navigate('/basket') }}>
-          <img className="bag-cicon" src="/assets/common/bag.png" alt="bag" />
           <img className="bag-cicon" src={bag} alt="bag" />
         </button>
 
