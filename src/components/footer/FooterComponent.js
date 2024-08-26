@@ -23,7 +23,7 @@ const Footer = () => {
     };
 
     const handleDirectHistory = () => {
-        navigate("/history");
+        navigate("/orderHistory");
     };
 
     return (

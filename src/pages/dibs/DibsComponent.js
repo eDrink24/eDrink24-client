@@ -9,7 +9,7 @@ function DibsComponent() {
 
     const navigate = useNavigate();
 
-    // 주문 내역 상세정보 가져오기
+    // 찜 목록 가져오기
     const fetchDibs = async () => {
 
         try {

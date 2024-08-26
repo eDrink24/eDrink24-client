@@ -246,7 +246,8 @@ function SignupComponent() {
             { name: 'email', value: document.getElementById('email').value },
             { name: 'postalCode', value: postalCode },
             { name: 'address1', value: roadAddress },
-            { name: 'address2', value: detailAddress }
+            { name: 'address2', value: detailAddress },
+            { name: 'currentLocation', value: roadAddress }
         ];
 
         let allValid = true;
@@ -412,10 +413,11 @@ export async function action({ request }) {
         email: data.get("email"),
         postalCode: data.get("postalCode"),
         address1: data.get("address1"),
-        address2: data.get("address2")
+        address2: data.get("address2"),
+        currentLocation: data.get("address1")
     };
 
-    console.log(authData);
+    console.log("AAAAAAAA",authData);
 
     const response = await fetch("http://localhost:8090/eDrink24/signup", {
         method: 'POST',
