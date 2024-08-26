@@ -53,6 +53,10 @@ function MypageComponent() {
 
     const navigateUpdateCustomer = () => {
         navigate("/mypage/updateCustomer", { state: { customerData } })
+    };
+
+    const navigateManagerComponent = () => {
+        navigate("/manager");
     }
 
     const toggleAccordion = () => {
@@ -148,6 +152,10 @@ function MypageComponent() {
                         <div className="menu2">
                             {isLoggedIn && customerData ?
                                 <>
+                                    <div className="icon-item2" onClick={() => { navigateManagerComponent() }}>
+                                        <img src={userInfo} alt="회원정보수정" />
+                                        <span>매니저계정으로 전환하기</span>
+                                    </div>
                                     <div className="icon-item2" onClick={() => { navigateUpdateCustomer() }}>
                                         <img src={userInfo} alt="회원정보수정" />
                                         <span>회원정보 수정</span>

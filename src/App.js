@@ -36,6 +36,8 @@ import ReviewComponent from './pages/review/ReviewComponent';
 import CheckMyReviewComponent from './pages/review/CheckMyReviewComponent';
 import OrderHistoryDetailsComponent from './pages/order/OrderHistoryDetailsComponent';
 import DibsComponent from './pages/dibs/DibsComponent';
+import ManagerComponent from './pages/manager/ManagerComponent';
+
 
 // test yoon
 const router = createBrowserRouter([
@@ -78,6 +80,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin', element: <AdminComponent />
+      },
+      {
+        path: '/manager', element: <ManagerComponent/>
       },
       {
         path: '/review', element: <ReviewComponent />
