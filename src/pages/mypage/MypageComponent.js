@@ -4,6 +4,20 @@ import FooterComponent from '../../components/footer/FooterComponent.js'; // Foo
 import { logout } from '../login/LogoutComponent';
 import './MypageComponent.css';
 
+import back from '../../assets/common/back.png';
+import bell from '../../assets/common/bell.png';
+import set from '../../assets/common/set.png';
+
+import mp_bag from '../../assets/mypage/mp_bag.png';
+import mp_coupon from '../../assets/mypage/mp_coupon.png';
+import mp_heart from '../../assets/mypage/mp_heart.png';
+import mp_point from '../../assets/mypage/mp_point.png';
+import 공지사항 from '../../assets/mypage/공지사항.png';
+import 로그아웃 from '../../assets/mypage/로그아웃.png';
+import 문의하기 from '../../assets/mypage/문의하기.png';
+import 일대일문의 from '../../assets/mypage/일대일문의.png';
+
+
 function MypageComponent() {
     const navigate = useNavigate();
 
@@ -53,15 +67,15 @@ function MypageComponent() {
 
                 <div className='myPage-header'>
                     <button className="back-button" onClick={() => { navigate(-1) }}>
-                        <img src="assets/common/backIcon.png" alt="뒤로가기" />
+                        <img src={back} alt="뒤로가기" />
                     </button>
                     <h1>마이페이지</h1>
                     <div>
                         <button className="bell-button">
-                            <img src="assets/common/bell.png" alt="알람" />
+                            <img src={bell} alt="알람" />
                         </button>
                         <button className="settings-button" onClick={() => { navigateUpdateCustomer() }}>
-                            <img src="assets/common/set.png" alt="셋팅" />
+                            <img src={set} alt="셋팅" />
                         </button>
                     </div>
                 </div>
@@ -85,19 +99,19 @@ function MypageComponent() {
 
                 <div className="myPage-icon">
                     <div className="myPage-icon-item">
-                        <img src="assets/mypage/mp_point.png" alt="포인트" />
+                        <img src={mp_point} alt="포인트" />
                         <span>포인트 <span className="myPage-additionalInfo">{isLoggedIn && customerData ? customerData.totalPoint : undefined}</span></span>
                     </div>
                     <div className="myPage-icon-item">
-                        <img src="assets/mypage/mp_coupon.png" alt="쿠폰" />
+                        <img src={mp_coupon} alt="쿠폰" />
                         <span>쿠폰</span>
                     </div>
                     <div className="myPage-icon-item">
-                        <img src="assets/mypage/mp_heart.png" alt="찜" />
+                        <img src={mp_heart} alt="찜" />
                         <span>찜</span>
                     </div>
                     <div className="myPage-icon-item">
-                        <img src="assets/mypage/mp_bag.png" alt="장바구니" onClick={() => { navigate('/basket') }} />
+                        <img src={mp_bag} alt="장바구니" onClick={() => { navigate('/basket') }} />
                         <span>장바구니</span>
                     </div>
                 </div>
@@ -109,15 +123,15 @@ function MypageComponent() {
                         <h3>고객센터</h3>
                         <div className="menu1">
                             <div className="icon-item2">
-                                <img src="assets/mypage/문의하기.png" alt="문의하기" />
+                                <img src={문의하기} alt="문의하기" />
                                 <span>문의하기</span>
                             </div>
                             <div className="icon-item2">
-                                <img src="assets/mypage/공지사항.png" alt="공지사항" />
+                                <img src={공지사항} alt="공지사항" />
                                 <span>공지사항</span>
                             </div>
                             <div className="icon-item2">
-                                <img src="assets/mypage/일대일문의.png" alt="1:1 문의" />
+                                <img src={일대일문의} alt="1:1 문의" />
                                 <span>1:1 문의</span>
                             </div>
                         </div>
@@ -132,12 +146,12 @@ function MypageComponent() {
                         <div className="menu2">
                             {isLoggedIn && customerData ?
                                 <div className="icon-item2" onClick={isLoggedIn ? logout : undefined}>
-                                    <img src="assets/mypage/로그아웃.png" alt="로그아웃" />
+                                    <img src={로그아웃} alt="로그아웃" />
                                     <span>로그아웃</span>
                                 </div>
                                 :
                                 <div className="icon-item2" onClick={() => navigate("/login")}>
-                                    <img src="assets/mypage/로그아웃.png" alt="로그아웃" />
+                                    <img src={로그아웃} alt="로그아웃" />
                                     <span>로그인</span>
                                 </div>
                             }
