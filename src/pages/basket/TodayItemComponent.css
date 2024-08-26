@@ -55,9 +55,6 @@
 
 .basket-item-container {
     height: auto;
-    display: flex;
-    flex-direction: row; /* 가로로 배치 */
-    align-items: center;
     margin: 10px 0;
     padding: 10px 0;
     border-bottom: 1px solid #ddd; /* 항목 사이의 구분선 */
