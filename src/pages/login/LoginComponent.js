@@ -4,7 +4,7 @@ import back from '../../assets/common/back.png';
 import X from '../../assets/common/엑스.png';
 import eyeClosedIcon from '../../assets/login/eye-closed.png';
 import eyeOpenIcon from '../../assets/login/eye-open.png';
-import kaKao from '../../assets/login/kaKao.png';
+import kaKao from '../../assets/login/kakao.png';
 import eDrinkLogo from '../../assets/login/loginLogo.png';
 import at from '../../assets/login/골뱅이.png';
 import AlertModal from '../../components/alert/AlertModal.js';
