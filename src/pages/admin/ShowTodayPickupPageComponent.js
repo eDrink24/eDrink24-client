@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './ShowTodayPickupPageComponent.css'; // CSS 파일을 임포트합니다.
-import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 
 // 즉시픽업
 const ShowTodayPickupPageComponent = () => {
     const [orders, setOrders] = useState([]);
     const [selectedOrdersId, setSelectedOrdersId] = useState([]);
-    const storeId = localStorage.getItem("currentStoreId");
-    const navigate = useNavigate();
+    const storeId = localStorage.getItem("myStoreId");
 
     // 컴포넌트가 처음 렌더링될 때만 주문 목록을 가져옵니다.
     useEffect(() => {
@@ -70,16 +68,10 @@ const ShowTodayPickupPageComponent = () => {
                 showOrdersToAdminPageOrders();
                 setSelectedOrdersId([]);  // 선택된 항목 초기화
 
-                console.log("Updated Orders:", orders); // orders 상태를 로그로 확인
-
             }
         } catch (error) {
             console.error('Error fetching products:', error);
         }
-    };
-
-    const showPickupCompletedPage = () => {
-        navigate(`/admin/todayPickupCompleted`);
     };
 
     return (

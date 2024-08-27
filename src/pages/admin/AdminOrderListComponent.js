@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './AdminOrderListComponent.css';
 import FooterComponent from '../../components/footer/FooterComponent.js';
-import { useNavigate } from 'react-router-dom';
+
 
 // 발주신청내역
 const AdminOrderListComponent = () => {
@@ -13,7 +13,7 @@ const AdminOrderListComponent = () => {
 
     // 발주 내역 조회 API 호출
     const fetchOrderList = async () => {
-        const storeId = localStorage.getItem("currentStoreId");
+        const storeId = localStorage.getItem("myStoreId");
         try {
             const response = await fetch(`http://localhost:8090/eDrink24/showAdminOrderList/${storeId}`, {
                 method: "GET"

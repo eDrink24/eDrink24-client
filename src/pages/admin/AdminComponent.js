@@ -5,12 +5,14 @@ import AdminOrderListComponent from './AdminOrderListComponent';
 import ShowReservationPickupComponent from './ShowReservationPickupComponent';
 import ShowOrdersPageComponent from './ShowTodayPickupPageComponent';
 import PickupCompletedPageComponent from './TodayPickupCompletedPageComponent';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import home from "../../assets/admin/home.png"
 
 const AdminComponent = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { myStoreId } = location.state || {};
     const [activeTab, setActiveTab] = useState('즉시픽업 목록');
 
     const handleTabClick = (tabName) => {

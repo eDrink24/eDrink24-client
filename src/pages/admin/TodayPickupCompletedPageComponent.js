@@ -4,8 +4,7 @@ import './TodayPickupCompletedPageComponent.css';
 
 const TodayPickupCompletedPageComponent = () => {
     const [completedOrders, setCompletedOrders] = useState([]);
-    const storeId = localStorage.getItem("currentStoreId");
-
+    const storeId = localStorage.getItem("myStoreId");
     useEffect(() => {
         PickupCompletedPage();
     }, []);
@@ -37,7 +36,7 @@ const TodayPickupCompletedPageComponent = () => {
                                 <th>주문번호</th>
                                 <th>고객명</th>
                                 <th>제품이름</th>
-                                <th>주문/픽업시간</th>
+                                <th>픽업시간</th>
                                 <th>픽업상태</th>
                                 <th>수량</th>
                             </tr>

@@ -10,12 +10,14 @@ const ShowReservationPickupComponent = () => {
     const [showQuantityModal, setShowQuantityModal] = useState(false); // 모달 표시 상태
     const [selectedOrderId, setSelectedOrderId] = useState(null); // 선택된 주문 ID
     const [quantity, setQuantity] = useState(0); // 발주 수량 상태
-    const storeId = localStorage.getItem("currentStoreId");
+    const storeId = localStorage.getItem("myStoreId");
 
     // 처음 렌더링될 때만 주문 목록 가져오기
     useEffect(() => {
         showReservationPickupPage();
     }, []);
+
+
 
     const showReservationPickupPage = async () => {
         try {
@@ -52,11 +54,12 @@ const ShowReservationPickupComponent = () => {
         if (selectedOrderId && quantity > 0) {
             const order = orders.find(o => o.ordersId === selectedOrderId);
 
+
             // 발주 DTO 설정
             const InventoryDTO = {
-                storeId,
+                storeId: storeId,
                 productId: order.productId,
-                productName: order.productName,
+                productName: order.ProductName,
                 quantity,
                 adminOrderQuantity: quantity
             };

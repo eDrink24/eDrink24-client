@@ -57,7 +57,7 @@ const AdminOrderComponent = () => {
 
     // 발주 처리 함수
     const handleAdminOrder = async () => {
-        const storeId = localStorage.getItem("currentStoreId"); // 현재 상점 ID 가져오기
+        const storeId = localStorage.getItem("myStoreId"); // 현재 상점 ID 가져오기
         if (selectedProductId && quantity > 0) {
             const selectedProduct = products.find(product => product.productId === selectedProductId);
 
@@ -155,7 +155,7 @@ const AdminOrderComponent = () => {
         product.productName.toLowerCase().includes(searchProduct.toLowerCase())
     );
 
-    console.log(filteredProducts);
+
 
     return (
         <div className="aoProduct-allproduct-container">
