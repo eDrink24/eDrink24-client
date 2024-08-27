@@ -43,7 +43,7 @@ const LikeButton = ({onClick, productId, liked}) => {
 };
 
 // 리뷰 버튼 컴포넌트
-const ReviewButton = ({ onClick }) => {
+const ReviewButton = ({ onClick, rating }) => {
     const handleClick = (event) => {
         event.stopPropagation();
         onClick();
@@ -52,8 +52,7 @@ const ReviewButton = ({ onClick }) => {
     return (
         <button className="allproduct-review-button" onClick={handleClick}>
             <img className="allproduct-review-icon" src={star} alt=" " />
-            <span className="allproduct-review-rating">4.6</span> {/* 평점 표시 */}
-            <span className="allproduct-review-count">123</span> {/* 리뷰 갯수 표시 */}
+            <span className="allproduct-review-rating">{rating ? rating : 0 }</span>
         </button>
     );
 };
@@ -72,11 +71,6 @@ const CartButton = ({ onClick, productId }) => {
     );
 };
 
-// 좋아요 클릭 함수
-// const handleLikeClick = (productId) => {
-//     console.log(`Liked product with ID: ${productId}`);
-// };
-
 // 메인 컴포넌트
 const AllProductComponent = () => {
     const { category1, productId } = useParams(); // URL 파라미터 가져오기
@@ -87,8 +81,6 @@ const AllProductComponent = () => {
     const [quantity] = useState(1); // 장바구니에 추가할 수량
     const [product, setProduct] = useState(null); // 선택된 제품 상태
     const userId = localStorage.getItem('userId');
-    const [reviewCount, setReviewCount] = useState(0);
-    const [reviewRating, setReviewRating] = useState(0);
 
     useEffect(() => {
         if (category1) {
@@ -427,13 +419,13 @@ const AllProductComponent = () => {
                             <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
                             <div className="allproduct-product-name">{product.productName}</div>
                             <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
-                            <div className="allproduct-product-rating">{product.rating}</div>
                         </div>
 
                         <div className="allproduct-icon-button">
                             <div className="allproduct-review">
                                 {/* 장바구니 버튼을 CartButton 컴포넌트로 변경 */}
                                 <ReviewButton
+                                    rating={product.rating}
                                     onClick={() => console.log(`Reviewed product with ID: ${product.productId}`)}
                                 />
                             </div>
