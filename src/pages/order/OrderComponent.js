@@ -12,7 +12,6 @@ import home from '../../assets/common/home.png';
 function OrderComponent() {
     const [basket, setBasket] = useRecoilState(basketState);
     const [orderInfo, setOrderInfo] = useRecoilState(orderState);
-    const [orderResult, setOrderResult] = useState({ coupon: null, paymentMethod: '' }); //pkh
     const [productDetailsMap, setProductDetailsMap] = useState(new Map());
     const [basketItemsList, setBasketItemsList] = useState([]);
     const [coupon, setCoupon] = useState(null); // 선택된 쿠폰 상태
@@ -28,7 +27,6 @@ function OrderComponent() {
     const [userPoints, setUserPoints] = useState(null);  // 사용자의 총 포인트
     const [pointsToUse, setPointsToUse] = useState(0);  // 사용자가 입력한 포인트
     const [appliedPoints, setAppliedPoints] = useState(null); // 적용된 포인트 상태
-    const { paymentMethod } = orderResult;
 
     const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
     const storeId = localStorage.getItem('currentStoreId');
@@ -37,6 +35,9 @@ function OrderComponent() {
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
 
     const navigate = useNavigate();
+
+    console.log(orderInfo);
+
 
     // 총액 계산 함수 pkh
     function calculateTotals() {
@@ -134,7 +135,6 @@ function OrderComponent() {
                 const items = await fetchBasketItems(basketId);
                 basketItems.push(...items);
             }
-            console.log('Fetched Basket Items:', basketItems);
 
             const productDetailsMap = new Map();
             basketItems.forEach(item => {
@@ -143,8 +143,6 @@ function OrderComponent() {
             });
 
             setBasketItemsList(basketItems);
-            console.log('Product Details Map:', Array.from(productDetailsMap.entries()));
-            console.log(">>>>>>>>>>>>>>>", basketItemsList);
             setProductDetailsMap(productDetailsMap);
         } catch (error) {
             console.error('Error fetching product details:', error);
@@ -193,7 +191,6 @@ function OrderComponent() {
         } finally {
             setLoadingCoupons(false);
         }
-        console.log("ABCABC", couponList);
     };
 
     const handleCouponSelection = (couponItem) => {
@@ -201,7 +198,6 @@ function OrderComponent() {
             setCoupon(null);
         } else {
             setCoupon(couponItem);
-            console.log("Selected Coupon:", couponItem);
         }
     };
 

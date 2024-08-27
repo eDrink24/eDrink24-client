@@ -19,7 +19,6 @@ function ProductDetailComponent() {
   // 상태 변수 선언
   const [isExpanded, setIsExpanded] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState('description'); // 초기 탭을 'description'으로 설정
   const { category1, category2 } = useParams();
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -38,49 +37,50 @@ function ProductDetailComponent() {
 
   // 제품에 대한 모든 리뷰 보기
   const showAllReview = async () => {
-    try{
-    const response = await fetch(`http://localhost:8090/eDrink24/showProductReview/${productId}`,{
-      method:"GET"
-    });
-    const resData = await response.json();
-    setReviews(resData);
-    setReviewCount(resData.length);
-    // 리뷰가 있을 때 평균 평점을 계산
-    const totalRating = resData.reduce((sum, review) => sum + review.rating, 0);
-    const averageRating = (totalRating / resData.length).toFixed(1); // 소수점 첫번째 자리까지 계산
-     if (resData.length > 0) {
-      setReviewRating(averageRating);
+    try {
+      const response = await fetch(`http://localhost:8090/eDrink24/showProductReview/${productId}`, {
+        method: "GET"
+      });
+      const resData = await response.json();
+      setReviews(resData);
+      setReviewCount(resData.length);
+
+      // 리뷰가 있을 때 평균 평점을 계산
+      const totalRating = resData.reduce((sum, review) => sum + review.rating, 0);
+      const averageRating = (totalRating / resData.length).toFixed(1); // 소수점 첫번째 자리까지 계산
+      if (resData.length > 0) {
+        setReviewRating(averageRating);
       } else {
         setReviewRating(0); // 리뷰가 없으면 평점을 0으로 설정
-        }
-    }catch(error){
-      console.log("Error fetching reviews:",error);
+      }
+    } catch (error) {
+      console.log("Error fetching reviews:", error);
     }
   };
 
   // 좋아요 버튼 컴포넌트
-  const LikeButton = ({onClick, productId, liked}) => {
+  const LikeButton = ({ onClick, productId, liked }) => {
     const [isLiked, setIsLiked] = useState(liked); // 좋아요 상태 관리
 
     const handleClick = (event) => {
-        event.stopPropagation();
-        const likeState = !isLiked;
-        setIsLiked(likeState); // 클릭할 때마다 상태를 토글
-        onClick(productId, likeState);
+      event.stopPropagation();
+      const likeState = !isLiked;
+      setIsLiked(likeState); // 클릭할 때마다 상태를 토글
+      onClick(productId, likeState);
     };
 
     useEffect(() => {
-        setIsLiked(liked); // liked prop이 변경될 때 상태 업데이트
+      setIsLiked(liked); // liked prop이 변경될 때 상태 업데이트
     }, [liked]);
 
     return (
-        <button className="allproduct-like-button" onClick={handleClick}>
-            <img
-                className="allproduct-like-icon"
-                src={isLiked ? filledHeart : emptyHeart}
-                alt="Like Icon"
-            />
-        </button>
+      <button className="allproduct-like-button" onClick={handleClick}>
+        <img
+          className="allproduct-like-icon"
+          src={isLiked ? filledHeart : emptyHeart}
+          alt="Like Icon"
+        />
+      </button>
     );
   };
 
@@ -91,18 +91,15 @@ function ProductDetailComponent() {
         method: "GET"
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch product');
-      }
-
       const resData = await response.json();
+
       // 찜 목록 가져오기
       const likedResponse = await fetch(`http://localhost:8090/eDrink24/showAllDibs/${userId}`, {
         method: "GET"
       });
 
       if (!likedResponse.ok) {
-          throw new Error('Failed to fetch liked products');
+        throw new Error('Failed to fetch liked products');
       }
 
       const likedData = await likedResponse.json();
@@ -118,12 +115,12 @@ function ProductDetailComponent() {
 
       if (productId) {
         if (resData.productId === parseInt(productId)) {
-            setProduct(resData);
+          setProduct(resData);
         } else {
-            setProduct(null);
+          setProduct(null);
         }
       }
-    
+
 
       // 제품 정보와 함께 리뷰 데이터도 불러오기
       await showAllReview();
@@ -140,45 +137,29 @@ function ProductDetailComponent() {
   // 찜목록 저장
   const addDibs = async (productId, liked) => {
     const dibProducts = products
-    console.log("찜",dibProducts);
     if (!dibProducts || dibProducts.productId !== productId) {
-        console.error('No dibProducts found');
-        return;
+      console.error('No dibProducts found');
+      return;
     }
 
     const url = liked
-    ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
-    : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
+      ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
+      : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
 
     try {
-        const response = await fetch(url, {
-            method: liked? "POST" : "DELETE",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userId: localStorage.getItem("userId"),
-                productId: dibProducts.productId
-            })
-        });
-
-        if (response.ok) {
-            // 위 api 실행되면 products에 liked 상태 변경
-            // setProducts(prevProducts =>
-            //     prevProducts.map(product =>
-            //         product.productId === productId
-            //             ? { ...product, liked: liked }
-            //             : product
-            //     )
-            // );
-            console.log(`Product ${liked ? 'added to' : 'removed from'} dibs:`, dibProducts);
-        } else {
-            throw new Error(`Failed to ${liked ? 'add' : 'remove'} product to dibs`);
-        }
-
-      } catch (error) {
-          console.error(`Error ${liked ? 'adding' : 'removing'} product to dibs:`, error);
-      }
+      const response = await fetch(url, {
+        method: liked ? "POST" : "DELETE",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: localStorage.getItem("userId"),
+          productId: dibProducts.productId
+        })
+      });
+    } catch (error) {
+      console.error(`Error ${liked ? 'adding' : 'removing'} product to dibs:`, error);
+    }
   };
 
   // 펼치기/접기 토글 함수
@@ -251,8 +232,6 @@ function ProductDetailComponent() {
   //바로구매 버튼 클릭 시 결제페이지로 이동
   const moveToOrderPage = async () => {
     try {
-      const storeId = localStorage.getItem("currentStoreId");
-
       const selectedItem = {
         productId: product.productId,
         productName: product.productName,
@@ -261,8 +240,8 @@ function ProductDetailComponent() {
         defaultImage: product.defaultImage,
       };
 
-        // checkInventory함수 이용해서 productId 존재 시 픽업 유형 TODAY로 설정 - giuk-kim2
-        const pickupType = (await checkInventory(productId)) ? 'TODAY' : 'RESERVATION';
+      // checkInventory함수 이용해서 productId 존재 시 픽업 유형 TODAY로 설정 - giuk-kim2
+      const pickupType = (await checkInventory(productId)) ? 'TODAY' : 'RESERVATION';
 
       //선택한 제품 정보를 orderState에 저장
       setOrderInfo((prev) => ({ // prev는 현재 상태에서 일부분만 수정하고 나머지는 유지하고 싶을 때 사용
@@ -300,18 +279,18 @@ function ProductDetailComponent() {
     <div className="productDetailComponent-container">
       <div className='myPage-header'>
         <button className="back-button" onClick={() => { navigate(-1) }}>
-            <img src={back} alt="뒤로가기" />
+          <img src={back} alt="뒤로가기" />
         </button>
         <div>
-            <button className="search-button" onClick={() => { navigate("/search") }}>
-              <img src={search} alt="검색" />
-            </button>
-            <button className="home-button" onClick={() => { navigate("/") }}>
-              <img src={home} alt="홈" />
-            </button>
-            <button className="bag-button" onClick={() => { navigate("/basket") }}>
-                <img src={bag} alt="장바구니" />
-            </button>
+          <button className="search-button" onClick={() => { navigate("/search") }}>
+            <img src={search} alt="검색" />
+          </button>
+          <button className="home-button" onClick={() => { navigate("/") }}>
+            <img src={home} alt="홈" />
+          </button>
+          <button className="bag-button" onClick={() => { navigate("/basket") }}>
+            <img src={bag} alt="장바구니" />
+          </button>
         </div>
       </div>
 
@@ -350,7 +329,7 @@ function ProductDetailComponent() {
         </div>
 
         <div>
-        <div className="line"></div>
+          <div className="line"></div>
         </div>
 
         {/* 콘텐츠 영역 */}
@@ -362,28 +341,28 @@ function ProductDetailComponent() {
                 {reviews.map((review) => (
                   <div key={review.reviewsId} className='reviewCard'>
 
-                      <div className='reviewUserInfo'>
-                        <div className='userName'>
-                          <span> <strong>{review.userName}</strong> </span>
-                        </div>
-                        <div className='rating'>
-                          {/*평점: {review.rating}점*/}
-                          <span className='stars'>
-                              {Array.from({ length: 5 }, (v, i) => (
-                                  <img
-                                      key={i}
-                                      src={i < review.rating ? filledStar : emptyStar}
-                                      alt={i < review.rating ? 'Filled Star' : 'Empty Star'}
-                                      className='star-icon'
-                                  />
-                              ))}
-                          </span>
-                          <div className='reviewDate'>
-                            작성일자 : {review.enrolledDate ? review.enrolledDate.split('T')[0] : '리뷰 등록하지 않음'}
-                          </div>
+                    <div className='reviewUserInfo'>
+                      <div className='userName'>
+                        <span> <strong>{review.userName}</strong> </span>
+                      </div>
+                      <div className='rating'>
+                        {/*평점: {review.rating}점*/}
+                        <span className='stars'>
+                          {Array.from({ length: 5 }, (v, i) => (
+                            <img
+                              key={i}
+                              src={i < review.rating ? filledStar : emptyStar}
+                              alt={i < review.rating ? 'Filled Star' : 'Empty Star'}
+                              className='star-icon'
+                            />
+                          ))}
+                        </span>
+                        <div className='reviewDate'>
+                          작성일자 : {review.enrolledDate ? review.enrolledDate.split('T')[0] : '리뷰 등록하지 않음'}
                         </div>
                       </div>
-                    
+                    </div>
+
                     <div className='reviewDetails'>
                       <div className="reviewContent">{review.content}</div>
                       <div className='reviewDetails2'>
@@ -407,7 +386,7 @@ function ProductDetailComponent() {
                       </div>
                     )}*/}
 
-                  <div className="line2"></div>
+                    <div className="line2"></div>
 
                   </div>
                 ))}
@@ -416,55 +395,55 @@ function ProductDetailComponent() {
               <p>아직 등록된 리뷰가 없습니다.</p>
             )}
           </div>
-        
-      </div>
-        
+
+        </div>
+
       </div>
 
       {/* 하단고정 장바구니/바로구매 버튼 */}
       <div className={`productDetailComponent-option-footer ${isExpanded ? 'expanded' : ''}`}>
         <div className="productDetailComponent-footer">
-        <div className="productDetailComponent-select-more-items" onClick={toggleExpand}>
+          <div className="productDetailComponent-select-more-items" onClick={toggleExpand}>
             <img className="productDetailComponent-up-arrow" src={uparrow} alt="uparrow" />
-        </div>
-
-        {/* 펼쳐지는 부분을 하단 고정바 위로 나타나게 수정 */}
-        {isExpanded && (
-          <div className="productDetailComponent-expanded-section">
-
-            {/* 수량 입력 및 총 가격 표시 영역 */}
-            <div className="productDetailComponent-price-control">
-              <div className="productDetailComponent-quantity-control">
-                <button className="productDetailComponent-quantity-button" onClick={decreaseQuantity}>-</button>
-                <span className="productDetailComponent-quantity-display">{quantity}</span>
-                <button className="productDetailComponent-quantity-button" onClick={increaseQuantity}>+</button>
-              </div>
-              <div className="productDetailComponent-price-per-info">
-                <span className="productDetailComponent-price-per-item">{Number(product.price).toLocaleString()}원</span>
-              </div>
-            </div>
-
-            <div className="productDetailComponent-total-info">
-              <span className="productDetailComponent-total-quantity">총 수량: {quantity}개</span>
-              <span className="productDetailComponent-total-price">총 가격: {formattedTotal}원</span>
-            </div>
-
           </div>
-        )}
 
-        <div className="productDetailComponent-option-buy-button">
-          <button onClick={saveInBasket} className="productDetailComponent-go-cart">장바구니</button>
-          <button onClick={moveToOrderPage} className="productDetailComponent-buy-now">바로구매</button>
+          {/* 펼쳐지는 부분을 하단 고정바 위로 나타나게 수정 */}
+          {isExpanded && (
+            <div className="productDetailComponent-expanded-section">
+
+              {/* 수량 입력 및 총 가격 표시 영역 */}
+              <div className="productDetailComponent-price-control">
+                <div className="productDetailComponent-quantity-control">
+                  <button className="productDetailComponent-quantity-button" onClick={decreaseQuantity}>-</button>
+                  <span className="productDetailComponent-quantity-display">{quantity}</span>
+                  <button className="productDetailComponent-quantity-button" onClick={increaseQuantity}>+</button>
+                </div>
+                <div className="productDetailComponent-price-per-info">
+                  <span className="productDetailComponent-price-per-item">{Number(product.price).toLocaleString()}원</span>
+                </div>
+              </div>
+
+              <div className="productDetailComponent-total-info">
+                <span className="productDetailComponent-total-quantity">총 수량: {quantity}개</span>
+                <span className="productDetailComponent-total-price">총 가격: {formattedTotal}원</span>
+              </div>
+
+            </div>
+          )}
+
+          <div className="productDetailComponent-option-buy-button">
+            <button onClick={saveInBasket} className="productDetailComponent-go-cart">장바구니</button>
+            <button onClick={moveToOrderPage} className="productDetailComponent-buy-now">바로구매</button>
+          </div>
         </div>
-      </div>
 
-      <AlertModalOfClickBasketButton
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        message="장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?"
-        navigateOnYes={goToBasketPage}
-        navigateOnNo={stayOnPage}
-      />
+        <AlertModalOfClickBasketButton
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          message="장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?"
+          navigateOnYes={goToBasketPage}
+          navigateOnNo={stayOnPage}
+        />
 
       </div>
     </div>
