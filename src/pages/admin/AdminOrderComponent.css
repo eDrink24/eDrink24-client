@@ -1,85 +1,72 @@
-.adminorder-allproduct-container {
+/* 전체 컨테이너 */
+.aoProduct-container {
     display: flex;
-    flex-direction: column; /* 세로 방향으로 배치 */
-    align-items: center; /* 가운데 정렬 */
-    min-width: 344px; /* 화면 크기 설정 */
-    max-width: 450px;
-    width: 100%;
-    height: 100%; /* 화면 크기 설정 */
-    overflow-y: auto; /* 스크롤 가능하게 설정 */
-    background-color: #ffffff; /* 배경 색 설정 */
+    flex-direction: column;
+    align-items: center;
+    min-width: 700px;
+    height: 100%;
+    margin: 0 auto;
+    overflow-y: auto;
+    background-color: #f9f9f9;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
 }
 
-.adminorder-allproduct-home-header {
-    height: 102px;
-    width:100%;
-    display: flex;
-    padding: 44px 20px 0px 20px;
-    box-sizing: border-box;
+/* 헤더 */
+.aoProduct-header {
+    text-align: center;
+    margin-top: 40px;
 }
 
-.adminorder-allproduct-navigation-bar {
+.aoProdut-header-text {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 20px;
+}
+
+/* 네비게이션 바 */
+.aoProduct-navbar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
-    box-sizing: border-box;
-}
-
-.adminorder-allproduct-back-button {
-    background: none;
-    border: none;
-    width: 58px;
-    height: 58px;
-}
-
-.adminorder-allproduct-navigation-bar .adminorder-allproduct-nav-bicon {
-    width: 24px; /* 아이콘 버튼의 너비 */
-    height: 24px; /* 아이콘 버튼의 높이 */
-    margin: 0;
-}
-
-.adminorder-allproduct-cart-button {
-    background: none;
-    border: none;
-    width: 58px;
-    height: 58px;
-}
-
-.adminorder-allproduct-navigation-bar .adminorder-allproduct-nav-cicon {
-    width: 24px; /* 아이콘 버튼의 너비 */
-    height: 24px; /* 아이콘 버튼의 높이 */
-    margin: 0;
-}
-
-.adminorder-allproduct-logo-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-}
-
-.adminorder-allproduct-navigation-bar .adminorder-allproduct-nav-logo {
-    width: 98px;
-    height: 40px;
-    margin: 0;
-}
-
-.adminorder-allproduct-filter-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
     width: 100%;
     height: 52px;
+    padding: 0 20px;
     background-color: #ffffff;
-    border: none;
-    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    gap: 20px;
 }
 
-.adminorder-allproduct-filter-button {
+.aoProdut-filter-bar2,
+.aoProdut-search-bar,
+.aoProdut-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+.aoProdut-filter-list {
+    width:200px;
+}
+
+.aoProdut-filter-list select,
+.aoProdut-search-bar input,
+.aoProdut-filter-bar button {
+    flex-shrink: 0;
+}
+
+.aoProdut-search-bar input {
+    width: 200px;
+    height: 32px;
+    padding: 4px 8px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.aoProdut-filter-button {
     border: none;
     background: none;
     padding: 8px 12px;
@@ -89,96 +76,76 @@
     cursor: pointer;
 }
 
-.adminorder-allproduct-filter-button.selected { 
-    background-color: #000000; /* 선택된 버튼의 배경색 */
-    color: #ffffff; /* 선택된 버튼의 텍스트 색상 */
+.aoProdut-filter-button.selected {
+    background-color: #000000;
+    color: #ffffff;
 }
 
-.adminorder-allproduct-click-container {
+/* 상품 카드 컨테이너 */
+.aoProdut-body {
     display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    gap: 20px; 
+    padding: 20px;
+}
+
+
+.aoProdut-product-card {
+    flex: 1 1 calc(25% - 20px); 
+    box-sizing: border-box; 
+    margin: 10px 0; 
+    border: 1px solid #ccc; 
+    background-color: #ffffff; 
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+}
+
+
+.aoProdut-product-defaultImage {
+    width: 100%; 
+    height: auto; 
+    max-width: 150px; 
+    object-fit: contain; 
+    padding:5px;
+}
+
+.aoProdut-product-info {
+    flex-grow: 1; /* 이 부분이 가변적으로 크기를 조정 */
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    width: 100%;
-    padding: 0 20px;
-}
-
-.adminorder-allproduct-container1,
-.adminorder-allproduct-container2 {
-    display: flex;
-    align-items: center;
-}
-
-.adminorder-allproduct-container1 {
-    width: auto;
-}
-
-.adminorder-allproduct-container2 {
-    width: auto;
-    justify-content: flex-end;
-}
-
-.adminorder-allproduct-container1 input {
-    width: 24px;
-    height: 24px;
-}
-
-.adminorder-allproduct-container1 label {
-    margin: 0;
-    padding-left: 8px;
-}
-
-.adminorder-allproduct-product-card-container {
-    display: flex;
-    flex-wrap: wrap; /* 카드가 화면에 맞춰서 줄 바꿈 */
-    justify-content: space-around; /* 카드 사이에 여백을 배분 */
-    width: 100%;
-    padding: 10px;
-}
-
-.adminorder-allproduct-product-card {
-    width: calc(50% - 20px); /* 두 카드가 한 줄에 배치되도록 너비 설정 */
-    margin: 10px; /* 카드 간의 여백 */
-    border: none;
-    overflow: hidden;
-    background-color: #ffffff;
-}
-
-.adminorder-allproduct-product-defaultImage {
-    width: 100%;
-    height: auto;
-}
-
-.adminorder-allproduct-product-info {
     padding: 10px;
     text-align: center;
 }
 
-.adminorder-allproduct-product-rating {
-    font-size: 14px;
-    color: #ffc107;
-}
-
-.adminorder-allproduct-product-name {
+.aoProdut-product-name {
     font-size: 16px;
-    margin: 10px 0;
     color: #333;
 }
 
-.adminorder-allproduct-product-price {
+
+.aoProdut-product-price {
     font-size: 16px;
     font-weight: bold;
     color: #000;
+    padding:5px;
 }
 
-.adminorder-allproduct-product-tag {
+.aoProduct-btn {
     display: inline-block;
-    margin-top: 10px;
-    padding: 5px 10px;
-    background-color: #ffc107;
+    padding: 7px 12px;
+    font-size: 14px;
+    font-weight: bold;
     color: #fff;
-    border-radius: 15px;
-    font-size: 12px;
+    background-color: #FFB71B;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
+/* 모달 */
 .adminorder-quantity-modal {
     position: fixed;
     top: 50%;
@@ -188,6 +155,22 @@
     padding: 20px;
     border: 1px solid #ccc;
     z-index: 1000;
-    /* 모달창이 기본적으로 보이도록 */
-    display: block; /* 또는 display: flex; */
+    display: block;
+}
+
+.adminorder-quantity-modal input {
+    height:30px;
+}
+
+.adminorder-quantity-modal button {
+    display: inline-block;
+    margin : 2px;
+    padding: 7px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #FFB71B;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }

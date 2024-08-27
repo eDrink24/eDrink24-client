@@ -1,6 +1,5 @@
 import { format, parseISO } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './ShowReservationPickupComponent.css';
 
 // 제품 카테고리 목록
@@ -8,50 +7,24 @@ const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
 
 const ShowReservationPickupComponent = () => {
     const [orders, setOrders] = useState([]);
-    const [selectedOrdersId, setSelectedOrdersId] = useState([]);
     const [showQuantityModal, setShowQuantityModal] = useState(false); // 모달 표시 상태
     const [selectedOrderId, setSelectedOrderId] = useState(null); // 선택된 주문 ID
     const [quantity, setQuantity] = useState(0); // 발주 수량 상태
-    const [productNames, setProductNames] = useState({}); // 제품 이름 상태
-    const storeId = localStorage.getItem("currentStoreId");
-    const navigate = useNavigate();
+    const storeId = localStorage.getItem("myStoreId");
 
     // 처음 렌더링될 때만 주문 목록 가져오기
     useEffect(() => {
         showReservationPickupPage();
-        fetchProductNames(); // 제품 이름을 가져오기
     }, []);
 
-    // 전체 선택/해제 기능
-    const toggleSelectAll = (e) => {
-        if (e.target.checked) {
-            if (orders.length > 0) {
-                const allOrderIds = orders.map(order => order.ordersId);
-                setSelectedOrdersId(allOrderIds);
-            }
-        } else {
-            setSelectedOrdersId([]);
-        }
-    };
 
-    // 개별 항목 선택/해제
-    const toggleSelectOrder = (ordersId) => {
-        if (selectedOrdersId.includes(ordersId)) {
-            setSelectedOrdersId(selectedOrdersId.filter(id => id !== ordersId));
-        } else {
-            setSelectedOrdersId([...selectedOrdersId, ordersId]);
-        }
-    };
 
     const showReservationPickupPage = async () => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showReservationPickupPage`, {
+            const response = await fetch(`http://localhost:8090/eDrink24/showReservationPickupPage/${storeId}`, {
                 method: "GET"
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch orders');
-            }
             const resData = await response.json();
 
             // 데이터가 변경된 경우 상태 업데이트
@@ -64,32 +37,6 @@ const ShowReservationPickupComponent = () => {
         }
     };
 
-    // 제품 이름 가져오기
-    const fetchProductNames = async () => {
-        try {
-            const productNamesMap = {};
-
-            for (const category of categoryList) {
-                const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory1/${category}`, {
-                    method: "GET"
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch products for category: ${category}`);
-                }
-                const products = await response.json();
-
-                products.forEach(product => {
-                    productNamesMap[product.productId] = product.productName;
-                });
-            }
-
-            setProductNames(productNamesMap);
-
-        } catch (error) {
-            console.error('Error fetching product names:', error);
-        }
-    };
 
     // 발주하기 버튼 클릭 시 호출되는 함수
     const handleOrderClick = (ordersId) => {
@@ -106,16 +53,13 @@ const ShowReservationPickupComponent = () => {
     const handleAdminOrder = async () => {
         if (selectedOrderId && quantity > 0) {
             const order = orders.find(o => o.ordersId === selectedOrderId);
-            if (!order) {
-                alert("Order not found.");
-                return;
-            }
+
 
             // 발주 DTO 설정
             const InventoryDTO = {
-                storeId,
+                storeId: storeId,
                 productId: order.productId,
-                productName: productNames[order.productId] || 'Unknown', // 제품 이름 추가
+                productName: order.ProductName,
                 quantity,
                 adminOrderQuantity: quantity
             };
@@ -129,68 +73,50 @@ const ShowReservationPickupComponent = () => {
                     body: JSON.stringify(InventoryDTO)
                 });
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Failed to place order: ${errorText}`);
-                }
-
                 // 주문 목록 새로고침
                 showReservationPickupPage();
-                setSelectedOrdersId([]);  // 선택된 항목 초기화
                 setShowQuantityModal(false); // 모달 닫기
                 setQuantity(0); // 수량 상태 초기화
             } catch (error) {
                 console.error('Error placing order:', error);
             }
-        } else {
-            alert("Please enter a valid quantity.");
         }
     };
 
-    const showAdminOrderListPage = () => {
-        navigate(`/admin/AdminOrderListComponent`);
-    };
 
     return (
         <div className="adminReservation-container">
-            <h1 className="adminReservation-title">발주신청 목록</h1>
+            <h1 className="adminReservation-title">예약픽업 발주신청</h1>
             <div className="order-list">
-                <label className="adminReservation-all">
-                    <input
-                        type="checkbox"
-                        checked={orders.length > 0 && selectedOrdersId.length === orders.length}
-                        onChange={toggleSelectAll}
-                        value="0" />
-                    전체 선택
-                </label>
-                <ul>
-                    {orders.map(order => (
-                        <li key={order.ordersId} className="order-item">
-                            <input
-                                type="checkbox"
-                                className="order-checkbox"
-                                checked={selectedOrdersId.includes(order.ordersId)}
-                                onChange={() => toggleSelectOrder(order.ordersId)}
-                            />
-                            <div className="order-details">
-                                <div><strong>Order ID:</strong> {order.ordersId}</div>
-                                <div><strong>Store ID:</strong> {order.storeId}</div>
-                                <div><strong>User ID:</strong> {order.userId}</div>
-                                <div><strong>Product ID:</strong> {order.productId}</div>
-                                <div><strong>Product Name:</strong> {productNames[order.productId] || 'Unknown'}</div>
-                                <div><strong>Order Date:</strong> {format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</div>
-                                <div><strong>Completed:</strong> {order.isCompleted ? 'Yes' : 'No'}</div>
-                                <div><strong>Status:</strong> {order.changeStatus}</div>
-                                <div><strong>Quantity:</strong> {order.orderQuantity}</div>
-                                <button onClick={() => handleOrderClick(order.ordersId)}>발주하기</button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                <table className="order-table">
+                    <thead>
+                        <tr>
+                            <th>주문번호</th>
+                            <th>고객명</th>
+                            <th>제품명</th>
+                            <th>주문날짜</th>
+                            <th>상태</th>
+                            <th>수량</th>
+                            <th>신청</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {orders.map(order => (
+                            <tr key={order.ordersId}>
+                                <td>{order.ordersId}</td>
+                                <td>{order.userName}</td>
+                                <td>{order.productName}</td>
+                                <td>{format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</td>
+                                <td>{order.changeStatus ? "예약주문" : order.changeStatus}</td>
+                                <td>{order.orderQuantity}</td>
+                                <td>
+                                    <button onClick={() => handleOrderClick(order.ordersId)}>발주</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-            <button className="pickup-button" onClick={showAdminOrderListPage}>
-                발주신청 내역보기
-            </button>
 
             {/* 수량 입력 모달 */}
             {showQuantityModal && (
@@ -202,11 +128,12 @@ const ShowReservationPickupComponent = () => {
                         onChange={handleQuantityChange}
                         min="1"
                     />
-                    <button onClick={handleAdminOrder}>발주</button>
-                    <button onClick={() => setShowQuantityModal(false)}>취소</button>
+                    <button className="srp-quantity-modal-btn" onClick={handleAdminOrder}>발주</button>
+                    <button className="srp-quantity-modal-btn" onClick={() => setShowQuantityModal(false)}>취소</button>
                 </div>
             )}
         </div>
+
     );
 };
 

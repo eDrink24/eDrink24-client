@@ -71,9 +71,17 @@ html, body {
 /**************************************************************************************************/
 /* 컨테이너 스타일 */
 .Home-myPlace-container, .banner-container,
-.category-button-container, .best-product {
+.best-product {
     width: auto;
     margin: 20px;
+}
+
+.category-button-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 16px 0;
+    padding: 0 32px;
 }
 
 .line {
@@ -127,17 +135,33 @@ html, body {
 }
 
 /* 카테고리 버튼 컨테이너 스타일 */
-.category-button-container {
-    height: 72px;
+.mainHome-icon {
     display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 16px 0;
+    padding: 0 32px;
 }
 
 /* 버튼 기본 스타일 */
-.b1, .b2, .b3, .b4 {
-    border: 0;
-    background: none;
+.mainHome-item-icon {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     cursor: pointer;
-    flex-grow: 1;
+}
+
+.mainHome-icon img {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 8px;
+}
+
+.mainHome-icon span {
+    font-size: var(--font-size-medium-body);
+    color: #191919;
+    font-weight: 700;
 }
 
 .category-button-container
