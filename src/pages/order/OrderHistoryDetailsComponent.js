@@ -1,6 +1,9 @@
-import './OrderHistoryDetailsComponent.css'
-import { useState, useEffect} from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; 
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import back from '../../assets/common/back.png';
+import bag from '../../assets/common/bag.png';
+import FooterComponent from '../../components/footer/FooterComponent.js';
+import './OrderHistoryDetailsComponent.css';
 
 function OrderHistoryDetailsComponent() {
     
@@ -68,59 +71,91 @@ function OrderHistoryDetailsComponent() {
 
     return (
         <div className="orderDetails-container">
-            <h2>상세 정보</h2>
+            <div className='orderDetails-header'>
+            <button className="back-button" onClick={() => { navigate(-1) }}>
+                <img src={back} alt="뒤로가기" />
+            </button>
+            <h1>상세 정보</h1>
+            <button className="bag-button" onClick={() => { navigate('/basket') }}>
+                <img src={bag} alt="장바구니" />
+            </button>
+            </div>
 
-            <div className="order-history-details-section">
-                <h1>주문 내역</h1>
+            <div className="orderHistory-section">
+                
                 {orderHistoryDetails.length > 0 ? (
-                    <div className="order-details-group">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>상품 이미지</th>
-                                    <th>상품 이름</th>
-                                    <th>가격</th>
-                                    <th>수량</th>
-                                    <th>픽업유형</th>
-                                    <th>픽업완료여부</th>
-                                    <th>픽업매장</th>
-                                    <th>남은 픽업시간</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {orderHistoryDetails.map((item, index) => (
-                                    <tr key={index}>
-                                        <td>
+                    <div className="orderHistory-group">
+                        <div className="orderHistory-main">
+                            {orderHistoryDetails.map((item, index) => (
+                                <div key={index} className="orderHistory-info">
+                                    <div className="orderHistory-pickUp">
+                                        <div>{item.pickupType === `TODAY` ? `오늘 픽업` : `예약 픽업`}</div>
+                                    </div>
+
+                                    <div className="orderHistory-infoMain">
+                                        <div className="orderHistory-infoImg">
                                             <img
-                                                src={item.defaultImage}
-                                                alt={item.productName}
-                                                className="product-image"
+                                                src={item.defaultImage || 'default-image-url.jpg'}
+                                                alt={item.productName || '상품 이미지 없음'}
+                                                className="basket-image"
                                                 style={{ width: '100px', height: 'auto' }}
                                             />
-                                        </td>
-                                        <td>{item.productName}</td>
-                                        <td>{item.price.toLocaleString()} 원</td>
-                                        <td>{item.orderQuantity || 0}</td>
-                                        <td>{item.pickupType === 'TODAY' ? '오늘 픽업' : '예약 픽업'}</td>
-                                        <td>{item.isCompleted == 1 ? '완료' : '미완료'}</td>
-                                        <td>{item.storeName}</td>
-                                        <td>{item.isCompleted == 0 ? countPickupTime(item.pickupDate, item.orderDate):'픽업완료'}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <div className="order-summary">
-                            <h2>주문 요약</h2>
-                            <p><strong>결제수단:</strong> {'카카오페이'}</p>
-                            <p><strong>총 상품금액:</strong> {totalAmount} 원</p>
-                            <p><strong>총 할인금액:</strong> {totalDiscount} 원</p>
-                            <p><strong>총 결제금액:</strong> {totalPaid} 원</p>
-                            <p><strong>예상 적립금액:</strong> {points} 원</p>
+                                        </div>
+                                        <div className="orderHistory-info-main">
+                                            <span>{item.productName || '상품 이름 없음'}</span>
+                                            <a>선택수량 : {item.orderQuantity || 0}</a>
+                                            <p>{item.price !== undefined ? item.price.toLocaleString() : '가격 정보 없음'} 원</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="line"></div>
+
+                        <div className="orderDetails-summary">
+                            <div className="orderDetails-summaryTitle">
+                                <h1>결제 정보</h1>
+                            </div>
+
+                            <div className="line2"></div>
+
+                            <div className="subTitle-box">
+                            <div className="orderDetails-subTitle">
+                                <span><strong>결제수단</strong></span>
+                                <a><strong>{'카카오페이'}</strong></a>
+                            </div>
+                            <div className="orderDetails-subTitle">
+                                <span><strong>총 상품금액</strong></span>
+                                <a><strong>{totalAmount} 원</strong></a>
+                            </div>
+                            <div className="orderDetails-subTitle">
+                                <span><strong>총 할인금액</strong></span>
+                                <a><strong>{totalDiscount} 원</strong></a>
+                            </div>
+                            </div>
+
+                            <div className="line2"></div>
+
+                            <div className="subTitle-box2">
+                            <div className="orderDetails-subTitle2">
+                                <span><strong>총 결제금액</strong></span>
+                                <a><strong>{totalPaid} 원</strong></a>
+                            </div>
+                            <div className="orderDetails-subTitle2">
+                                <span><strong>예상 적립금액</strong></span>
+                                <a><strong>{points} 원</strong></a>
+                            </div>
+                            </div>
                         </div>
                     </div>
                 ) : (
                     <p>주문 내역이 없습니다.</p>
                 )}
+
+                {/* 하단 네비게이션 바 */}
+                <FooterComponent />
+                
             </div>
         </div>
     );
