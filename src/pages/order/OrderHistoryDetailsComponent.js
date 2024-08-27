@@ -70,6 +70,7 @@ function OrderHistoryDetailsComponent() {
     const points = totalPaid * 0.01;
 
     return (
+        <div className="orderDetails-wrapper">
         <div className="orderDetails-container">
             <div className='orderDetails-header'>
             <button className="back-button" onClick={() => { navigate(-1) }}>
@@ -81,19 +82,19 @@ function OrderHistoryDetailsComponent() {
             </button>
             </div>
 
-            <div className="orderHistory-section">
+            <div className="orderDetails-section">
                 
                 {orderHistoryDetails.length > 0 ? (
-                    <div className="orderHistory-group">
-                        <div className="orderHistory-main">
+                    <div className="orderDetails-group">
+                        <div className="orderDetails-main">
                             {orderHistoryDetails.map((item, index) => (
-                                <div key={index} className="orderHistory-info">
-                                    <div className="orderHistory-pickUp">
+                                <div key={index} className="orderDetails-info">
+                                    <div className="orderDetails-pickUp">
                                         <div>{item.pickupType === `TODAY` ? `오늘 픽업` : `예약 픽업`}</div>
                                     </div>
 
-                                    <div className="orderHistory-infoMain">
-                                        <div className="orderHistory-infoImg">
+                                    <div className="orderDetails-infoMain">
+                                        <div className="orderDetails-infoImg">
                                             <img
                                                 src={item.defaultImage || 'default-image-url.jpg'}
                                                 alt={item.productName || '상품 이미지 없음'}
@@ -101,7 +102,7 @@ function OrderHistoryDetailsComponent() {
                                                 style={{ width: '100px', height: 'auto' }}
                                             />
                                         </div>
-                                        <div className="orderHistory-info-main">
+                                        <div className="orderDetails-info-main">
                                             <span>{item.productName || '상품 이름 없음'}</span>
                                             <a>선택수량 : {item.orderQuantity || 0}</a>
                                             <p>{item.price !== undefined ? item.price.toLocaleString() : '가격 정보 없음'} 원</p>
@@ -157,6 +158,7 @@ function OrderHistoryDetailsComponent() {
                 <FooterComponent />
                 
             </div>
+        </div>
         </div>
     );
     
