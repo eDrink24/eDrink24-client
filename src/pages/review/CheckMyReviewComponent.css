@@ -1,44 +1,190 @@
-.MyReview-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+:root {
+    --font-size-large-body: 18px;   /* 큰 본문 글자 크기 */
+    --font-size-body: 16px;         /* 기본 본문 글자 크기 */
+    --font-size-medium-body: 14px;  /* 중간 본문 글자 크기 */
+    --font-size-small-body: 12px;   /* 작은 본문 글자 크기 */
+    --min-height: 568px;            /* 최소 화면 높이 (iPhone SE 1세대 기준) */
 }
 
-.MyReview-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+}
+
+html, body {
+    min-height: var(--min-height);  /* 최소 높이 설정 */
+}
+
+/**************************************************************************************************/
+
+.MyReview-wrapper {
+    min-width: 344px;
+    max-width: 430px;
+    width:100%;
+    height:100%;
+    display: flex;
+    margin: 0 auto;
+    min-height: var(--min-height);  /* 최소 높이 설정 */
+}
+
+.MyReview-container {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+/**************************************************************************************************/
+/*상단 네비게이션*/
+.MyReview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 58px;
+    padding: 0 8px;
+}
+
+.MyReview-header h1 {
+    font-size: var(--font-size-large-body); /* 큰 글자 크기 */
+    font-weight: 700;
+    color: #191919;
+    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.MyReview-header button {
+    width: 44px;
+    height: 58px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.MyReview-header img {
+    width: 24px;
+    height: 24px;
+}
+
+/**************************************************************************************************//* 주문내역조회 */
+
+.MyReview-date {
+    width: 100%;
+    margin-top: 16px;
+    padding: 0 20px;
+    display: flex;
+    font-size: 14px;
+    font-weight: 400;
+    color: #687787;
+    flex-direction: column;
 }
 
 .MyReview-content {
+    width: 100%;
+    padding: 0 20px;
     display: flex;
+    padding: 16px 0;
+    gap: 16px;
     flex-direction: column;
     align-items: center;
 }
 
-.MyReview-product-image {
+.MyReview-info-content {
     width: 100%;
-    max-width: 200px;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    display: flex;
+    gap: 8px;
 }
 
-.MyReview-content h3 {
-    margin: 10px 0;
-    color: #555;
+.MyReview-content img {
+    width: 100px; /* 원하는 고정 너비 설정 */
+    height: 100px; /* 원하는 고정 높이 설정 */
+    object-fit: cover; /* 이미지 비율을 유지하면서 잘라내기 */
+    display: block; /* 이미지가 독립된 블록 요소로 표시 */
+    margin: 0 auto; /* 가운데 정렬 (필요한 경우) */
 }
 
-.MyReview-content p {
-    margin: 5px 0;
-    color: #666;
+.MyReview-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+}
+
+.MyReview-content h4 {
     font-size: 16px;
-    line-height: 1.5;
+    font-weight: 500;
+    color: #191919;
+    width: 90%;
+    line-height: 1.5em;
+    text-overflow: ellipsis;
+    white-space: normal;
+    -webkit-line-clamp: 2;
 }
 
-.MyReview-content strong {
-    color: #333;
+.MyReview-info p {
+    font-size: 14px;
+    font-weight: 400;
+    color: #191919;
+}
+
+.MyReview-info span {
+    font-size: 16px;
+    font-weight: 500;
+    color: #191919;
+    width: 100%;
+}
+
+.MyReview-info textarea {
+    width: 100%;
+    height: 32px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: none;
+    outline: none; /* 기본 외곽선 제거 */
+}
+
+.MyReview-info textarea:focus {
+    border: 1px solid #191919;
+}
+
+.MyReview-content button {
+    width: 100%;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.re {
+    display: flex;
+    justify-content: space-between;
+}
+
+.re input {
+    height: 32px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding-left: 8px;
+    outline: none; /* 기본 외곽선 제거 */
+}
+
+.re input:focus {
+    border: 1px solid #191919;
+}
+
+.re-button {
+    width: 100%;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
