@@ -5,7 +5,6 @@ import { logout } from '../login/LogoutComponent';
 import './MypageComponent.css';
 
 import back from '../../assets/common/back.png';
-import bell from '../../assets/common/bell.png';
 import userInfo from '../../assets/common/set.png';
 
 import basket from '../../assets/mypage/mp_bag.png';
@@ -77,7 +76,6 @@ function MypageComponent() {
                     </button>
                     <h1>마이페이지</h1>
                     <div>
-                        <button className="bell-button"><img src={bell} alt="알람" /></button>
                         <button className="settings-button" onClick={() => { navigateUpdateCustomer() }}>
                             <img src={userInfo} alt="셋팅" />
                         </button>

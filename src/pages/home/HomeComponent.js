@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import all from '../../assets/common/all.png';
 import bag from '../../assets/common/bag.png';
-import bell from '../../assets/common/bell.png';
-import chatbot from '../../assets/common/chatbot.png';
+import dibs from '../../assets/common/dibs.png';
 import eDrinkLogo from '../../assets/common/eDrinkLogo.png';
 import gift from '../../assets/common/gift.png';
 import menu from '../../assets/common/menu.png';
-import search from '../../assets/common/search.png';
 import CarouselComponent from '../../components/Banner/CarouselComponent.js';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import MyplaceComponent from '../../components/mainMyplace/MyplaceComponent.js';
@@ -79,9 +78,6 @@ function HomeComponent() {
             <div className="homePage-header">
                 <img className="homePage-logo" src={eDrinkLogo}alt=" " />
                 <div>
-                    <button className="bell-button">
-                        <img src={bell} alt="알람" />
-                    </button>
                     <button className="bag-button" onClick={() => navigate("/basket")}>
                         <img src={bag} alt="장바구니" />
                     </button>
@@ -91,23 +87,23 @@ function HomeComponent() {
             <MyplaceComponent />
             <CarouselComponent />
 
-            <div className="category-button-container">
-                <button type="button" className="b1" onClick={handleDirectCategory}>
-                    <img src={menu} className="menuButton" alt="Menu Button" />
-                    <p className="home-category">카테고리</p>
-                </button>
-                <button type="button" className="b2" onClick={handleDirectAllproduct}>
-                    <img src={search} className="searchButton" alt="Search Button" />
-                    <p className="home-category">전체상품</p>
-                </button>
-                <button type="button" className="b3" onClick={handleDirectHome}>
-                    <img src={gift} className="giftButton" alt="Gift Button" />
-                    <p className="home-category">이벤트</p>
-                </button>
-                <button type="button" className="b4" onClick={handleDirectHome}>
-                    <img src={chatbot} className="chatbotButton" alt="Chatbot Button" />
-                    <p className="home-category">챗봇</p>
-                </button>
+            <div className="mainHome-icon">
+                <div className="mainHome-item-icon" onClick={handleDirectCategory}>
+                    <img src={menu} alt="Menu Button" />
+                    <span>카테고리</span>
+                </div>
+                <div className="mainHome-item-icon" onClick={handleDirectAllproduct}>
+                    <img src={all} alt="Search Button" />
+                    <span>모든상품</span>
+                </div>
+                <div className="mainHome-item-icon" onClick={handleDirectHome}>
+                    <img src={gift} alt="Gift Button" />
+                    <span>이벤트</span>
+                </div>
+                <div className="mainHome-item-icon" onClick={handleDirectHome}>
+                    <img src={dibs} alt="Chatbot Button" />
+                    <span>찜</span>
+                </div>
             </div>
 
             <div className="homeProduct-container">
