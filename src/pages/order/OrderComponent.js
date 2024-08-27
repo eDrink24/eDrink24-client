@@ -81,7 +81,7 @@ function OrderComponent() {
         if (pointsToUse > userPoints) {
             alert('사용할 포인트가 보유 포인트를 초과할 수 없습니다.');
             setPointsToUse(userPoints);
-            return ;
+            return;
         } else {
             setAppliedPoints(pointsToUse);
             calculateTotals();
@@ -89,7 +89,7 @@ function OrderComponent() {
     };
 
     // 포인트 버튼 상태에 따라 함수처리
-    const handleButtonClick = async() => {
+    const handleButtonClick = async () => {
         if (pointButtonText === '포인트 조회') {
             await fetchUserPoints(); // 포인트 조회
         } else if (pointButtonText === '포인트 적용') {
@@ -144,7 +144,7 @@ function OrderComponent() {
 
             setBasketItemsList(basketItems);
             console.log('Product Details Map:', Array.from(productDetailsMap.entries()));
-            console.log(">>>>>>>>>>>>>>>",basketItemsList);
+            console.log(">>>>>>>>>>>>>>>", basketItemsList);
             setProductDetailsMap(productDetailsMap);
         } catch (error) {
             console.error('Error fetching product details:', error);
@@ -197,19 +197,15 @@ function OrderComponent() {
     };
 
     const handleCouponSelection = (couponItem) => {
-        if(coupon?.couponId === couponItem.couponId) {
+        if (coupon?.couponId === couponItem.couponId) {
             setCoupon(null);
-        }else {
+        } else {
             setCoupon(couponItem);
             console.log("Selected Coupon:", couponItem);
         }
     };
 
     const handleCheckout = async () => {
-        if (!userId) {
-            alert('User ID is missing.');
-            return;
-        }
 
         const orderTransactionDTO = basketItemsList.map(item => {
             const orderDate = new Date();
@@ -220,7 +216,7 @@ function OrderComponent() {
             const orderAmount = finalAmount;
             const pointAmount = pointsToUse;
             const couponId = coupon ? coupon.couponId : null;
-            
+
 
             if (pickupType === 'TODAY') {
                 pickupDate.setDate(orderDate.getDate() + 1);
@@ -264,8 +260,8 @@ function OrderComponent() {
                     }
                 });
 
-                console.log('Payment response:', paymentResponse.data);
-            
+            console.log('Payment response:', paymentResponse.data);
+
             const { next_redirect_pc_url, next_redirect_mobile_url, tid } = paymentResponse.data;
             localStorage.setItem('tid', tid);
 
@@ -281,7 +277,7 @@ function OrderComponent() {
             window.location.href = redirectURL;
 
         } catch (error) {
-            alert(`Error during payment process: ${error.message}`);
+            console.log(`Error during payment process: ${error.message}`);
         }
     };
 
@@ -314,33 +310,33 @@ function OrderComponent() {
 
                     {basketItemsList.length > 0 ? (
                         basketItemsList.map((item, index) => {
-                        const productDetails = productDetailsMap.get(item.productId);
-                        return (
-                            <div key={index} className="order-item-box">
-                                <div className="order-pickUp-state">
-                                    {(orderInfo.pickupType === "오늘픽업 상품") ? "오늘픽업 상품" : (todayPickupBaskets.includes(item.basketId) ? '오늘픽업 상품' : '예약픽업 상품')}
-                                </div>
-                                <div className="order-info">
-                                    <img
-                                        className="order-item-img"
-                                        src={productDetails?.defaultImage || 'default-image-url.jpg'}
-                                        alt={productDetails?.productName || '상품 이미지 없음'}
-                                    />
-                                    <div className="order-item-info">
-                                        <span>{productDetails?.productName || '상품 이름 없음'}</span>
-                                        <a>선택 수량 : {item.basketQuantity || 0}개</a>
-                                        <h6>{productDetails?.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원 </h6>
+                            const productDetails = productDetailsMap.get(item.productId);
+                            return (
+                                <div key={index} className="order-item-box">
+                                    <div className="order-pickUp-state">
+                                        {(orderInfo.pickupType === "오늘픽업 상품") ? "오늘픽업 상품" : (todayPickupBaskets.includes(item.basketId) ? '오늘픽업 상품' : '예약픽업 상품')}
+                                    </div>
+                                    <div className="order-info">
+                                        <img
+                                            className="order-item-img"
+                                            src={productDetails?.defaultImage || 'default-image-url.jpg'}
+                                            alt={productDetails?.productName || '상품 이미지 없음'}
+                                        />
+                                        <div className="order-item-info">
+                                            <span>{productDetails?.productName || '상품 이름 없음'}</span>
+                                            <a>선택 수량 : {item.basketQuantity || 0}개</a>
+                                            <h6>{productDetails?.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원 </h6>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
-                    })
+                            );
+                        })
                     ) : (
                         <a className="empty">장바구니에 아이템이 없습니다.</a>
                     )}
                 </div>
 
-            <div className="line4"></div>
+                <div className="line4"></div>
 
                 <div className="discount-section">
                     <div className="order-section-title">
@@ -355,11 +351,11 @@ function OrderComponent() {
                         <div className="discount-container">
                             <div className="text-box">
                                 {loadingCoupons ? "쿠폰 목록을 불러오는 중입니다..." : (
-                                    couponList.length > 0 
-                                    ? coupon && couponList.used !== true
-                                        ? `신규회원 ${coupon?.discountAmount?.toLocaleString()} 원 할인 쿠폰`
-                                        : "쿠폰 미적용"
-                                        : showCouponList 
+                                    couponList.length > 0
+                                        ? coupon && couponList.used !== true
+                                            ? `신규회원 ${coupon?.discountAmount?.toLocaleString()} 원 할인 쿠폰`
+                                            : "쿠폰 미적용"
+                                        : showCouponList
                                             ? "보유 쿠폰이 없습니다."
                                             : "조회하기 버튼을 눌러주세요"
                                 )}
@@ -394,7 +390,7 @@ function OrderComponent() {
                                                 )
                                             ))
                                         ) : (
-                                            <p>보유 쿠폰이 없습니다.</p> 
+                                            <p>보유 쿠폰이 없습니다.</p>
                                         )}
                                     </ul>
                                 ) : (
@@ -438,7 +434,7 @@ function OrderComponent() {
 
                 </div>
 
-            <div className="line4"></div>
+                <div className="line4"></div>
 
 
                 <div className="order-total-price">

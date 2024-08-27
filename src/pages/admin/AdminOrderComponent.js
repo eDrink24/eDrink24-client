@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import FooterComponent from '../../components/footer/FooterComponent.js';
 import './AdminOrderComponent.css';
 
 // 제품 카테고리 목록
 const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
 
 const AdminOrderComponent = () => {
-    const { category1 } = useParams(); // URL 파라미터에서 카테고리1 값 가져오기
     const [products, setProducts] = useState([]); // 제품 목록 상태
     const [selectedCategory, setSelectedCategory] = useState('와인'); // 선택된 카테고리 상태
     const [quantity, setQuantity] = useState(0); // 발주 수량 상태
@@ -15,7 +12,7 @@ const AdminOrderComponent = () => {
     const [selectedProductId, setSelectedProductId] = useState(null); // 선택된 제품 ID 상태
     const [adminOrderList, setAdminOrderList] = useState([]); // 관리자 발주 목록 상태
     const [searchProduct, setSearchProduct] = useState(''); // 검색 입력 상태
-    const navigate = useNavigate(); // 네비게이션 훅
+
 
     // 카테고리가 변경될 때마다 호출
     useEffect(() => {
@@ -30,10 +27,6 @@ const AdminOrderComponent = () => {
                 method: "GET"
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch products');
-            }
-
             const resData = await response.json();
             setProducts(resData);
 
@@ -46,8 +39,6 @@ const AdminOrderComponent = () => {
             }));
 
             setAdminOrderList(newAdminOrderList);
-            console.log('Updated Admin Order List:', newAdminOrderList);
-
         } catch (error) {
             console.error('Error fetching products:', error);
         }
@@ -66,12 +57,11 @@ const AdminOrderComponent = () => {
 
     // 발주 처리 함수
     const handleAdminOrder = async () => {
-        const storeId = localStorage.getItem("currentStoreId"); // 현재 상점 ID 가져오기
+        const storeId = localStorage.getItem("myStoreId"); // 현재 상점 ID 가져오기
         if (selectedProductId && quantity > 0) {
             const selectedProduct = products.find(product => product.productId === selectedProductId);
 
             if (!selectedProduct) {
-                alert("Product not found."); // 제품이 없으면 알림
                 return;
             }
 
@@ -118,7 +108,7 @@ const AdminOrderComponent = () => {
                 console.error('Error placing order:', error);
             }
         } else {
-            alert("Please enter a valid quantity."); // 유효하지 않은 수량 입력 시 알림
+            alert("Please enter a valid quantity.");
         }
     };
 
@@ -146,25 +136,18 @@ const AdminOrderComponent = () => {
                 method: "GET"
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch products');
-            }
-
             const resData = await response.json();
-            setProducts(resData); // 선택된 카테고리의 제품 목록으로 상태 업데이트
+            setProducts(resData);
+
         } catch (error) {
-            console.error('Error fetching products:', error);
+            console.log("SERVER ERROR")
         }
     };
 
-    // 홈으로 돌아가기 함수
-    const returnHome = () => {
-        navigate(`/`);
-    }
 
     // 검색 입력 핸들러
     const handleSearchChange = (e) => {
-        setSearchProduct(e.target.value); // 검색어 상태 업데이트
+        setSearchProduct(e.target.value);
     };
 
     // 필터링된 제품 목록
@@ -172,91 +155,86 @@ const AdminOrderComponent = () => {
         product.productName.toLowerCase().includes(searchProduct.toLowerCase())
     );
 
+
+
     return (
-        <div className="adminorder-allproduct-container">
-            <div className="adminorder-allproduct-home-header">
-                <div className="adminorder-allproduct-navigation-bar">
-                    <button className="adminorder-allproduct-back-button" onClick={returnHome}>
-                        <img src="assets/common/backIcon.png" alt="Back" className="adminorder-allproduct-nav-bicon" />
-                    </button>
-                    <div className="adminorder-allproduct-logo-box">
-                        <img src="assets/common/emart24_logo.png" alt="eMart24" className="adminorder-allproduct-nav-logo" />
+        <div className="aoProduct-allproduct-container">
+            <div className="aoProduct-header">
+                <p className="aoProdut-header-text">즉시발주신청</p>
+
+                <div className="aoProduct-navbar">
+                    <div className="aoProdut-filter-bar2">
+                        <div className="aoProdut-filter-list">
+                            <select onChange={handleSortEvent}>
+                                <option value="신상품순">신상품순</option>
+                                <option value="판매량순">판매량순</option>
+                                <option value="낮은가격순">낮은가격순</option>
+                                <option value="높은가격순">높은가격순</option>
+                            </select>
+                        </div>
                     </div>
-                    <button className="adminorder-allproduct-cart-button">
-                        <img src="assets/common/cartIcon.png" alt="Cart" className="adminorder-allproduct-nav-cicon" onClick={() => { navigate('/basket') }} />
-                    </button>
-                </div>
-            </div>
-            <div className="adminorder-allproduct-body">
-                <div className="adminorder-allproduct-filter-bar">
-                    {categoryList.map((category1, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => handleCategory1Click(category1)}
-                            className={`adminorder-allproduct-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
-                        >
-                            {category1}
-                        </button>
-                    ))}
-                </div>
-                <div className="adminorder-allproduct-click-container">
-                    <div className="adminorder-allproduct-container1">
-                        <input id="today-pickup" type="checkbox" />
-                        <label htmlFor="today-pickup">오늘픽업</label>
+
+                    <div className="aoProdut-filter-bar">
+                        {categoryList.map((category1, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => {
+                                    handleCategory1Click(category1)
+                                    setSelectedCategory(category1)
+                                }
+                                }
+                                className={`aoProdut-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
+                            >
+                                {category1}
+                            </button>
+                        ))}
                     </div>
-                    <div className="adminorder-allproduct-container2">
-                        <select onChange={handleSortEvent}>
-                            <option value="신상품순">신상품순</option>
-                            <option value="판매량순">판매량순</option>
-                            <option value="평점순">평점순</option>
-                            <option value="리뷰순">리뷰순</option>
-                            <option value="낮은가격순">낮은가격순</option>
-                            <option value="높은가격순">높은가격순</option>
-                        </select>
+                    {/* 검색창 추가 */}
+                    <div className="aoProdut-search-bar">
+                        <input
+                            type="text"
+                            placeholder="상품 이름 검색"
+                            value={searchProduct}
+                            onChange={handleSearchChange}
+                            className="aoProdut-search-input"
+                        />
                     </div>
                 </div>
-                {/* 검색창 추가 */}
-                <div className="adminorder-allproduct-search-bar">
-                    <input
-                        type="text"
-                        placeholder="상품 이름 검색"
-                        value={searchProduct}
-                        onChange={handleSearchChange} // 검색 핸들러 호출
-                        className="adminorder-allproduct-search-input"
-                    />
-                </div>
+
             </div>
 
-            {/* 필터링된 제품 목록 렌더링 */}
-            {filteredProducts.map(product => (
-                <div className="adminorder-allproduct-product-card" key={product.productId}>
-                    {/* < img src={product.defaultImage} alt={product.productName} className="adminorder-allproduct-product-defaultImage" /> */}
+            <div className="aoProdut-body">
+                {/* 필터링된 제품 목록 렌더링 */}
+                {filteredProducts.map(product => (
+                    <div className="aoProdut-product-card" key={product.productId}>
+                        < img src={product.defaultImage} alt={product.productName} className="aoProdut-product-defaultImage" />
 
-                    <div className="adminorder-allproduct-product-info">
-                        <div className="adminorder-allproduct-product-enrollDate">{product.enrollDate}</div>
-                        <div className="adminorder-allproduct-product-name">{product.productName}</div>
-                        <div className="adminorder-allproduct-product-price">{product.price} 원</div>
-                        <button onClick={() => handleOrderClick(product.productId)}>발주하기</button>
+                        <div className="aoProdut-product-info">
+                            <div className="aoProdut-product-enrollDate">{product.enrollDate}</div>
+                            <div className="aoProdut-product-name">{product.productName}</div>
+                            <div className="aoProdut-product-price">{product.price} 원</div>
+                            <button className="aoProduct-btn" onClick={() => handleOrderClick(product.productId)}>발주하기</button>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
 
-            {/* 수량 입력 모달 */}
-            {showQuantityModal && (
-                <div className="adminorder-quantity-modal">
-                    <h3>발주할 수량을 입력하세요</h3>
-                    <input
-                        type="number"
-                        value={quantity}
-                        onChange={handleQuantityChange}
-                        min="1"
-                    />
-                    <button onClick={handleAdminOrder}>발주</button>
-                    <button onClick={() => setShowQuantityModal(false)}>취소</button>
-                </div>
-            )}
+                {/* 수량 입력 모달 */}
+                {showQuantityModal && (
+                    <div className="adminorder-quantity-modal">
+                        <h3>발주할 수량을 입력하세요</h3>
+                        <input
+                            type="number"
+                            value={quantity}
+                            onChange={handleQuantityChange}
+                            min="1"
+                        />
+                        <button onClick={handleAdminOrder}>발주</button>
+                        <button onClick={() => setShowQuantityModal(false)}>취소</button>
+                    </div>
+                )}
 
-            <FooterComponent />
+            </div>
+
         </div>
     );
 }

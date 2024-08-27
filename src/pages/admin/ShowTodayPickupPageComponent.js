@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './ShowTodayPickupPageComponent.css'; // CSS 파일을 임포트합니다.
-import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 
+// 즉시픽업
 const ShowTodayPickupPageComponent = () => {
     const [orders, setOrders] = useState([]);
-    console.log("orders", orders);
     const [selectedOrdersId, setSelectedOrdersId] = useState([]);
-    const navigate = useNavigate();
+    const storeId = localStorage.getItem("myStoreId");
 
     // 컴포넌트가 처음 렌더링될 때만 주문 목록을 가져옵니다.
     useEffect(() => {
@@ -38,7 +37,7 @@ const ShowTodayPickupPageComponent = () => {
     // 즉시픽업 목록페이지 (아직 픽업이 완료되지 않았을 때)
     const showOrdersToAdminPageOrders = async () => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showPickupPage`, {
+            const response = await fetch(`http://localhost:8090/eDrink24/showPickupPage/${storeId}`, {
                 method: "GET"
             });
 
@@ -46,7 +45,6 @@ const ShowTodayPickupPageComponent = () => {
                 throw new Error('Failed to fetch products');
             }
             const resData = await response.json();
-            console.log("resData:", resData);
 
             // 데이터가 변경된 경우에만 상태를 업데이트합니다.
             if (JSON.stringify(resData) !== JSON.stringify(orders)) {
@@ -67,15 +65,8 @@ const ShowTodayPickupPageComponent = () => {
                     method: "PUT"
                 });
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-
-
                 showOrdersToAdminPageOrders();
                 setSelectedOrdersId([]);  // 선택된 항목 초기화
-
-                console.log("Updated Orders:", orders); // orders 상태를 로그로 확인
 
             }
         } catch (error) {
@@ -83,52 +74,56 @@ const ShowTodayPickupPageComponent = () => {
         }
     };
 
-    const showPickupCompletedPage = () => {
-        navigate(`/admin/todayPickupCompleted`);
-    };
-
     return (
         <div className="admin-container">
             <h1 className="admin-title">즉시픽업 목록</h1>
             <div className="order-list">
-                <label className="admin-all">
-                    <input
-                        type="checkbox"
-                        checked={orders.length > 0 && selectedOrdersId.length === orders.length}
-                        onChange={toggleSelectAll}
-                        value="0" />
-                    전체 선택
-                </label >
-                <ul>
-                    {orders.map(order => (
-                        <li key={order.ordersId} className="order-item">
-                            <input
-                                type="checkbox"
-                                className="order-checkbox"
-                                checked={selectedOrdersId.includes(order.ordersId)}
-                                onChange={() => toggleSelectOrder(order.ordersId)}
-                            />
-                            <div className="order-details">
-                                <div><strong>Order ID:</strong> {order.ordersId}</div>
-                                <div><strong>Store ID:</strong> {order.storeId}</div>
-                                <div><strong>User ID:</strong> {order.userId}</div>
-                                <div><strong>Product ID:</strong> {order.productId}</div>
-                                <div><strong>Order Date:</strong> {format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</div>
-                                <div><strong>Completed:</strong> {order.isCompleted ? 'Yes' : 'No'}</div>
-                                <div><strong>Status:</strong> {order.changeStatus}</div>
-                                <div><strong>Quantity:</strong> {order.orderQuantity}</div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                <table className="order-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input
+                                    type="checkbox"
+                                    checked={orders.length > 0 && selectedOrdersId.length === orders.length}
+                                    onChange={toggleSelectAll}
+                                    value="0"
+                                />
+                            </th>
+                            <th>주문번호</th>
+                            <th>고객명</th>
+                            <th>제품명</th>
+                            <th>주문시간</th>
+                            <th>주문상태</th>
+                            <th>수량</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {orders.map(order => (
+                            <tr key={order.ordersId}>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        className="order-checkbox"
+                                        checked={selectedOrdersId.includes(order.ordersId)}
+                                        onChange={() => toggleSelectOrder(order.ordersId)}
+                                    />
+                                </td>
+                                <td>{order.ordersId}</td>
+                                <td>{order.userName}</td>
+                                <td>{order.productName}</td>
+                                <td>{format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</td>
+                                <td>{order.changeStatus ? "픽업주문" : order.changeStatus}</td>
+                                <td>{order.orderQuantity}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <button className="pickup-button" onClick={handlePickupComplete}>
+                    픽업완료
+                </button>
             </div>
-            <button className="pickup-button" onClick={handlePickupComplete}>
-                픽업완료
-            </button>
-            <button className="pickup-button" onClick={showPickupCompletedPage}>
-                픽업완료 내역보기
-            </button>
         </div>
+
     );
 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import FooterComponent from '../../components/footer/FooterComponent.js'; // Footer 컴포넌트 import
 import { logout } from '../login/LogoutComponent';
 import CouponComponent from './CouponComponent.js';
@@ -23,7 +23,6 @@ import PointHistoryModalComponent from './PointHistoryModalComponent.js';
 
 function MypageComponent() {
     const navigate = useNavigate();
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [customerData, setCustomerData] = useState(null);
     const [isOpen, setIsOpen] = useState(false); // 아코디언 상태 관리
@@ -44,6 +43,12 @@ function MypageComponent() {
         }
     }, []);
 
+    useEffect(() => {
+        if (customerData && customerData.role === "점주") {
+            fetchMyStoreId(customerData.brNum);
+        }
+    }, [customerData]);
+
     const fetchCustomerData = async (token, loginId) => {
         const response = await fetch(`http://localhost:8090/eDrink24/selectCustomerMyPage/${loginId}`, {
             method: 'GET',
@@ -56,10 +61,27 @@ function MypageComponent() {
         if (response.ok) {
             const data = await response.json();
             setCustomerData(data);
-        } else {
-            console.error('error:', response.statusText);
         }
     }
+
+    const fetchMyStoreId = async (brNum) => {
+        try {
+            const storeResponse = await fetch('http://localhost:8090/eDrink24/api/findMyStore', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(brNum)
+            });
+
+            if (storeResponse.ok) {
+                const storeId = await storeResponse.json();
+                localStorage.setItem("myStoreId", storeId);
+            }
+        } catch (error) {
+            console.error('Error fetching store ID:', error);
+        }
+    };
 
     const navigateUpdateCustomer = () => {
         navigate("/mypage/updateCustomer", { state: { customerData } })
