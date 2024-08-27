@@ -67,7 +67,6 @@ const ShowTodayPickupPageComponent = () => {
 
                 showOrdersToAdminPageOrders();
                 setSelectedOrdersId([]);  // 선택된 항목 초기화
-
             }
         } catch (error) {
             console.error('Error fetching products:', error);

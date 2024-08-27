@@ -55,9 +55,6 @@ function SearchComponent() {
 
         if (product) {
             const { category1, category2 } = product;
-            console.log("product", product);
-            console.log("category1:", category1);
-            console.log("category2:", category2);
             navigate(`/allproduct/${category1}/${category2}/${productId}`);
         } else {
             console.error("Product not found");

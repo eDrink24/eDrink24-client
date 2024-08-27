@@ -22,7 +22,6 @@ function OrderHistoryComponent() {
             });
             if (response.status === 200) {
                 const data = await response.json();
-                console.log(">>>>>>>>",data);
                 setOrderHistory(groupByOrderDate(data));
             } else {
                 console.error('Failed to fetch basket items. Status:', response.status);
@@ -50,7 +49,6 @@ function OrderHistoryComponent() {
     const moveToReviewPage = (date, idx) => {
 
         localStorage.setItem("orderHistory", JSON.stringify(orderHistory[date][idx])); // Object.keys(orderHistory) 제이슨의 키값을 가져오는 코드
-        console.log("orderHistory[date]",orderHistory[date][idx]);
         navigate(`/review`);
     };
 

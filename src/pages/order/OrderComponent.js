@@ -134,7 +134,6 @@ function OrderComponent() {
                 const items = await fetchBasketItems(basketId);
                 basketItems.push(...items);
             }
-            console.log('Fetched Basket Items:', basketItems);
 
             const productDetailsMap = new Map();
             basketItems.forEach(item => {
@@ -143,8 +142,6 @@ function OrderComponent() {
             });
 
             setBasketItemsList(basketItems);
-            console.log('Product Details Map:', Array.from(productDetailsMap.entries()));
-            console.log(">>>>>>>>>>>>>>>", basketItemsList);
             setProductDetailsMap(productDetailsMap);
         } catch (error) {
             console.error('Error fetching product details:', error);
@@ -201,7 +198,6 @@ function OrderComponent() {
             setCoupon(null);
         } else {
             setCoupon(couponItem);
-            console.log("Selected Coupon:", couponItem);
         }
     };
 
@@ -259,9 +255,6 @@ function OrderComponent() {
                         'Content-Type': 'application/json'
                     }
                 });
-
-            console.log('Payment response:', paymentResponse.data);
-
             const { next_redirect_pc_url, next_redirect_mobile_url, tid } = paymentResponse.data;
             localStorage.setItem('tid', tid);
 
