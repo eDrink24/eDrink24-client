@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
+import star from '../../assets/common/star.png';
 import bag from '../../assets/common/bag.png';
 import emptyHeart from '../../assets/common/empty-heart.png';
 import filledHeart from '../../assets/common/fill-heart.png';
@@ -66,7 +67,6 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
     // 찜목록 저장
     const addDibs = async (productId, liked) => {
         const dibProducts = products.find(prod => prod.productId === productId);
-        console.log("찜",dibProducts);
         if (!dibProducts) {
             console.error('No dibProducts found');
             return;
@@ -169,7 +169,7 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
     // 현재 페이지에 머무름
     const stayOnPage = () => {
         setModalIsOpen(false);
-        navigate(`/allproduct/${category1}`);
+        navigate(`/`);
     };
 
     // CartBag 기능
@@ -230,11 +230,10 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                                     <div className="productInfo-price">{Number(product.price).toLocaleString()} 원</div>
                                 </div>
 
-                                {/* <div className="productInfo-review" onClick={(e) => handleClick2(e, product.productId)}>
+                                <div className="productInfo-review" onClick={(e) => handleClick2(e, product.productId)}>
                                     <img className="productInfo-reviewIcon" src={star} alt=" " />
-                                    <span className="productInfo-reviewRating">{rating}</span>
-                                    <span className="productInfo-reviewCount">({reviewCount})</span>
-                                </div> */}
+                                    <span className="productInfo-reviewRating">{product.rating ? product.rating : 0}</span>
+                                </div>
 
                                 <div className="productInfo-button">
                                     <div className="productInfo-tag">

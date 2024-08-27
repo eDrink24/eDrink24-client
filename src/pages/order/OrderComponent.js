@@ -5,7 +5,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { basketState, selectedReservationPickupBaskets, selectedTodayPickupBaskets } from '../basket/BasketAtom.js';
 import { orderState } from './OrderAtom.js';
 import './OrderComponent.css';
-
 import back from '../../assets/common/back.png';
 import home from '../../assets/common/home.png';
 
@@ -33,6 +32,8 @@ function OrderComponent() {
 
     const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
+
+    console.log(">>>>>>>>>>>",orderInfo);
 
     const navigate = useNavigate();
 
@@ -74,7 +75,6 @@ function OrderComponent() {
         } catch (error) {
             console.error('Error fetching user points:', error);
         }
-        console.log(pointButtonText);
     };
 
     // 사용자가 입력한 포인트 적용 함수 pkh
@@ -255,9 +255,6 @@ function OrderComponent() {
                         'Content-Type': 'application/json'
                     }
                 });
-
-            console.log('Payment response:', paymentResponse.data);
-
             const { next_redirect_pc_url, next_redirect_mobile_url, tid } = paymentResponse.data;
             localStorage.setItem('tid', tid);
 
@@ -281,7 +278,6 @@ function OrderComponent() {
     const handleDirectHome = () => {
         navigate("/");
     };
-
 
     return (
 
@@ -310,7 +306,7 @@ function OrderComponent() {
                             return (
                                 <div key={index} className="order-item-box">
                                     <div className="order-pickUp-state">
-                                        {(orderInfo.pickupType === "오늘픽업 상품") ? "오늘픽업 상품" : (todayPickupBaskets.includes(item.basketId) ? '오늘픽업 상품' : '예약픽업 상품')}
+                                        {(orderInfo.pickupType === "TODAY") ? "오늘픽업 상품" : (todayPickupBaskets.includes(item.basketId) ? '오늘픽업 상품' : '예약픽업 상품')}
                                     </div>
                                     <div className="order-info">
                                         <img
@@ -399,7 +395,7 @@ function OrderComponent() {
                             <span>포인트</span>
                         </div>
 
-                        <div className="discount-container">
+                        <div className="discount-container1">
                             <div className="text-box">
                                 {appliedPoints === null
                                     ? userPoints === null
@@ -408,7 +404,7 @@ function OrderComponent() {
                                     : `적용된 포인트: ${appliedPoints} P`}
                             </div>
 
-                            <button className="custom-button" onClick={handleButtonClick}>
+                            <button className="custom-button1" onClick={handleButtonClick}>
                                 {pointButtonText}
                             </button>
 
@@ -419,6 +415,7 @@ function OrderComponent() {
                                         value={pointsToUse}
                                         onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
                                         placeholder="사용할 포인트 입력"
+                                        min = "0"
                                     />
                                     <button className="custom-button1" onClick={handleMaxPoints}>
                                         전액 사용

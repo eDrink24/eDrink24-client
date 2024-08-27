@@ -9,7 +9,6 @@ function KakaoSignupHandler() {
     const location = useLocation();
     const navigate = useNavigate();
     const cusData = location.state.cusData;
-    console.log(cusData);
     const [postalCode, setPostalCode] = useState("");
     const [roadAddress, setRoadAddress] = useState("");
     const [detailAddress, setDetailAddress] = useState("");
@@ -216,9 +215,6 @@ function KakaoSignupHandler() {
                 gender: gender,
                 linkedId: cusData.linkedId
             };
-
-            console.log(cusData);
-            console.log(cusData.linkedId);
 
             const response = await fetch("http://localhost:8090/eDrink24/signup", {
                 method: 'POST',

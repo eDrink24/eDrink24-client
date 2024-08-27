@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import bag from '../../assets/common/bag.png';
 import emptyHeart from '../../assets/common/empty-heart.png';
 import filledHeart from '../../assets/common/fill-heart.png';
+import star from '../../assets/common/star.png';
 import './OtherProductCardComponent.css';
 
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton.js';
@@ -64,7 +65,6 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
     // 찜목록 저장
     const addDibs = async (productId, liked) => {
         const dibProducts = products.find(prod => prod.productId === productId);
-        console.log("찜",dibProducts);
         if (!dibProducts) {
             console.error('No dibProducts found');
             return;
@@ -154,7 +154,6 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
     // Review 기능
     const handleClick2 = (event, productId) => {
         event.stopPropagation();
-        console.log(`Reviewed product with ID: ${productId}`);
     };
 
     // 장바구니 페이지로 이동
@@ -166,7 +165,7 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
     // 현재 페이지에 머무름
     const stayOnPage = () => {
         setModalIsOpen(false);
-        navigate(`/allproduct/${category1}`);
+        navigate(`/`);
     };
 
     // CartBag 기능
@@ -236,13 +235,14 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
                                 <div className="productInfo-price2">{Number(product.price).toLocaleString()} 원</div>
                             </div>
 
-                            {/* <div className="productInfo-review2" onClick={(e) => handleClick2(e, product.productId)}>
-                                <img className="productInfo-reviewIcon2" src={star} alt=" " />
-                                <span className="productInfo-reviewRating2">{rating}</span>
-                                <span className="productInfo-reviewCount2">({reviewCount})</span>
-                            </div> */}
-
                             <div className="productInfo-button2">
+                                
+                                <div className="productInfo-review2" onClick={(e) => handleClick2(e, product.productId)}>
+                                    <img className="productInfo-reviewIcon2" src={star} alt=" " />
+                                    <span className="productInfo-reviewRating2">{product.rating ? product.rating : 0}</span>
+                                </div>
+
+                                <div className="productInfo-button2-tag">
                                 <div className="productInfo-tag2">
                                     {Array.isArray(invToStore) && invToStore.some(inv =>
                                         inv.productId === product.productId && inv.quantity > 0) ? (
@@ -261,6 +261,7 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
                                 <button className="productInfo-bag2" onClick={(e) => handleClick3(e, product.productId)}>
                                     <img className="productInfo-bagIcon2" src={bag} alt=" " />
                                 </button>
+                                </div>
                             </div>
 
                         </div>

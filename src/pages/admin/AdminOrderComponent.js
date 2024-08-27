@@ -96,10 +96,8 @@ const AdminOrderComponent = () => {
 
                 if (contentType && contentType.includes('application/json')) {
                     const jsonResponse = await response.json();
-                    console.log('Order placed successfully:', jsonResponse);
                 } else {
                     const textResponse = await response.text();
-                    console.log('Received non-JSON response:', textResponse);
                 }
 
                 setShowQuantityModal(false); // 모달 닫기

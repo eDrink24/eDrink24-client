@@ -37,10 +37,11 @@
 /* 상품 카드를 묶는 세트 컨테이너 */
 .ProductCardSet {
     display: flex;
-    flex-direction: column; /* 세로로 3개의 상품 카드를 배열 */
-    gap: 16px;
-    flex-basis: auto; /* 각 세트의 너비를 자동으로 조정 */
-    flex-shrink: 0; /* 세트의 크기가 줄어들지 않도록 설정 */
+    flex-direction: column;
+    gap: 8px;
+    flex-basis: auto;
+    flex-shrink: 0;
+    width: 80%;
 }
 
 /* 상품 카드 - 박스 */
@@ -48,11 +49,15 @@
     display: flex;
     flex-direction: row; /* 정보 부분이 이미지 오른쪽으로 오도록 설정 */
     padding: 8px; /* 박스의 패딩을 줄임 */
-    gap: 10px; /* 이미지와 정보 사이의 간격 조정 */
+    gap: 16px; /* 이미지와 정보 사이의 간격 조정 */
     flex-grow: 1;
     flex-basis: 33.33%; /* 각 세트의 아이템이 3열로 배치되도록 설정 */
     max-height: 150px; /* 카드 박스의 최대 높이 설정 */
     border: none;
+}
+
+.productInfo-button2-tag {
+    display: flex;
 }
 
 /* 상품 이미지 */
@@ -61,14 +66,16 @@
     justify-content: center;
     align-items: center;
     background-color: white;
-    max-width: 30%; /* 이미지 박스의 최대 너비를 설정 */
+    max-width: 30%;
+    width: 100%;
 }
 
 .productImage-box2 img {
     max-width: 100%;
     max-height: 100px; /* 이미지의 최대 높이를 줄임 */
     object-fit: contain;
-    border: 2px solid #F4F4F5;
+    padding: 4px;
+    border: 3px solid #EEEEEE;
     border-radius: 4px;
 }
 
@@ -77,20 +84,21 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 /* 상품 정보 - 이름, 가격 */
 .productInfo-info2 {
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
 .productInfo-name2 {
-    font-size: 12px;
-    margin: 5px 0;
-    color: #333;
-    width: 80%;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #191919;
+    width: 100%;
 }
 
 .productInfo-price2 {
@@ -118,7 +126,7 @@
 .productInfo-button2 {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 /* 오늘픽업 - 태그 */

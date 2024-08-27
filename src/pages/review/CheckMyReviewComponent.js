@@ -50,7 +50,6 @@ const CheckMyReviewComponent = () => {
                 body: JSON.stringify(updatedReview)
             });
 
-            console.log(">>>>>>>>>",rating);
             alert("리뷰가 수정되었습니다!!");
             // 수정 모드 종료
             setIsEditing(false);

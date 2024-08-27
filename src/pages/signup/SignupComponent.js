@@ -402,7 +402,6 @@ function SignupComponent() {
 
 export async function action({ request }) {
     const data = await request.formData();
-    console.log(data.get("phoneNum"));
     const authData = {
         loginId: data.get('loginId'),
         pw: data.get('pw'),
@@ -417,8 +416,6 @@ export async function action({ request }) {
         currentLocation: data.get("address1")
     };
 
-    console.log("AAAAAAAA",authData);
-
     const response = await fetch("http://localhost:8090/eDrink24/signup", {
         method: 'POST',
         headers: {
@@ -426,8 +423,6 @@ export async function action({ request }) {
         },
         body: JSON.stringify(authData)
     });
-
-    console.log("회원가입 요청결과: ", response);
 
     if (response.ok) {
         return {

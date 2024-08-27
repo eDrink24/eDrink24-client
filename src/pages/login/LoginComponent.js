@@ -180,7 +180,6 @@ export async function action({ request }) {
         loginId: loginData.get("loginId"),
         pw: loginData.get("pw")
     };
-    console.log("authData: ", authData);
 
     const response = await fetch('http://localhost:8090/eDrink24/authenticate', {
         method: 'POST',
@@ -189,7 +188,6 @@ export async function action({ request }) {
         },
         body: JSON.stringify(authData)
     });
-    console.log("로그인 요청결과: ", response);
 
     if (!response.ok) {
         if (response.status === 401) {
@@ -200,7 +198,6 @@ export async function action({ request }) {
     }
 
     const resData = await response.json();
-    console.log("resData: ", resData);
 
     const token = resData.token;
     const userId = resData.userId;
