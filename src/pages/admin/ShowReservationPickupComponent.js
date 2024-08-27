@@ -49,11 +49,7 @@ const ShowReservationPickupComponent = () => {
                 method: "GET"
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch orders');
-            }
             const resData = await response.json();
-            console.log("resData:", resData);
 
             // 데이터가 변경된 경우 상태 업데이트
             if (JSON.stringify(resData) !== JSON.stringify(orders)) {
@@ -75,9 +71,6 @@ const ShowReservationPickupComponent = () => {
                     method: "GET"
                 });
 
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch products for category: ${category}`);
-                }
                 const products = await response.json();
 
                 products.forEach(product => {
@@ -130,11 +123,6 @@ const ShowReservationPickupComponent = () => {
                     body: JSON.stringify(InventoryDTO)
                 });
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Failed to place order: ${errorText}`);
-                }
-
                 // 주문 목록 새로고침
                 showReservationPickupPage();
                 setSelectedOrdersId([]);  // 선택된 항목 초기화
@@ -143,8 +131,6 @@ const ShowReservationPickupComponent = () => {
             } catch (error) {
                 console.error('Error placing order:', error);
             }
-        } else {
-            alert("Please enter a valid quantity.");
         }
     };
 
@@ -154,44 +140,46 @@ const ShowReservationPickupComponent = () => {
 
     return (
         <div className="adminReservation-container">
-            <h1 className="adminReservation-title">발주신청 목록</h1>
+            <h1 className="adminReservation-title">예약픽업 발주신청</h1>
             <div className="order-list">
-                <label className="adminReservation-all">
-                    <input
-                        type="checkbox"
-                        checked={orders.length > 0 && selectedOrdersId.length === orders.length}
-                        onChange={toggleSelectAll}
-                        value="0" />
-                    전체 선택
-                </label>
-                <ul>
-                    {orders.map(order => (
-                        <li key={order.ordersId} className="order-item">
-                            <input
-                                type="checkbox"
-                                className="order-checkbox"
-                                checked={selectedOrdersId.includes(order.ordersId)}
-                                onChange={() => toggleSelectOrder(order.ordersId)}
-                            />
-                            <div className="order-details">
-                                <div><strong>Order ID:</strong> {order.ordersId}</div>
-                                <div><strong>Store ID:</strong> {order.storeId}</div>
-                                <div><strong>User ID:</strong> {order.userId}</div>
-                                <div><strong>Product ID:</strong> {order.productId}</div>
-                                <div><strong>Product Name:</strong> {productNames[order.productId] || 'Unknown'}</div>
-                                <div><strong>Order Date:</strong> {format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</div>
-                                <div><strong>Completed:</strong> {order.isCompleted ? 'Yes' : 'No'}</div>
-                                <div><strong>Status:</strong> {order.changeStatus}</div>
-                                <div><strong>Quantity:</strong> {order.orderQuantity}</div>
-                                <button onClick={() => handleOrderClick(order.ordersId)}>발주하기</button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                <table className="order-table">
+                    <thead>
+                        <tr>
+                            <th>주문번호</th>
+                            <th>고객명</th>
+                            <th>제품명</th>
+                            <th>주문날짜</th>
+                            <th>상태</th>
+                            <th>수량</th>
+                            <th>신청</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {orders.map(order => (
+                            <tr key={order.ordersId}>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        className="order-checkbox"
+                                        checked={selectedOrdersId.includes(order.ordersId)}
+                                        onChange={() => toggleSelectOrder(order.ordersId)}
+                                    />
+                                </td>
+                                <td>{order.ordersId}</td>
+                                <td>{order.userId}</td>
+
+                                <td>{productNames[order.productId] || 'Unknown'}</td>
+                                <td>{format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</td>
+                                <td>{order.changeStatus ? "예약주문" : order.changeStatus}</td>
+                                <td>{order.orderQuantity}</td>
+                                <td>
+                                    <button onClick={() => handleOrderClick(order.ordersId)}>발주</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-            <button className="pickup-button" onClick={showAdminOrderListPage}>
-                발주신청 내역보기
-            </button>
 
             {/* 수량 입력 모달 */}
             {showQuantityModal && (
@@ -203,11 +191,12 @@ const ShowReservationPickupComponent = () => {
                         onChange={handleQuantityChange}
                         min="1"
                     />
-                    <button onClick={handleAdminOrder}>발주</button>
-                    <button onClick={() => setShowQuantityModal(false)}>취소</button>
+                    <button className="srp-quantity-modal-btn" onClick={handleAdminOrder}>발주</button>
+                    <button className="srp-quantity-modal-btn" onClick={() => setShowQuantityModal(false)}>취소</button>
                 </div>
             )}
         </div>
+
     );
 };
 

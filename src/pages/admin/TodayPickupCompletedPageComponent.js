@@ -31,23 +31,36 @@ const TodayPickupCompletedPageComponent = () => {
         <div className="admin-container">
             <h1 className="admin-title">픽업 완료내역</h1>
             <div className="order-list">
-                <ul>
-                    {completedOrders.map(order => (
-                        <li key={order.ordersId} className="order-item">
-                            <div className="order-details">
-                                <div><strong>Order ID:</strong> {order.ordersId}</div>
-                                <div><strong>Store ID:</strong> {order.storeId}</div>
-                                <div><strong>User ID:</strong> {order.userId}</div>
-                                <div><strong>Product ID:</strong> {order.productId}</div>
-                                <div><strong>Order Date:</strong> {format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</div>
-                                <div><strong>Completed:</strong> {order.isCompleted ? 'Yes' : 'No'}</div>
-                                <div><strong>Status:</strong> {order.changeStatus}</div>
-                                <div><strong>PickUp Date:</strong> {format(parseISO(order.changeDate), 'yyyy-MM-dd HH:mm:ss')}</div>
-                                <div><strong>Quantity:</strong> {order.orderQuantity}</div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                {completedOrders.length === 0 ? (
+                    <p>완료된 픽업 내역이 없습니다.</p>
+                ) : (
+                    <table className="order-table">
+                        <thead>
+                            <tr>
+                                <th>주문번호</th>
+                                <th>고객명</th>
+                                <th>제품이름</th>
+                                <th>주문 날짜</th>
+                                <th>픽업시간</th>
+                                <th>픽업상태</th>
+                                <th>수량</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {completedOrders.map(order => (
+                                <tr key={order.ordersId}>
+                                    <td>{order.ordersId}</td>
+                                    <td>{order.userId}</td>
+                                    <td>{order.productId}</td>
+                                    <td>{format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</td>
+                                    <td>{format(parseISO(order.changeDate), 'yyyy-MM-dd HH:mm:ss')}</td>
+                                    <td>{order.changeStatus === "PICKUPED" ? "픽업완료" : order.changeStatus}</td>
+                                    <td>{order.orderQuantity}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
         </div>
     );

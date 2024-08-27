@@ -181,10 +181,6 @@ function OrderComponent() {
 
 
     const handleCheckout = async () => {
-        if (!userId) {
-            alert('User ID is missing.');
-            return;
-        }
 
         const orderTransactionDTO = basketItemsList.map(item => {
             const orderDate = new Date();
@@ -250,7 +246,7 @@ function OrderComponent() {
             window.location.href = redirectURL;
 
         } catch (error) {
-            alert(`Error during payment process: ${error.message}`);
+            console.log(`Error during payment process: ${error.message}`);
         }
     };
 
@@ -283,33 +279,33 @@ function OrderComponent() {
 
                     {basketItemsList.length > 0 ? (
                         basketItemsList.map((item, index) => {
-                        const productDetails = productDetailsMap.get(item.productId);
-                        return (
-                            <div key={index} className="order-item-box">
-                                <div className="order-pickUp-state">
-                                    {(orderInfo.pickupType === "오늘픽업 상품") ? "오늘픽업 상품" : (todayPickupBaskets.includes(item.basketId) ? '오늘픽업 상품' : '예약픽업 상품')}
-                                </div>
-                                <div className="order-info">
-                                    <img
-                                        className="order-item-img"
-                                        src={productDetails?.defaultImage || 'default-image-url.jpg'}
-                                        alt={productDetails?.productName || '상품 이미지 없음'}
-                                    />
-                                    <div className="order-item-info">
-                                        <span>{productDetails?.productName || '상품 이름 없음'}</span>
-                                        <a>선택 수량 : {item.basketQuantity || 0}개</a>
-                                        <h6>{productDetails?.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원 </h6>
+                            const productDetails = productDetailsMap.get(item.productId);
+                            return (
+                                <div key={index} className="order-item-box">
+                                    <div className="order-pickUp-state">
+                                        {(orderInfo.pickupType === "오늘픽업 상품") ? "오늘픽업 상품" : (todayPickupBaskets.includes(item.basketId) ? '오늘픽업 상품' : '예약픽업 상품')}
+                                    </div>
+                                    <div className="order-info">
+                                        <img
+                                            className="order-item-img"
+                                            src={productDetails?.defaultImage || 'default-image-url.jpg'}
+                                            alt={productDetails?.productName || '상품 이미지 없음'}
+                                        />
+                                        <div className="order-item-info">
+                                            <span>{productDetails?.productName || '상품 이름 없음'}</span>
+                                            <a>선택 수량 : {item.basketQuantity || 0}개</a>
+                                            <h6>{productDetails?.price !== undefined ? productDetails.price.toLocaleString() : '가격 정보 없음'} 원 </h6>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
-                    })
+                            );
+                        })
                     ) : (
                         <a className="empty">장바구니에 아이템이 없습니다.</a>
                     )}
                 </div>
 
-            <div className="line4"></div>
+                <div className="line4"></div>
 
                 <div className="discount-section">
                     <div className="order-section-title">
@@ -324,9 +320,9 @@ function OrderComponent() {
                         <div className="discount-container">
                             <div className="text-box">
                                 {loadingCoupons ? "쿠폰 목록을 불러오는 중입니다..." : (
-                                    couponList.length > 0 
+                                    couponList.length > 0
                                         ? `쿠폰 선택 완료: ${coupon?.name} - 할인: ${coupon?.discountAmount?.toLocaleString()} 원`
-                                        : showCouponList 
+                                        : showCouponList
                                             ? "보유 쿠폰이 없습니다."
                                             : "조회하기 버튼을 눌러주세요"
                                 )}
@@ -363,8 +359,8 @@ function OrderComponent() {
 
                         <div className="discount-container">
                             <div className="text-box">
-                                {userPoints === null 
-                                    ? "포인트 조회 버튼을 눌러주세요" 
+                                {userPoints === null
+                                    ? "포인트 조회 버튼을 눌러주세요"
                                     : `보유 포인트: ${userPoints} P`}
                             </div>
 
@@ -390,7 +386,7 @@ function OrderComponent() {
 
                 </div>
 
-            <div className="line4"></div>
+                <div className="line4"></div>
 
                 {/* 결제 방법 선택 */}
                 <div className="payment-section">
@@ -398,14 +394,14 @@ function OrderComponent() {
                         <h2>결제 방법 선택</h2>
                     </div>
                     <div className="payment-section-container">
-                    <select
-                        value={paymentMethod}
-                        onChange={(e) => setOrderResult(prev => ({ ...prev, paymentMethod: e.target.value }))}>
-                        <option value="">결제 방법을 선택하세요</option>
-                        <option value="creditCard">신용카드</option>
-                        <option value="paypal">페이팔</option>
-                        <option value="bankTransfer">계좌이체</option>
-                    </select>
+                        <select
+                            value={paymentMethod}
+                            onChange={(e) => setOrderResult(prev => ({ ...prev, paymentMethod: e.target.value }))}>
+                            <option value="">결제 방법을 선택하세요</option>
+                            <option value="creditCard">신용카드</option>
+                            <option value="paypal">페이팔</option>
+                            <option value="bankTransfer">계좌이체</option>
+                        </select>
                     </div>
                 </div>
 
