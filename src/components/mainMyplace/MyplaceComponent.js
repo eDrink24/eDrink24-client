@@ -30,9 +30,7 @@ function MyPlaceComponent() {
             });
             if (response.ok) {
                 const data = await response.json();
-                setStore(data)
-            } else {
-                console.log("NOT FOUND");
+                setStore(data);
             }
         }
         fetchStore();

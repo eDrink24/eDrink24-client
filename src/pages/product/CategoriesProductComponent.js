@@ -46,7 +46,7 @@ const LikeButton = ({ onClick, productId, liked }) => {
 };
 
 // 리뷰 버튼 컴포넌트
-const ReviewButton = ({ onClick }) => {
+const ReviewButton = ({ onClick, rating }) => {
     const handleClick = (event) => {
         event.stopPropagation();
         onClick();
@@ -55,8 +55,7 @@ const ReviewButton = ({ onClick }) => {
     return (
         <button className="allproduct-review-button" onClick={handleClick}>
             <img className="allproduct-review-icon" src={star} alt=" " />
-            <span className="allproduct-review-rating">4.6</span> {/* 평점 표시 */}
-            <span className="allproduct-review-count">123</span> {/* 리뷰 갯수 표시 */}
+            <span className="allproduct-review-rating">{rating ? rating : 0}</span>
         </button>
     );
 };
@@ -88,7 +87,7 @@ const CategoriesProductComponent = () => {
     useEffect(() => {
         if (subcategories[category1]) {
             setCategory2List(subcategories[category1]);
-    
+
             if (category2) {
                 setCategory(category2);
                 selectCategory2(category2);
@@ -99,28 +98,17 @@ const CategoriesProductComponent = () => {
             }
         }
     }, [category1, category2]);
-    
+
 
     //카테고리2별로 제품 보여주기
     async function selectCategory2(category2) {
         setCategory(category2); // 선택된 카테고리2 상태 업데이트
-
-        // 카테고리2가 올바르게 전달되는지 확인
-        console.log("Selected Category2:", category2);
-
         const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory2/${category2}`, {
             method: "GET"
         });
 
-        // 응답이 제대로 오는지 확인
-        console.log("Response:", response);
-
         if (response.ok) {
             const resData = await response.json();
-
-            // 받은 데이터가 무엇인지 확인
-            console.log("Response Data:", resData);
-
             setProducts(resData);
             navigate(`/allproduct/${category1}/${category2}`);
         } else {
@@ -147,9 +135,6 @@ const CategoriesProductComponent = () => {
 
     //제품사진 클릭했을 때 제품상세보기
     const handleProductClickEvent = (productId) => {
-        console.log("products", products); // productId가 올바른지 확인
-        console.log("category1:", category1); // category1이 올바른지 확인
-        console.log("category2:", category2); // category2가 올바른지 확인
         navigate(`/allproduct/${category1}/${category2}/${productId}`);
     };
 
@@ -220,9 +205,6 @@ const CategoriesProductComponent = () => {
             } else {
                 throw new Error('Failed to save product to basket');
             }
-
-            console.log("Product saved to basket:", productToSave);
-
         } catch (error) {
             console.error('Error saving product to basket:', error);
         }
@@ -242,19 +224,18 @@ const CategoriesProductComponent = () => {
     // 찜목록 저장
     const addDibs = async (productId, liked) => {
         const dibProducts = products.find(prod => prod.productId === productId);
-        console.log("찜",dibProducts);
         if (!dibProducts) {
             console.error('No dibProducts found');
             return;
         }
 
         const url = liked
-        ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
-        : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
+            ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
+            : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
 
         try {
             const response = await fetch(url, {
-                method: liked? "POST" : "DELETE",
+                method: liked ? "POST" : "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -263,13 +244,6 @@ const CategoriesProductComponent = () => {
                     productId: dibProducts.productId
                 })
             });
-
-            if (response.ok) {
-                console.log(`Product ${liked ? 'added to' : 'removed from'} dibs:`, dibProducts);
-            } else {
-                throw new Error(`Failed to ${liked ? 'add' : 'remove'} product to dibs`);
-            }
-
         } catch (error) {
             console.error(`Error ${liked ? 'adding' : 'removing'} product to dibs:`, error);
         }
@@ -350,12 +324,12 @@ const CategoriesProductComponent = () => {
                                 <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
                                 <div className="allproduct-product-name">{product.productName}</div>
                                 <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
-                                <div className="allproduct-product-rating">{product.rating}</div>
                             </div>
 
                             <div className="allproduct-icon-button">
                                 <div className="allproduct-review">
                                     <ReviewButton
+                                        rating={product.rating}
                                         onClick={() => console.log(`Reviewed product with ID: ${product.productId}`)}
                                     />
                                 </div>

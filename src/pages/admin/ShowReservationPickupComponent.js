@@ -53,7 +53,6 @@ const ShowReservationPickupComponent = () => {
                 throw new Error('Failed to fetch orders');
             }
             const resData = await response.json();
-            console.log("resData:", resData);
 
             // 데이터가 변경된 경우 상태 업데이트
             if (JSON.stringify(resData) !== JSON.stringify(orders)) {

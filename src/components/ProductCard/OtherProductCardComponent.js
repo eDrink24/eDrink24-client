@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
+import star from '../../assets/common/star.png';
 import bag from '../../assets/common/bag.png';
 import emptyHeart from '../../assets/common/empty-heart.png';
 import filledHeart from '../../assets/common/fill-heart.png';
@@ -64,7 +65,6 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
     // 찜목록 저장
     const addDibs = async (productId, liked) => {
         const dibProducts = products.find(prod => prod.productId === productId);
-        console.log("찜",dibProducts);
         if (!dibProducts) {
             console.error('No dibProducts found');
             return;
@@ -154,7 +154,6 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
     // Review 기능
     const handleClick2 = (event, productId) => {
         event.stopPropagation();
-        console.log(`Reviewed product with ID: ${productId}`);
     };
 
     // 장바구니 페이지로 이동
@@ -236,11 +235,10 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
                                 <div className="productInfo-price2">{Number(product.price).toLocaleString()} 원</div>
                             </div>
 
-                            {/* <div className="productInfo-review2" onClick={(e) => handleClick2(e, product.productId)}>
+                            <div className="productInfo-review2" onClick={(e) => handleClick2(e, product.productId)}>
                                 <img className="productInfo-reviewIcon2" src={star} alt=" " />
-                                <span className="productInfo-reviewRating2">{rating}</span>
-                                <span className="productInfo-reviewCount2">({reviewCount})</span>
-                            </div> */}
+                                <span className="productInfo-reviewRating2">{product.rating ? product.rating : 0}</span>
+                            </div>
 
                             <div className="productInfo-button2">
                                 <div className="productInfo-tag2">

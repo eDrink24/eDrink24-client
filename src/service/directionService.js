@@ -30,7 +30,6 @@ export async function getLoadDirection(startPoint, endPoint) {
         }
 
         const data = await response.json();
-        console.log(data);
         return data;
 
     } catch (error) {

@@ -77,7 +77,6 @@ function MypageComponent() {
         
             if(response.ok){
                 const resdata = await response.json();
-                console.log(">>>>>>>>",resdata);
                 setHistoryHistory(resdata);
                 setModalOpen(true);
             }
@@ -85,7 +84,7 @@ function MypageComponent() {
             console.error("fetching Error show pointHistory",error);
         }        
     };
-
+  
     return (
         <div className="myPage-wrapper">
             <div className="myPage-container">

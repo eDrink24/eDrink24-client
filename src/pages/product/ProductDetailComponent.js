@@ -54,7 +54,6 @@ function ProductDetailComponent() {
         setReviewRating(0); // 리뷰가 없으면 평점을 0으로 설정
         }
     }catch(error){
-      console.log("Error fetching reviews:",error);
     }
   };
 
@@ -140,7 +139,6 @@ function ProductDetailComponent() {
   // 찜목록 저장
   const addDibs = async (productId, liked) => {
     const dibProducts = products
-    console.log("찜",dibProducts);
     if (!dibProducts || dibProducts.productId !== productId) {
         console.error('No dibProducts found');
         return;
@@ -224,13 +222,9 @@ function ProductDetailComponent() {
 
       if (response.ok) {
         setModalIsOpen(true);
-      } else {
-        throw new Error('Failed to save product to basket');
-      }
-
+      } 
       const resData = await response.json();
       setProduct(resData);
-
     } catch (error) {
       console.error('Error saving product to basket:', error);
     }

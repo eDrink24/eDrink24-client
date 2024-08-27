@@ -30,7 +30,6 @@ function UpdateCustomerComponent() {
     useEffect(() => {
         if (customerData) {
             setInitCustomerData(customerData);
-            console.log(customerData);
         }
     }, [customerData])
 
@@ -121,8 +120,6 @@ function UpdateCustomerComponent() {
             role: initCustomerData.role,
         };
 
-        console.log(formEntity);
-
         if (pw && !pwMatch) {
             openAlert("비밀번호가 일치하지 않습니다.");
             return;
@@ -146,7 +143,6 @@ function UpdateCustomerComponent() {
                 openAlert(result.message || "회원정보 수정 중, 오류가 발생하였습니다.");
             }
         } catch (error) {
-            console.log("Fetch error:", error);
             openAlert("서버와의 통신 중, 오류가 발생하였습니다.");
         }
     }

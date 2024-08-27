@@ -5,7 +5,6 @@ import { format, parseISO } from 'date-fns';
 
 const ShowTodayPickupPageComponent = () => {
     const [orders, setOrders] = useState([]);
-    console.log("orders", orders);
     const [selectedOrdersId, setSelectedOrdersId] = useState([]);
     const navigate = useNavigate();
 
@@ -46,7 +45,6 @@ const ShowTodayPickupPageComponent = () => {
                 throw new Error('Failed to fetch products');
             }
             const resData = await response.json();
-            console.log("resData:", resData);
 
             // 데이터가 변경된 경우에만 상태를 업데이트합니다.
             if (JSON.stringify(resData) !== JSON.stringify(orders)) {
@@ -74,9 +72,6 @@ const ShowTodayPickupPageComponent = () => {
 
                 showOrdersToAdminPageOrders();
                 setSelectedOrdersId([]);  // 선택된 항목 초기화
-
-                console.log("Updated Orders:", orders); // orders 상태를 로그로 확인
-
             }
         } catch (error) {
             console.error('Error fetching products:', error);

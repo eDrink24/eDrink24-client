@@ -20,7 +20,6 @@ const TodayPickupCompletedPageComponent = () => {
                 throw new Error('Failed to fetch products');
             }
             const resData = await response.json();
-            console.log("resData:", resData);
             setCompletedOrders(resData);
         } catch (error) {
             console.error('Error fetching products:', error);

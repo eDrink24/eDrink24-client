@@ -12,8 +12,6 @@ function OrderHistoryDetailsComponent() {
 
     const navigate = useNavigate();
 
-    console.log("AAAAAAAA",orderDate);
-
     // Date 객체를 문자열로 포맷
     const formatDate = (date) => {
         const year = date.getFullYear();
@@ -43,11 +41,9 @@ function OrderHistoryDetailsComponent() {
             console.error('Error fetching basket item details:', error);
             return [];
         }
-        console.log("BBBBBBBBB:", orderHistoryDetails);
     };
 
     useEffect(() => {
-        console.log("useEffect")
         fetchOrderHistoryDetails();
     }, [userId, orderDate]);
 
@@ -63,12 +59,9 @@ function OrderHistoryDetailsComponent() {
 
     // 총 상품금액, 총 할인금액, 총 결제금액, 예상 적립금액 계산
     const totalAmount = orderHistoryDetails.reduce((total, item) => total + (item.price * item.orderQuantity), 0);
-    console.log("CCCCCCCCCCC1",totalAmount);
-    console.log("CCCCCCCCCCC2",orderHistoryDetails);
     let totalPaid = 0;
     if(orderHistoryDetails.length > 0){
         totalPaid = orderHistoryDetails[0].orderAmount;
-        console.log("DDDDDDDDDDDD1",  totalPaid);
     }
     const totalDiscount = totalAmount - totalPaid;
     const points = totalPaid * 0.01;

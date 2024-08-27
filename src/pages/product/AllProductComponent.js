@@ -235,8 +235,6 @@ const AllProductComponent = () => {
                 throw new Error('Failed to save product to basket');
             }
 
-            console.log("Product saved to basket:", productToSave);
-
         } catch (error) {
             console.error('Error saving product to basket:', error);
         }
@@ -298,7 +296,6 @@ const AllProductComponent = () => {
     // 찜목록 저장
     const addDibs = async (productId, liked) => {
         const dibProducts = products.find(prod => prod.productId === productId);
-        console.log("찜",dibProducts);
         if (!dibProducts) {
             console.error('No dibProducts found');
             return;
@@ -391,10 +388,6 @@ const AllProductComponent = () => {
 
                     <div className="allproduct-dropdown-box">
                         <select onChange={handleSortEvent}>
-                        {/*<option value="신상품순">신상품순</option>
-                            <option value="판매량순">판매량순</option>
-                            <option value="평점순">평점순</option>
-                            <option value="리뷰순">리뷰순</option> */}
                             <option value="낮은가격순">낮은가격순</option>
                             <option value="높은가격순">높은가격순</option>
                         </select>
