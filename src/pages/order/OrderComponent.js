@@ -24,8 +24,10 @@ function OrderComponent() {
     const [totalPoint, setTotalPoint] = useState(0); //pkh
     const [discount, setDiscount] = useState(0);
     const [finalAmount, setFinalAmount] = useState(0);
+    const [pointButtonText, setPointButtonText] = useState('포인트 조회');
     const [userPoints, setUserPoints] = useState(null);  // 사용자의 총 포인트
     const [pointsToUse, setPointsToUse] = useState(0);  // 사용자가 입력한 포인트
+    const [appliedPoints, setAppliedPoints] = useState(null); // 적용된 포인트 상태
     const { paymentMethod } = orderResult;
 
     const userId = localStorage.getItem('userId'); // userId를 로컬스토리지에서 가져오기
@@ -34,11 +36,7 @@ function OrderComponent() {
     const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
 
-    //const [selectedCoupon, setSelectedCoupon] = useState(false);
-
-    console.log()
     const navigate = useNavigate();
-
 
     // 총액 계산 함수 pkh
     function calculateTotals() {
@@ -48,7 +46,7 @@ function OrderComponent() {
         const couponDiscount = coupon ? coupon.discountAmount : 0;
 
         // 사용자가 입력한 포인트 값을 결제 금액에서 차감 pkh
-        const pointAmount = pointsToUse;
+        const pointAmount = appliedPoints;
         const finalAmount = subtotal - couponDiscount - pointAmount;
 
         // finalAmount의 1%를 totalPoint로 설정 pkh
@@ -68,12 +66,14 @@ function OrderComponent() {
             const response = await axios.get(`http://localhost:8090/eDrink24/showTotalPoint/${userId}`);
             if (response.status === 200) {
                 setUserPoints(response.data);
+                setPointButtonText("포인트 적용");
             } else {
                 console.error('Failed to fetch user points. Status:', response.status);
             }
         } catch (error) {
             console.error('Error fetching user points:', error);
         }
+        console.log(pointButtonText);
     };
 
     // 사용자가 입력한 포인트 적용 함수 pkh
@@ -81,8 +81,26 @@ function OrderComponent() {
         if (pointsToUse > userPoints) {
             alert('사용할 포인트가 보유 포인트를 초과할 수 없습니다.');
             setPointsToUse(userPoints);
+            return;
         } else {
+            setAppliedPoints(pointsToUse);
             calculateTotals();
+        }
+    };
+
+    // 포인트 버튼 상태에 따라 함수처리
+    const handleButtonClick = async () => {
+        if (pointButtonText === '포인트 조회') {
+            await fetchUserPoints(); // 포인트 조회
+        } else if (pointButtonText === '포인트 적용') {
+            applyPoints(); // 포인트 적용
+        }
+    };
+
+    // 전액 사용 버튼 클릭 시 처리
+    const handleMaxPoints = () => {
+        if (userPoints !== null) {
+            setPointsToUse(userPoints);
         }
     };
 
@@ -126,6 +144,7 @@ function OrderComponent() {
 
             setBasketItemsList(basketItems);
             console.log('Product Details Map:', Array.from(productDetailsMap.entries()));
+            console.log(">>>>>>>>>>>>>>>", basketItemsList);
             setProductDetailsMap(productDetailsMap);
         } catch (error) {
             console.error('Error fetching product details:', error);
@@ -174,6 +193,7 @@ function OrderComponent() {
         } finally {
             setLoadingCoupons(false);
         }
+        console.log("ABCABC", couponList);
     };
 
     const handleCouponSelection = (couponItem) => {
@@ -197,6 +217,7 @@ function OrderComponent() {
             const pointAmount = pointsToUse;
             const couponId = coupon ? coupon.couponId : null;
 
+
             if (pickupType === 'TODAY') {
                 pickupDate.setDate(orderDate.getDate() + 1);
             } else {
@@ -206,6 +227,7 @@ function OrderComponent() {
             return {
                 storeId,
                 userId,
+                ordersId: item.ordersId,
                 basketId: item.basketId,
                 productId: item.productId,
                 orderDate: orderDate.toISOString(),
@@ -218,7 +240,8 @@ function OrderComponent() {
                 changeStatus: 'ORDERED',
                 changeDate: orderDate.toISOString(),
                 orderAmount: orderAmount,
-                addedPoint: addedPoint,
+                point: addedPoint,
+                saveDate: orderDate.toISOString(),
                 pointAmount: pointAmount,
                 totalPoint: totalPoint,
                 couponId: couponId
@@ -329,7 +352,7 @@ function OrderComponent() {
                             <div className="text-box">
                                 {loadingCoupons ? "쿠폰 목록을 불러오는 중입니다..." : (
                                     couponList.length > 0
-                                        ? coupon
+                                        ? coupon && couponList.used !== true
                                             ? `신규회원 ${coupon?.discountAmount?.toLocaleString()} 원 할인 쿠폰`
                                             : "쿠폰 미적용"
                                         : showCouponList
@@ -349,19 +372,30 @@ function OrderComponent() {
                         </div>
 
                         {/* 쿠폰 목록 */}
-                        {showCouponList && couponList.length > 0 && (
+                        {showCouponList && (
                             <div className="coupon-selection">
-                                <ul>
-                                    {couponList.map(couponItem => (
-                                        <li key={couponItem.couponId}>
-                                            <button onClick={() => handleCouponSelection(couponItem)}
-                                                className={coupon?.couponId === couponItem.couponId ? 'selected' : ''}
-                                            >
-                                                신규회원 {couponItem?.discountAmount?.toLocaleString()} 원 할인 쿠폰
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
+                                {couponList.length > 0 ? (
+                                    <ul>
+                                        {couponList.some(couponItem => couponItem?.used !== true) ? (
+                                            couponList.map(couponItem => (
+                                                couponItem?.used !== true && (
+                                                    <li key={couponItem.couponId}>
+                                                        <button
+                                                            onClick={() => handleCouponSelection(couponItem)}
+                                                            className={coupon?.couponId === couponItem.couponId ? 'selected' : ''}
+                                                        >
+                                                            신규회원 {couponItem?.discountAmount?.toLocaleString()} 원 할인 쿠폰
+                                                        </button>
+                                                    </li>
+                                                )
+                                            ))
+                                        ) : (
+                                            <p>보유 쿠폰이 없습니다.</p>
+                                        )}
+                                    </ul>
+                                ) : (
+                                    <p>보유 쿠폰이 없습니다.</p>
+                                )}
                             </div>
                         )}
 
@@ -371,51 +405,37 @@ function OrderComponent() {
 
                         <div className="discount-container">
                             <div className="text-box">
-                                {userPoints === null
-                                    ? "포인트 조회 버튼을 눌러주세요"
-                                    : `보유 포인트: ${userPoints} P`}
+                                {appliedPoints === null
+                                    ? userPoints === null
+                                        ? "포인트 조회 버튼을 눌러주세요"
+                                        : `보유 포인트: ${userPoints} P`
+                                    : `적용된 포인트: ${appliedPoints} P`}
                             </div>
 
-                            <button className="custom-button" onClick={fetchUserPoints}>
-                                전액사용
+                            <button className="custom-button" onClick={handleButtonClick}>
+                                {pointButtonText}
                             </button>
-                        </div>
 
-                        {userPoints > 0 && (
-                            <div className="point-selection">
-                                <input
-                                    type="number"
-                                    value={pointsToUse}
-                                    onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
-                                    placeholder="사용할 포인트 입력"
-                                />
-                                <button className="custom-button" onClick={applyPoints}>
-                                    포인트 적용
-                                </button>
-                            </div>
-                        )}
+                            {userPoints > 0 && (
+                                <div className="point-selection">
+                                    <input
+                                        type="number"
+                                        value={pointsToUse}
+                                        onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
+                                        placeholder="사용할 포인트 입력"
+                                    />
+                                    <button className="custom-button1" onClick={handleMaxPoints}>
+                                        전액 사용
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                 </div>
 
                 <div className="line4"></div>
 
-                {/* 결제 방법 선택 */}
-                <div className="payment-section">
-                    <div className="order-section-title">
-                        <h2>결제 방법 선택</h2>
-                    </div>
-                    <div className="payment-section-container">
-                        <select
-                            value={paymentMethod}
-                            onChange={(e) => setOrderResult(prev => ({ ...prev, paymentMethod: e.target.value }))}>
-                            <option value="">결제 방법을 선택하세요</option>
-                            <option value="creditCard">신용카드</option>
-                            <option value="paypal">페이팔</option>
-                            <option value="bankTransfer">계좌이체</option>
-                        </select>
-                    </div>
-                </div>
 
                 <div className="order-total-price">
                     {/* 주문 총액 */}

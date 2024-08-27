@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FooterComponent from '../../components/footer/FooterComponent.js'; // Footer 컴포넌트 import
 import { logout } from '../login/LogoutComponent';
+import CouponComponent from './CouponComponent.js';
 import './MypageComponent.css';
 
 import back from '../../assets/common/back.png';
-import bell from '../../assets/common/bell.png';
 import userInfo from '../../assets/common/set.png';
 
 import basket from '../../assets/mypage/mp_bag.png';
@@ -19,12 +19,18 @@ import manager from '../../assets/mypage/관리자.png';
 import logOut from '../../assets/mypage/로그아웃.png';
 import ask1 from '../../assets/mypage/문의하기.png';
 import ask from '../../assets/mypage/일대일문의.png';
+import PointHistoryModalComponent from './PointHistoryModalComponent.js';
 
 function MypageComponent() {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [customerData, setCustomerData] = useState(null);
     const [isOpen, setIsOpen] = useState(false); // 아코디언 상태 관리
+    const [pointHistory,setHistoryHistory] = useState([]);
+    const [modalOpen,setModalOpen] = useState(false);
+
+    const [coupons, setCoupons] = useState([]); // 쿠폰 데이터 상태
+    const [isModalOpen, setIsModalOpen] = useState(false); // 쿠폰 모달 상태
 
     useEffect(() => {
         // 로그인 상태 확인
@@ -87,6 +93,22 @@ function MypageComponent() {
 
     const toggleAccordion = () => {
         setIsOpen(!isOpen); // 아코디언 열림/닫힘 상태 전환
+    };  
+
+    const showHistoryHistory = async () => {
+        const userId = localStorage.getItem('userId');
+        try{
+        const response = await fetch (`http://localhost:8090/eDrink24/api/showPoint/${userId}`);
+        
+            if(response.ok){
+                const resdata = await response.json();
+                console.log(">>>>>>>>",resdata);
+                setHistoryHistory(resdata);
+                setModalOpen(true);
+            }
+        }catch(error){
+            console.error("fetching Error show pointHistory",error);
+        }        
     };
 
     return (
@@ -99,7 +121,6 @@ function MypageComponent() {
                     </button>
                     <h1>마이페이지</h1>
                     <div>
-                        <button className="bell-button"><img src={bell} alt="알람" /></button>
                         <button className="settings-button" onClick={() => { navigateUpdateCustomer() }}>
                             <img src={userInfo} alt="셋팅" />
                         </button>
@@ -127,10 +148,10 @@ function MypageComponent() {
 
                 <div className="myPage-icon">
                     <div className="myPage-icon-item">
-                        <img src={point} alt="포인트" />
+                        <img src={point} alt="포인트" onClick={showHistoryHistory} />
                         <span>포인트 <span className="myPage-additionalInfo">{isLoggedIn && customerData ? customerData.totalPoint : undefined}</span></span>
                     </div>
-                    <div className="myPage-icon-item">
+                    <div className="myPage-icon-item" onClick={() => setIsModalOpen(true)}>
                         <img src={coupon} alt="쿠폰" />
                         <span>쿠폰</span>
                     </div>
@@ -239,8 +260,15 @@ function MypageComponent() {
                     )}
                 </div>
 
+                {isModalOpen && <CouponComponent onClose={() => setIsModalOpen(false)} />}
+
             </div>
             <FooterComponent />
+            <PointHistoryModalComponent 
+            isOpen={modalOpen}
+            onClose={() => setModalOpen(false)}
+            data={pointHistory} 
+            />
         </div >
 
     );

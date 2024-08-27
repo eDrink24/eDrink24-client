@@ -48,7 +48,6 @@
     display: flex;
     flex-direction: row; /* 정보 부분이 이미지 오른쪽으로 오도록 설정 */
     padding: 8px; /* 박스의 패딩을 줄임 */
-    background-color: #f0f0f0;
     gap: 10px; /* 이미지와 정보 사이의 간격 조정 */
     flex-grow: 1;
     flex-basis: 33.33%; /* 각 세트의 아이템이 3열로 배치되도록 설정 */
@@ -62,7 +61,6 @@
     justify-content: center;
     align-items: center;
     background-color: white;
-    padding: 5px; /* 이미지 박스의 패딩을 줄임 */
     max-width: 30%; /* 이미지 박스의 최대 너비를 설정 */
 }
 
@@ -70,6 +68,8 @@
     max-width: 100%;
     max-height: 100px; /* 이미지의 최대 높이를 줄임 */
     object-fit: contain;
+    border: 2px solid #F4F4F5;
+    border-radius: 4px;
 }
 
 /* 상품 정보 */
@@ -77,28 +77,24 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* 정보가 이미지 옆에 깔끔하게 배치되도록 설정 */
 }
 
 /* 상품 정보 - 이름, 가격 */
 .productInfo-info2 {
     display: flex;
     flex-direction: column;
+    gap: 8px;
 }
 
 .productInfo-name2 {
-    font-size: 12px; /* 글자 크기를 줄임 */
-    margin: 5px 0; /* 이름과 가격 사이의 간격 조정 */
+    font-size: 12px;
+    margin: 5px 0;
     color: #333;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.2;
+    width: 80%;
 }
 
 .productInfo-price2 {
-    font-size: 14px; /* 가격의 글자 크기를 줄임 */
+    font-size: 14px;
     font-weight: bold;
     color: #000;
 }
@@ -122,7 +118,7 @@
 .productInfo-button2 {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 /* 오늘픽업 - 태그 */

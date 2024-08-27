@@ -48,8 +48,6 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
 
             setProduct(updatedProducts);
 
-            console.log("AAAAAAAAAA", invData);
-
             if (productId) {
                 const foundProduct = invData.find(prod => prod.productId === parseInt(productId));
                 setProduct(foundProduct || null);

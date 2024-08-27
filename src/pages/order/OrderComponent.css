@@ -223,6 +223,18 @@ html, body {
   font-weight: 400;
 }
 
+.custom-button1 {
+  padding: 16px 20px;
+  background-color: #4B4B4B; /* 버튼 배경색 */
+  border: none;
+  color:white; /* 텍스트 색상 */
+  border-radius: 4px; /* 모서리를 둥글게 */
+  cursor: pointer;
+  text-align: center;
+  font-size: var(--font-size-medium-body);
+  font-weight: 400;
+}
+
 .coupon-selection,
 .point-selection {
   border: 1px solid #ccc;
