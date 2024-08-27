@@ -4,7 +4,9 @@ import { useRecoilState } from 'recoil';
 import back from '../../assets/common/back.png';
 import bag from '../../assets/common/bag.png';
 import emptyHeart from '../../assets/common/empty-heart.png';
+import emptyStar from '../../assets/common/emptyStar.png'; // 빈 별 이미지
 import filledHeart from '../../assets/common/fill-heart.png';
+import filledStar from '../../assets/common/filledStar.png'; // 채워진 별 이미지
 import home from '../../assets/common/home.png';
 import search from '../../assets/common/search.png';
 import star from '../../assets/common/star.png';
@@ -359,30 +361,54 @@ function ProductDetailComponent() {
               <div className='productReviewContainer'>
                 {reviews.map((review) => (
                   <div key={review.reviewsId} className='reviewCard'>
-                    <div className='reviewHeader'>
-                      <div className='reviewProfile'>
-                        <div className='reviewUserInfo'>
-                        <strong className='userName'>{review.userName}</strong>
+
+                      <div className='reviewUserInfo'>
+                        <div className='userName'>
+                          <span> <strong>{review.userName}</strong> </span>
+                        </div>
+                        <div className='rating'>
+                          {/*평점: {review.rating}점*/}
+                          <span className='stars'>
+                              {Array.from({ length: 5 }, (v, i) => (
+                                  <img
+                                      key={i}
+                                      src={i < review.rating ? filledStar : emptyStar}
+                                      alt={i < review.rating ? 'Filled Star' : 'Empty Star'}
+                                      className='star-icon'
+                                  />
+                              ))}
+                          </span>
                           <div className='reviewDate'>
-                            {review.enrolledDate ? review.enrolledDate.split('T')[0] : '리뷰 등록하지 않음'}
+                            작성일자 : {review.enrolledDate ? review.enrolledDate.split('T')[0] : '리뷰 등록하지 않음'}
                           </div>
                         </div>
                       </div>
-                      <div className='reviewRating'>
-                        <span className='reting'>평점: {review.rating}점</span>
-                      </div>
-                    </div>
+                    
                     <div className='reviewDetails'>
-                      <div className="reviewItem">당도: {review.sugarRating}점</div>
-                      <div className="reviewItem">산미: {review.acidityRating}점</div>
-                      <div className="reviewItem">목넘김: {review.throatRating}점</div>
-                      <div className="reviewContent">리뷰 내용: {review.content}</div>
-                    </div>
-                    {review.modifiedDate && (
-                      <div className='reviewModifiedDate'>
-                        수정날짜: {review.modifiedDate ? review.modifiedDate.split('T')[0] : '수정되지 않음'}
+                      <div className="reviewContent">{review.content}</div>
+                      <div className='reviewDetails2'>
+                        <div className="reviewItem">
+                          <div>당도</div>
+                          <span>{review.sugarRating}점</span>
+                        </div>
+                        <div className="reviewItem">
+                          <div>산미</div>
+                          <span>{review.acidityRating}점</span>
+                        </div>
+                        <div className="reviewItem">
+                          <div>목넘김도</div>
+                          <span>{review.throatRating}점</span>
+                        </div>
                       </div>
-                    )}
+                    </div>
+                    {/*{review.modifiedDate && (
+                      <div className='reviewModifiedDate'>
+                        수정날짜 : {review.modifiedDate ? review.modifiedDate.split('T')[0] : '수정되지 않음'}
+                      </div>
+                    )}*/}
+
+                  <div className="line2"></div>
+
                   </div>
                 ))}
               </div>
