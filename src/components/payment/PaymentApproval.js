@@ -38,10 +38,6 @@ function PaymentApproval() {
                         body: JSON.stringify(orderTransactionDTO),
                     });
 
-                    if (!orderResponse.ok) {
-                        const errorText = await orderResponse.text();
-                        alert(`Error processing purchase: ${errorText}`);
-                    }
 
                     const deleteResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
                         method: 'DELETE',
@@ -51,10 +47,6 @@ function PaymentApproval() {
                         body: JSON.stringify(orderTransactionDTO),
                     });
 
-                    if (!deleteResponse.ok) {
-                        const errorText = await deleteResponse.text();
-                        alert(`Error processing deletion: ${errorText}`);
-                    }
                     // 결제완료 시, 로컬스토리지에 드간 정보들 삭제
                     deleteLocalStorage();
                 } catch (error) {
