@@ -178,7 +178,7 @@
 .productDetailComponent-content {
   width: 100%;
   height: 100%;
-  padding: 0 20px;
+  padding: 0 20px 180px;
   display: flex;
   justify-content: center;
 }
@@ -191,6 +191,113 @@
   color: #191919;
 }
 
+.productReviewContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewCard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewUserInfo {
+  margin: 16px 0 0;
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+}
+
+.userName span {
+  padding-left: 4px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #191919;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  justify-content: space-between;
+}
+
+.rating span {
+  display: flex;
+  width: 6%;
+}
+
+.rating img {
+  width: 100%;
+  display: flex;
+}
+
+.reviewDate {
+  padding-left: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #687787;
+}
+
+.reviewDetails {
+  width: 100%;
+  margin: 0 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewContent {
+  width: 100%;
+  margin: 16px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #191919;
+}
+
+.reviewDetails2 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reviewItem {
+  display: flex;
+  align-items: center;
+}
+
+.reviewItem div {
+  padding: 4px 10px;
+  background-color: #EEEEEE;
+  border-radius: 4px;
+  display: flex;
+  font-size: 16px;
+  font-weight: 500;
+  color: #191919;
+}
+
+.reviewItem span {
+  padding-left: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #191919;
+}
+
+.reviewModifiedDate {
+  width: 100%;
+  display: flex;
+  margin: 0 4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #687787;
+  justify-content: flex-end;
+}
+
+.reviewCard .line2 {
+  margin: 32px 0;
+}
 /**************************************************************************/
 
 .productDetailComponent-option-footer {

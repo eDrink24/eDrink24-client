@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import './CheckMyReviewComponent.css';
 import { useNavigate } from 'react-router-dom';
+import back from '../../assets/common/back.png';
+import bag from '../../assets/common/bag.png';
+import FooterComponent from '../../components/footer/FooterComponent.js';
+import './CheckMyReviewComponent.css';
 
 const CheckMyReviewComponent = () => {
     const [review, setReview] = useState(null);
@@ -72,44 +75,74 @@ const CheckMyReviewComponent = () => {
     const modifiedDate = reviewItem.modifiedDate ? reviewItem.modifiedDate.split('T')[0] : '수정되지 않음';
 
     return (
+        <div className="MyReview-wrapper">
         <div className="MyReview-container">
-            <h2>내 리뷰 확인하기</h2>
-            <div>리뷰 등록날짜:{enrolledDate}</div>
-            <div>리뷰 수정날짜:{modifiedDate}</div>
+
+            <div className='MyReview-header'>
+            <button className="back-button" onClick={() => { navigate(-1) }}>
+                <img src={back} alt="뒤로가기" />
+            </button>
+            <h1>내가 작성한 리뷰</h1>
+            <button className="bag-button" onClick={() => { navigate('/basket') }}>
+                <img src={bag} alt="장바구니" />
+            </button>
+            </div>
+
+            <div className="MyReview-date">
+                <div>작성일자 : {enrolledDate}</div>
+                <div>마지막 수정일 : {modifiedDate}</div>
+            </div>
+
             {isEditing ? (
                 <div className="MyReview-content">
+                    <h4><strong>{editedReview.productName}</strong></h4>
+                    <div className="MyReview-info-content">
                     <img src={editedReview.defaultImage} alt={editedReview.productName} className="MyReview-product-image" />
-                    <h3>{editedReview.productName}</h3>
-                    <p>
-                        <strong>당도:</strong>
-                        <input type="number" name="sugarRating" value={editedReview.sugarRating} onChange={handleUpdateReview} min="0" max="5" />
-                    </p>
-                    <p>
-                        <strong>산미:</strong>
-                        <input type="number" name="acidityRating" value={editedReview.acidityRating} onChange={handleUpdateReview} min="0" max="5" />
-                    </p>
-                    <p>
-                        <strong>목넘김:</strong>
-                        <input type="number" name="throatRating" value={editedReview.throatRating} onChange={handleUpdateReview} min="0" max="5" />
-                    </p>
-                    <p>
-                        <strong>리뷰 내용:</strong>
-                        <textarea name="content" value={editedReview.content} onChange={handleUpdateReview} />
-                    </p>
-                    <button onClick={updateReview}>저장하기</button>
-                    <button onClick={() => setIsEditing(false)}>취소</button>
+                    <div className="MyReview-info">    
+                        <span>
+                            <textarea name="content" value={editedReview.content} onChange={handleUpdateReview} />
+                        </span>
+                        <div className="re">
+                            <p>
+                                <strong>당도 : </strong>
+                                <input type="number" name="sugarRating" value={editedReview.sugarRating} onChange={handleUpdateReview} min="0" max="5" />
+                            </p>
+                            <p>
+                                <strong>산미 : </strong>
+                                <input type="number" name="acidityRating" value={editedReview.acidityRating} onChange={handleUpdateReview} min="0" max="5" />
+                            </p>
+                            <p>
+                                <strong>목넘김 : </strong>
+                                <input type="number" name="throatRating" value={editedReview.throatRating} onChange={handleUpdateReview} min="0" max="5" />
+                            </p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="re-button">
+                        <button onClick={updateReview}>저장하기</button>
+                        <button onClick={() => setIsEditing(false)}>취소</button>    
+                    </div>
                 </div>
             ) : (
                 <div className="MyReview-content">
+                    <h4><strong>{reviewItem.productName}</strong></h4>
+                    <div className="MyReview-info-content">
                     <img src={reviewItem.defaultImage} alt={reviewItem.productName} className="MyReview-product-image" />
-                    <h3>{reviewItem.productName}</h3>
-                    <p><strong>단맛:</strong> {reviewItem.sugarRating}/5</p>
-                    <p><strong>산미:</strong> {reviewItem.acidityRating}/5</p>
-                    <p><strong>목넘김:</strong> {reviewItem.throatRating}/5</p>
-                    <p><strong>리뷰 내용:</strong> {reviewItem.content}</p>
+                    <div className="MyReview-info">
+                        <span>"{reviewItem.content}"</span>
+                        <p><strong>단맛 : </strong> {reviewItem.sugarRating}.5</p>
+                        <p><strong>산미 : </strong> {reviewItem.acidityRating}.5</p>
+                        <p><strong>목넘김 : </strong> {reviewItem.throatRating}.5</p>
+                    </div>
+                    </div>
                     <button onClick={startEditing}>수정하기</button>
                 </div>
             )}
+
+            {/* 하단 네비게이션 바 */}
+            <FooterComponent />
+
+        </div>
         </div>
     );
 };

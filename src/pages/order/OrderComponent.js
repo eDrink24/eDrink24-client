@@ -34,6 +34,8 @@ function OrderComponent() {
     const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
 
+    //const [selectedCoupon, setSelectedCoupon] = useState(false);
+
     console.log()
     const navigate = useNavigate();
 
@@ -175,10 +177,13 @@ function OrderComponent() {
     };
 
     const handleCouponSelection = (couponItem) => {
-        setCoupon(couponItem);
-        console.log("Selected Coupon:", couponItem);
+        if (coupon?.couponId === couponItem.couponId) {
+            setCoupon(null);
+        } else {
+            setCoupon(couponItem);
+            console.log("Selected Coupon:", couponItem);
+        }
     };
-
 
     const handleCheckout = async () => {
 
@@ -232,8 +237,11 @@ function OrderComponent() {
                     }
                 });
 
+            console.log('Payment response:', paymentResponse.data);
+
             const { next_redirect_pc_url, next_redirect_mobile_url, tid } = paymentResponse.data;
             localStorage.setItem('tid', tid);
+
 
             const userAgent = navigator.userAgent;
             let redirectURL;
@@ -321,7 +329,9 @@ function OrderComponent() {
                             <div className="text-box">
                                 {loadingCoupons ? "쿠폰 목록을 불러오는 중입니다..." : (
                                     couponList.length > 0
-                                        ? `쿠폰 선택 완료: ${coupon?.name} - 할인: ${coupon?.discountAmount?.toLocaleString()} 원`
+                                        ? coupon
+                                            ? `신규회원 ${coupon?.discountAmount?.toLocaleString()} 원 할인 쿠폰`
+                                            : "쿠폰 미적용"
                                         : showCouponList
                                             ? "보유 쿠폰이 없습니다."
                                             : "조회하기 버튼을 눌러주세요"
@@ -344,8 +354,10 @@ function OrderComponent() {
                                 <ul>
                                     {couponList.map(couponItem => (
                                         <li key={couponItem.couponId}>
-                                            <button onClick={() => handleCouponSelection(couponItem)}>
-                                                {couponItem.name} - 할인: {couponItem.discountAmount.toLocaleString()} 원
+                                            <button onClick={() => handleCouponSelection(couponItem)}
+                                                className={coupon?.couponId === couponItem.couponId ? 'selected' : ''}
+                                            >
+                                                신규회원 {couponItem?.discountAmount?.toLocaleString()} 원 할인 쿠폰
                                             </button>
                                         </li>
                                     ))}
