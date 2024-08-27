@@ -10,7 +10,7 @@ import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfCl
 
 const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 배열을 설정
     const [invToStore, setinvToStore] = useState([]);
-//    const [showTodayPu, setShowTodayPu] = useState(false);
+    //    const [showTodayPu, setShowTodayPu] = useState(false);
     const currentStoreId = localStorage.getItem("currentStoreId");
     const userId = localStorage.getItem("userId");
     const navigate = useNavigate();
@@ -29,30 +29,30 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                     const invData = await response.json();
                     setinvToStore(invData);
 
-            // 찜 목록 가져오기
-            const likedResponse = await fetch(`http://localhost:8090/eDrink24/showAllDibs/${userId}`, {
-                method: "GET"
-            });
+                    // 찜 목록 가져오기
+                    const likedResponse = await fetch(`http://localhost:8090/eDrink24/showAllDibs/${userId}`, {
+                        method: "GET"
+                    });
 
-            if (!likedResponse.ok) {
-                throw new Error('Failed to fetch liked products');
-            }
+                    if (!likedResponse.ok) {
+                        throw new Error('Failed to fetch liked products');
+                    }
 
-            const likedData = await likedResponse.json();
-            const likedProductIds = new Set(likedData.map(dib => dib.productId));
+                    const likedData = await likedResponse.json();
+                    const likedProductIds = new Set(likedData.map(dib => dib.productId));
 
-            // 제품 목록에 찜 상태 추가
-            const updatedProducts = invData.map(product => ({
-                ...product,
-                liked: likedProductIds.has(product.productId)
-            }));
+                    // 제품 목록에 찜 상태 추가
+                    const updatedProducts = invData.map(product => ({
+                        ...product,
+                        liked: likedProductIds.has(product.productId)
+                    }));
 
-            setProduct(updatedProducts);
+                    setProduct(updatedProducts);
 
-            if (productId) {
-                const foundProduct = invData.find(prod => prod.productId === parseInt(productId));
-                setProduct(foundProduct || null);
-            }
+                    if (productId) {
+                        const foundProduct = invData.find(prod => prod.productId === parseInt(productId));
+                        setProduct(foundProduct || null);
+                    }
                 } catch (error) {
                     console.error('Error fetching inventory:', error);
                 }
@@ -73,12 +73,12 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
         }
 
         const url = liked
-        ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
-        : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
+            ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
+            : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
 
         try {
             const response = await fetch(url, {
-                method: liked? "POST" : "DELETE",
+                method: liked ? "POST" : "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -88,22 +88,8 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                 })
             });
 
-            if (response.ok) {
-                // 위 api 실행되면 products에 liked 상태 변경
-                // setProducts(prevProducts =>
-                //     prevProducts.map(product =>
-                //         product.productId === productId
-                //             ? { ...product, liked: liked }
-                //             : product
-                //     )
-                // );
-                console.log(`Product ${liked ? 'added to' : 'removed from'} dibs:`, dibProducts);
-            } else {
-                throw new Error(`Failed to ${liked ? 'add' : 'remove'} product to dibs`);
-            }
-
         } catch (error) {
-            console.error(`Error ${liked ? 'adding' : 'removing'} product to dibs:`, error);
+            return;
         }
     };
 
@@ -119,7 +105,7 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
     };
 
     // 좋아요 버튼 컴포넌트
-    const LikeButton = ({onClick, productId, liked}) => {
+    const LikeButton = ({ onClick, productId, liked }) => {
         const [isLiked, setIsLiked] = useState(liked); // 좋아요 상태 관리
 
         const handleClick = (event) => {
@@ -152,14 +138,14 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
             ...prevState,
             [productId]: !prevState[productId]
         }));
-    };    
+    };
 
     // Review 기능
     const handleClick2 = (event, productId) => {
         event.stopPropagation();
     };
 
-    
+
     // 장바구니 페이지로 이동
     const goToBasketPage = () => {
         setModalIsOpen(false);
@@ -217,7 +203,7 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
     return (
         <div className="ProductCard">
             {products.length > 0 ? (  // products가 있을 때만 렌더링
-                products.map(product => {  
+                products.map(product => {
 
                     return (
                         <div className="productCard-box" key={product.productId} onClick={() => handleProductClickEvent(product.productId)} >
@@ -246,9 +232,9 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                                     </div>
 
                                     <LikeButton
-                                    onClick={addDibs}
-                                    productId={product.productId}
-                                    liked={product.liked} // 제품의 현재 좋아요 상태를 전달
+                                        onClick={addDibs}
+                                        productId={product.productId}
+                                        liked={product.liked} // 제품의 현재 좋아요 상태를 전달
                                     />
 
                                     <button className="productInfo-bag" onClick={(e) => handleClick3(e, product.productId)}>
@@ -260,7 +246,7 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                     );
                 })
             ) : (
-                <p>No products available.</p>  // products가 없을 때 표시할 내용
+                <p>단골매장을 설정해주세요!</p>  // products가 없을 때 표시할 내용
             )}
 
             <AlertModalOfClickBasketButton
