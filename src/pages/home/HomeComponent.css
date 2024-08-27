@@ -73,7 +73,7 @@ html, body {
 .Home-myPlace-container, .banner-container,
 .best-product {
     width: auto;
-    margin: 20px;
+    margin: 20px 0 20px 20px;
 }
 
 .category-button-container {
@@ -213,8 +213,10 @@ h1 {
 }
 
 /* 더 보기 버튼 스타일 */
-.more-button {
+.moreButton {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 500;
+    color: #AFAFAF;
     margin: 0;
+    text-decoration: none; /* 밑줄 제거 */
 }
