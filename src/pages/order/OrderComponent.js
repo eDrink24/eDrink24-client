@@ -394,7 +394,7 @@ function OrderComponent() {
                             <span>포인트</span>
                         </div>
 
-                        <div className="discount-container">
+                        <div className="discount-container1">
                             <div className="text-box">
                                 {appliedPoints === null
                                     ? userPoints === null
@@ -403,7 +403,7 @@ function OrderComponent() {
                                     : `적용된 포인트: ${appliedPoints} P`}
                             </div>
 
-                            <button className="custom-button" onClick={handleButtonClick}>
+                            <button className="custom-button1" onClick={handleButtonClick}>
                                 {pointButtonText}
                             </button>
 
@@ -414,6 +414,7 @@ function OrderComponent() {
                                         value={pointsToUse}
                                         onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
                                         placeholder="사용할 포인트 입력"
+                                        min = "0"
                                     />
                                     <button className="custom-button1" onClick={handleMaxPoints}>
                                         전액 사용
