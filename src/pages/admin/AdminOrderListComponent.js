@@ -3,9 +3,9 @@ import './AdminOrderListComponent.css';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import { useNavigate } from 'react-router-dom';
 
+// 발주신청내역
 const AdminOrderListComponent = () => {
     const [orderList, setOrderList] = useState([]);  // 발주 내역 상태
-    const navigate = useNavigate();
 
     useEffect(() => {
         fetchOrderList();

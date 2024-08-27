@@ -62,7 +62,6 @@ const AdminOrderComponent = () => {
             const selectedProduct = products.find(product => product.productId === selectedProductId);
 
             if (!selectedProduct) {
-                alert("Product not found."); // 제품이 없으면 알림
                 return;
             }
 

@@ -16,11 +16,7 @@ const TodayPickupCompletedPageComponent = () => {
                 method: "GET"
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch products');
-            }
             const resData = await response.json();
-            console.log("resData:", resData);
             setCompletedOrders(resData);
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -40,8 +36,7 @@ const TodayPickupCompletedPageComponent = () => {
                                 <th>주문번호</th>
                                 <th>고객명</th>
                                 <th>제품이름</th>
-                                <th>주문 날짜</th>
-                                <th>픽업시간</th>
+                                <th>주문/픽업시간</th>
                                 <th>픽업상태</th>
                                 <th>수량</th>
                             </tr>
@@ -50,10 +45,9 @@ const TodayPickupCompletedPageComponent = () => {
                             {completedOrders.map(order => (
                                 <tr key={order.ordersId}>
                                     <td>{order.ordersId}</td>
-                                    <td>{order.userId}</td>
-                                    <td>{order.productId}</td>
-                                    <td>{format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</td>
-                                    <td>{format(parseISO(order.changeDate), 'yyyy-MM-dd HH:mm:ss')}</td>
+                                    <td>{order.userName}</td>
+                                    <td>{order.productName}</td>
+                                    <td>{format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}<br />{format(parseISO(order.changeDate), 'yyyy-MM-dd HH:mm:ss')}</td>
                                     <td>{order.changeStatus === "PICKUPED" ? "픽업완료" : order.changeStatus}</td>
                                     <td>{order.orderQuantity}</td>
                                 </tr>

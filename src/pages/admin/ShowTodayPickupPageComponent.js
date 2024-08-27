@@ -67,11 +67,6 @@ const ShowTodayPickupPageComponent = () => {
                     method: "PUT"
                 });
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-
-
                 showOrdersToAdminPageOrders();
                 setSelectedOrdersId([]);  // 선택된 항목 초기화
 
@@ -122,8 +117,8 @@ const ShowTodayPickupPageComponent = () => {
                                     />
                                 </td>
                                 <td>{order.ordersId}</td>
-                                <td>{order.userId}</td>
-                                <td>{order.productId}</td>
+                                <td>{order.userName}</td>
+                                <td>{order.productName}</td>
                                 <td>{format(parseISO(order.orderDate), 'yyyy-MM-dd HH:mm:ss')}</td>
                                 <td>{order.changeStatus ? "픽업주문" : order.changeStatus}</td>
                                 <td>{order.orderQuantity}</td>
