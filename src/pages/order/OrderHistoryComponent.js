@@ -88,9 +88,9 @@ function OrderHistoryComponent() {
     }
 
     return (
-        <div className="order-wrapper">
-        <div className="order-container">
-            <div className='order-header'>
+        <div className="orderHistory-wrapper">
+        <div className="orderHistory-container">
+            <div className='orderHistory-header'>
             <button className="back-button" onClick={() => { navigate(-1) }}>
                 <img src={back} alt="뒤로가기" />
             </button>
@@ -100,49 +100,58 @@ function OrderHistoryComponent() {
             </button>
             </div>
 
-            <div className="order-history-section">
-                <h1>주문 내역</h1>
+            <div className="orderHistory-section">
                 {Object.keys(orderHistory).length > 0 ? (
                     Object.keys(orderHistory).map((date, index) => (
-                        <div key={index} className="order-group">
-                            <h3>{new Date(date).getFullYear() + ". "+ (new Date(date).getMonth()+1)+ ". " + new Date(date).getDate()}</h3>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>상품 이미지</th>
-                                        <th>상품 이름</th>
-                                        <th>가격</th>
-                                        <th>수량</th>
-                                        <th>픽업유형</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                        <div key={index} className="orderHistory-group">
+
+                            <div className="orderHistory-top">
+                                <h3 className="orderHistory-date">
+                                    {new Date(date).getFullYear() + ". "+ (new Date(date).getMonth()+1)+ ". " + new Date(date).getDate()}
+                                </h3>
+                                <div className="orderHistory-moreButton">
                                     <button onClick={() => clickOrderHistoryDetails(date)}>상세보기</button>
-                                    {orderHistory[date].map((item, index) => (
-                                        <tr key={index}>
-                                            <td>
+                                </div>
+                            </div>
+
+                            <div className="orderHistory-main">
+                                {orderHistory[date].map((item, index) => (
+                                    <div key={index} className="orderHistory-info">
+
+                                        <div className="orderHistory-pickUp">
+                                            <div>{item.pickupType === `TODAY` ? `오늘 픽업` : `예약 픽업`}</div>
+                                        </div>
+
+                                        <div className="orderHistory-infoMain">
+                                            <div className="orderHistory-infoImg">
                                                 <img
                                                     src={item.defaultImage || 'default-image-url.jpg'}
                                                     alt={item.productName || '상품 이미지 없음'}
                                                     className="basket-image"
                                                     style={{ width: '100px', height: 'auto' }}
                                                 />
-                                            </td>
-                                            <td>{item.productName || '상품 이름 없음'}</td>
-                                            <td>{item.price !== undefined ? item.price.toLocaleString() : '가격 정보 없음'} 원</td>
-                                            <td>{item.orderQuantity || 0}</td>
-                                            <td>{item.pickupType === `TODAY` ? `오늘 픽업` : `예약 픽업`}</td>
-                                            <td>
-                                                {item.reviewsId ? (
-                                                    <button onClick={() => moveToMyReviewPage(item.reviewsId)}>리뷰 확인하기</button>
-                                                ) : (
-                                                    <button onClick={() => moveToReviewPage(date, index)}>리뷰 작성하기</button>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                            </div>
+                                            <div className="orderHistory-info-main">
+                                                <span>{item.productName || '상품 이름 없음'}</span>
+                                                <a>선택수량 : {item.orderQuantity || 0}</a>
+                                                <p>{item.price !== undefined ? item.price.toLocaleString() : '가격 정보 없음'} 원</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="orderHistory-infoButton">
+                                        {item.reviewsId ? (
+                                            <button className="orderHistory-button1" onClick={() => moveToMyReviewPage(item.reviewsId)}>리뷰 확인하기</button>
+                                        ) : (
+                                            <button className="orderHistory-button2" onClick={() => moveToReviewPage(date, index)}>리뷰 작성하기</button>
+                                        )}
+                                        </div>
+
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="line"></div>
+
                         </div>
                     ))
                 ) : (
