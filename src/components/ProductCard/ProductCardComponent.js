@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import './ProductCardComponent.css';
-import star from '../../assets/common/star.png';
-import filledHeart from '../../assets/common/fill-heart.png';
-import emptyHeart from '../../assets/common/empty-heart.png';
 import bag from '../../assets/common/bag.png';
+import emptyHeart from '../../assets/common/empty-heart.png';
+import filledHeart from '../../assets/common/fill-heart.png';
+import './ProductCardComponent.css';
 
 import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton.js';
 
@@ -162,6 +161,19 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
         event.stopPropagation();
     };
 
+    
+    // 장바구니 페이지로 이동
+    const goToBasketPage = () => {
+        setModalIsOpen(false);
+        navigate('/basket');
+    };
+
+    // 현재 페이지에 머무름
+    const stayOnPage = () => {
+        setModalIsOpen(false);
+        navigate(`/allproduct/${category1}`);
+    };
+
     // CartBag 기능
     const handleClick3 = (event, productId) => {
         event.stopPropagation();
@@ -258,8 +270,8 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                 isOpen={modalIsOpen}
                 onRequestClose={() => setModalIsOpen(false)}
                 message="장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?"
-                navigateOnYes={() => console.log('Go to basket')}
-                navigateOnNo={() => setModalIsOpen(false)}
+                navigateOnYes={goToBasketPage}
+                navigateOnNo={stayOnPage}
             />
         </div>
 
