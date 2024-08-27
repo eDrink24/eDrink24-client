@@ -3,10 +3,11 @@ import './ShowTodayPickupPageComponent.css'; // CSS 파일을 임포트합니다
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 
+// 즉시픽업
 const ShowTodayPickupPageComponent = () => {
     const [orders, setOrders] = useState([]);
-    console.log("orders", orders);
     const [selectedOrdersId, setSelectedOrdersId] = useState([]);
+    const storeId = localStorage.getItem("currentStoreId");
     const navigate = useNavigate();
 
     // 컴포넌트가 처음 렌더링될 때만 주문 목록을 가져옵니다.
@@ -38,7 +39,7 @@ const ShowTodayPickupPageComponent = () => {
     // 즉시픽업 목록페이지 (아직 픽업이 완료되지 않았을 때)
     const showOrdersToAdminPageOrders = async () => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showPickupPage`, {
+            const response = await fetch(`http://localhost:8090/eDrink24/showPickupPage/${storeId}`, {
                 method: "GET"
             });
 
@@ -46,7 +47,6 @@ const ShowTodayPickupPageComponent = () => {
                 throw new Error('Failed to fetch products');
             }
             const resData = await response.json();
-            console.log("resData:", resData);
 
             // 데이터가 변경된 경우에만 상태를 업데이트합니다.
             if (JSON.stringify(resData) !== JSON.stringify(orders)) {

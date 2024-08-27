@@ -4,6 +4,7 @@ import './TodayPickupCompletedPageComponent.css';
 
 const TodayPickupCompletedPageComponent = () => {
     const [completedOrders, setCompletedOrders] = useState([]);
+    const storeId = localStorage.getItem("currentStoreId");
 
     useEffect(() => {
         PickupCompletedPage();
@@ -12,7 +13,7 @@ const TodayPickupCompletedPageComponent = () => {
     // 즉시픽업 완료된 것만 보여줌.
     const PickupCompletedPage = async () => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showPickupCompletedPage`, {
+            const response = await fetch(`http://localhost:8090/eDrink24/showPickupCompletedPage/${storeId}`, {
                 method: "GET"
             });
 

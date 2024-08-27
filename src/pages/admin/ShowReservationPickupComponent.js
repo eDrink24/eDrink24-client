@@ -1,6 +1,5 @@
 import { format, parseISO } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './ShowReservationPickupComponent.css';
 
 // 제품 카테고리 목록
@@ -11,7 +10,6 @@ const ShowReservationPickupComponent = () => {
     const [showQuantityModal, setShowQuantityModal] = useState(false); // 모달 표시 상태
     const [selectedOrderId, setSelectedOrderId] = useState(null); // 선택된 주문 ID
     const [quantity, setQuantity] = useState(0); // 발주 수량 상태
-    const [productNames, setProductNames] = useState({}); // 제품 이름 상태
     const storeId = localStorage.getItem("currentStoreId");
 
     // 처음 렌더링될 때만 주문 목록 가져오기
@@ -21,7 +19,7 @@ const ShowReservationPickupComponent = () => {
 
     const showReservationPickupPage = async () => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showReservationPickupPage`, {
+            const response = await fetch(`http://localhost:8090/eDrink24/showReservationPickupPage/${storeId}`, {
                 method: "GET"
             });
 
@@ -53,16 +51,12 @@ const ShowReservationPickupComponent = () => {
     const handleAdminOrder = async () => {
         if (selectedOrderId && quantity > 0) {
             const order = orders.find(o => o.ordersId === selectedOrderId);
-            if (!order) {
-                alert("Order not found.");
-                return;
-            }
 
             // 발주 DTO 설정
             const InventoryDTO = {
                 storeId,
                 productId: order.productId,
-                productName: productNames[order.productId] || 'Unknown', // 제품 이름 추가
+                productName: order.productName,
                 quantity,
                 adminOrderQuantity: quantity
             };
