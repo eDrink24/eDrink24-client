@@ -196,6 +196,19 @@ html, body {
   display: flex;
   align-items: center;
   margin: 16px 0;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.discount-container1 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: flex-start;
 }
 
 .text-box {
@@ -221,6 +234,8 @@ html, body {
   text-align: center;
   font-size: var(--font-size-medium-body);
   font-weight: 400;
+  margin-left: auto;
+  position : relative;
 }
 
 .custom-button1 {
@@ -233,6 +248,7 @@ html, body {
   text-align: center;
   font-size: var(--font-size-medium-body);
   font-weight: 400;
+  margin-left: auto;
 }
 
 .coupon-selection,
@@ -241,7 +257,6 @@ html, body {
   padding: 16px;
   border-radius: 8px;
   background-color: #f9f9f9;
-  margin-top: 10px;
 }
 
 /**************************************************************************************************/
