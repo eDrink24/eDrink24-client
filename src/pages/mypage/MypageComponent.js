@@ -19,6 +19,7 @@ import manager from '../../assets/mypage/관리자.png';
 import logOut from '../../assets/mypage/로그아웃.png';
 import ask1 from '../../assets/mypage/문의하기.png';
 import ask from '../../assets/mypage/일대일문의.png';
+import PointHistoryModalComponent from './PointHistoryModalComponent.js';
 
 function MypageComponent() {
     const navigate = useNavigate();
@@ -26,6 +27,8 @@ function MypageComponent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [customerData, setCustomerData] = useState(null);
     const [isOpen, setIsOpen] = useState(false); // 아코디언 상태 관리
+    const [pointHistory,setHistoryHistory] = useState([]);
+    const [modalOpen,setModalOpen] = useState(false);
 
     useEffect(() => {
         // 로그인 상태 확인
@@ -67,6 +70,22 @@ function MypageComponent() {
         setIsOpen(!isOpen); // 아코디언 열림/닫힘 상태 전환
     };
 
+    const showHistoryHistory = async () => {
+        const userId = localStorage.getItem('userId');
+        try{
+        const response = await fetch (`http://localhost:8090/eDrink24/api/showPoint/${userId}`);
+        
+            if(response.ok){
+                const resdata = await response.json();
+                console.log(">>>>>>>>",resdata);
+                setHistoryHistory(resdata);
+                setModalOpen(true);
+            }
+        }catch(error){
+            console.error("fetching Error show pointHistory",error);
+        }        
+    };
+
     return (
         <div className="myPage-wrapper">
             <div className="myPage-container">
@@ -105,7 +124,7 @@ function MypageComponent() {
 
                 <div className="myPage-icon">
                     <div className="myPage-icon-item">
-                        <img src={point} alt="포인트" />
+                        <img src={point} alt="포인트" onClick={showHistoryHistory} />
                         <span>포인트 <span className="myPage-additionalInfo">{isLoggedIn && customerData ? customerData.totalPoint : undefined}</span></span>
                     </div>
                     <div className="myPage-icon-item">
@@ -219,6 +238,11 @@ function MypageComponent() {
 
             </div>
             <FooterComponent />
+            <PointHistoryModalComponent 
+            isOpen={modalOpen}
+            onClose={() => setModalOpen(false)}
+            data={pointHistory} 
+            />
         </div >
 
     );

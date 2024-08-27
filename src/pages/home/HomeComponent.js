@@ -41,7 +41,6 @@ function HomeComponent() {
                 try {
                     const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`);
                     const invData = await response.json();
-                    console.log("BBBBBBB",invData);
                     // invData가 배열이 아니면 배열로 변환
                     const invArray = Array.isArray(invData) ? invData : Object.values(invData);
                     setInvToStore(invArray);

@@ -41,7 +41,6 @@ function ProductDetailComponent() {
       method:"GET"
     });
     const resData = await response.json();
-    console.log(">>>>>>>>>",resData);
     setReviews(resData);
     setReviewCount(resData.length);
     // 리뷰가 있을 때 평균 평점을 계산
@@ -114,8 +113,6 @@ function ProductDetailComponent() {
       };
 
       setProducts(updatedProducts);
-
-      console.log("AAAAAAAAAA", resData);
 
       if (productId) {
         if (resData.productId === parseInt(productId)) {
