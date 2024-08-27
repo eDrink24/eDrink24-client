@@ -94,7 +94,7 @@ function OrderHistoryComponent() {
             <button className="back-button" onClick={() => { navigate(-1) }}>
                 <img src={back} alt="뒤로가기" />
             </button>
-            <h1>카테고리</h1>
+            <h1>주문내역</h1>
             <button className="bag-button" onClick={() => { navigate('/basket') }}>
                 <img src={bag} alt="장바구니" />
             </button>
