@@ -5,7 +5,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { basketState, selectedReservationPickupBaskets, selectedTodayPickupBaskets } from '../basket/BasketAtom.js';
 import { orderState } from './OrderAtom.js';
 import './OrderComponent.css';
-
 import back from '../../assets/common/back.png';
 import home from '../../assets/common/home.png';
 
@@ -35,6 +34,8 @@ function OrderComponent() {
 
     const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
+
+    console.log(">>>>>>>>>>>",orderInfo);
 
     const navigate = useNavigate();
 
@@ -73,7 +74,6 @@ function OrderComponent() {
         } catch (error) {
             console.error('Error fetching user points:', error);
         }
-        console.log(pointButtonText);
     };
 
     // 사용자가 입력한 포인트 적용 함수 pkh
@@ -190,7 +190,6 @@ function OrderComponent() {
         } finally {
             setLoadingCoupons(false);
         }
-        console.log("ABCABC", couponList);
     };
 
     const handleCouponSelection = (couponItem) => {
@@ -279,7 +278,6 @@ function OrderComponent() {
         navigate("/");
     };
 
-
     return (
 
         <div className="order-wrapper">
@@ -307,7 +305,7 @@ function OrderComponent() {
                             return (
                                 <div key={index} className="order-item-box">
                                     <div className="order-pickUp-state">
-                                        {(orderInfo.pickupType === "오늘픽업 상품") ? "오늘픽업 상품" : (todayPickupBaskets.includes(item.basketId) ? '오늘픽업 상품' : '예약픽업 상품')}
+                                        {(orderInfo.pickupType === "TODAY") ? "오늘픽업 상품" : (todayPickupBaskets.includes(item.basketId) ? '오늘픽업 상품' : '예약픽업 상품')}
                                     </div>
                                     <div className="order-info">
                                         <img
