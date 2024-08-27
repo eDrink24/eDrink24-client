@@ -71,6 +71,10 @@ function HomeComponent() {
         navigate(`/allproduct/${category1}`);
     };
 
+    const handleDirectDibs = () => {
+        navigate(`/dibs`);
+    };
+
     return (
         <div className="homePage-wrapper">
         <div className="homePage-container">
@@ -99,7 +103,7 @@ function HomeComponent() {
                     <img src={gift} alt="Gift Button" />
                     <span>이벤트</span>
                 </div>
-                <div className="mainHome-item-icon" onClick={handleDirectHome}>
+                <div className="mainHome-item-icon" onClick={handleDirectDibs}>
                     <img src={dibs} alt="Chatbot Button" />
                     <span>찜</span>
                 </div>
