@@ -1,17 +1,21 @@
-import './DibsComponent.css'
-import { useState, useEffect} from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; 
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import back from '../../assets/common/back.png';
+import bag from '../../assets/common/bag.png';
+import AlertModalOfClickBasketButton from '../../components/alert/AlertModalOfClickBasketButton.js';
+import FooterComponent from '../../components/footer/FooterComponent.js';
+import './DibsComponent.css';
 
 function DibsComponent() {
     
     const [dibs, setDibs] = useState([]);
     const userId = localStorage.getItem('userId');
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const navigate = useNavigate();
 
     // 찜 목록 가져오기
     const fetchDibs = async () => {
-
         try {
             const response = await fetch(`http://localhost:8090/eDrink24/showAllDibs/${userId}`);
             if (response.status === 200) {
@@ -25,99 +29,168 @@ function DibsComponent() {
             console.error('Error fetching dibs items:', error);
             return [];
         }
-        console.log("BBBBBBBBB:", dibs);
     };
 
     useEffect(() => {
-        console.log("useEffect")
         fetchDibs();
     }, [userId]);
 
-    // 찜목록 삭제
+    // 찜 목록을 업데이트하는 함수
+    const updateDibs = async (productId, liked) => {
+        try {
+            if (liked) {
+                // 찜 추가
+                const response = await fetch(`http://localhost:8090/eDrink24/addDibs/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId })
+                });
+                if (response.ok) {
+                    setDibs(prevDibs => [...prevDibs, { productId }]);
+                }
+            } else {
+                // 찜 삭제
+                const response = await fetch(`http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    setDibs(prevDibs => prevDibs.filter(dib => dib.productId !== productId));
+                }
+            }
+        } catch (error) {
+            console.error(`Error ${liked ? 'adding to' : 'removing from'} dibs:`, error);
+        }
+    };
+
+    // 찜 목록 삭제 기능 추가
     const deleteDibs = async (productId, event) => {
-        event.stopPropagation(); // 삭제 버튼 클릭했을때 제품 상세페이지로 넘어가는거 방지
+        event.stopPropagation(); // 버튼 클릭 시 상세 페이지로 이동 방지
         try {
             const response = await fetch(`http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`, {
-                method: "DELETE",
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                setDibs(dibs.filter(item => item.productId !== productId));
+            } else {
+                console.error('Failed to delete from dibs');
+            }
+        } catch (error) {
+            console.error('Error deleting from dibs:', error);
+        }
+    };
+
+    // 장바구니에 제품 추가
+    const saveInBasket = async (productId) => {
+        const productToSave = dibs.find(prod => prod.productId === productId);
+
+        if (!productToSave) {
+            console.error('No product found');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8090/eDrink24/saveProductToBasket`, {
+                method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({
+                    userId: localStorage.getItem("userId"),
+                    items: [{
+                        productId: productToSave.productId,
+                        defaultImage: productToSave.defaultImage,
+                        productName: productToSave.productName,
+                        price: productToSave.price,
+                        basketQuantity: 1
+                    }]
+                })
             });
 
             if (response.ok) {
-                setDibs(dibs.filter(item => item.productId !== productId));
-                console.log("removed from dibs", dibs);
+                setModalIsOpen(true);
             } else {
-                throw new Error("Failed to remove product from dibs");
+                throw new Error('Failed to save product to basket');
             }
-
         } catch (error) {
-            console.error("Error removing product from dibs:", error);
+            console.error('Error saving product to basket:', error);
         }
     };
 
-    // 제품 클릭 시 상세 페이지로 이동
-    const handleProductClickEvent = (productId) => {
-        const clickedProduct = dibs.find(dib => dib.productId === productId);
-        if (clickedProduct) {
-            //setProduct(clickedProduct);
-            const category1 = clickedProduct.category1;
-            const category2 = clickedProduct.category2;
-            navigate(`/allproduct/${category1}/${category2}/${productId}`);
-        } else {
-            console.error('제품을 찾지 못했습니다.');
-        }
+    // 장바구니 페이지로 이동
+    const goToBasketPage = () => {
+        setModalIsOpen(false);
+        navigate('/basket');
     };
 
     return (
-        <div className="dibs-container">
-            <h2>찜 목록</h2>
-    
-            <div className="dibs-section">
-                {dibs.length > 0 ? (
-                    <div className="dibs-group">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>상품 이미지</th>
-                                    <th>상품 이름</th>
-                                    <th>가격</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {dibs.map((item, index) => (
-                                    <tr key={index} 
-                                    onClick={() => handleProductClickEvent(item.productId)}
-                                    style={{ cursor: 'pointer' }}>
-                                        <td>
-                                            <img
-                                                src={item.defaultImage}
-                                                alt={item.productName}
-                                                className="product-image"
-                                                style={{ width: '100px', height: 'auto' }}
-                                            />
-                                        </td>
-                                        <td>{item.productName}</td>
-                                        <td>{item.price.toLocaleString()} 원</td>
-                                        <td>
-                                            <button 
-                                                onClick={(e) => deleteDibs(item.productId, e)} 
-                                                className="delete-button">
-                                                삭제
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+        <div className="dibs-wrapper">
+            <div className="dibs-container">
+
+                <div className='dibs-header'>
+                    <button className="back-button" onClick={() => { navigate(-1) }}>
+                        <img src={back} alt="뒤로가기" />
+                    </button>
+                    <h1>관심 상품</h1>
+                    <div>
+                        <button className="bag-button" onClick={() => { navigate('/basket') }}>
+                            <img src={bag} alt="장바구니" />
+                        </button>
                     </div>
-                ) : (
-                    <p>찜 목록이 비어있습니다.</p>
-                )}
+                </div>
+
+                <div className="dibs-section">
+                    {dibs.length > 0 ? (
+                        dibs.map((item) => (
+                            <div key={item.productId} className="dibs-item">
+                                {/* ProductCardComponent 대신 수동으로 제품 정보 렌더링 */}
+                                <div className="dibs-info-container" onClick={() => navigate(`/allproduct/${item.category1}/${item.category2}/${item.productId}`)}>
+                                    <div className="dibs-info-img">
+                                        <img
+                                            src={item.defaultImage}
+                                            alt={item.productName}
+                                            className="product-image"
+                                            style={{ width: '100px', height: 'auto' }}
+                                        />
+                                    </div>
+                                    <span>{item.productName}</span>
+                                    <span>{item.price.toLocaleString()} 원</span>
+                                </div>
+                                <div className="dibs-actions">
+                                    <button 
+                                        onClick={(e) => deleteDibs(item.productId, e)} 
+                                        className="delete-button">
+                                        삭제하기
+                                    </button>
+                                    <button 
+                                        onClick={(e) => {
+                                            e.stopPropagation(); 
+                                            saveInBasket(item.productId);
+                                        }} 
+                                        className="basket-button">
+                                        장바구니 담기
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>찜 목록이 비어있습니다.</p>
+                    )}
+                </div>
+
+                <AlertModalOfClickBasketButton
+                    isOpen={modalIsOpen}
+                    onRequestClose={() => setModalIsOpen(false)}
+                    message="장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?"
+                    navigateOnYes={goToBasketPage}
+                    navigateOnNo={() => setModalIsOpen(false)}
+                />
+
+                <FooterComponent />
             </div>
         </div>
     );
-    
 }
 
 export default DibsComponent;

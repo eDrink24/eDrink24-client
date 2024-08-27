@@ -4,6 +4,7 @@ import FooterComponent from '../../components/footer/FooterComponent.js'; // Foo
 import { logout } from '../login/LogoutComponent';
 import './MypageComponent.css';
 
+import back from '../../assets/common/back.png';
 import bell from '../../assets/common/bell.png';
 import userInfo from '../../assets/common/set.png';
 
@@ -72,7 +73,7 @@ function MypageComponent() {
 
                 <div className='myPage-header'>
                     <button className="back-button" onClick={() => { navigate(-1) }}>
-                        <img src="assets/common/backIcon.png" alt="뒤로가기" />
+                        <img src={back} alt="뒤로가기" />
                     </button>
                     <h1>마이페이지</h1>
                     <div>
