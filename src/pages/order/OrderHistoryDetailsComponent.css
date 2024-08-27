@@ -1,278 +1,124 @@
-/* 주문내역 조회 */
-.order-history {
-  position: relative;
-  width: 390px;
-  height: 844px;
-  background: #FFFFFF;
+:root {
+  --font-size-large-body: 18px;   /* 큰 본문 글자 크기 */
+  --font-size-body: 16px;         /* 기본 본문 글자 크기 */
+  --font-size-medium-body: 14px;  /* 중간 본문 글자 크기 */
+  --font-size-small-body: 12px;   /* 작은 본문 글자 크기 */
+  --min-height: 568px;            /* 최소 화면 높이 (iPhone SE 1세대 기준) */
 }
 
-.order-history .rectangle {
-  position: absolute;
-  width: 170px;
-  height: 32px;
-  background: #FFFFFF;
-  border: 1px solid #B3BAC3;
-}
-
-.rectangle-3582 {
-  width: 350px;
-  height: 152px;
-  left: 20px;
-  top: 604px;
-}
-
-.rectangle-3583 {
-  left: 20px;
-  top: 724px;
-}
-
-.rectangle-3584 {
-  left: 200px;
-  top: 724px;
-}
-
-.rectangle-3567 {
-  left: 20px;
-  top: 320px;
-}
-
-.rectangle-3580 {
-  left: 20px;
-  top: 552px;
-}
-
-.rectangle-3575 {
-  left: 200px;
-  top: 320px;
-}
-
-.rectangle-3581 {
-  left: 200px;
-  top: 552px;
-}
-
-.product-title, .order-date {
-  position: absolute;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: 'Spoqa Han Sans Neo', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 14px;
-  letter-spacing: -0.408px;
-  color: #142129;
 }
 
-.product-title-1 {
-  width: 189px;
-  left: 136px;
-  top: 208px;
+html, body {
+  min-height: var(--min-height);  /* 최소 높이 설정 */
 }
 
-.product-title-2 {
-  width: 131px;
-  left: 136px;
-  top: 440px;
-}
+/**************************************************************************************************/
 
-.product-title-3 {
-  width: 134px;
-  left: 136px;
-  top: 612px;
-}
-
-.order-date-1 {
-  width: 82px;
-  left: 20px;
-  top: 166px;
-}
-
-.quantity, .price, .currency {
-  position: absolute;
-  font-family: 'Spoqa Han Sans Neo', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 14px;
-  letter-spacing: -0.408px;
-  color: #687787;
-}
-
-.quantity-1 {
-  width: 55px;
-  left: 136px;
-  top: 230px;
-}
-
-.quantity-2 {
-  width: 55px;
-  left: 136px;
-  top: 462px;
-}
-
-.quantity-3 {
-  width: 55px;
-  left: 136px;
-  top: 634px;
-}
-
-.price {
-  font-weight: 700;
-  color: #142129;
-}
-
-.price-1 {
-  width: 44px;
-  left: 136px;
-  top: 278px;
-}
-
-.price-2 {
-  width: 44px;
-  left: 136px;
-  top: 510px;
-}
-
-.price-3 {
-  width: 52px;
-  left: 136px;
-  top: 682px;
-}
-
-.currency {
-  background: #142129;
-}
-
-.currency-1 {
-  width: 10.67px;
-  left: 182px;
-  top: 278px;
-}
-
-.currency-2 {
-  width: 10.67px;
-  left: 182px;
-  top: 510px;
-}
-
-.currency-3 {
-  width: 10.67px;
-  left: 190px;
-  top: 682px;
-}
-
-.action-text {
-  position: absolute;
-  width: 40.33px;
-  height: 10.88px;
-  font-family: 'Spoqa Han Sans Neo', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 10px;
-  text-align: center;
-  letter-spacing: -0.408px;
-  color: #000000;
-}
-
-.action-text-reorder {
-  left: 88.81px;
-  top: 735px;
-}
-
-.action-text-review {
-  left: 265px;
-  top: 735px;
-}
-
-.vector {
-  position: absolute;
-  background: #142129;
-}
-
-/* Additional Styles for specific vectors */
-.vector-1 {
-  width: 8.89px;
-  height: 10.82px;
-  left: 110.58px;
-  top: 735px;
-}
-
-.vector-2 {
-  width: 9.8px;
-  height: 10.18px;
-  left: 99.59px;
-  top: 735.67px;
-}
-
-.vector-3 {
-  width: 9.46px;
-  height: 10.85px;
-  left: 88.81px;
-  top: 735px;
-}
-
-.vector-4 {
-  width: 9.07px;
-  height: 10.85px;
-  left: 296.26px;
-  top: 735px;
-}
-
-/* Navigation Bar */
-.navbar {
-  position: absolute;
-  width: 390px;
-  height: 88px;
-  left: 0px;
-  top: 756px;
-  background: #FFFFFF;
-  border-top: 1px solid #B3BAC3;
-}
-
-.navbar-item {
-  position: absolute;
-  width: 97px;
-  height: 88px;
-  background: #FFFFFF;
+.orderDetails-wrapper {
+  min-width: 344px;
+  max-width: 430px;
+  width:100%;
+  height:100%;
   display: flex;
-  justify-content: center;
+  margin: 0 auto;
+  min-height: var(--min-height);  /* 최소 높이 설정 */
+}
+
+.orderDetails-container {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+/**************************************************************************************************/
+/*상단 네비게이션*/
+.orderDetails-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
+  height: 58px;
+  padding: 0 8px;
 }
 
-.navbar-item-home {
-  left: 0px;
+.orderDetails-header h1 {
+  font-size: var(--font-size-large-body); /* 큰 글자 크기 */
+  font-weight: 700;
+  color: #191919;
+  margin: 0 auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.navbar-item-search {
-  left: 98px;
+.orderDetails-header button {
+  width: 44px;
+  height: 58px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.navbar-item-receipt {
-  left: 195px;
-}
-
-.navbar-item-my {
-  left: 293px;
-}
-
-/* Navbar Icons */
-.icon-home, .icon-search, .icon-receipt, .icon-my {
+.orderDetails-header img {
   width: 24px;
   height: 24px;
 }
 
-.icon-home {
-  left: 37px;
+/**************************************************************************************************/
+.orderDetails-section {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 100px;
 }
 
-.icon-search {
-  left: 135px;
+.orderDetails-summaryTitle {
+  width: 100%;
+  display: flex;
+  margin: 16px 0;
 }
 
-.icon-receipt {
-  left: 232px;
+.orderDetails-summaryTitle h1 {
+  font-size: var(--font-size-large-body);
+  font-weight: 700;
+  color: #191919;
 }
 
-.icon-my {
-  left: 330px;
+.subTitle-box {
+  margin: 16px 0;
+}
+
+.orderDetails-subTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.orderDetails-subTitle span {
+  margin: 8px 0;
+}
+
+.subTitle-box2 {
+  margin: 16px 0;
+}
+
+.orderDetails-subTitle2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: red;
+  font-size: var(--font-size-large-body);
+}
+
+.orderDetails-subTitle2 span {
+  margin: 8px 0;
 }
