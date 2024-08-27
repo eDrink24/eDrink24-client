@@ -120,8 +120,6 @@ const AllProductComponent = () => {
 
             setProducts(updatedProducts);
 
-            console.log("AAAAAAAAAA", resData);
-
             if (productId) {
                 const foundProduct = resData.find(prod => prod.productId === parseInt(productId));
                 setProduct(foundProduct || null);

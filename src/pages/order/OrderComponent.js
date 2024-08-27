@@ -34,11 +34,7 @@ function OrderComponent() {
     const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
 
-    //const [selectedCoupon, setSelectedCoupon] = useState(false);
-
-    console.log()
     const navigate = useNavigate();
-
 
     // 총액 계산 함수 pkh
     function calculateTotals() {
@@ -126,6 +122,7 @@ function OrderComponent() {
 
             setBasketItemsList(basketItems);
             console.log('Product Details Map:', Array.from(productDetailsMap.entries()));
+            console.log(">>>>>>>>>>>>>>>",basketItemsList);
             setProductDetailsMap(productDetailsMap);
         } catch (error) {
             console.error('Error fetching product details:', error);
@@ -200,6 +197,7 @@ function OrderComponent() {
             const orderAmount = finalAmount;
             const pointAmount = pointsToUse;
             const couponId = coupon ? coupon.couponId : null;
+            
 
             if (pickupType === 'TODAY') {
                 pickupDate.setDate(orderDate.getDate() + 1);
@@ -210,6 +208,7 @@ function OrderComponent() {
             return {
                 storeId,
                 userId,
+                ordersId: item.ordersId,
                 basketId: item.basketId,
                 productId: item.productId,
                 orderDate: orderDate.toISOString(),
@@ -222,7 +221,8 @@ function OrderComponent() {
                 changeStatus: 'ORDERED',
                 changeDate: orderDate.toISOString(),
                 orderAmount: orderAmount,
-                addedPoint: addedPoint,
+                point: addedPoint,
+                saveDate: orderDate.toISOString(),
                 pointAmount: pointAmount,
                 totalPoint: totalPoint,
                 couponId: couponId
