@@ -114,7 +114,7 @@ function HomeComponent() {
                 <div className="best-product">
                     <div className="bestTitle">
                         <h1>오늘픽업</h1>
-                        <Link to="/allproduct/:category1" className='more-button'>더보기 {">"}</Link>
+                        <Link to="/allproduct/:category1" className='moreButton'>더보기 {">"}</Link>
                     </div>
                     <div className="ProductCard">
                         <ProductCardComponent products={todayPickupProducts.slice(0, 6)} />
@@ -125,7 +125,7 @@ function HomeComponent() {
                 <div className="best-product">
                     <div className="bestTitle">
                         <h1>전체상품</h1>
-                        <Link to="/allproduct/:category1" className='more-button'>더보기 {">"}</Link>
+                        <Link to="/allproduct/:category1" className='moreButton'>더보기 {">"}</Link>
                     </div>
                     <div className="ProductCard2">
                         <OtherProductCardComponent products={products.slice(0, 9)} />
