@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FooterComponent from '../../components/footer/FooterComponent.js'; // Footer 컴포넌트 import
 import { logout } from '../login/LogoutComponent';
+import CouponComponent from './CouponComponent.js';
 import './MypageComponent.css';
 
 import back from '../../assets/common/back.png';
@@ -26,6 +27,9 @@ function MypageComponent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [customerData, setCustomerData] = useState(null);
     const [isOpen, setIsOpen] = useState(false); // 아코디언 상태 관리
+
+    const [coupons, setCoupons] = useState([]); // 쿠폰 데이터 상태
+    const [isModalOpen, setIsModalOpen] = useState(false); // 쿠폰 모달 상태
 
     useEffect(() => {
         // 로그인 상태 확인
@@ -65,7 +69,7 @@ function MypageComponent() {
 
     const toggleAccordion = () => {
         setIsOpen(!isOpen); // 아코디언 열림/닫힘 상태 전환
-    };
+    };  
 
     return (
         <div className="myPage-wrapper">
@@ -108,7 +112,7 @@ function MypageComponent() {
                         <img src={point} alt="포인트" />
                         <span>포인트 <span className="myPage-additionalInfo">{isLoggedIn && customerData ? customerData.totalPoint : undefined}</span></span>
                     </div>
-                    <div className="myPage-icon-item">
+                    <div className="myPage-icon-item" onClick={() => setIsModalOpen(true)}>
                         <img src={coupon} alt="쿠폰" />
                         <span>쿠폰</span>
                     </div>
@@ -216,6 +220,8 @@ function MypageComponent() {
                         </div>
                     )}
                 </div>
+
+                {isModalOpen && <CouponComponent onClose={() => setIsModalOpen(false)} />}
 
             </div>
             <FooterComponent />
