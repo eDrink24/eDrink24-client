@@ -376,14 +376,14 @@ function OrderComponent() {
                                         {couponList.some(couponItem => couponItem?.used !== true) ? (
                                             couponList.map(couponItem => (
                                                 couponItem?.used !== true && (
-                                                    <li key={couponItem.couponId} className="coupon-list">
+                                                    <div key={couponItem.couponId} className="coupon-list">
                                                         <button
                                                             onClick={() => handleCouponSelection(couponItem)}
                                                             className={coupon?.couponId === couponItem.couponId ? 'selected' : ''}
                                                         >
-                                                            신규회원 {couponItem?.discountAmount?.toLocaleString()} 원 할인 쿠폰
+                                                            {couponItem?.discountAmount?.toLocaleString()} 원 할인 쿠폰
                                                         </button>
-                                                    </li>
+                                                    </div>
                                                 )
                                             ))
                                         ) : (
