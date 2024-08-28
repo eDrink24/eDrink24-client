@@ -5,7 +5,6 @@ import AlertModal from '../../components/alert/AlertModal';
 
 function PaymentApproval() {
     const location = useLocation();
-    const navigate = useNavigate();
 
     const query = new URLSearchParams(location.search);
 
