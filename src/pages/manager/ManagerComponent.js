@@ -33,7 +33,7 @@ const ManagerComponent = () => {
 
   const checkBrNum = async () => {
     try {
-      const response = await fetch(`http://localhost:8090/eDrink24/api/checkBrNum/${storeId}/${brNum}`);
+      const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/checkBrNum/${storeId}/${brNum}`);
       const resdata = await response.json();
 
       // 빈 배열 또는 유효하지 않은 데이터 처리
@@ -51,7 +51,7 @@ const ManagerComponent = () => {
 
   const updateToManager = async () => {
     try {
-      const response = await fetch(`http://localhost:8090/eDrink24/api/updateToManager`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/updateToManager`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'

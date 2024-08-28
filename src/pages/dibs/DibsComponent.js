@@ -7,7 +7,7 @@ import FooterComponent from '../../components/footer/FooterComponent.js';
 import './DibsComponent.css';
 
 function DibsComponent() {
-    
+
     const [dibs, setDibs] = useState([]);
     const userId = localStorage.getItem('userId');
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -17,7 +17,7 @@ function DibsComponent() {
     // 찜 목록 가져오기
     const fetchDibs = async () => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showAllDibs/${userId}`);
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showAllDibs/${userId}`);
             if (response.status === 200) {
                 const data = await response.json();
                 setDibs(data);
@@ -40,7 +40,7 @@ function DibsComponent() {
         try {
             if (liked) {
                 // 찜 추가
-                const response = await fetch(`http://localhost:8090/eDrink24/addDibs/${userId}`, {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/addDibs/${userId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ function DibsComponent() {
                 }
             } else {
                 // 찜 삭제
-                const response = await fetch(`http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`, {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/cancelDIb/${userId}/${productId}`, {
                     method: 'DELETE'
                 });
                 if (response.ok) {
@@ -68,7 +68,7 @@ function DibsComponent() {
     const deleteDibs = async (productId, event) => {
         event.stopPropagation(); // 버튼 클릭 시 상세 페이지로 이동 방지
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/cancelDIb/${userId}/${productId}`, {
                 method: 'DELETE',
             });
             if (response.ok) {
@@ -91,7 +91,7 @@ function DibsComponent() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/saveProductToBasket`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/saveProductToBasket`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -158,16 +158,16 @@ function DibsComponent() {
                                     <span>{item.price.toLocaleString()} 원</span>
                                 </div>
                                 <div className="dibs-actions">
-                                    <button 
-                                        onClick={(e) => deleteDibs(item.productId, e)} 
+                                    <button
+                                        onClick={(e) => deleteDibs(item.productId, e)}
                                         className="delete-button">
                                         삭제하기
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={(e) => {
-                                            e.stopPropagation(); 
+                                            e.stopPropagation();
                                             saveInBasket(item.productId);
-                                        }} 
+                                        }}
                                         className="basket-button">
                                         장바구니 담기
                                     </button>

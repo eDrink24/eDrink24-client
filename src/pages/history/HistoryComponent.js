@@ -27,7 +27,7 @@ function HistoryComponent() {
     // 고객 데이터를 서버에서 가져오는 함수
     const fetchCustomerData = async (token, userId) => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/selectCustomerMyPage/${userId}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/selectCustomerMyPage/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ function HistoryComponent() {
     // 주문 내역을 서버에서 가져오는 함수
     const fetchOrderHistory = async (userId) => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/getOrderHistory/${userId}`, { // userId 사용
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/getOrderHistory/${userId}`, { // userId 사용
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ function HistoryComponent() {
             for (const order of orders) {
                 for (const item of order.items) {
                     if (!detailsMap.has(item.productId)) {
-                        const response = await fetch(`http://localhost:8090/eDrink24/getProductDetails/${item.productId}`, {
+                        const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/getProductDetails/${item.productId}`, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',

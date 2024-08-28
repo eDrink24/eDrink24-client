@@ -28,7 +28,7 @@ const FindIdModal = ({ isOpen, onRequestClose }) => {
             email: email
         };
 
-        const response = await fetch('http://localhost:8090/eDrink24/findId', {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/findId`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

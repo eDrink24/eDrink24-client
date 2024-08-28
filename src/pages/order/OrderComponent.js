@@ -61,7 +61,7 @@ function OrderComponent() {
     // 포인트 조회 함수 pkh
     const fetchUserPoints = async () => {
         try {
-            const response = await axios.get(`http://localhost:8090/eDrink24/showTotalPoint/${userId}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_API_URL}/showTotalPoint/${userId}`);
             if (response.status === 200) {
                 setUserPoints(response.data);
                 setPointButtonText("포인트 적용");
@@ -151,7 +151,7 @@ function OrderComponent() {
         }
 
         try {
-            const response = await axios.get(`http://localhost:8090/eDrink24/getBasketItems/${basketId}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_API_URL}/getBasketItems/${basketId}`);
             if (response.status === 200) {
                 return response.data;
             } else {
@@ -174,7 +174,7 @@ function OrderComponent() {
     const fetchCoupons = async () => {
         setLoadingCoupons(true);
         try {
-            const response = await axios.get(`http://localhost:8090/eDrink24/showAllCoupon/userId/${userId}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_API_URL}/showAllCoupon/userId/${userId}`);
             if (response.status === 200) {
                 setCouponList(response.data);
                 setShowCouponList(true);
@@ -244,7 +244,7 @@ function OrderComponent() {
             localStorage.setItem('userId', userId);
 
             // 결제요청 API - Young5097
-            const paymentResponse = await axios.post('http://localhost:8090/eDrink24/api/kakaoPay', localStorage.getItem("orderTransactionDTO"),
+            const paymentResponse = await axios.post(`${process.env.REACT_APP_SERVER_API_URL}/api/kakaoPay`, localStorage.getItem("orderTransactionDTO"),
                 {
                     headers: {
                         'Content-Type': 'application/json'
@@ -273,6 +273,16 @@ function OrderComponent() {
     const handleDirectHome = () => {
         navigate("/");
     };
+
+    // 포인트 입력 취소 함수 pkh
+    const handleCancelPoints = () => {
+        setPointsToUse(0); // 포인트 사용 입력창을 0으로 초기화
+        setAppliedPoints(null); // 적용된 포인트를 초기화
+        setPointButtonText('포인트 조회'); // 버튼 텍스트를 원래 상태로 변경
+        setUserPoints(null); // 조회된 포인트를 초기화 (필요시)
+        calculateTotals(); // 총액을 다시 계산
+    };
+
 
     return (
 
@@ -366,14 +376,14 @@ function OrderComponent() {
                                         {couponList.some(couponItem => couponItem?.used !== true) ? (
                                             couponList.map(couponItem => (
                                                 couponItem?.used !== true && (
-                                                    <li key={couponItem.couponId} className="coupon-list">
+                                                    <div key={couponItem.couponId} className="coupon-list">
                                                         <button
                                                             onClick={() => handleCouponSelection(couponItem)}
                                                             className={coupon?.couponId === couponItem.couponId ? 'selected' : ''}
                                                         >
-                                                            신규회원 {couponItem?.discountAmount?.toLocaleString()} 원 할인 쿠폰
+                                                            {couponItem?.discountAmount?.toLocaleString()} 원 할인 쿠폰
                                                         </button>
-                                                    </li>
+                                                    </div>
                                                 )
                                             ))
                                         ) : (
@@ -402,22 +412,27 @@ function OrderComponent() {
                             <button className="custom-button1" onClick={handleButtonClick}>
                                 {pointButtonText}
                             </button>
-
-                            {userPoints > 0 && (
-                                <div className="point-selection">
-                                    <input
-                                        type="number"
-                                        value={pointsToUse}
-                                        onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
-                                        placeholder="사용할 포인트 입력"
-                                        min="0"
-                                    />
-                                    <button className="custom-button1" onClick={handleMaxPoints}>
-                                        전액 사용
-                                    </button>
-                                </div>
-                            )}
                         </div>
+
+                        {userPoints > 0 && (
+                            <div className="point-selection">
+                                <input
+                                    className="point-input"
+                                    type="number"
+                                    value={pointsToUse}
+                                    onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
+                                    placeholder="사용할 포인트 입력"
+                                    min="0"
+                                />
+                                <button className="custom-button1" onClick={handleMaxPoints}>
+                                    전액 사용
+                                </button>
+                                <button className="custom-button1 cancel-button" onClick={handleCancelPoints}>
+                                    취소
+                                </button>
+                            </div>
+                        )}
+
                     </div>
 
                 </div>

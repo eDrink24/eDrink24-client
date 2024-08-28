@@ -58,7 +58,7 @@ function SetPlaceComponent() {
                 fetchCurrentLocation();
             }
 
-            const response = await fetch('http://localhost:8090/eDrink24/api/findStore/findAll', {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findStore/findAll`, {
                 method: "GET"
             });
 
@@ -149,7 +149,7 @@ function SetPlaceComponent() {
     const handleSetStore = async () => {
         if (choiceStore) {
             try {
-                const response = await fetch('http://localhost:8090/eDrink24/api/updateCustomerToStore', {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/updateCustomerToStore`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

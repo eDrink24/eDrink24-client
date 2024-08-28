@@ -20,7 +20,7 @@ function SearchComponent() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/api/search/${encodeURIComponent(trimKeyword)}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/search/${encodeURIComponent(trimKeyword)}`, {
                 method: "GET"
             });
 
@@ -71,7 +71,7 @@ function SearchComponent() {
             if (currentStoreId) {
 
                 try {
-                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`,
+                    const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findInventoryByStoreId/${parseInt(currentStoreId)}`,
                         { method: 'GET' }
                     );
                     if (response.ok) {

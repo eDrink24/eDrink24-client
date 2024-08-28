@@ -37,7 +37,7 @@ const ReviewComponent = () => {
         };
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/addReview`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/addReview`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

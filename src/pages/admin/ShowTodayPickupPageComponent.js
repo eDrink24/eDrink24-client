@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import './ShowTodayPickupPageComponent.css'; // CSS 파일을 임포트합니다.
 import { format, parseISO } from 'date-fns';
+import AlertModal from '../../components/alert/AlertModal';
 
 // 즉시픽업
 const ShowTodayPickupPageComponent = () => {
     const [orders, setOrders] = useState([]);
     const [selectedOrdersId, setSelectedOrdersId] = useState([]);
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+
     const storeId = localStorage.getItem("myStoreId");
+
+    // 알림창 열기
+    const openAlert = (message) => {
+        setAlertMessage(message);
+        setAlertOpen(true);
+    }
+
+    // 알림창 닫기
+    const closeAlert = () => {
+        setAlertOpen(false);
+    }
 
     // 컴포넌트가 처음 렌더링될 때만 주문 목록을 가져옵니다.
     useEffect(() => {
@@ -37,7 +52,7 @@ const ShowTodayPickupPageComponent = () => {
     // 즉시픽업 목록페이지 (아직 픽업이 완료되지 않았을 때)
     const showOrdersToAdminPageOrders = async () => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showPickupPage/${storeId}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showPickupPage/${storeId}`, {
                 method: "GET"
             });
 
@@ -61,12 +76,13 @@ const ShowTodayPickupPageComponent = () => {
     const handlePickupComplete = async () => {
         try {
             for (const ordersId of selectedOrdersId) {
-                const response = await fetch(`http://localhost:8090/eDrink24/updateStateAfterCompletedPickup/${ordersId}`, {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/updateStateAfterCompletedPickup/${ordersId}`, {
                     method: "PUT"
                 });
 
                 showOrdersToAdminPageOrders();
                 setSelectedOrdersId([]);  // 선택된 항목 초기화
+                openAlert("픽업완료 처리되었습니다!");
             }
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -75,6 +91,11 @@ const ShowTodayPickupPageComponent = () => {
 
     return (
         <div className="admin-container">
+            <AlertModal
+                isOpen={alertOpen}
+                onRequestClose={closeAlert}
+                message={alertMessage}
+            />
             <h1 className="admin-title">즉시픽업 목록</h1>
             <div className="order-list">
                 <table className="order-table">

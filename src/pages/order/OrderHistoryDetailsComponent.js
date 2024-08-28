@@ -35,7 +35,7 @@ function OrderHistoryDetailsComponent() {
         try {
             const dateObject = new Date(orderDate);
             const formattedOrderDate = formatDate(dateObject);
-            const response = await fetch(`http://localhost:8090/eDrink24/showOrderHistoryDetails/${userId}/${formattedOrderDate}`);
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showOrderHistoryDetails/${userId}/${formattedOrderDate}`);
             if (response.status === 200) {
                 const data = await response.json();
                 setOrderHistoryDetails(data);
@@ -93,7 +93,7 @@ function OrderHistoryDetailsComponent() {
                 return;
             }
 
-            const response = await fetch(`http://localhost:8090/eDrink24/api/findStore/${currentStoreId}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findStore/${currentStoreId}`, {
                 method: "GET"
             });
             if (response.ok) {

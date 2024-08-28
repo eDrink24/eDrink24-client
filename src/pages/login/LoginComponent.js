@@ -109,64 +109,64 @@ function LoginComponent() {
                 </div>
 
                 <div className="login-main-content">
-                <div className='login-main-title'>
-                    <span>
-                        <strong><img src={eDrinkLogo} alt="메인로고"/></strong>
-                    </span>
-                    <span><strong>오신 것을 환영해요!</strong></span>
-                </div>
-
-                <Form method="post">
-                    <span>이메일(아이디)</span>
-                    <input
-                        type="text"
-                        name="loginId"
-                        className="login-input"
-                        placeholder="아이디를 입력해 주세요"
-                        value={loginId}
-                        onChange={(e) => setLoginId(e.target.value)}
-                        required
-                    />
-                    
-                    <span>비밀번호</span>
-                    <div className="password-container">
-                        <input
-                            type={isPasswordVisible ? "text" : "password"} // 상태에 따라 input type 변경
-                            name="pw"
-                            className="password-input"
-                            placeholder="비밀번호를 입력해 주세요"
-                            value={pw}
-                            onChange={(e) => setPw(e.target.value)}
-                            required
-                        />
-                        <button type="button" className="show-password" onClick={togglePasswordVisibility}>
-                            <img 
-                                src={isPasswordVisible ? eyeClosedIcon : eyeOpenIcon} 
-                                alt={isPasswordVisible ? "비밀번호 숨기기" : "비밀번호 보기"} 
-                            />
-                        </button>
+                    <div className='login-main-title'>
+                        <span>
+                            <strong><img src={eDrinkLogo} alt="메인로고" /></strong>
+                        </span>
+                        <span><strong>오신 것을 환영해요!</strong></span>
                     </div>
 
-                    <button type="submit" className="login-button">로그인</button>
-                </Form>
+                    <Form method="post">
+                        <span>이메일(아이디)</span>
+                        <input
+                            type="text"
+                            name="loginId"
+                            className="login-input"
+                            placeholder="아이디를 입력해 주세요"
+                            value={loginId}
+                            onChange={(e) => setLoginId(e.target.value)}
+                            required
+                        />
 
-                <div className="options">
-                    <a onClick={openFindIdModal}>아이디 찾기</a>
-                    <a>{'|'}</a>
-                    <a onClick={openFindPwModal}>비밀번호 찾기</a>
-                </div>
+                        <span>비밀번호</span>
+                        <div className="password-container">
+                            <input
+                                type={isPasswordVisible ? "text" : "password"} // 상태에 따라 input type 변경
+                                name="pw"
+                                className="password-input"
+                                placeholder="비밀번호를 입력해 주세요"
+                                value={pw}
+                                onChange={(e) => setPw(e.target.value)}
+                                required
+                            />
+                            <button type="button" className="show-password" onClick={togglePasswordVisibility}>
+                                <img
+                                    src={isPasswordVisible ? eyeClosedIcon : eyeOpenIcon}
+                                    alt={isPasswordVisible ? "비밀번호 숨기기" : "비밀번호 보기"}
+                                />
+                            </button>
+                        </div>
 
-                <div className="signUp-options">
-                    <p>혹시, 계정이 없으신가요?</p>
-                    <button className="kaKao-signUp" onClick={() => window.location.href = KAKAO_AUTH_URL}>
-                        <img src={kaKao} alt="카카오" />
-                        <span>카카오로 가입하기</span>
-                    </button>
-                    <button className="normal-signUp" onClick={handleDirectNormalSignup}>
-                        <img src={at} alt="골뱅이" />
-                        <span>일반회원으로 가입하기</span>
-                    </button>
-                </div>
+                        <button type="submit" className="login-button">로그인</button>
+                    </Form>
+
+                    <div className="options">
+                        <a onClick={openFindIdModal}>아이디 찾기</a>
+                        <a>{'|'}</a>
+                        <a onClick={openFindPwModal}>비밀번호 찾기</a>
+                    </div>
+
+                    <div className="signUp-options">
+                        <p>혹시, 계정이 없으신가요?</p>
+                        <button className="kaKao-signUp" onClick={() => window.location.href = KAKAO_AUTH_URL}>
+                            <img src={kaKao} alt="카카오" />
+                            <span>카카오로 가입하기</span>
+                        </button>
+                        <button className="normal-signUp" onClick={handleDirectNormalSignup}>
+                            <img src={at} alt="골뱅이" />
+                            <span>일반회원으로 가입하기</span>
+                        </button>
+                    </div>
                 </div>
 
             </div>
@@ -181,7 +181,7 @@ export async function action({ request }) {
         pw: loginData.get("pw")
     };
 
-    const response = await fetch('http://localhost:8090/eDrink24/authenticate', {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/authenticate`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

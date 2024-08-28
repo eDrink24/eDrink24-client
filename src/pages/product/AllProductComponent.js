@@ -91,7 +91,7 @@ const AllProductComponent = () => {
     // 카테고리에 따른 제품 목록 가져오기
     const selectCategory1 = async (category1) => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory1/${category1}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductByCategory1/${category1}`, {
                 method: "GET"
             });
 
@@ -101,7 +101,7 @@ const AllProductComponent = () => {
 
             const resData = await response.json();
             // 찜 목록 가져오기
-            const likedResponse = await fetch(`http://localhost:8090/eDrink24/showAllDibs/${userId}`, {
+            const likedResponse = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showAllDibs/${userId}`, {
                 method: "GET"
             });
 
@@ -176,7 +176,7 @@ const AllProductComponent = () => {
         const fetchInvByStoreId = async () => {
             if (currentStoreId) {
                 try {
-                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`, {
+                    const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findInventoryByStoreId/${parseInt(currentStoreId)}`, {
                         method: 'GET'
                     });
 
@@ -212,7 +212,7 @@ const AllProductComponent = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/saveProductToBasket`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/saveProductToBasket`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -302,8 +302,8 @@ const AllProductComponent = () => {
         }
 
         const url = liked
-            ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
-            : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
+            ? `${process.env.REACT_APP_SERVER_API_URL}/addDibs/${userId}` // liked가 true면 찜 추가
+            : `${process.env.REACT_APP_SERVER_API_URL}/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
 
         try {
             const response = await fetch(url, {
