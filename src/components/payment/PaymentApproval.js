@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import AlertModal from '../../components/alert/AlertModal';
 
 function PaymentApproval() {
     const location = useLocation();
@@ -11,6 +12,22 @@ function PaymentApproval() {
     const pgToken = query.get('pg_token');
     const tid = localStorage.getItem('tid');
     const userId = localStorage.getItem('userId');
+
+    const [alertOpen, setAlertOpen] = useState(false); // 알림창 상태
+    const [alertMessage, setAlertMessage] = useState(""); // 알림창 메시지
+    const [navigateOnClose, setNavigateOnClose] = useState(false); // 모달 닫힐 때 navigate
+
+    // 알림창 열기
+    const openAlert = (message, navigateOnClose = false) => {
+        setAlertMessage(message);
+        setAlertOpen(true);
+        setNavigateOnClose(navigateOnClose);
+    }
+
+    // 알림창 닫기
+    const closeAlert = () => {
+        setAlertOpen(false);
+    }
 
     useEffect(() => {
         const approvePayment = async () => {
@@ -65,13 +82,22 @@ function PaymentApproval() {
         localStorage.removeItem("selectedBaskets");
         localStorage.removeItem("orderTransactionDTO");
         localStorage.removeItem("tid");
-        navigate("/");
+        openAlert("결제가 완료되었습니다!", true);
     }
 
     return (
-        <div>
-            <h1>결제가 진행 중입니다. 잠시만 기다려 주세요...</h1>
-        </div>
+        <>
+            <div>
+                <h1>결제가 진행 중입니다. 잠시만 기다려 주세요...</h1>
+            </div>
+            <AlertModal
+                isOpen={alertOpen}
+                onRequestClose={closeAlert}
+                message={alertMessage}
+                navigateOnClose={navigateOnClose}
+                navigateClosePath={"/"}
+            />
+        </>
     );
 }
 
