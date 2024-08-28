@@ -204,9 +204,16 @@ html, body {
 .discount-container1 {
   width: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column; /* 컨테이너를 세로로 나열 */
   margin: 16px 0;
+}
+
+.first-row {
+  display: flex;
+  width: 100%;
+  align-items: center;
   justify-content: space-between; /* text-box와 button을 나란히 배치 */
+  margin-bottom: 16px; /* 첫 행과 다음 행 사이에 간격 추가 */
 }
 
 .text-box {
@@ -216,7 +223,6 @@ html, body {
   flex-grow: 1;
   border-radius: 4px;
   text-align: center;
-  margin-right: 8px;
   font-size: var(--font-size-medium-body);
   font-weight: 400;
 }
@@ -234,12 +240,11 @@ html, body {
 }
 
 .point-selection {
-  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: right;
+  justify-content: flex-end; /* 입력창과 버튼을 오른쪽 정렬 */
   gap: 8px; /* 입력창과 버튼 사이 간격 */
 }
+
 
 .custom-button {
   padding: 16px 20px;

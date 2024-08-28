@@ -401,7 +401,8 @@ function OrderComponent() {
                         </div>
 
                         <div className="discount-container1">
-                            <div>
+
+                            <div className="first-row">
                                 <div className="text-box">
                                     {appliedPoints === null
                                         ? userPoints === null
@@ -433,8 +434,8 @@ function OrderComponent() {
                                     </button>
                                 </div>
                             )}
-
                         </div>
+
 
                     </div>
 
