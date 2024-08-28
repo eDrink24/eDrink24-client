@@ -2,13 +2,14 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { json, useLoaderData, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import back from '../../assets/common/back.png';
+import back from '../../assets/common/backIcon.png';
 import home from '../../assets/common/home.png';
 import { drawRoute, getLoadDirection } from "../../service/directionService";
 import { getAuthToken } from '../../util/auth';
 import { selectedReservationPickupBaskets as recoilReservationPickupBaskets, selectedTodayPickupBaskets as recoilTodayPickupBaskets } from './BasketAtom';
 import './ListToBasketComponent.css';
 import TodayItem from './TodayItemComponent'; // TodayItem 컴포넌트 추가
+import AlertModal from '../../components/alert/AlertModal';
 
 
 function ListToBasketComponent() {
@@ -134,7 +135,7 @@ function ListToBasketComponent() {
     //주문페이지로 이동
     const moveToOrderPage = () => {
         if (selectedTodayPickupBaskets.length === 0 && selectedReservationPickupBaskets.length === 0) {
-            alert("주문페이지로 이동하려면 적어도 하나의 제품을 선택해주세요.");
+            openAlert("주문페이지로 이동하려면 적어도 하나의 제품을 선택해주세요.");
             return;
         }
 
@@ -338,130 +339,151 @@ function ListToBasketComponent() {
         console.log(error);
     };
 
+    const [alertOpen, setAlertOpen] = useState(false); // 알림창 상태
+    const [alertMessage, setAlertMessage] = useState(""); // 알림창 메시지
+
+    // 알림창 열기
+    const openAlert = (message) => {
+        setAlertMessage(message);
+        setAlertOpen(true);
+    }
+
+    // 알림창 닫기
+    const closeAlert = () => {
+        setAlertOpen(false);
+    }
+
+
+
     return (
         <div className="basket-wrapper">
-        <div className="basket-container">
-            <div className='basket-header'>
-                <button className="back-button" onClick={() => { navigate(-1) }}>
-                    <img src={back} alt="뒤로가기" />
-                </button>
-                <h1>장바구니</h1>
-                <button className="bag-button" onClick={() => { navigate("/") }}>
-                    <img src={home} alt="홈" />
-                </button>
-            </div>
-
-            {/* (오늘픽업/예약픽업) 네비게이션 바 */}
-            <div className="basket-pickup-bar">
-                <div className={`basket-nav-pickup ${activeSection === 'todayPickup' ? 'active' : ''}`}
-                    onClick={() => scrollToSection(todayPickupRef, 'todayPickup')}>
-                    오늘픽업
+            <div className="basket-container">
+                <div className='basket-header'>
+                    <button className="back-button" onClick={() => { navigate(-1) }}>
+                        <img src={back} alt="뒤로가기" />
+                    </button>
+                    <h1>장바구니</h1>
+                    <button className="bag-button" onClick={() => { navigate("/") }}>
+                        <img src={home} alt="홈" />
+                    </button>
                 </div>
-                <div className={`basket-nav-pickup ${activeSection === 'reservationPickup' ? 'active' : ''}`}
-                    onClick={() => scrollToSection(reservationPickupRef, 'reservationPickup')}>
-                    예약픽업
-                </div>
-            </div>
 
-            {/* 메인 콘텐츠 컨테이너 */}
-            <div className="basket-content-container">
-                <div ref={todayPickupRef} className="basket-content">
-                    <span className="title1">
-                        <strong>오늘픽업</strong>
-                    </span>
-                    <div className="basket-today-pickup">
-                        {todayPickupBaskets.length > 0 && (
-                            <TodayItem
-                                baskets={todayPickupBaskets}
-                                selectedBaskets={selectedTodayPickupBaskets}
-                                toggleSelectAll={() => toggleSelectAll('todayPickup')}
-                                deleteSelectedBaskets={deleteSelectedBaskets}
-                                toggleSelectBasket={(basketId) => toggleSelectBasket('todayPickup', basketId)}
-                                updateQuantity={updateQuantity}
-                            />
-                        )}
+                {/* (오늘픽업/예약픽업) 네비게이션 바 */}
+                <div className="basket-pickup-bar">
+                    <div className={`basket-nav-pickup ${activeSection === 'todayPickup' ? 'active' : ''}`}
+                        onClick={() => scrollToSection(todayPickupRef, 'todayPickup')}>
+                        오늘픽업
+                    </div>
+                    <div className={`basket-nav-pickup ${activeSection === 'reservationPickup' ? 'active' : ''}`}
+                        onClick={() => scrollToSection(reservationPickupRef, 'reservationPickup')}>
+                        예약픽업
                     </div>
                 </div>
 
-                <div ref={reservationPickupRef} className="basket-content">
-                    <span className="title1">
-                        <strong>예약픽업</strong>
-                    </span>
-                    <div className="basket-reservation-pickup">
-                        {reservationPickupBaskets.length > 0 && (
-                            <TodayItem
-                                baskets={reservationPickupBaskets}
-                                selectedBaskets={selectedReservationPickupBaskets}
-                                toggleSelectAll={() => toggleSelectAll('reservationPickup')}
-                                deleteSelectedBaskets={deleteSelectedBaskets}
-                                toggleSelectBasket={(basketId) => toggleSelectBasket('reservationPickup', basketId)}
-                                updateQuantity={updateQuantity}
-                            />
-                        )}
-
-                    </div>
-                </div>
-
-
-                {/* 지도 + 매장변경 */}
-                <div className="basket-content-last">
-                    <span className="title1">
-                        <strong>픽업매장</strong>
-                    </span>
-                    <div className="basket-showStore-map">
-                        {storeData ? (
-                            <Map
-                                center={{ lat: centerMap.latitude, lng: centerMap.longitude }}
-                                style={{ width: '390px', height: '290px' }}
-                                level={5}
-                                ref={mapRef}
-                            >
-                                {locationData.latitude && locationData.longitude && (
-                                    <MapMarker position={{ lat: locationData.latitude, lng: locationData.longitude }} />
-                                )}
-                                <MapMarker
-                                    position={{ lat: storeData.latitude, lng: storeData.longitude }}
-                                    image={{
-                                        src: "assets/store/marker_store.png",
-                                        size: { width: 24, height: 24 },
-                                    }}
+                {/* 메인 콘텐츠 컨테이너 */}
+                <div className="basket-content-container">
+                    <div ref={todayPickupRef} className="basket-content">
+                        <span className="title1">
+                            <strong>오늘픽업</strong>
+                        </span>
+                        <div className="basket-today-pickup">
+                            {todayPickupBaskets.length > 0 && (
+                                <TodayItem
+                                    baskets={todayPickupBaskets}
+                                    selectedBaskets={selectedTodayPickupBaskets}
+                                    toggleSelectAll={() => toggleSelectAll('todayPickup')}
+                                    deleteSelectedBaskets={deleteSelectedBaskets}
+                                    toggleSelectBasket={(basketId) => toggleSelectBasket('todayPickup', basketId)}
+                                    updateQuantity={updateQuantity}
                                 />
-                            </Map>
-                        ) : (
-                            <div className="basket-nostore-message">
-                                단골매장을 설정해주세요!
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
 
-                    {/* 매장보여주기 */}
-                    <div className="basket-set-location">
-                        {storeData && <span className='basket-storeName'><img src='assets/common/location_on.png' alt='location' /> {storeData.storeName}</span>}
-                        <button className='basket-set-location-btn' onClick={() => navigate("/myplace_store")} >다른 매장 선택하기</button>
+                    <div ref={reservationPickupRef} className="basket-content">
+                        <span className="title1">
+                            <strong>예약픽업</strong>
+                        </span>
+                        <div className="basket-reservation-pickup">
+                            {reservationPickupBaskets.length > 0 && (
+                                <TodayItem
+                                    baskets={reservationPickupBaskets}
+                                    selectedBaskets={selectedReservationPickupBaskets}
+                                    toggleSelectAll={() => toggleSelectAll('reservationPickup')}
+                                    deleteSelectedBaskets={deleteSelectedBaskets}
+                                    toggleSelectBasket={(basketId) => toggleSelectBasket('reservationPickup', basketId)}
+                                    updateQuantity={updateQuantity}
+                                />
+                            )}
+
+                        </div>
+                    </div>
+
+
+                    {/* 지도 + 매장변경 */}
+                    <div className="basket-content-last">
+                        <span className="title1">
+                            <strong>픽업매장</strong>
+                        </span>
+                        <div className="basket-showStore-map">
+                            {storeData ? (
+                                <Map
+                                    center={{ lat: centerMap.latitude, lng: centerMap.longitude }}
+                                    style={{ width: '390px', height: '290px' }}
+                                    level={5}
+                                    ref={mapRef}
+                                >
+                                    {locationData.latitude && locationData.longitude && (
+                                        <MapMarker position={{ lat: locationData.latitude, lng: locationData.longitude }} />
+                                    )}
+                                    <MapMarker
+                                        position={{ lat: storeData.latitude, lng: storeData.longitude }}
+                                        image={{
+                                            src: "assets/store/marker_store.png",
+                                            size: { width: 24, height: 24 },
+                                        }}
+                                    />
+                                </Map>
+                            ) : (
+                                <div className="basket-nostore-message">
+                                    단골매장을 설정해주세요!
+                                </div>
+                            )}
+                        </div>
+
+                        {/* 매장보여주기 */}
+                        <div className="basket-set-location">
+                            {storeData && <span className='basket-storeName'><img src='assets/common/location_on.png' alt='location' /> {storeData.storeName}</span>}
+                            <button className='basket-set-location-btn' onClick={() => navigate("/myplace_store")} >다른 매장 선택하기</button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* 장바구니 요약 섹션 */}
-            <div className="basket-summary">
-                <div className="summary-item">
-                    <span>총 상품 수량</span>
-                    <span>{totalQuantity}개</span>
+                {/* 장바구니 요약 섹션 */}
+                <div className="basket-summary">
+                    <div className="summary-item">
+                        <span>총 상품 수량</span>
+                        <span>{totalQuantity}개</span>
+                    </div>
+                    <div className="summary-item">
+                        <span>총 상품금액</span>
+                        <span>{totalAmount.toLocaleString()}원</span>
+                    </div>
+                    <div className="summary-item total">
+                        <span>최종 결제금액</span>
+                        <span>{totalAmount.toLocaleString()}원</span>
+                    </div>
+                    <button onClick={moveToOrderPage} className="order-button">
+                        픽업 주문하기
+                    </button>
                 </div>
-                <div className="summary-item">
-                    <span>총 상품금액</span>
-                    <span>{totalAmount.toLocaleString()}원</span>
-                </div>
-                <div className="summary-item total">
-                    <span>최종 결제금액</span>
-                    <span>{totalAmount.toLocaleString()}원</span>
-                </div>
-                <button onClick={moveToOrderPage} className="order-button">
-                    픽업 주문하기
-                </button>
-            </div>
 
-        </div >
+            </div >
+            <AlertModal
+                isOpen={alertOpen}
+                onRequestClose={closeAlert}
+                message={alertMessage}
+            />
         </div>
     );
 }

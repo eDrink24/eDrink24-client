@@ -136,9 +136,6 @@ function SearchComponent() {
                             <img src={product.defaultImage} alt={product.productName} className="search-product-defaultImage" />
 
                             <div className="search-product-info">
-                                <div className="search-product-rating">
-                                    <span className="search-star">★</span>
-                                </div>
                                 <div className="search-product-enrollDate">{product.enrollDate}</div>
                                 <div className="search-product-name">{product.productName}</div>
                                 <div className="search-product-price">{Number(product.price).toLocaleString()} 원</div>

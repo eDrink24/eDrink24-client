@@ -12,34 +12,39 @@
 }
 
 .setPlace-header {
-    height: 102px;
-    padding: 44px 20px 0px 20px;
+    height: 68px;
+    padding: 0px 20px 0px 20px;
     display: flex;
-    background-color: #ffffff;
-    justify-content: space-between;
-    text-align: center;
     align-items: center;
+    position: relative;
 }
 
 .setPlace-header h1 {
     font-size: 20px;
     font-weight: 500;
-    position: absolute; 
-    left: 50%;
-    transform: translateX(-50%); 
+    flex-grow: 1;  /* 여유 공간을 차지하도록 설정 */
+    text-align: center;  /* 텍스트를 중앙에 정렬 */
+    margin: 0;  /* 기본 마진 제거 */
+    margin-right: 15px;
 }
 
-.setPlace-header .close-button {
+.close-button {
     background: none;
     border: none;
     cursor: pointer;
-    right: 0; 
+    position: relative;
+    margin-right: auto; 
+    margin-left:10px;
+    margin-bottom:15px;
 }
 
 .setPlace-header .close-button img {
     width: 24px;
 }
 
+
+
+/*  지도 */
 .setPlace-map {
     display: flex;
     align-items: center;

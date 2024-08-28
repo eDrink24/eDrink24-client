@@ -63,10 +63,6 @@ const router = createBrowserRouter([
       },
       { path: "/mypage", element: <MypageComponent /> },
       {
-        path: '/basket', element: <ListToBasketComponent />,
-        loader: basketLoader
-      },
-      {
         path: '/order', element: <OrderComponent />
       },
       {
@@ -82,7 +78,7 @@ const router = createBrowserRouter([
         path: '/admin', element: <AdminComponent />
       },
       {
-        path: '/manager', element: <ManagerComponent/>
+        path: '/manager', element: <ManagerComponent />
       },
       {
         path: '/review', element: <ReviewComponent />
@@ -115,6 +111,10 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
+          {
+            path: '/basket', element: <ListToBasketComponent />,
+            loader: basketLoader
+          },
           { path: "/mypage/updateCustomer", element: <UpdateCustomerComponent /> },
           { path: "/myplace_store", element: <SetPlaceComponent /> },
           { path: "/order/approval", element: <PaymentApproval /> }, // 결제완료처리페이지

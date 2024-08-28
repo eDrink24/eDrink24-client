@@ -33,11 +33,7 @@ function OrderComponent() {
     const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
 
-    console.log(">>>>>>>>>>>",orderInfo);
-
     const navigate = useNavigate();
-
-    console.log(orderInfo);
 
 
     // 총액 계산 함수 pkh
@@ -80,7 +76,6 @@ function OrderComponent() {
     // 사용자가 입력한 포인트 적용 함수 pkh
     const applyPoints = () => {
         if (pointsToUse > userPoints) {
-            alert('사용할 포인트가 보유 포인트를 초과할 수 없습니다.');
             setPointsToUse(userPoints);
             return;
         } else {
@@ -371,7 +366,7 @@ function OrderComponent() {
                                         {couponList.some(couponItem => couponItem?.used !== true) ? (
                                             couponList.map(couponItem => (
                                                 couponItem?.used !== true && (
-                                                    <li key={couponItem.couponId}>
+                                                    <li key={couponItem.couponId} className="coupon-list">
                                                         <button
                                                             onClick={() => handleCouponSelection(couponItem)}
                                                             className={coupon?.couponId === couponItem.couponId ? 'selected' : ''}
@@ -415,7 +410,7 @@ function OrderComponent() {
                                         value={pointsToUse}
                                         onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
                                         placeholder="사용할 포인트 입력"
-                                        min = "0"
+                                        min="0"
                                     />
                                     <button className="custom-button1" onClick={handleMaxPoints}>
                                         전액 사용

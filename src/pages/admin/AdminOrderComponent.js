@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './AdminOrderComponent.css';
+import AlertModal from '../../components/alert/AlertModal';
 
 // 제품 카테고리 목록
 const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
@@ -13,6 +14,19 @@ const AdminOrderComponent = () => {
     const [adminOrderList, setAdminOrderList] = useState([]); // 관리자 발주 목록 상태
     const [searchProduct, setSearchProduct] = useState(''); // 검색 입력 상태
 
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+
+    // 알림창 열기
+    const openAlert = (message) => {
+        setAlertMessage(message);
+        setAlertOpen(true);
+    }
+
+    // 알림창 닫기
+    const closeAlert = () => {
+        setAlertOpen(false);
+    }
 
     // 카테고리가 변경될 때마다 호출
     useEffect(() => {
@@ -106,7 +120,7 @@ const AdminOrderComponent = () => {
                 console.error('Error placing order:', error);
             }
         } else {
-            alert("Please enter a valid quantity.");
+            openAlert("수량을 입력해주세요.");
         }
     };
 
@@ -157,6 +171,11 @@ const AdminOrderComponent = () => {
 
     return (
         <div className="aoProduct-allproduct-container">
+            <AlertModal
+                isOpen={alertOpen}
+                onRequestClose={closeAlert}
+                message={alertMessage}
+            />
             <div className="aoProduct-header">
                 <p className="aoProdut-header-text">즉시발주신청</p>
 
