@@ -103,7 +103,7 @@ const CategoriesProductComponent = () => {
     //카테고리2별로 제품 보여주기
     async function selectCategory2(category2) {
         setCategory(category2); // 선택된 카테고리2 상태 업데이트
-        const response = await fetch(`http://localhost:8090/eDrink24/showProductByCategory2/${category2}`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductByCategory2/${category2}`, {
             method: "GET"
         });
 
@@ -148,7 +148,7 @@ const CategoriesProductComponent = () => {
             if (currentStoreId) {
 
                 try {
-                    const response = await fetch(`http://localhost:8090/eDrink24/api/findInventoryByStoreId/${parseInt(currentStoreId)}`,
+                    const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findInventoryByStoreId/${parseInt(currentStoreId)}`,
                         { method: 'GET' }
                     );
                     if (response.ok) {
@@ -183,7 +183,7 @@ const CategoriesProductComponent = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/saveProductToBasket`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/saveProductToBasket`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -230,8 +230,8 @@ const CategoriesProductComponent = () => {
         }
 
         const url = liked
-            ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
-            : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
+            ? `${process.env.REACT_APP_SERVER_API_URL}/addDibs/${userId}` // liked가 true면 찜 추가
+            : `${process.env.REACT_APP_SERVER_API_URL}/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
 
         try {
             const response = await fetch(url, {

@@ -60,7 +60,7 @@ const CheckMyReviewComponent = () => {
                 rating: rating.toFixed(1) // 소수점 첫째 자리까지
             };
 
-            const response = await fetch(`http://localhost:8090/eDrink24/fixReviewContent`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/fixReviewContent`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'

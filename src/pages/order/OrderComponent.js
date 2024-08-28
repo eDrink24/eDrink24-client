@@ -61,7 +61,7 @@ function OrderComponent() {
     // 포인트 조회 함수 pkh
     const fetchUserPoints = async () => {
         try {
-            const response = await axios.get(`http://localhost:8090/eDrink24/showTotalPoint/${userId}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_API_URL}/showTotalPoint/${userId}`);
             if (response.status === 200) {
                 setUserPoints(response.data);
                 setPointButtonText("포인트 적용");
@@ -151,7 +151,7 @@ function OrderComponent() {
         }
 
         try {
-            const response = await axios.get(`http://localhost:8090/eDrink24/getBasketItems/${basketId}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_API_URL}/getBasketItems/${basketId}`);
             if (response.status === 200) {
                 return response.data;
             } else {
@@ -174,7 +174,7 @@ function OrderComponent() {
     const fetchCoupons = async () => {
         setLoadingCoupons(true);
         try {
-            const response = await axios.get(`http://localhost:8090/eDrink24/showAllCoupon/userId/${userId}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_API_URL}/showAllCoupon/userId/${userId}`);
             if (response.status === 200) {
                 setCouponList(response.data);
                 setShowCouponList(true);
@@ -244,7 +244,7 @@ function OrderComponent() {
             localStorage.setItem('userId', userId);
 
             // 결제요청 API - Young5097
-            const paymentResponse = await axios.post('http://localhost:8090/eDrink24/api/kakaoPay', localStorage.getItem("orderTransactionDTO"),
+            const paymentResponse = await axios.post(`${process.env.REACT_APP_SERVER_API_URL}/api/kakaoPay`, localStorage.getItem("orderTransactionDTO"),
                 {
                     headers: {
                         'Content-Type': 'application/json'

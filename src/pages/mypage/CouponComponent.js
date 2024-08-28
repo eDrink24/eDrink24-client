@@ -6,23 +6,23 @@ const CouponComponent = ({ onClose }) => {
 
     // 쿠폰 목록 조회
     useEffect(() => {
-      const fetchCoupons = async () => {
-          try {
-              const userId = localStorage.getItem("userId");
-              const response = await fetch(`http://localhost:8090/eDrink24/showAllCoupon/userId/${userId}`);
-              if (response.ok) {
-                  const data = await response.json();
-                  setCoupons(data);
-              } else {
-                  console.error('Error fetching coupons');
-              }
-          } catch (error) {
-              console.error('Error:', error);
-          }
-      };
+        const fetchCoupons = async () => {
+            try {
+                const userId = localStorage.getItem("userId");
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showAllCoupon/userId/${userId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setCoupons(data);
+                } else {
+                    console.error('Error fetching coupons');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
         fetchCoupons(); // fetchCoupons 함수 호출
-        console.log("COUPONS",coupons);
-      }, []);
+        console.log("COUPONS", coupons);
+    }, []);
 
     return (
         <div className="modal-overlay">
@@ -32,12 +32,12 @@ const CouponComponent = ({ onClose }) => {
                 <ul>
                     {coupons.length > 0 ? (
                         coupons.map(coupon => (
-                          coupon.used !== true ? ( // 쿠폰이 사용되지 않은 경우만 렌더링
-                              <li key={coupon.couponId}>
-                                  신규회원 {coupon.discountAmount.toLocaleString()} 원 할인 쿠폰
-                              </li>
-                          ) : "보유한 쿠폰이 없습니다."
-                      ))
+                            coupon.used !== true ? ( // 쿠폰이 사용되지 않은 경우만 렌더링
+                                <li key={coupon.couponId}>
+                                    신규회원 {coupon.discountAmount.toLocaleString()} 원 할인 쿠폰
+                                </li>
+                            ) : "보유한 쿠폰이 없습니다."
+                        ))
                     ) : (
                         <li>보유한 쿠폰이 없습니다.</li>
                     )}

@@ -36,7 +36,7 @@ function PaymentApproval() {
                     const orderTransactionDTO = JSON.parse(localStorage.getItem('orderTransactionDTO'));
 
                     // 1. 결제 승인
-                    const approvalResponse = await axios.get(`http://localhost:8090/eDrink24/api/kakaoPay/approve`, {
+                    const approvalResponse = await axios.get(`${process.env.REACT_APP_SERVER_API_URL}/api/kakaoPay/approve`, {
                         params: {
                             pg_token: pgToken,
                             tid: tid,
@@ -46,7 +46,7 @@ function PaymentApproval() {
 
 
                     // 2. 주문 저장 및 장바구니 삭제
-                    const orderResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/buyProductAndSaveHistory`, {
+                    const orderResponse = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showAllBasket/userId/${userId}/buyProductAndSaveHistory`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ function PaymentApproval() {
                     });
 
 
-                    const deleteResponse = await fetch(`http://localhost:8090/eDrink24/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
+                    const deleteResponse = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',

@@ -26,8 +26,8 @@ function MypageComponent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [customerData, setCustomerData] = useState(null);
     const [isOpen, setIsOpen] = useState(false); // 아코디언 상태 관리
-    const [pointHistory,setHistoryHistory] = useState([]);
-    const [modalOpen,setModalOpen] = useState(false);
+    const [pointHistory, setHistoryHistory] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const [coupons, setCoupons] = useState([]); // 쿠폰 데이터 상태
     const [isModalOpen, setIsModalOpen] = useState(false); // 쿠폰 모달 상태
@@ -50,7 +50,7 @@ function MypageComponent() {
     }, [customerData]);
 
     const fetchCustomerData = async (token, loginId) => {
-        const response = await fetch(`http://localhost:8090/eDrink24/selectCustomerMyPage/${loginId}`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/selectCustomerMyPage/${loginId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ function MypageComponent() {
 
     const fetchMyStoreId = async (brNum) => {
         try {
-            const storeResponse = await fetch('http://localhost:8090/eDrink24/api/findMyStore', {
+            const storeResponse = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findMyStore`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,23 +93,23 @@ function MypageComponent() {
 
     const toggleAccordion = () => {
         setIsOpen(!isOpen); // 아코디언 열림/닫힘 상태 전환
-    };  
+    };
 
     const showHistoryHistory = async () => {
         const userId = localStorage.getItem('userId');
-        try{
-        const response = await fetch (`http://localhost:8090/eDrink24/api/showPoint/${userId}`);
-        
-            if(response.ok){
+        try {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/showPoint/${userId}`);
+
+            if (response.ok) {
                 const resdata = await response.json();
                 setHistoryHistory(resdata);
                 setModalOpen(true);
             }
-        }catch(error){
-            console.error("fetching Error show pointHistory",error);
-        }        
+        } catch (error) {
+            console.error("fetching Error show pointHistory", error);
+        }
     };
-  
+
     return (
         <div className="myPage-wrapper">
             <div className="myPage-container">
@@ -263,10 +263,10 @@ function MypageComponent() {
 
             </div>
             <FooterComponent />
-            <PointHistoryModalComponent 
-            isOpen={modalOpen}
-            onClose={() => setModalOpen(false)}
-            data={pointHistory} 
+            <PointHistoryModalComponent
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+                data={pointHistory}
             />
         </div >
 

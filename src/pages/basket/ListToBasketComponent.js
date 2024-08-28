@@ -31,7 +31,7 @@ function ListToBasketComponent() {
     const refreshBaskets = useCallback(async () => {
         const userId = localStorage.getItem("userId");
 
-        const response = await fetch(`http://localhost:8090/eDrink24/showProductInBasket/${userId}`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductInBasket/${userId}`, {
             method: "GET"
         });
 
@@ -65,7 +65,7 @@ function ListToBasketComponent() {
 
     const checkInventory = async (productId) => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/checkInventory/${storeId}/${productId}`);
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/checkInventory/${storeId}/${productId}`);
             if (!response.ok) throw new Error('Failed to check inventory');
             return response.json();
         } catch (error) {
@@ -117,7 +117,7 @@ function ListToBasketComponent() {
 
         const deleteBaskets = async (basketIds) => {
             for (const basketId of basketIds) {
-                const response = await fetch(`http://localhost:8090/eDrink24/deleteProductByBasketIdInBasket/${userId}/${basketId}`, {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/deleteProductByBasketIdInBasket/${userId}/${basketId}`, {
                     method: "DELETE"
                 });
 
@@ -198,7 +198,7 @@ function ListToBasketComponent() {
         if (newQuantity <= 0) return;
 
         const userId = localStorage.getItem("userId");
-        const response = await fetch(`http://localhost:8090/eDrink24/updateBasketQuantity2`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/updateBasketQuantity2`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -253,7 +253,7 @@ function ListToBasketComponent() {
                 return;
             }
 
-            const response = await fetch(`http://localhost:8090/eDrink24/api/findStore/${currentStoreId}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/api/findStore/${currentStoreId}`, {
                 method: "GET"
             });
             if (response.ok) {
@@ -493,7 +493,7 @@ export async function loader({ request }) {
     const token = getAuthToken();
     const userId = localStorage.getItem("userId");
 
-    const response = await fetch(`http://localhost:8090/eDrink24/showProductInBasket/${userId}`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showProductInBasket/${userId}`, {
         method: "GET",
     });
 

@@ -104,7 +104,7 @@ function KakaoSignupHandler() {
             return openAlert("전화번호 11자리를 입력해주세요.")
         }
         try {
-            const response = await fetch("http://localhost:8090/eDrink24/signup/sms/send",
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/signup/sms/send`,
                 {
                     method: 'POST',
                     headers: {
@@ -142,7 +142,7 @@ function KakaoSignupHandler() {
     const completeVerificated = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8090/eDrink24/signup/sms/check", {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/signup/sms/check`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -216,7 +216,7 @@ function KakaoSignupHandler() {
                 linkedId: cusData.linkedId
             };
 
-            const response = await fetch("http://localhost:8090/eDrink24/signup", {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -231,7 +231,7 @@ function KakaoSignupHandler() {
                     pw: sendData.pw
                 };
 
-                const loginResponse = await fetch('http://localhost:8090/eDrink24/authenticate', {
+                const loginResponse = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/authenticate`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

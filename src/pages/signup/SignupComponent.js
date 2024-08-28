@@ -114,7 +114,7 @@ function SignupComponent() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/customerIdCheck/${loginId}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/customerIdCheck/${loginId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ function SignupComponent() {
             return openAlert("전화번호 11자리를 입력해주세요.")
         }
         try {
-            const response = await fetch("http://localhost:8090/eDrink24/signup/sms/send",
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/signup/sms/send`,
                 {
                     method: 'POST',
                     headers: {
@@ -200,7 +200,7 @@ function SignupComponent() {
     const completeVerificated = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8090/eDrink24/signup/sms/check", {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/signup/sms/check`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -416,7 +416,7 @@ export async function action({ request }) {
         currentLocation: data.get("address1")
     };
 
-    const response = await fetch("http://localhost:8090/eDrink24/signup", {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/signup`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

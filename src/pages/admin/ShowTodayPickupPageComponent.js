@@ -37,7 +37,7 @@ const ShowTodayPickupPageComponent = () => {
     // 즉시픽업 목록페이지 (아직 픽업이 완료되지 않았을 때)
     const showOrdersToAdminPageOrders = async () => {
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/showPickupPage/${storeId}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showPickupPage/${storeId}`, {
                 method: "GET"
             });
 
@@ -61,7 +61,7 @@ const ShowTodayPickupPageComponent = () => {
     const handlePickupComplete = async () => {
         try {
             for (const ordersId of selectedOrdersId) {
-                const response = await fetch(`http://localhost:8090/eDrink24/updateStateAfterCompletedPickup/${ordersId}`, {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/updateStateAfterCompletedPickup/${ordersId}`, {
                     method: "PUT"
                 });
 
