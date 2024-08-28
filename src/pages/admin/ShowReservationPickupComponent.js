@@ -3,9 +3,6 @@ import React, { useEffect, useState } from 'react';
 import './ShowReservationPickupComponent.css';
 import AlertModal from '../../components/alert/AlertModal';
 
-// 제품 카테고리 목록
-const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
-
 const ShowReservationPickupComponent = () => {
     const [orders, setOrders] = useState([]);
     const [showQuantityModal, setShowQuantityModal] = useState(false); // 모달 표시 상태
@@ -73,7 +70,7 @@ const ShowReservationPickupComponent = () => {
             const InventoryDTO = {
                 storeId: storeId,
                 productId: order.productId,
-                productName: order.ProductName,
+                productName: order.productName,
                 quantity,
                 adminOrderQuantity: quantity
             };

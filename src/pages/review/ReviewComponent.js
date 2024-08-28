@@ -46,8 +46,6 @@ const ReviewComponent = () => {
             });
             if (response.ok) {
                 openAlert('리뷰가 성공적으로 저장되었습니다.', true);
-                navigate('/orderHistory');
-
             } else {
                 openAlert('물건 픽업 후 다시 시도해주세요.');
             }
