@@ -16,7 +16,6 @@ const AdminOrderComponent = () => {
 
     const [alertOpen, setAlertOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
-    const [navigateOnClose, setNavigateOnClose] = useState(false);
 
     // 알림창 열기
     const openAlert = (message) => {

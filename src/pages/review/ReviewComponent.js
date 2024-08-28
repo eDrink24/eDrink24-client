@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './ReviewComponent.css';
+import FooterComponent from '../../components/footer/FooterComponent.js';
 import AlertModal from '../../components/alert/AlertModal';
+import back from '../../assets/common/back.png';
+import bag from '../../assets/common/bag.png';
 import { useNavigate } from 'react-router-dom';
 
 const ReviewComponent = () => {
@@ -16,7 +19,7 @@ const ReviewComponent = () => {
         setRating(value);
     };
 
-    // 리뷰 작성 후 저장하기 버튼 누르면 DB에 저장. - giuk-kim2
+    // 리뷰 작성 후 저장하기 버튼 누르면 DB에 저장
     const handleSubmit = async (e) => {
         e.preventDefault(); // 저장하기 버튼 누른 후 새로고침 방지
 
@@ -31,7 +34,6 @@ const ReviewComponent = () => {
             throatRating,
             content
         };
-
 
         try {
             const response = await fetch(`http://localhost:8090/eDrink24/addReview`, {
@@ -68,72 +70,86 @@ const ReviewComponent = () => {
     }
 
     return (
-        <div className="review-form">
-            <div className="review-product-info">
-                <img src={orderHistory.defaultImage} alt={orderHistory.productName} className="review-product-image" />
-                <div className="review-product-name">{orderHistory.productName}</div>
-            </div>
-            <form onSubmit={handleSubmit}>
+        <div className="review-container">
 
-                <div className="review-rating-section">
-                    <label>당도</label>
-                    <div className="review-stars">
-                        {[...Array(5)].map((_, index) => (
-                            <span
-                                key={index}
-                                className={index < sugarRating ? "star filled" : "star"}
-                                onClick={() => handleRatingChange(setSugarRating, index + 1)}>
-                                ★
-                            </span>
-                        ))}
-                        <span className="review-score">{sugarRating}점</span>
+            <div className="review-header">
+                <button className="back-button" onClick={() => { navigate(-1) }}>
+                    <img src={back} alt="뒤로가기" />
+                </button>
+                <h1>내가 작성한 리뷰</h1>
+                <button className="bag-button" onClick={() => { navigate('/basket') }}>
+                    <img src={bag} alt="장바구니" />
+                </button>
+            </div>
+
+            <div className="review-form">
+                <div className="review-product-info">
+                    <img src={orderHistory.defaultImage} alt={orderHistory.productName} className="review-product-image" />
+                    <div className="review-product-name">{orderHistory.productName}</div>
+                </div>
+                <form onSubmit={handleSubmit} className="review-content-form">
+
+                    <div className="review-rating-section">
+                        <label>당도</label>
+                        <div className="review-stars">
+                            {[...Array(5)].map((_, index) => (
+                                <span
+                                    key={index}
+                                    className={index < sugarRating ? "star filled" : "star"}
+                                    onClick={() => handleRatingChange(setSugarRating, index + 1)}>
+                                    ★
+                                </span>
+                            ))}
+                            <span className="review-score">{sugarRating}점</span>
+                        </div>
                     </div>
-                </div>
-                <div className="review-rating-section">
-                    <label>산도</label>
-                    <div className="review-stars">
-                        {[...Array(5)].map((_, index) => (
-                            <span
-                                key={index}
-                                className={index < acidityRating ? "star filled" : "star"}
-                                onClick={() => handleRatingChange(setAcidityRating, index + 1)}>
-                                ★
-                            </span>
-                        ))}
-                        <span className="review-score">{acidityRating}점</span>
+                    <div className="review-rating-section">
+                        <label>산도</label>
+                        <div className="review-stars">
+                            {[...Array(5)].map((_, index) => (
+                                <span
+                                    key={index}
+                                    className={index < acidityRating ? "star filled" : "star"}
+                                    onClick={() => handleRatingChange(setAcidityRating, index + 1)}>
+                                    ★
+                                </span>
+                            ))}
+                            <span className="review-score">{acidityRating}점</span>
+                        </div>
                     </div>
-                </div>
-                <div className="review-rating-section">
-                    <label>목넘김</label>
-                    <div className="review-stars">
-                        {[...Array(5)].map((_, index) => (
-                            <span
-                                key={index}
-                                className={index < throatRating ? "star filled" : "star"}
-                                onClick={() => handleRatingChange(setThroatRating, index + 1)}>
-                                ★
-                            </span>
-                        ))}
-                        <span className="review-score">{throatRating}점</span>
+                    <div className="review-rating-section">
+                        <label>목넘김</label>
+                        <div className="review-stars">
+                            {[...Array(5)].map((_, index) => (
+                                <span
+                                    key={index}
+                                    className={index < throatRating ? "star filled" : "star"}
+                                    onClick={() => handleRatingChange(setThroatRating, index + 1)}>
+                                    ★
+                                </span>
+                            ))}
+                            <span className="review-score">{throatRating}점</span>
+                        </div>
                     </div>
-                </div>
-                <div className="review-section">
-                    <label>리뷰를 작성해주세요.</label>
-                    <textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        placeholder="이 상품을 사용하면서 느낀 장점과 단점을 솔직하게 알려주세요."
-                    />
-                </div>
-                <button type="submit" className="review-submit-button">저장하기</button>
-            </form>
-            <AlertModal
-                isOpen={alertOpen}
-                onRequestClose={closeAlert}
-                message={alertMessage}
-                navigateOnClose={navigateOnClose}
-                navigateClosePath={"/orderHistory"}
-            />
+                    <div className="review-section">
+                        <label>리뷰를 작성해주세요.</label>
+                        <textarea
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            placeholder="이 상품을 사용하면서 느낀 장점과 단점을 솔직하게 알려주세요."
+                        />
+                    </div>
+                    <button type="submit" className="review-submit-button">저장하기</button>
+                </form>
+                <AlertModal
+                    isOpen={alertOpen}
+                    onRequestClose={closeAlert}
+                    message={alertMessage}
+                    navigateOnClose={navigateOnClose}
+                    navigateClosePath={"/orderHistory"}
+                />
+            </div>
+            <FooterComponent />
         </div>
     );
 };

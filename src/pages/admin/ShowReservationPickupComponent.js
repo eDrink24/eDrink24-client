@@ -1,6 +1,7 @@
 import { format, parseISO } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import './ShowReservationPickupComponent.css';
+import AlertModal from '../../components/alert/AlertModal';
 
 // 제품 카테고리 목록
 const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
@@ -10,14 +11,27 @@ const ShowReservationPickupComponent = () => {
     const [showQuantityModal, setShowQuantityModal] = useState(false); // 모달 표시 상태
     const [selectedOrderId, setSelectedOrderId] = useState(null); // 선택된 주문 ID
     const [quantity, setQuantity] = useState(0); // 발주 수량 상태
+
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+
     const storeId = localStorage.getItem("myStoreId");
+
+    // 알림창 열기
+    const openAlert = (message) => {
+        setAlertMessage(message);
+        setAlertOpen(true);
+    }
+
+    // 알림창 닫기
+    const closeAlert = () => {
+        setAlertOpen(false);
+    }
 
     // 처음 렌더링될 때만 주문 목록 가져오기
     useEffect(() => {
         showReservationPickupPage();
     }, []);
-
-
 
     const showReservationPickupPage = async () => {
         try {
@@ -77,6 +91,9 @@ const ShowReservationPickupComponent = () => {
                 showReservationPickupPage();
                 setShowQuantityModal(false); // 모달 닫기
                 setQuantity(0); // 수량 상태 초기화
+
+                openAlert("발주 신청완료");
+
             } catch (error) {
                 console.error('Error placing order:', error);
             }
@@ -86,6 +103,11 @@ const ShowReservationPickupComponent = () => {
 
     return (
         <div className="adminReservation-container">
+            <AlertModal
+                isOpen={alertOpen}
+                onRequestClose={closeAlert}
+                message={alertMessage}
+            />
             <h1 className="adminReservation-title">예약픽업 발주신청</h1>
             <div className="order-list">
                 <table className="order-table">
