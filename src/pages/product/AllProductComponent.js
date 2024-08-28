@@ -17,7 +17,7 @@ import './AllProductComponent.css';
 const categoryList = ['와인', '양주', '전통주', '논알콜', '안주'];
 
 // 좋아요 버튼 컴포넌트
-const LikeButton = ({onClick, productId, liked}) => {
+const LikeButton = ({ onClick, productId, liked }) => {
     const [isLiked, setIsLiked] = useState(liked); // 좋아요 상태 관리
 
     const handleClick = (event) => {
@@ -52,7 +52,7 @@ const ReviewButton = ({ onClick, rating }) => {
     return (
         <button className="allproduct-review-button" onClick={handleClick}>
             <img className="allproduct-review-icon" src={star} alt=" " />
-            <span className="allproduct-review-rating">{rating ? rating : 0 }</span>
+            <span className="allproduct-review-rating">{rating ? rating : 0}</span>
         </button>
     );
 };
@@ -302,12 +302,12 @@ const AllProductComponent = () => {
         }
 
         const url = liked
-        ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
-        : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
+            ? `http://localhost:8090/eDrink24/addDibs/${userId}` // liked가 true면 찜 추가
+            : `http://localhost:8090/eDrink24/cancelDIb/${userId}/${productId}`; // liked가 false면 찜 삭제
 
         try {
             const response = await fetch(url, {
-                method: liked? "POST" : "DELETE",
+                method: liked ? "POST" : "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -339,120 +339,115 @@ const AllProductComponent = () => {
 
     return (
         <div className="allproduct-wrapper">
-        <div className="allproduct-container">
-            <div className='allproduct-header'>
-                <button className="back-button" onClick={() => { navigate(-1) }}>
-                    <img src={back} alt="뒤로가기" />
-                </button>
-                <img className="logoImg" src={eDrinkLogo}alt=" " />
-                <button className="bag-button" onClick={() => { navigate('/basket') }}>
-                    <img src={bag} alt="장바구니" />
-                </button>
-            </div>
-
-            {/* 서브 네비게이션 바 */}
-            <div className="allproduct-sub-nav">
-                {/* 카테고리 필터 */}
-                <div className="cc">
-                    <div className="allproduct-filter-bar">
-                        {categoryList.map((category1, idx) => (
-                            <button
-                                key={idx}
-                                onClick={() => handleCategory1Click(category1)}
-                                className={`allproduct-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
-                            >
-                                {category1}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* 필터 아이콘 */}
-                    <button className="allproduct-filter-button2">
-                        <img className="allproduct-filter-icon" src={filter} alt=" " />
+            <div className="allproduct-container">
+                <div className='allproduct-header'>
+                    <button className="back-button" onClick={() => { navigate(-1) }}>
+                        <img src={back} alt="뒤로가기" />
+                    </button>
+                    <img className="logoImg" src={eDrinkLogo} alt=" " />
+                    <button className="bag-button" onClick={() => { navigate('/basket') }}>
+                        <img src={bag} alt="장바구니" />
                     </button>
                 </div>
 
-                <div className='line2'></div>
-
-                {/* 체크 박스 / 드롭다운 박스 */}
-                <div className="allproduct-click-bar">
-                    <div className="allproduct-check-box">
-                        <input
-                            id="today-pickup"
-                            type="checkbox"
-                            checked={showTodayPu}
-                            onChange={(e) => setShowTodayPu(e.target.checked)}
-                        />
-                        <label htmlFor="today-pickup">오늘픽업</label>
+                {/* 서브 네비게이션 바 */}
+                <div className="allproduct-sub-nav">
+                    {/* 카테고리 필터 */}
+                    <div className="cc">
+                        <div className="allproduct-filter-bar">
+                            {categoryList.map((category1, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => handleCategory1Click(category1)}
+                                    className={`allproduct-filter-button ${selectedCategory === category1 ? 'selected' : ''}`}
+                                >
+                                    {category1}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
-                    <div className="allproduct-dropdown-box">
-                        <select onChange={handleSortEvent}>
-                            <option value="낮은가격순">낮은가격순</option>
-                            <option value="높은가격순">높은가격순</option>
-                        </select>
+                    <div className='line2'></div>
+
+                    {/* 체크 박스 / 드롭다운 박스 */}
+                    <div className="allproduct-click-bar">
+                        <div className="allproduct-check-box">
+                            <input
+                                id="today-pickup"
+                                type="checkbox"
+                                checked={showTodayPu}
+                                onChange={(e) => setShowTodayPu(e.target.checked)}
+                            />
+                            <label htmlFor="today-pickup">오늘픽업</label>
+                        </div>
+
+                        <div className="allproduct-dropdown-box">
+                            <select onChange={handleSortEvent}>
+                                <option value="낮은가격순">낮은가격순</option>
+                                <option value="높은가격순">높은가격순</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="aa">
-                {filterTodayPu.map(product => (
-                    <div
-                        className="allproduct-product-card"
-                        key={product.productId}
-                        onClick={() => handleProductClickEvent(product.productId)}
-                    >
-                        <div className="allproduct-product-card-img">
-                            <img src={product.defaultImage} alt={product.productName} className="allproduct-product-defaultImage" />
-                        </div>
-
-                        <div className="allproduct-product-info">
-                            <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
-                            <div className="allproduct-product-name">{product.productName}</div>
-                            <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
-                        </div>
-
-                        <div className="allproduct-icon-button">
-                            <div className="allproduct-review">
-                                {/* 장바구니 버튼을 CartButton 컴포넌트로 변경 */}
-                                <ReviewButton
-                                    rating={product.rating}
-                                    onClick={() => console.log(`Reviewed product with ID: ${product.productId}`)}
-                                />
+                <div className="aa">
+                    {filterTodayPu.map(product => (
+                        <div
+                            className="allproduct-product-card"
+                            key={product.productId}
+                            onClick={() => handleProductClickEvent(product.productId)}
+                        >
+                            <div className="allproduct-product-card-img">
+                                <img src={product.defaultImage} alt={product.productName} className="allproduct-product-defaultImage" />
                             </div>
 
-                            <div className="allproduct-button">
-                                {/* 오늘픽업 아이콘 */}
-                                <div className="allproduct-product-tag-container">
-                                    {invToStore.some(inv =>
-                                        inv.productId === product.productId && inv.quantity > 0) ? (
-                                        <div className="allproduct-product-tag">오늘픽업</div>
-                                    ) : (
-                                        <div className="allproduct-product-tag-placeholder"></div> // 빈 공간을 위한 placeholder
-                                    )}
+                            <div className="allproduct-product-info">
+                                <div className="allproduct-product-enrollDate">{product.enrollDate}</div>
+                                <div className="allproduct-product-name">{product.productName}</div>
+                                <div className="allproduct-product-price">{Number(product.price).toLocaleString()} 원</div>
+                            </div>
+
+                            <div className="allproduct-icon-button">
+                                <div className="allproduct-review">
+                                    {/* 장바구니 버튼을 CartButton 컴포넌트로 변경 */}
+                                    <ReviewButton
+                                        rating={product.rating}
+                                        onClick={() => console.log(`Reviewed product with ID: ${product.productId}`)}
+                                    />
                                 </div>
-                                <LikeButton
-                                    onClick={addDibs}
-                                    productId={product.productId}
-                                    liked={product.liked} // 제품의 현재 좋아요 상태를 전달
-                                />
-                                <CartButton onClick={saveInBasket} productId={product.productId} />
+
+                                <div className="allproduct-button">
+                                    {/* 오늘픽업 아이콘 */}
+                                    <div className="allproduct-product-tag-container">
+                                        {invToStore.some(inv =>
+                                            inv.productId === product.productId && inv.quantity > 0) ? (
+                                            <div className="allproduct-product-tag">오늘픽업</div>
+                                        ) : (
+                                            <div className="allproduct-product-tag-placeholder"></div> // 빈 공간을 위한 placeholder
+                                        )}
+                                    </div>
+                                    <LikeButton
+                                        onClick={addDibs}
+                                        productId={product.productId}
+                                        liked={product.liked} // 제품의 현재 좋아요 상태를 전달
+                                    />
+                                    <CartButton onClick={saveInBasket} productId={product.productId} />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
+
+                <AlertModalOfClickBasketButton
+                    isOpen={modalIsOpen}
+                    onRequestClose={() => setModalIsOpen(false)}
+                    message="장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?"
+                    navigateOnYes={goToBasketPage}
+                    navigateOnNo={stayOnPage}
+                />
+
+                <FooterComponent />
             </div>
-
-            <AlertModalOfClickBasketButton
-                isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
-                message="장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?"
-                navigateOnYes={goToBasketPage}
-                navigateOnNo={stayOnPage}
-            />
-
-            <FooterComponent />
-        </div>
         </div>
     );
 };

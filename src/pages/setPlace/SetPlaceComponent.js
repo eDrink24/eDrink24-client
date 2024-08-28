@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import FooterComponent from '../../components/footer/FooterComponent.js';
 import AlertModal from '../../components/alert/AlertModal.js';
 import './SetPlaceComponent.css';
+import back from '../../assets/common/back.png';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 function SetPlaceComponent() {
@@ -184,10 +185,10 @@ function SetPlaceComponent() {
         <>
             <div className="setPlace-container">
                 <div className='setPlace-header'>
-                    <h1>단골매장 설정</h1>
                     <button className="close-button" onClick={() => navigate(-1)}>
-                        <img src="assets/common/backIcon.png" className="XButton" alt="closeXButton" />
+                        <img src={back} className="XButton" alt="closeXButton" />
                     </button>
+                    <h1 className='setPlace-h1'>단골매장 설정</h1>
                 </div>
 
                 <div className="setPlace-body">

@@ -56,6 +56,7 @@ const AlertModal = ({ isOpen, onRequestClose, message, navigateOnClose, navigate
 export default AlertModal;
 
     // // ********************************************************
+    // import AlertModal from '../../components/alert/AlertModal';
     // const [alertOpen, setAlertOpen] = useState(false); // 알림창 상태
     // const [alertMessage, setAlertMessage] = useState(""); // 알림창 메시지
     // const [navigateOnClose, setNavigateOnClose] = useState(false); // 모달 닫힐 때 navigate

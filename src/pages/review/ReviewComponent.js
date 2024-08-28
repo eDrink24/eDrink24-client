@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './ReviewComponent.css';
+import AlertModal from '../../components/alert/AlertModal';
 import { useNavigate } from 'react-router-dom';
 
 const ReviewComponent = () => {
     // 각 평점 별 상태값
-    const [rating, setRating] = useState();
     const [sugarRating, setSugarRating] = useState(1);
     const [acidityRating, setAcidityRating] = useState(1);
     const [throatRating, setThroatRating] = useState(1);
@@ -20,44 +20,58 @@ const ReviewComponent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // 저장하기 버튼 누른 후 새로고침 방지
 
-        const averageRating = parseFloat(((sugarRating + acidityRating + throatRating)/ 3.0).toFixed(1));
+        const averageRating = parseFloat(((sugarRating + acidityRating + throatRating) / 3.0).toFixed(1));
 
         const reviewData = {
-            ordersId: orderHistory .ordersId,
-            productId: orderHistory .productId,
-            rating:averageRating,
+            ordersId: orderHistory.ordersId,
+            productId: orderHistory.productId,
+            rating: averageRating,
             sugarRating,
             acidityRating,
             throatRating,
             content
         };
-        
+
+
         try {
-            const response = await fetch(`http://localhost:8090/eDrink24/addReview`,{
-                method:"POST",
+            const response = await fetch(`http://localhost:8090/eDrink24/addReview`, {
+                method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(reviewData)
             });
             if (response.ok) {
-                alert('리뷰가 성공적으로 저장되었습니다.');
+                openAlert('리뷰가 성공적으로 저장되었습니다.', true);
                 navigate('/orderHistory');
-                
-            }else{
-                alert('물건 픽업 후 다시 시도해주세요.');
+
+            } else {
+                openAlert('물건 픽업 후 다시 시도해주세요.');
             }
         } catch (error) {
-            alert('저장에 실패하였습니다. 잠시 후 다시 시도해주세요.');
-            console.error('리뷰 저장 에러:', error);
+            openAlert('저장에 실패하였습니다. 잠시 후 다시 시도해주세요.');
         }
     };
+
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [navigateOnClose, setNavigateOnClose] = useState(false);
+
+    const openAlert = (message, navigateOnClose = false) => {
+        setAlertMessage(message);
+        setAlertOpen(true);
+        setNavigateOnClose(navigateOnClose);
+    }
+
+    const closeAlert = () => {
+        setAlertOpen(false);
+    }
 
     return (
         <div className="review-form">
             <div className="review-product-info">
-                <img src={orderHistory .defaultImage} alt={orderHistory .productName} className="review-product-image" />
-                <div className="review-product-name">{orderHistory .productName}</div> 
+                <img src={orderHistory.defaultImage} alt={orderHistory.productName} className="review-product-image" />
+                <div className="review-product-name">{orderHistory.productName}</div>
             </div>
             <form onSubmit={handleSubmit}>
 
@@ -113,6 +127,13 @@ const ReviewComponent = () => {
                 </div>
                 <button type="submit" className="review-submit-button">저장하기</button>
             </form>
+            <AlertModal
+                isOpen={alertOpen}
+                onRequestClose={closeAlert}
+                message={alertMessage}
+                navigateOnClose={navigateOnClose}
+                navigateClosePath={"/orderHistory"}
+            />
         </div>
     );
 };

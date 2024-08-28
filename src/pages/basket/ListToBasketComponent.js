@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { json, useLoaderData, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import back from '../../assets/common/back.png';
+import back from '../../assets/common/backIcon.png';
 import home from '../../assets/common/home.png';
 import { drawRoute, getLoadDirection } from "../../service/directionService";
 import { getAuthToken } from '../../util/auth';
