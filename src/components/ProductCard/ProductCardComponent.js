@@ -56,8 +56,6 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
                 } catch (error) {
                     console.error('Error fetching inventory:', error);
                 }
-            } else {
-                console.error('Store ID not found in localStorage');
             }
         };
 
@@ -68,7 +66,6 @@ const ProductCardComponent = ({ products = [] }) => {  // 기본값으로 빈 �
     const addDibs = async (productId, liked) => {
         const dibProducts = products.find(prod => prod.productId === productId);
         if (!dibProducts) {
-            console.error('No dibProducts found');
             return;
         }
 

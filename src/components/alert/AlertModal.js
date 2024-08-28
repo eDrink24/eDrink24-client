@@ -18,10 +18,10 @@ const AlertModal = ({ isOpen, onRequestClose, message, navigateOnClose, navigate
     const alertStyles = {
         overlay: {
             backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",               
-            alignItems: "center",         
+            display: "flex",
+            alignItems: "center",
             justifyContent: "center",
-            zIndex: 1999,      
+            zIndex: 1999,
         },
         content: {
             margin: "auto",
@@ -33,11 +33,11 @@ const AlertModal = ({ isOpen, onRequestClose, message, navigateOnClose, navigate
             backgroundColor: "#fff",
             boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
             zIndex: 2000, // Modal content z-index
-   
-  
+
+
         },
     };
-    
+
 
     return (
         <Modal
@@ -55,29 +55,29 @@ const AlertModal = ({ isOpen, onRequestClose, message, navigateOnClose, navigate
 
 export default AlertModal;
 
-    // // ********************************************************
-    // import AlertModal from '../../components/alert/AlertModal';
-    // const [alertOpen, setAlertOpen] = useState(false); 
-    // const [alertMessage, setAlertMessage] = useState(""); 
-    // const [navigateOnClose, setNavigateOnClose] = useState(false);
+// // ********************************************************
+// import AlertModal from '../../components/alert/AlertModal';
+// const [alertOpen, setAlertOpen] = useState(false);
+// const [alertMessage, setAlertMessage] = useState("");
+// const [navigateOnClose, setNavigateOnClose] = useState(false);
 
-    // // 알림창 열기
-    // const openAlert = (message, navigateOnClose = false) => {
-    //     setAlertMessage(message);
-    //     setAlertOpen(true);
-    //     setNavigateOnClose(navigateOnClose);
-    // }
+// // 알림창 열기
+// const openAlert = (message, navigateOnClose = false) => {
+//     setAlertMessage(message);
+//     setAlertOpen(true);
+//     setNavigateOnClose(navigateOnClose);
+// }
 
-    // // 알림창 닫기
-    // const closeAlert = () => {
-    //     setAlertOpen(false);
-    // }
+// // 알림창 닫기
+// const closeAlert = () => {
+//     setAlertOpen(false);
+// }
 
-    
-    // <AlertModal
-    //     isOpen={alertOpen}
-    //     onRequestClose={closeAlert}
-    //     message={alertMessage}
-    //     navigateOnClose={navigateOnClose}
-    //     navigateClosePath={"/eDrink24"}
-    // />
+
+// <AlertModal
+//     isOpen={alertOpen}
+//     onRequestClose={closeAlert}
+//     message={alertMessage}
+//     navigateOnClose={navigateOnClose}
+//     navigateClosePath={"/eDrink24"}
+// />

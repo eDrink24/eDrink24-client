@@ -80,7 +80,6 @@ function OrderComponent() {
     // 사용자가 입력한 포인트 적용 함수 pkh
     const applyPoints = () => {
         if (pointsToUse > userPoints) {
-            alert('사용할 포인트가 보유 포인트를 초과할 수 없습니다.');
             setPointsToUse(userPoints);
             return;
         } else {

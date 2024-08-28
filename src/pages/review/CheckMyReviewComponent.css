@@ -65,6 +65,8 @@ html, body {
     background: none;
     border: none;
     cursor: pointer;
+    color:#FFB71B;
+    transition: background-color 0.3s, color 0.3s; /* 색상 전환 애니메이션 */
 }
 
 .MyReview-header img {
@@ -158,6 +160,12 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #FFB71B;
+    color:white;
+    outline:none;
+    border:none;
+    transition: background-color 0.3s, color 0.3s; 
+    border-radius: 8px;
 }
 
 .re {
@@ -185,3 +193,8 @@ html, body {
     align-items: center;
     gap: 8px;
 }
+
+.MyReview-container  button:hover {
+    background-color: black; /* 누른 후 배경색을 오렌지로 변경 */
+    color: white; /* 누른 후 글자색을 블랙으로 변경 */
+  }

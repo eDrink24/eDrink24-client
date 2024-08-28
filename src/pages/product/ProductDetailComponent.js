@@ -250,7 +250,6 @@ function ProductDetailComponent() {
 
     } catch (error) {
       console.error("Error during moving to order page:", error);
-      alert("There was an error while checking the inventory.");
     }
 
   };
