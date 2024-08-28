@@ -57,9 +57,9 @@ export default AlertModal;
 
     // // ********************************************************
     // import AlertModal from '../../components/alert/AlertModal';
-    // const [alertOpen, setAlertOpen] = useState(false); // 알림창 상태
-    // const [alertMessage, setAlertMessage] = useState(""); // 알림창 메시지
-    // const [navigateOnClose, setNavigateOnClose] = useState(false); // 모달 닫힐 때 navigate
+    // const [alertOpen, setAlertOpen] = useState(false); 
+    // const [alertMessage, setAlertMessage] = useState(""); 
+    // const [navigateOnClose, setNavigateOnClose] = useState(false);
 
     // // 알림창 열기
     // const openAlert = (message, navigateOnClose = false) => {
@@ -72,17 +72,6 @@ export default AlertModal;
     // const closeAlert = () => {
     //     setAlertOpen(false);
     // }
-
-    // useEffect(() => {
-    //     if (data?.error) {
-    //         openAlert(data.error);
-    //         setLoginId("");
-    //         setPw("");
-    //     } else if (data?.success) {
-    //         openAlert("로그인에 성공하였습니다!", true);
-    //     }
-    // }, [data]);
-    // // ********************************************************
 
     
     // <AlertModal
