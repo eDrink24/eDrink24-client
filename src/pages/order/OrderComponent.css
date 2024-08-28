@@ -206,22 +206,39 @@ html, body {
   display: flex;
   align-items: center;
   margin: 16px 0;
-  margin-bottom: 50px;
-  display: flex;
-  align-items: flex-start;
+  justify-content: space-between; /* text-box와 button을 나란히 배치 */
 }
 
 .text-box {
   padding: 16px 20px;
-  background-color: #EEEEEE; /* 배경색 */
-  color: #aaa; /* 텍스트 색상 */
-  flex-grow: 1; /* 가능한 공간을 채움 */
-  border-radius: 4px; /* 모서리를 둥글게 */
-  text-align: center; /* 텍스트 가운데 정렬 */
-  margin-right: 8px; /* 버튼과의 간격 */
-  display: flex;
+  background-color: #EEEEEE;
+  color: #aaa;
+  flex-grow: 1;
+  border-radius: 4px;
+  text-align: center;
+  margin-right: 8px;
   font-size: var(--font-size-medium-body);
   font-weight: 400;
+}
+
+.custom-button1 {
+  padding: 16px 20px;
+  background-color: #4B4B4B;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  font-size: var(--font-size-medium-body);
+  font-weight: 400;
+}
+
+.point-selection {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 8px; /* 입력창과 버튼 사이 간격 */
 }
 
 .custom-button {
@@ -238,28 +255,22 @@ html, body {
   position : relative;
 }
 
-.custom-button1 {
-  padding: 16px 20px;
-  background-color: #4B4B4B; /* 버튼 배경색 */
-  border: none;
-  color:white; /* 텍스트 색상 */
-  border-radius: 4px; /* 모서리를 둥글게 */
-  cursor: pointer;
-  text-align: center;
-  font-size: var(--font-size-medium-body);
-  font-weight: 400;
-  margin-left: auto;
-}
-
-.coupon-selection,
-.point-selection {
+.coupon-selection {
   border: 1px solid #ccc;
   padding: 16px;
   border-radius: 8px;
   background-color: #f9f9f9;
+  margin-bottom:20px;
 }
 
-/**************************************************************************************************/
+.point-input {
+  padding: 14px 20px;
+  margin:0px;
+  font-weight: 400;
+  border-radius: 4px;
+}
+
+/******/
 
 .payment-section-container {
   display: flex;

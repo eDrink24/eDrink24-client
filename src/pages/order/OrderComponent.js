@@ -274,6 +274,16 @@ function OrderComponent() {
         navigate("/");
     };
 
+    // 포인트 입력 취소 함수 pkh
+    const handleCancelPoints = () => {
+        setPointsToUse(0); // 포인트 사용 입력창을 0으로 초기화
+        setAppliedPoints(null); // 적용된 포인트를 초기화
+        setPointButtonText('포인트 조회'); // 버튼 텍스트를 원래 상태로 변경
+        setUserPoints(null); // 조회된 포인트를 초기화 (필요시)
+        calculateTotals(); // 총액을 다시 계산
+    };
+
+
     return (
 
         <div className="order-wrapper">
@@ -402,22 +412,27 @@ function OrderComponent() {
                             <button className="custom-button1" onClick={handleButtonClick}>
                                 {pointButtonText}
                             </button>
-
-                            {userPoints > 0 && (
-                                <div className="point-selection">
-                                    <input
-                                        type="number"
-                                        value={pointsToUse}
-                                        onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
-                                        placeholder="사용할 포인트 입력"
-                                        min="0"
-                                    />
-                                    <button className="custom-button1" onClick={handleMaxPoints}>
-                                        전액 사용
-                                    </button>
-                                </div>
-                            )}
                         </div>
+
+                        {userPoints > 0 && (
+                            <div className="point-selection">
+                                <input
+                                    className="point-input"
+                                    type="number"
+                                    value={pointsToUse}
+                                    onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
+                                    placeholder="사용할 포인트 입력"
+                                    min="0"
+                                />
+                                <button className="custom-button1" onClick={handleMaxPoints}>
+                                    전액 사용
+                                </button>
+                                <button className="custom-button1 cancel-button" onClick={handleCancelPoints}>
+                                    취소
+                                </button>
+                            </div>
+                        )}
+
                     </div>
 
                 </div>
