@@ -401,65 +401,67 @@ function OrderComponent() {
                         </div>
 
                         <div className="discount-container1">
-                            <div className="text-box">
-                                {appliedPoints === null
-                                    ? userPoints === null
-                                        ? "포인트 조회 버튼을 눌러주세요"
-                                        : `보유 포인트: ${userPoints} P`
-                                    : `적용된 포인트: ${appliedPoints} P`}
+                            <div>
+                                <div className="text-box">
+                                    {appliedPoints === null
+                                        ? userPoints === null
+                                            ? "포인트 조회 버튼을 눌러주세요"
+                                            : `보유 포인트: ${userPoints} P`
+                                        : `적용된 포인트: ${appliedPoints} P`}
+                                </div>
+
+                                <button className="custom-button1" onClick={handleButtonClick}>
+                                    {pointButtonText}
+                                </button>
                             </div>
 
-                            <button className="custom-button1" onClick={handleButtonClick}>
-                                {pointButtonText}
-                            </button>
+                            {userPoints > 0 && (
+                                <div className="point-selection">
+                                    <input
+                                        className="point-input"
+                                        type="number"
+                                        value={pointsToUse}
+                                        onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
+                                        placeholder="사용할 포인트 입력"
+                                        min="0"
+                                    />
+                                    <button className="custom-button1" onClick={handleMaxPoints}>
+                                        전액 사용
+                                    </button>
+                                    <button className="custom-button1 cancel-button" onClick={handleCancelPoints}>
+                                        취소
+                                    </button>
+                                </div>
+                            )}
+
                         </div>
-
-                        {userPoints > 0 && (
-                            <div className="point-selection">
-                                <input
-                                    className="point-input"
-                                    type="number"
-                                    value={pointsToUse}
-                                    onChange={(e) => setPointsToUse(Math.min(Number(e.target.value), userPoints))}
-                                    placeholder="사용할 포인트 입력"
-                                    min="0"
-                                />
-                                <button className="custom-button1" onClick={handleMaxPoints}>
-                                    전액 사용
-                                </button>
-                                <button className="custom-button1 cancel-button" onClick={handleCancelPoints}>
-                                    취소
-                                </button>
-                            </div>
-                        )}
 
                     </div>
 
-                </div>
-
-                <div className="line4"></div>
+                    <div className="line4"></div>
 
 
-                <div className="order-total-price">
-                    {/* 주문 총액 */}
-                    <div className="total-section">
-                        <div className="order-final-title">
-                            <h2>결제정보</h2>
-                            <span>총 상품금액 : {totalPrice.toLocaleString()} 원</span>
-                            <span>총 할인금액 : {discount.toLocaleString()} 원</span>
+                    <div className="order-total-price">
+                        {/* 주문 총액 */}
+                        <div className="total-section">
+                            <div className="order-final-title">
+                                <h2>결제정보</h2>
+                                <span>총 상품금액 : {totalPrice.toLocaleString()} 원</span>
+                                <span>총 할인금액 : {discount.toLocaleString()} 원</span>
+                            </div>
+                            <div className="line2"></div>
+                            <div className="order-totalPrice">
+                                <span><strong>총 결제금액 : {finalAmount.toLocaleString()} 원</strong></span>
+                            </div>
                         </div>
-                        <div className="line2"></div>
-                        <div className="order-totalPrice">
-                            <span><strong>총 결제금액 : {finalAmount.toLocaleString()} 원</strong></span>
-                        </div>
+
+                        {/* 결제 버튼 */}
+                        <button className="order-final-button" onClick={handleCheckout}>
+                            결제하기
+                        </button>
                     </div>
 
-                    {/* 결제 버튼 */}
-                    <button className="order-final-button" onClick={handleCheckout}>
-                        결제하기
-                    </button>
                 </div>
-
             </div>
         </div>
     );
