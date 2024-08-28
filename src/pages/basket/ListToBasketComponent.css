@@ -150,7 +150,8 @@ html, body {
 .basket-content-last {
     display: flex;
     flex-direction: column;
-    background-color: #f8f9fa;
+    background-color: white;
+    margin-bottom:10px;
 }
 
 .basket-showStore-map {

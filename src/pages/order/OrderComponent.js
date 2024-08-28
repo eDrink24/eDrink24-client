@@ -33,11 +33,7 @@ function OrderComponent() {
     const todayPickupBaskets = useRecoilValue(selectedTodayPickupBaskets);
     const reservationPickupBaskets = useRecoilValue(selectedReservationPickupBaskets);
 
-    console.log(">>>>>>>>>>>", orderInfo);
-
     const navigate = useNavigate();
-
-    console.log(orderInfo);
 
 
     // 총액 계산 함수 pkh

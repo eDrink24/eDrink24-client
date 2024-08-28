@@ -12,6 +12,7 @@ const ReviewComponent = () => {
     const [acidityRating, setAcidityRating] = useState(1);
     const [throatRating, setThroatRating] = useState(1);
     const [content, setContent] = useState('');
+
     const navigate = useNavigate();
     const orderHistory = JSON.parse(localStorage.getItem("orderHistory"));
 
