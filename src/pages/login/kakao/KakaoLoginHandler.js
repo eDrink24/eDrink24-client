@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '../../../components/alert/AlertModal.js';
 
-const KakaoLoginHandler = (props) => {
+const KakaoLoginHandler = () => {
     const code = new URL(window.location.href).searchParams.get("code");
     const navigate = useNavigate();
 
