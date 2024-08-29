@@ -116,7 +116,7 @@ function LoginComponent() {
                         <span><strong>오신 것을 환영해요!</strong></span>
                     </div>
 
-                    <Form method="post">
+                    <Form method="post" className="login-form">
                         <span>이메일(아이디)</span>
                         <input
                             type="text"
