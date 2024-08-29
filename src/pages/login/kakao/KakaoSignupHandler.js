@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import Modal from "react-modal";
 import AlertModal from '../../../components/alert/AlertModal';
+import xButton from "../../../assets/common/x-button.png";
 import './KakaoSignupHandler.css';
 
 function KakaoSignupHandler() {
@@ -258,13 +259,12 @@ function KakaoSignupHandler() {
             }
         }
     }
-
     return (
         <div className="signup-container">
             <div className='signup-header'>
                 <h1>추가정보입력</h1>
                 <button className="close-button" onClick={() => window.location.href = "/login"}>
-                    <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
+                    <img src={xButton} className="XButton" alt="closeXButton" />
                 </button>
             </div>
 
