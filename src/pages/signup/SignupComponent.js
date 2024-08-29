@@ -275,7 +275,7 @@ function SignupComponent() {
         <div className="signup-container">
             <div className='signup-header'>
                 <h1>회원가입</h1>
-                <button className="close-button" onClick={() => window.location.href = "/login"}>
+                <button className="su-close-button" onClick={() => window.location.href = "/login"}>
                     <img src="assets/common/x-button.png" className="XButton" alt="closeXButton" />
                 </button>
             </div>

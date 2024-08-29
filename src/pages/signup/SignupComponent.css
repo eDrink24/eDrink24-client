@@ -30,14 +30,14 @@
     font-weight: 500;
 }
 
-.signup-header .close-button {
+.signup-header .su-close-button {
     background: none;
     border: none;
     font-size: 1.5em;
     cursor: pointer;
 }
 
-.signup-header .close-button img {
+.signup-header .su-close-button img {
     width: 24px;
 }
 
