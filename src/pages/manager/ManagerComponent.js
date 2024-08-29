@@ -40,7 +40,6 @@ const ManagerComponent = () => {
       if (response.ok && (Number.parseInt(brNum) === resdata.brNum)) {
         await updateToManager();
         openAlert('사업자번호가 등록되었습니다.', true);
-        navigate('/admin');
       } else {
         openAlert("유효하지 않은 사업자 등록번호입니다.");
       }
