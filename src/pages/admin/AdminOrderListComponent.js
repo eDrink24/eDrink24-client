@@ -15,7 +15,7 @@ const AdminOrderListComponent = () => {
     const fetchOrderList = async () => {
         const storeId = localStorage.getItem("myStoreId");
         try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/eDrink24/showAdminOrderList/${storeId}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showAdminOrderList/${storeId}`, {
                 method: "GET"
             });
             const resData = await response.json();
