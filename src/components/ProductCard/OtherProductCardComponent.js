@@ -165,7 +165,6 @@ const OtherProductCardComponent = ({ products = [] }) => {  // 기본값으로 �
     // 현재 페이지에 머무름
     const stayOnPage = () => {
         setModalIsOpen(false);
-        navigate(`/`);
     };
 
     // CartBag 기능
