@@ -75,7 +75,7 @@ function PaymentApproval() {
 
         approvePayment();
 
-    }, [pgToken, tid, userId]);
+    }, []);
 
     const deleteLocalStorage = () => {
         localStorage.removeItem("selectedBaskets");
