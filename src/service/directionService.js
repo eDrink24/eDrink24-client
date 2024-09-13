@@ -1,7 +1,7 @@
 // https://developers.kakaomobility.com/docs/navi-api/directions/ 
 
 export async function getLoadDirection(startPoint, endPoint) {
-    const REST_API_KEY = `${process.env.REACT_APP_REST_API_KEY}`; // 자신의 REST API Key를 입력하세요.
+    const REST_API_KEY = `${process.env.REACT_APP_REST_API_KEY}`;
     const url = 'https://apis-navi.kakaomobility.com/v1/directions';
 
     const origin = `${startPoint.lng},${startPoint.lat}`;
@@ -17,7 +17,7 @@ export async function getLoadDirection(startPoint, endPoint) {
         destination: destination
     });
 
-    const requestUrl = `${url}?${queryParams}`; // 전체 URL
+    const requestUrl = `${url}?${queryParams}`;
 
     try {
         const response = await fetch(requestUrl, {
