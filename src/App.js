@@ -52,7 +52,6 @@ const router = createBrowserRouter([
       { path: '/allproduct/:category1/:category2/:productId', element: <ProductDetailComponent /> },
       { path: '/category', element: <CategoryComponent /> },
       { path: '/search', element: <SearchComponent /> },
-      { path: '/history', element: <HistoryComponent /> },
       {
         path: '/login', element: <LoginComponent />,
         action: loginAction
@@ -62,45 +61,6 @@ const router = createBrowserRouter([
         action: signUpAction
       },
       { path: "/mypage", element: <MypageComponent /> },
-      {
-        path: '/order', element: <OrderComponent />
-      },
-      {
-        path: '/orderHistory', element: <OrderHistoryComponent />
-      },
-      {
-        path: '/orderHistoryDetails', element: <OrderHistoryDetailsComponent />
-      },
-      {
-        path: '/dibs', element: <DibsComponent />
-      },
-      {
-        path: '/admin', element: <AdminComponent />
-      },
-      {
-        path: '/manager', element: <ManagerComponent />
-      },
-      {
-        path: '/review', element: <ReviewComponent />
-      },
-      {
-        path: '/checkMyReview', element: <CheckMyReviewComponent />
-      },
-      {
-        path: '/todayPickup', element: <ShowTodayPickupPageComponent />
-      },
-      {
-        path: '/admin/todayPickupCompleted', element: <TodayPickupCompletedPageComponent />
-      },
-      {
-        path: '/admin/adminOrder', element: <AdminOrderComponent />
-      },
-      {
-        path: '/admin/ShowReservationPickup', element: <ShowReservationPickupComponent />
-      },
-      {
-        path: '/admin/adminOrderList', element: <AdminOrderListComponent />
-      },
       { // 카카오 로그인 대기창
         path: '/login/oauth2/callback/kakao', element: <KakaoLoginHandler />,
       },
@@ -118,7 +78,47 @@ const router = createBrowserRouter([
           { path: "/mypage/updateCustomer", element: <UpdateCustomerComponent /> },
           { path: "/myplace_store", element: <SetPlaceComponent /> },
           { path: "/order/approval", element: <PaymentApproval /> }, // 결제완료처리페이지
-          { path: "/order/cancelOrFail", element: <PaymentCancelOrFail /> } // 결제취소or오류
+          { path: "/order/cancelOrFail", element: <PaymentCancelOrFail /> }, // 결제취소or오류
+          { path: '/history', element: <HistoryComponent /> },
+          {
+            path: '/order', element: <OrderComponent />
+          },
+          {
+            path: '/orderHistory', element: <OrderHistoryComponent />
+          },
+          {
+            path: '/orderHistoryDetails', element: <OrderHistoryDetailsComponent />
+          },
+          {
+            path: '/dibs', element: <DibsComponent />
+          },
+          {
+            path: '/admin', element: <AdminComponent />
+          },
+          {
+            path: '/manager', element: <ManagerComponent />
+          },
+          {
+            path: '/review', element: <ReviewComponent />
+          },
+          {
+            path: '/checkMyReview', element: <CheckMyReviewComponent />
+          },
+          {
+            path: '/todayPickup', element: <ShowTodayPickupPageComponent />
+          },
+          {
+            path: '/admin/todayPickupCompleted', element: <TodayPickupCompletedPageComponent />
+          },
+          {
+            path: '/admin/adminOrder', element: <AdminOrderComponent />
+          },
+          {
+            path: '/admin/ShowReservationPickup', element: <ShowReservationPickupComponent />
+          },
+          {
+            path: '/admin/adminOrderList', element: <AdminOrderListComponent />
+          },
 
         ]
       }
