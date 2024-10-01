@@ -54,6 +54,15 @@ function PaymentApproval() {
                         body: JSON.stringify(orderTransactionDTO),
                     });
 
+                    // 2024.10.1 - 동시성 발생 시, 주문취소
+                    if (!orderResponse.ok) {
+                        deleteLocalStorage();
+                        if (orderResponse.status == 400) {
+                            openAlert("재고가 부족하여 주문을 완료할 수 없습니다. 장바구니를 확인 후 다시 시도해주세요.", true)
+                        }
+                        openAlert("주문 처리 중 오류가 발생했습니다.", true)
+                    }
+
 
                     const deleteResponse = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
                         method: 'DELETE',
@@ -65,11 +74,14 @@ function PaymentApproval() {
 
                     // 결제완료 시, 로컬스토리지에 드간 정보들 삭제
                     deleteLocalStorage();
+                    openAlert("결제가 완료되었습니다!", true);
                 } catch (error) {
                     deleteLocalStorage();
+                    openAlert(error.message, true);
                 }
             } else {
                 deleteLocalStorage();
+                openAlert("결제 정보가 올바르지 않습니다.", true);
             }
         };
 
@@ -81,7 +93,6 @@ function PaymentApproval() {
         localStorage.removeItem("selectedBaskets");
         localStorage.removeItem("orderTransactionDTO");
         localStorage.removeItem("tid");
-        openAlert("결제가 완료되었습니다!", true);
     }
 
     return (
