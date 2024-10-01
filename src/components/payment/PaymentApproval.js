@@ -59,10 +59,11 @@ function PaymentApproval() {
                         deleteLocalStorage();
                         if (orderResponse.status == 400) {
                             openAlert("재고가 부족하여 주문을 완료할 수 없습니다. 장바구니를 확인 후 다시 시도해주세요.", true)
+                        } else {
+                            openAlert("주문 처리 중 오류가 발생했습니다.", true);
                         }
-                        openAlert("주문 처리 중 오류가 발생했습니다.", true)
+                        return;
                     }
-
 
                     const deleteResponse = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/showAllBasket/userId/${userId}/deleteBasketAndItem`, {
                         method: 'DELETE',
